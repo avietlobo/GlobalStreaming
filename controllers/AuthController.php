@@ -1,0 +1,783 @@
+<?php
+/** User: Aviet Lobo ...*/
+
+
+
+namespace app\controllers;
+
+
+
+use app\core\Application;
+use app\core\Controller;
+use app\core\middlewares\AuthMiddleware;
+use app\core\Request;
+use app\core\Response;
+use app\gateway\CanDetailsGateway;
+use app\models\CandidateModel;
+use app\models\EvangelistModel;
+use app\models\EvangelistReviewModel;
+use app\models\LoginForm;
+use app\models\RegisterModel;
+use app\models\VideoWatchHistoryModel;
+
+/**
+ * Class AuthController
+ *
+ * @author Aviet Lobo <avietlobo@gmail.com>
+ * @package app\controllers
+ */
+
+class AuthController extends Controller
+{
+
+    private $userId;
+
+
+    public function __construct()
+    {
+        $this->registerMiddleware(new AuthMiddleware(['profile', 'video']));
+    }
+
+    public function login(Request $request, Response $response)
+    {
+        $loginForm = new LoginForm();
+        if ($request->isPost()) {
+            $loginForm->loadData($request->getBody());
+            $hiddenField = $_POST["hidden_field"];
+            if (!empty($username) || !empty($password) || !empty($hiddenField)) {
+                return;
+            }
+            if ($loginForm->validate() && $loginForm->login()) {
+                // echo "hello22";
+                $id = Application::$app->session->get('user');
+                $data = RegisterModel::findCandidateClassDetails(['id' => $id]);
+                $mediaType = $data->mediaType;
+                //   echo '</pre>';
+                //   var_dump($mediaType);
+                //   echo '</pre>';
+
+
+                //$response->redirect('/video');
+                if ($mediaType == 'Web Video') {
+                    return $this->render('video', [
+                        'model' => $data
+                    ]);
+                }
+
+                if ($mediaType == 'Web Audio') {
+                    return $this->render('audio', [
+                        'model' => $data
+                    ]);
+                }
+
+
+////             Application::$app->login()
+                //return;
+            }
+        }
+
+        $this->setLayout('main');
+        return $this->render('login', [
+            'model' => $loginForm
+        ]);
+
+    }
+
+
+
+
+    public function submitRegistration(Request $request, Response $response)
+    {
+
+        $evangelistReviewModel = new EvangelistReviewModel();
+        $errorMessage = ''; // Initialize error message
+        $errorMessage2 = ''; // Initialize error message
+        if ($request->isPost()) {
+            // Get POST data
+            $zion_id = $_POST['memberID'];
+            $evngName = $_POST['memberName'];
+            $mobile = $_POST['memberContact'];
+            $fellowship = $_POST['fellowship'];
+            $email = $_POST['memberEmail'];
+            $designation = $_POST['designation'];
+            $updatedBy = $_POST['updatedBy'];
+            // Handle photo upload
+            $photoName = '';
+
+            // Check if mobile or email already exists in the `evangelist_in_review` table
+            $existingRecord = $evangelistReviewModel->findEvangelist($mobile,$email);
+
+            // Check if mobile or email already exists in the `evangelist` table
+            $existingRecord2 = $evangelistReviewModel->findEvangelistMain($mobile,$email);
+
+            if ($existingRecord) {
+                // If record exists, set the error message
+                $errorMessage = 'Error: Mobile or email already exists in the system.';
+                $this->setLayout('main1');
+                return $this->render('memberRegistration', ['errorMessage' => $errorMessage,'errorMessage2' => $errorMessage2]);
+
+            }
+
+            if ($existingRecord2) {
+                // If record exists, set the error message
+                $errorMessage2 = 'Evangelist already registered.';
+                $this->setLayout('main1');
+                return $this->render('memberRegistration', ['errorMessage' => $errorMessage,'errorMessage2' => $errorMessage2]);
+
+            }
+
+
+
+            //Check if mobile or email already present in evangelist table
+
+
+            if (isset($_FILES['uploadPhoto']) && $_FILES['uploadPhoto']['error'] === UPLOAD_ERR_OK) {
+                // Validate file type
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                $imageInfo = getimagesize($_FILES['uploadPhoto']['tmp_name']);
+
+                if ($imageInfo !== false && in_array($imageInfo['mime'], $allowedTypes)) {
+                    // Ensure the file size is under 1MB
+                    if ($_FILES['uploadPhoto']['size'] <= 1048576) { // 1MB = 1048576 bytes
+                        // Generate a unique file name
+                        $photoName = uniqid('photo_', true) . '.' . pathinfo($_FILES['uploadPhoto']['name'], PATHINFO_EXTENSION);
+
+                        // Define the upload directory
+                        $uploadDir = 'uploads/photos/';
+
+                        // Create directory if it doesn't exist
+                        if (!is_dir($uploadDir)) {
+                            mkdir($uploadDir, 0755, true); // Create the directory with restricted permissions
+                        }
+
+                        // Define the full upload file path
+                        $uploadFilePath = $uploadDir . $photoName;
+
+                        $evangelistReviewModel->memberRegister($zion_id, $evngName, $mobile, $photoName, $fellowship, $email,$designation);
+
+
+                        // Move the uploaded file to the uploads directory
+                        if (!move_uploaded_file($_FILES['uploadPhoto']['tmp_name'], $uploadFilePath)) {
+                            die('Error uploading the photo.');
+                        }
+
+
+
+
+                    } else {
+                        die('Photo size exceeds 1MB.');
+                    }
+                } else {
+                    die('Invalid photo type. Only JPEG, PNG, and GIF are allowed.');
+                }
+            } else {
+                die('No photo uploaded or there was an upload error.');
+            }
+
+
+
+        }
+
+        $this->setLayout('main1');
+        return $this->render('memberRegistration', ['errorMessage' => $errorMessage,'errorMessage2' => $errorMessage2]);
+
+    }
+
+
+    public function evngRegistration(Request $request, Response $response)
+    {
+        $this->setLayout('main1');
+        return $this->render('memberRegistration');
+
+    }
+
+
+
+
+    public function approveRegistration(Request $request, Response $response)
+    {
+        $evangelistReviewModel = new EvangelistReviewModel();
+        if ($request->isPost()) {
+
+            $body = $request->getBody();
+            error_log(print_r($body, true)); // This will log the entire body array
+            // Step 3: Extract the necessary data (e.g., member_id, rejection reason, status)
+            $zion_id = $body['member_id'] ?? null;
+            $mobile = $body['mobile'] ?? null;
+            $email= $body['emailID'] ?? null;
+            $evngName= $body['evangelist'] ?? null;
+            $status = 'Approved';
+            $designation= $body['designation'] ?? null;
+            $updatedBy= Application::$app->session->get('loginForm')->username;
+
+            // Prepare data array for adding a new evangelist
+            $data = [
+                'email' => $email,
+                'mobile' => $mobile,
+                'evangelist' => $evngName,
+                'designation' => $designation
+            ];
+
+            $result = $evangelistReviewModel->updateMember($status,'',$zion_id);
+            $evangelistReviewModel->addNewEvangelist($data);
+
+            // Return a JSON response to the client
+            $result2=$evangelistReviewModel->getMembers();
+            return $this->render('appRegistration1', ['members' => $result2]);
+
+        }
+
+
+        $result=$evangelistReviewModel->getMembers();
+        return $this->render('appRegistration1', ['members' => $result]);
+    }
+
+    public function rejectRegistration(Request $request, Response $response)
+    {
+
+        $evangelistReviewModel = new EvangelistReviewModel();
+        if ($request->isPost()) {
+
+            $body = $request->getBody();
+            error_log(print_r($body, true)); // This will log the entire body array
+            // Step 3: Extract the necessary data (e.g., member_id, rejection reason, status)
+            $zion_id = $body['member_id'] ?? null;
+            $rejectedReason = $body['rejected_reason'] ?? null;
+            $status = 'Rejected';
+
+            error_log(print_r($rejectedReason, true)); // This will log the entire body array
+
+//            echo '<pre>';
+//            var_dump($zion_id);
+//            echo '</pre>';
+
+
+            $result = $evangelistReviewModel->updateMember($status,$rejectedReason,$zion_id);
+            // Return a JSON response to the client
+            $result2=$evangelistReviewModel->getMembers();
+            return $this->render('appRegistration1', ['members' => $result2]);
+
+        }
+
+
+        $result=$evangelistReviewModel->getMembers();
+        return $this->render('appRegistration1', ['members' => $result]);
+    }
+
+
+
+    public function viewRegistration(Request $request, Response $response)
+    {
+        $this->setLayout('main1');
+        $evangelistReviewModel = new EvangelistReviewModel();
+        $result=$evangelistReviewModel->viewRegMembers();
+
+        return $this->render('viewAppRegistrations', ['members' => $result]);
+    }
+
+
+    public function appRegistration(Request $request, Response $response)
+    {
+        $this->setLayout('main1');
+        $evangelistReviewModel = new EvangelistReviewModel();
+        $result=$evangelistReviewModel->getMembers();
+
+        // Pass the result to the view for dynamic rendering
+        return $this->render('appRegistration', ['members' => $result]);
+
+
+
+    }
+
+    public function loginEvangelist(Request $request, Response $response)
+    {
+        $loginForm = new LoginForm();
+        if ($request->isPost()) {
+            $loginForm->loadData($request->getBody());
+            $hiddenField = $_POST["hidden_field"];
+            if (!empty($username) || !empty($password) || !empty($hiddenField)) {
+                return;
+            }
+//            if ($loginForm->validate() && $loginForm->loginEvangelist()) {
+//                error_log("Hello world");
+//
+////                $id = Application::$app->session->get('user');
+////                $data = EvangelistModel::findCandidateClassDetails1(['id'=> $id]);
+//                //error_log("Entered this function");
+//                echo "Entered this function";
+//                return $this->render('profile');
+//            }
+            if ($loginForm->validate()) {
+                error_log("Validation successful");
+            } else {
+                error_log("Validation failed");
+            }
+
+            if ($loginForm->loginEvangelist()) {
+//                $id = Application::$app->session->get('user');
+                $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist'=> $loginForm->username],$loginForm->username);
+                $data1 = EvangelistModel::findworkGroupForEvangelist(['evangelist'=> $loginForm->username],$loginForm->username);
+//                error_log("evngDashboardData: " . print_r($data1, true));
+//                error_log("evngDashboardData: " . print_r($data, true));
+
+// In the loginEvangelist method of your AuthController
+// Assuming $data is the array of candidates
+Application::$app->session->set('evngDashboardData', $data);
+Application::$app->session->set('evngDashboardData2', $data1);
+Application::$app->session->set('evngName', $loginForm->username);
+Application::$app->session->set('loginForm', $loginForm);
+                $this->setLayout('main1');
+
+                return $this->render('evngDashboard', [
+                    'models' => $data,'modes' => $loginForm
+                ]);
+
+            } else {
+                error_log("Login failed1");
+            }
+
+
+
+        }
+
+        $this->setLayout('main1');
+        return $this->render('login', [
+            'model' => $loginForm
+        ]);
+
+    }
+
+    public function register(Request $request)
+    {
+        $registerModel = new RegisterModel();
+        if($request->isPost())
+        {
+            $body = $request->getBody();
+
+            $registerModel->loadData($request->getBody());
+            if($registerModel->validate() && $registerModel->register()){
+                return 'Success';
+            }
+
+            return $this->render('register',[
+                'model'=> $registerModel
+            ]);
+
+            return 'Handle submitted data';
+        }
+        $this->setLayout('auth');
+        return $this->render('register', [
+            'model'=> $registerModel
+        ]);
+    }
+
+    public function swt(Request $request)
+    {
+        $watchTime = Application::$app->session->get('watch_time');
+        $participant = Application::$app->session->get('participant');
+
+        error_log("Watch time: " . $watchTime);
+        error_log("participant: " . $participant);
+
+        // Create an instance of the model representing the video_watch_history table
+        $videoWatchHistoryModel = new VideoWatchHistoryModel(); // Replace with your actual model class
+
+        // Prepare the data to insert into the table
+        $data = [
+            'recordDate' => null,
+            'mobile' => null,
+            'participant' => Application::$app->session->get('participant'), // Replace with actual fields
+            'evangelist' => Application::$app->session->get('evangelist'),
+            'wgroup' => null,
+            'language' => Application::$app->session->get('language'),
+            'expiryDate' => null,
+            'classFrom' => Application::$app->session->get('classFrom'),
+            'classTo' => null,
+            'status' =>  null,
+            'mediaType'=> null,
+            'remark' => null,
+            'classLink' => null,
+            'feedback' => null,
+            'password' => Application::$app->session->get('password'),
+            'duration_watched' => Application::$app->session->get('watch_time'), // Store the watch time
+            'video_watch_status' => null,
+            'device_info' => null,
+            'location' => null
+        ];
+//        print_r($data);
+        error_log("Request payload: " . print_r($data, true));
+
+        // Insert the data into the database
+        $result = $videoWatchHistoryModel->saveRecordViaApi2($data,' '); // Call your saveRecordViaApi method
+
+
+
+    }
+
+
+    public function jsonResponse($data, $statusCode = 200)
+    {
+        header('Content-Type: application/json');
+        http_response_code($statusCode);
+        echo json_encode($data);
+        exit;
+    }
+    
+    
+    public function update_session(Request $request)
+    {
+//        $watchTime = $request->input('watch_time');
+        $formData = $request->getBody();
+
+        // Access the "watch_time" field from the form data
+        $watchTime = $formData['watch_time'] ?? null;
+        error_log("Watch time: " . $watchTime);
+        if ($watchTime !== null) {
+            // Do something with $watchTime, for example, store it in a session variable
+            Application::$app->session->set('watch_time', $watchTime);
+            error_log("Watch time set: " . $watchTime);
+            return $this->jsonResponse(['message' => 'Video watch time stored successfully']);
+        } else {
+            // Handle the case where "watch_time" is not found in the form data
+            return $this->jsonResponse(['error' => 'Watch time not provided'], 400);
+        }
+
+
+    }
+
+    public function register1(Request $request)
+    {
+        $registerModel = new RegisterModel();
+
+
+        if($request->isPost())
+        {
+
+
+            $registerModel->loadData($request->getBody());
+            $password=self::generateRandomNumber(8);
+
+            $inputData = json_decode(file_get_contents("php://input"),true);
+            if(empty($inputData)){
+                $registerModel->register1($_POST,$password);
+
+                //$storeClassRequest = storeClassRequest($_POST);
+                // Call Site Controller and render on UI
+//                $controller = new AuthController();
+//                $controller->getClassDetailsForCandidateUI($registerModel->evangelist, $registerModel->participant,$registerModel);
+
+
+                $userDetails = $registerModel->getUserDetailsByUsername($registerModel->evangelist,$registerModel->participant,$registerModel->mobile);
+
+
+
+
+
+                // Render the view with the user details
+                //$this->setLayout('auth');
+                $this->setLayout('main1');
+                return $this->render('classDetailsForCandidate', ['userDetails' => $userDetails]);
+            }
+            else{
+                $expectedHeaderValue = '4567';
+                if (!$request->hasHeader('X-API')) {
+                    header('HTTP/1.1 401 Unauthorized');
+                    return 'Unauthorized';
+                }
+                if ($request->hasHeader('X-Api')) {
+                    $actualHeaderValue = $request->getHeader('X-Api');
+                    error_log('Actual Header Value: ' . $actualHeaderValue);
+                    error_log('Expected Header Value: ' . $expectedHeaderValue);
+
+                    if( $actualHeaderValue === $expectedHeaderValue)
+                    {
+
+                    }
+                    else{
+                        header('HTTP/1.1 401 Unauthorizedj');
+                        return 'Unauthorized';
+                    }
+
+                }
+                 $passwordFromJson = $inputData['password'];
+                if(!empty($passwordFromJson))
+                {
+                    echo '<pre>';
+                    var_dump($inputData);
+                    echo '</pre>';
+                    $registerModel->register1($inputData,$passwordFromJson);
+                }
+                else
+                {
+                    echo '<pre>';
+                    var_dump($inputData);
+                    echo '</pre>';
+                    $registerModel->register1($inputData,$password);
+                }
+
+                //$storeClassRequest = storeClassRequest($inputData);
+                return 'Recorded inserted successfully';
+            }
+            $body = $request->getBody();
+
+
+//            if($registerModel->validate() && $registerModel->register()){
+//                return 'Success';
+//            }
+
+            echo '<pre>';
+            var_dump("Hi");
+            echo '</pre>';
+            return $this->render('register', [
+                'model' => $registerModel,
+                'mediaType' => $mediaType, // Pass the global variable
+            ]);
+
+            return 'Recorded inserted successfully';
+        }
+        else
+        {
+            $data = [
+                'status' => 405,
+                'message' => $request->getMethod(). ' Method Not Allowed',
+
+            ];
+            header("HTTP/1.0 405 Method Mot Allowed");
+
+        }
+        $this->setLayout('auth');
+        $candidateModel = new CandidateModel();
+
+        $data=Application::$app->session->get('evngDashboardData');
+        $ind=Application::$app->session->get('index');
+        $mobile = $data[$ind]->mobile;
+        $evangelist = $data[$ind]->evangelist;
+        $participantName = $data[$ind]->participantName;
+
+
+        $candidateDetails = $candidateModel->getMediaType($evangelist,$participantName,$mobile);
+        $mediaType = $candidateDetails['mediaType'];
+
+
+        return $this->render('register', [
+            'model' => $registerModel,'mediaType'=> $mediaType// Pass the global variable
+        ]);
+    }
+
+    public function getClassDetailsForCandidateUI($evangelist,$participantName,$registerModel) {
+
+        //$registerModel = new RegisterModel();
+
+        // Validate and sanitize parameters as needed
+
+        // Example: Fetch details based on $username and $candidate
+        $userDetails = $registerModel->getUserDetailsByUsername($evangelist,$participantName);
+
+        // Render the view with the user details
+        $this->setLayout('auth');
+        return $this->render('classDetailsForCandidate', ['userDetails' => $userDetails]);
+    }
+
+    public function registerEvangelist(Request $request)
+    {
+        $evangelistModel = new EvangelistModel();
+        if($request->isPost())
+        {
+
+
+
+
+
+
+            $evangelistModel->loadData($request->getBody());
+            echo '<pre>';
+            var_dump($evangelistModel);
+            echo '</pre>';
+            $password=self::generateRandomNumber(8);
+
+            $inputData = json_decode(file_get_contents("php://input"),true);
+            if(empty($inputData)){
+                error_log('Password is: ' . $password);
+                $evangelistModel->register1($_POST,$password);
+                return 'Handle submitted data';
+
+            }
+            else{
+                $expectedHeaderValue = '4567';
+                if (!$request->hasHeader('X-API')) {
+                    header('HTTP/1.1 401 Unauthorized');
+                    return 'Unauthorized';
+                }
+                if ($request->hasHeader('X-Api')) {
+                    $actualHeaderValue = $request->getHeader('X-Api');
+                    error_log('Actual Header Value: ' . $actualHeaderValue);
+                    error_log('Expected Header Value: ' . $expectedHeaderValue);
+
+                    if( $actualHeaderValue === $expectedHeaderValue)
+                    {
+
+                    }
+                    else{
+                        header('HTTP/1.1 401 Unauthorizedj');
+                        return 'Unauthorized';
+                    }
+
+                }
+                $passwordFromJson = $inputData['password'];
+                //$passwordFromJson = $inputData['password'] ?? null;
+                error_log('APassword is: ' . $password);
+                if(!empty($passwordFromJson))
+                {
+                    $evangelistModel->register1($inputData,$passwordFromJson);
+                }
+                else
+                {
+                    $evangelistModel->register1($inputData,$password);
+                }
+
+                return 'Recorded inserted successfully';
+            }
+            $body = $request->getBody();
+
+
+            return $this->render('registerEv',[
+                'model'=> $evangelistModel
+            ]);
+
+            return 'Recorded inserted successfully';
+        }
+//        else
+//        {
+//            $data = [
+//                'status' => 405,
+//                'message' => $request->getMethod(). ' Method Not Allowed',
+//
+//            ];
+//            header("HTTP/1.0 405 Method Mot Allowed");
+//
+//        }
+        $this->setLayout('auth');
+        return $this->render('registerEv', [
+            'model'=> $evangelistModel
+        ]);
+    }
+
+    public static function generateRandomNumber($length = 8)
+    {
+        $random = "";
+        srand((double) microtime() * 1000000);
+
+        $data = "123456123456789071234567890890";
+        // $data .= "aBCdefghijklmn123opq45rs67tuv89wxyz"; // if you need alphabatic also
+
+        for ($i = 0; $i < $length; $i++) {
+            $random .= substr($data, (rand() % (strlen($data))), 1);
+        }
+
+        return $random;
+
+    }
+
+
+    public function logout(Request $request, Response $response)
+    {
+        
+    // Assuming you have saved the watch time in the session
+        // $watchTime = Application::$app->session->get('watch_time');
+        // $participant = Application::$app->session->get('participant');
+
+        // error_log("Watch time from session: " . $watchTime);
+        // error_log("participant from session: " . $participant);
+
+        // // Prepare the data to send in the POST request
+        // $postData = [
+        //     'watch_time' => $watchTime
+        // ];
+
+        // error_log("POST Data: " . print_r($postData, true));
+
+        // // Initialize cURL session
+        // $ch = curl_init();
+
+        // // Set cURL options
+        // curl_setopt($ch, CURLOPT_URL, 'https://testqhe.site/swt'); // Replace with your API URL
+        // curl_setopt($ch, CURLOPT_POST, 1);
+        // curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // // Set the Content-Type header to application/x-www-form-urlencoded
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        //     'Content-Type: application/x-www-form-urlencoded',
+        //     'Cookie: PHPSESSID=' . session_id(), // Include the session ID if needed
+        // ]);
+
+
+
+
+        // // Before cURL request
+        // error_log("Before cURL request");
+
+        // curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+
+        // // Execute the cURL request
+        // $apiResponse = curl_exec($ch);
+
+        // if ($apiResponse === false) {
+        //     echo 'Curl error: ' . curl_error($ch);
+        // }
+        // else {
+        //     // Output the response for debugging
+        //     echo 'API Response: ' . $apiResponse;
+        // }
+
+        // // Before cURL request
+        // error_log("After cURL request");
+
+        // // Check for errors
+        // if (curl_errno($ch)) {
+        //     // Handle error here
+        //     // You might want to log the error or perform other actions
+        //     echo 'Curl error: ' . curl_error($ch);
+        // }
+
+        // // Close cURL session
+        // curl_close($ch);
+    
+        
+    Application::$app->logout();
+    $response->redirect('/');
+    }
+
+    public function logoutEvangelistPortal(Request $request, Response $response)
+    {
+
+        Application::$app->logout();
+        //$response->redirect('/login');
+    }
+
+    public function profile()
+    {
+        return $this->render('profile');
+
+    }
+
+    public function evngDashboard()
+    {
+        return $this->render('evngDashboard');
+
+    }
+
+    public function evngDashboard1()
+    {
+        $this->setLayout('main1');
+        return $this->render('evngDashboard1');
+
+    }
+    public function video()
+    {
+        return $this->render('video');
+
+    }
+
+
+
+}
