@@ -100,6 +100,26 @@ class RegisterModel extends UserModel
     {
         return $this->participant;
     }
+
+    public function labels(): array
+    {
+        return [
+            'mobile' => 'Mobile',
+            'participant' => 'Participant Name',
+            'language' => 'Language',
+            'evangelist' => 'Evangelist',
+            'mediaType' => 'Media Type',
+            'status' => 'Status',
+            'wgroup' => 'Work Group',
+            'classFrom' => 'Class From',
+            'remark' => 'Remark',
+            'classLink' => 'Class Link',
+            'feedback' => 'Feedback'
+
+
+        ];
+    }
+
 }
 
 
