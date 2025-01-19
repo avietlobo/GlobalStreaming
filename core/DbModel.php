@@ -186,13 +186,18 @@ abstract class DbModel extends Model
         $mobile = $data['mobile'] ?? null;
         $evngName = $data['evangelist'] ?? null;
         $designation = $data['designation'] ?? null;
+        $wgroupId = $data['workgroup'] ?? null;
+
+        error_log(print_r($data, true)); // This will log the entire body array
+
+
 
 
         $tableName = $this->tableName();
 
         // SQL query to insert the data into the `evangelist_in_review` table
-        $statement = self::prepare("INSERT INTO evangelist (evngName, mobile,email,password,designation) 
-                  VALUES (:evngName, :mobile, :email, :password, :designation)");
+        $statement = self::prepare("INSERT INTO evangelist (evngName, mobile,email,password,designation,wgroupId) 
+                  VALUES (:evngName, :mobile, :email, :password, :designation,:wgroupId)");
 
         $password = str_pad(rand(0, 99999999), 8, '0', STR_PAD_LEFT);
 
@@ -202,7 +207,8 @@ abstract class DbModel extends Model
 
         $statement->bindValue(":password", $password);
         $statement->bindValue(":designation", $designation);
-
+        $statement->bindValue(":wgroupId", $wgroupId);
+        error_log(print_r($statement, true)); // This will log the entire body array
         $statement->execute();
 
 
@@ -286,15 +292,15 @@ abstract class DbModel extends Model
 
     }
 
-    public function saveMemberRecordViaApi($zion_id, $evngName, $mobile, $photoName, $fellowship, $email,$designation)
+    public function saveMemberRecordViaApi($zion_id, $evngName, $mobile, $photoName, $fellowship, $email,$designation,$wgroup)
     {
         $tableName = $this->tableName();
 
         $referredBy=Application::$app->session->get('loginForm')->username;
 
         // SQL query to insert the data into the `evangelist_in_review` table
-        $statement = self::prepare("INSERT INTO evangelist_in_review (zion_id, evngName, mobile, photo, fellowship, email,designation,status,referredBy) 
-                  VALUES (:zion_id, :evngName, :mobile, :photoName, :fellowship, :email, :designation, :status, :referredBy)");
+        $statement = self::prepare("INSERT INTO evangelist_in_review (zion_id, evngName, mobile, photo, fellowship, email,designation,status,referredBy,wgroupId) 
+                  VALUES (:zion_id, :evngName, :mobile, :photoName, :fellowship, :email, :designation, :status, :referredBy, :wgroup)");
 
         $statement->bindValue(":zion_id", $zion_id);
         $statement->bindValue(":evngName", $evngName);
@@ -306,6 +312,7 @@ abstract class DbModel extends Model
         $statement->bindValue(":designation", $designation);
         $statement->bindValue(":status", "Pending");
         $statement->bindValue(":referredBy", $referredBy);
+        $statement->bindValue(":wgroup", $wgroup);
 
         $statement->execute();
     }

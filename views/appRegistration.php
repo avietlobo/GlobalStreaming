@@ -235,6 +235,7 @@
                 <th>Actions</th>
                 <th>Designation</th>
                 <th>Approved/Rejected By</th>
+                <th>Work group ID</th>
             </tr>
             </thead>
             <tbody>
@@ -270,6 +271,8 @@
                     </td>
                     <td><?= isset($member['designation']) ? $member['designation'] : 'N/A' ?></td>
                     <td><?= isset($member['updatedBy']) ? $member['updatedBy'] : 'N/A' ?></td>
+                    <td><?= $member['wgroupId'] ?></td>
+
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -361,7 +364,8 @@
         const mobile = row.querySelector('td:nth-child(4)').textContent;   // Mobile is in the fourth column
         const evngName = row.querySelector('td:nth-child(3)').textContent; // Evangelist name is in the third column
         const email = row.querySelector('td:nth-child(6)').textContent;    // Email is in the sixth column
-        const designation = row.querySelector('td:nth-child(11)').textContent;    // Email is in the sixth column
+        const designation = row.querySelector('td:nth-child(11)').textContent;
+        const workgroup = row.querySelector('td:nth-child(13)').textContent;   // Email is in the sixth column
         // Show the confirmation modal
         const modal = document.getElementById('confirmApproveModal');
         modal.style.display = 'flex';
@@ -383,7 +387,8 @@
                 mobile: mobile,
                 evangelist: evngName,
                 emailID: email,
-                designation: designation
+                designation: designation,
+                workgroup: workgroup
             };
 
             // Send the data to the server via API (POST request)

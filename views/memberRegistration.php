@@ -208,6 +208,15 @@
             box-shadow: none; /* Remove any shadow that might create lines */
         }
 
+        .success-alert {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            border-radius: 5px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -225,6 +234,24 @@
 
     <h1>Global Member Registration Form</h1>
     <p class="note">This form is used by New Evangelists/Support Team Members to Join Global Evangelisation Group</p>
+
+    <?php if (isset($_SESSION['successMessage'])) : ?>
+        <div class="success-alert">
+            <p style="color: green; font-size: 16px; text-align: center; font-weight: 500;">
+                <?= htmlspecialchars($_SESSION['successMessage']); ?>
+            </p>
+        </div>
+        <?php unset($_SESSION['successMessage']); // Remove the message after it's displayed ?>
+    <?php endif; ?>
+
+    <!-- Display Success Message -->
+    <?php if (!empty($successMessage)) : ?>
+        <div class="success-alert">
+            <p style="color: green; font-size: 16px; text-align: center; font-weight: 500;">
+                <?= htmlspecialchars("Registration successful! Lets wait for approval."); ?>
+            </p>
+        </div>
+    <?php endif; ?>
 
     <!-- Display error message if exists -->
     <?php use app\core\Application;
@@ -297,6 +324,81 @@
         </div>
         <input type="hidden" name="updatedBy" value="<?= Application::$app->session->get('loginForm')->username; ?>">
         <input type="hidden" name="index" value="<?php echo htmlspecialchars($data['index'] ?? ''); ?>">
+
+        <div class="form-group">
+            <label for="workGroup">Work Group</label>
+            <select id="workGroup" name="workGroup" required>
+                <option value="">Select Work Group</option>
+                <option value="Global TC Base-English">Global TC Base-English</option>
+                <option value="Global SM-Malayalam">Global SM-Malayalam</option>
+                <option value="GTC-Muvattupuzha">GTC-Muvattupuzha</option>
+                <option value="GTC-Kalpetta">GTC-Kalpetta</option>
+                <option value="Global SM-Hindi">Global SM-Hindi</option>
+                <option value="GTC-Perambra">GTC-Perambra</option>
+                <option value="GTC-Punnapra">GTC-Punnapra</option>
+                <option value="Global TC Goa-Cntrl Zone">Global TC Goa-Cntrl Zone</option>
+                <option value="GTC-Jordan">GTC-Jordan</option>
+                <option value="GTC-Neriamangalam">GTC-Neriamangalam</option>
+                <option value="GTC-Thevara">GTC-Thevara</option>
+                <option value="GTC-Chempanthotty">GTC-Chempanthotty</option>
+                <option value="GTC-Pazhayannur">GTC-Pazhayannur</option>
+                <option value="GTC-Kannur">GTC-Kannur</option>
+                <option value="GTC-Galilee">GTC-Galilee</option>
+                <option value="Global TC Base-Konkani">Global TC Base-Konkani</option>
+                <option value="Global TC-NZealand">Global TC-NZealand</option>
+                <option value="Global SM-Italy">Global SM-Italy</option>
+                <option value="GTC-Irinjalakuda">GTC-Irinjalakuda</option>
+                <option value="Global TC Base-Malayalam">Global TC Base-Malayalam</option>
+                <option value="Global SM-English">Global SM-English</option>
+                <option value="Global SM-Spanish">Global SM-Spanish</option>
+                <option value="GTC-Alakode">GTC-Alakode</option>
+                <option value="GTC-Fort Kochi">GTC-Fort Kochi</option>
+                <option value="GTC-Pathanapuram">GTC-Pathanapuram</option>
+                <option value="GTC-Malayattor">GTC-Malayattor</option>
+                <option value="GTC-Karunagapally">GTC-Karunagapally</option>
+                <option value="GTC-Koratty">GTC-Koratty</option>
+                <option value="Global TC Goa-West T1">Global TC Goa-West T1</option>
+                <option value="Global TC Goa-West T2">Global TC Goa-West T2</option>
+                <option value="Global SM-Portuguese">Global SM-Portuguese</option>
+                <option value="Global TC Mumbai-Central">Global TC Mumbai-Central</option>
+                <option value="GTC-Paravoor">GTC-Paravoor</option>
+                <option value="GTC-Zoar">GTC-Zoar</option>
+                <option value="GTC-Mananthavady">GTC-Mananthavady</option>
+                <option value="GTC-Changanassery">GTC-Changanassery</option>
+                <option value="Global TC Mumbai-Western">Global TC Mumbai-Western</option>
+                <option value="GTC-Kunnamkalam">GTC-Kunnamkalam</option>
+                <option value="Zion Global Management">Zion Global Management</option>
+                <option value="GTC-Kovalam">GTC-Kovalam</option>
+                <option value="GTC-Ernakulam">GTC-Ernakulam</option>
+                <option value="GTC-Thiruvambady">GTC-Thiruvambady</option>
+                <option value="GTC-Manjummel">GTC-Manjummel</option>
+                <option value="GTC-Kozhinjampara">GTC-Kozhinjampara</option>
+                <option value="ME-Sathvartha Streaming">ME-Sathvartha Streaming</option>
+                <option value="GTC-Gethsamene">GTC-Gethsamene</option>
+                <option value="GTC-Mannuthi">GTC-Mannuthi</option>
+                <option value="GTC-Kelakam">GTC-Kelakam</option>
+                <option value="GTC-Kakkayam">GTC-Kakkayam</option>
+                <option value="GTC-Neyyattinkara">GTC-Neyyattinkara</option>
+                <option value="GTC-Potta">GTC-Potta</option>
+                <option value="GTC-Ezhupunna">GTC-Ezhupunna</option>
+                <option value="GTC-Eden">GTC-Eden</option>
+                <option value="Global SM-Tagalog">Global SM-Tagalog</option>
+                <option value="Global TC-HMRGG">Global TC-HMRGG</option>
+                <option value="Global TC-Bangalore">Global TC-Bangalore</option>
+                <option value="Global SM-Arabic">Global SM-Arabic</option>
+                <option value="Global SM-French">Global SM-French</option>
+                <option value="GTC-Chennai">GTC-Chennai</option>
+                <option value="GTC-Aluva">GTC-Aluva</option>
+                <option value="GTC-Iritty">GTC-Iritty</option>
+                <option value="Global TC-Mangalore">Global TC-Mangalore</option>
+                <option value="Global TC Base-Tamil">Global TC Base-Tamil</option>
+                <option value="GTC-Rajakumari">GTC-Rajakumari</option>
+                <option value="GTC-Arthungal">GTC-Arthungal</option>
+                <option value="GTC Goa Global Mission">GTC Goa Global Mission</option>
+                <option value="UK-Sathvartha Streaming">UK-Sathvartha Streaming</option>
+            </select>
+            <div class="error-message" id="workGroupError">Please select a work group.</div>
+        </div>
 
         <div class="button-group">
             <button type="submit" class="update-button">Register</button>

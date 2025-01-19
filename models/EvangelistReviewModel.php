@@ -56,9 +56,9 @@ class EvangelistReviewModel extends UserModel
         return $this->findEvangelistMain1($mobile, $email);
     }
 
-    public function memberRegister($zion_id, $evngName, $mobile, $photoName, $fellowship, $email,$designation)
+    public function memberRegister($zion_id, $evngName, $mobile, $photoName, $fellowship, $email,$designation,$wgroup)
     {
-        return $this->saveMemberRecordViaApi($zion_id, $evngName, $mobile, $photoName, $fellowship, $email,$designation);
+        return $this->saveMemberRecordViaApi($zion_id, $evngName, $mobile, $photoName, $fellowship, $email,$designation,$wgroup);
     }
 
     public function getMembers()

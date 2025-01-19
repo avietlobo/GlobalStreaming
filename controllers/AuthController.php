@@ -103,6 +103,7 @@ class AuthController extends Controller
             $updatedBy = $_POST['updatedBy'];
             // Handle photo upload
             $photoName = '';
+            $wgroup = $_POST['workGroup'];
 
             // Check if mobile or email already exists in the `evangelist_in_review` table
             $existingRecord = $evangelistReviewModel->findEvangelist($mobile,$email);
@@ -153,8 +154,9 @@ class AuthController extends Controller
                         // Define the full upload file path
                         $uploadFilePath = $uploadDir . $photoName;
 
-                        $evangelistReviewModel->memberRegister($zion_id, $evngName, $mobile, $photoName, $fellowship, $email,$designation);
 
+                        $evangelistReviewModel->memberRegister($zion_id, $evngName, $mobile, $photoName, $fellowship, $email,$designation,$wgroup);
+                        $_SESSION['successMessage'] = 'Registration successful! Lets wait for approval.';
 
                         // Move the uploaded file to the uploads directory
                         if (!move_uploaded_file($_FILES['uploadPhoto']['tmp_name'], $uploadFilePath)) {
@@ -208,15 +210,25 @@ class AuthController extends Controller
             $evngName= $body['evangelist'] ?? null;
             $status = 'Approved';
             $designation= $body['designation'] ?? null;
+            $workgroup= $body['workgroup'] ?? null;
             $updatedBy= Application::$app->session->get('loginForm')->username;
+
+            echo '<pre>';
+            var_dump($workgroup);
+            echo '</pre>';
 
             // Prepare data array for adding a new evangelist
             $data = [
                 'email' => $email,
                 'mobile' => $mobile,
                 'evangelist' => $evngName,
-                'designation' => $designation
+                'designation' => $designation,
+                'workgroup' => $workgroup
             ];
+
+                        echo '<pre>';
+            var_dump($data);
+            echo '</pre>';
 
             $result = $evangelistReviewModel->updateMember($status,'',$zion_id);
             $evangelistReviewModel->addNewEvangelist($data);
