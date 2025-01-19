@@ -201,6 +201,14 @@ if (array_key_exists($language, $languageToClassCount)) {
     // The mediaType is passed directly from the controller
     $mediaType = isset($mediaType) ? $mediaType : ''; // Default to empty if not set
 
+    // Transform mediaType to Web Video or Web Audio if needed
+    if ($mediaType === 'Video') {
+        $mediaType = 'Web Video';
+    } elseif ($mediaType === 'Audio') {
+        $mediaType = 'Web Audio';
+    }
+
+
     // Define allowed media types
     $allowedMediaTypes = [
         'Web Video' => 'Web Video',
