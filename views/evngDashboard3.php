@@ -14,6 +14,34 @@ use app\models\EvangelistModel;
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <style>
+
+
+        .icon-button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .icon-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .icon-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+        }
+
+
+
+
         body {
             margin: 0;
             padding: 0;
@@ -186,6 +214,47 @@ use app\models\EvangelistModel;
         </ul>
     </div>
 </nav>
+
+
+
+<?php
+// Retrieve the session data
+$dashboardData = Application::$app->session->get('evngDashboardData2');
+$designation = $dashboardData[0]->designation;
+
+?>
+<div class="icon-button-group">
+    <?php if ($designation == 'Evangelist'): ?>
+        <button class="icon-button" title="Evangelist Registration" onclick="window.location.href='/evngRegistration';">
+            <i class="fas fa-user-plus"></i>
+        </button>
+        <button class="icon-button" title="View Submitted Registrations" onclick="window.location.href='/viewRegistration';">
+            <i class="fas fa-list"></i>
+        </button>
+
+    <?php endif; ?>
+</div>
+
+<div class="icon-button-group">
+    <?php if ($designation !== 'Evangelist'): ?>
+        <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
+            <i class="fas fa-file-alt"></i>
+        </button>
+        <button class="icon-button" title="Evangelist Registration" onclick="window.location.href='/evngRegistration';">
+            <i class="fas fa-user-plus"></i>
+        </button>
+        <button class="icon-button" title="Approval/Rejection" onclick="window.location.href='/appRegistration';">
+            <i class="fas fa-check-circle"></i>
+        </button>
+        <button class="icon-button" title="View Submitted Registrations" onclick="window.location.href='/viewRegistration';">
+            <i class="fas fa-list"></i>
+        </button>
+    <?php endif; ?>
+</div>
+
+
+
+
 <div class="container">
 <!--    <h2>Evangelist Dashboard</h2>-->
 <!--    <i>As for you, always be sober, endure suffering, do the work of an evangelist, carry out your ministry fully. (2 Timothy 4:5)</i>-->
