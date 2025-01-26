@@ -1620,6 +1620,15 @@ ORDER BY
         return $candidates;
     }
 
+    public static function findEvangelistUsingEmailId($email)
+    {
+        $tableName = (new \app\models\EvangelistModel())->tableName();
+        $statement = self::prepare("SELECT * FROM $tableName WHERE email = '$email'");
+        $statement->execute();
+        $evangelistDetail = $statement->fetchAll(\PDO::FETCH_CLASS, EvangelistModel::class);
+        return $evangelistDetail;
+    }
+
 
     public static function findworkGroupForEvangelist($where,$name)
     {

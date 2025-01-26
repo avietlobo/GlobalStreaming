@@ -1,3 +1,7 @@
+<?php
+
+use app\core\Application;
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -28,6 +32,41 @@
             right: 10px; /* Add padding from the right */
             width: 80px; /* Adjust the width as needed */
 
+        }
+
+        .forgot-password-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .primary-link {
+            text-decoration: none; /* Remove underline */
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: inline-block; /* Make it behave like a button */
+            cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: none; /* Remove default border for links */
+        }
+
+        .primary-link:hover {
+            background-color: #45a049;
+            transform: translateY(-1px);
+        }
+
+        .primary-link:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.6);
+        }
+
+        /* Reset default anchor tag styles (if any) */
+        a {
+            text-decoration: none;
+            outline: none;
         }
     </style>
 
@@ -127,6 +166,14 @@
                                 <button type="submit" value="Login" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
                             </div>
                         </form>
+                        <?php if (Application::$app->session->get('UI') === 'evg'): ?>
+                            <div class="forgot-password-container">
+                                <a href="/forgotPassword" class="primary-link">
+                                    Forgot Password
+                                </a>
+                            </div>
+                        <?php endif; ?>
+
                     </div>
                 </div>
             </div>

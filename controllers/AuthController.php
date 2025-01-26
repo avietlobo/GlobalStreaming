@@ -19,6 +19,8 @@ use app\models\EvangelistReviewModel;
 use app\models\LoginForm;
 use app\models\RegisterModel;
 use app\models\VideoWatchHistoryModel;
+use Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * Class AuthController
@@ -301,9 +303,116 @@ class AuthController extends Controller
 
     }
 
+    public function forgotPassword()
+    {
+        $this->setLayout('main1');
+        return $this->render('forgotPassword', [
+            'model' => ''
+        ]);
+
+    }
+
+
+
+    public function resetPassword(Request $request, Response $response)
+    {
+        if ($request->isPost()) {
+
+
+        }
+        return $this->render('resetPassword', [
+            'model' => ''
+        ]);
+
+
+    }
+
+    public function verifyOtp(Request $request, Response $response)
+    {
+        if ($request->isPost()) {
+            $enteredOtp = $_POST['otp'];
+            $storedOtp = Application::$app->session->get('otp');
+            $otpEmail = Application::$app->session->get('otp_email');
+            $otpExpires = Application::$app->session->get('otp_expires');
+            if (time() > $otpExpires) {
+                echo "OTP has expired.";
+                return;
+            }
+            if ($enteredOtp == $storedOtp) {
+                Application::$app->session->remove('otp'); // Remove OTP from session
+                Application::$app->session->remove('otp_expires');
+                header("Location: /resetPassword?email=$otpEmail");
+            } else {
+                echo "Invalid OTP.";
+            }
+
+
+        }
+        return $this->render('verifyOtp', [
+            'model' => ''
+        ]);
+
+
+    }
+
+    public function sendOtp(Request $request, Response $response)
+    {
+        $email = $_POST['email'];
+        // Check if email exists in the database
+        $user = EvangelistModel::findEvangelistUsingEmailId($email);
+
+        if (!$user) {
+            echo "Email not registered.";
+            return;
+        }
+
+        // Generate a random OTP
+        $otp = random_int(100000, 999999);
+
+        // Save OTP in the session or database (with expiration time)
+        Application::$app->session->set('otp', $otp);
+        Application::$app->session->set('otp_email', $email);
+        Application::$app->session->set('otp_expires', time() + 300); // Expires in 5 minutes
+
+        // Send OTP via email
+        $mail = new PHPMailer(true);
+        try {
+            // Server settings
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'avietlobo@gmail.com'; // Your Gmail address
+            $mail->Password = 'nykl tufv thrh opzv';   // App Password (not Gmail password)
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+            // Recipients
+            $mail->setFrom('avietlobo@gmail.com', 'Your App Name');
+            $mail->addAddress($email);
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = 'Your Password Reset OTP';
+            $mail->Body = "Your OTP is <strong>$otp</strong>. It is valid for 5 minutes.";
+
+            $mail->send();
+            echo 'OTP sent successfully.';
+            // Redirect to the OTP verification page
+            header("Location: /verifyOtp");
+            exit();
+
+        } catch (Exception $e) {
+            echo "Error in sending email: {$mail->ErrorInfo}";
+        }
+
+
+    }
+
+
     public function loginEvangelist(Request $request, Response $response)
     {
         $loginForm = new LoginForm();
+        Application::$app->session->set('UI', 'evg');
         if ($request->isPost()) {
             $loginForm->loadData($request->getBody());
             $hiddenField = $_POST["hidden_field"];
