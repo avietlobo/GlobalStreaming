@@ -5,71 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password</title>
     <style>
+        /* Global Styling */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background-color: #f4f4f9;
+            min-height: 90vh;
+            background-color: #f8f8f8;
             color: #333;
             margin: 0;
         }
 
+        /* Container Styling */
         .container {
-            background: #fff;
+            background: #ffffff;
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0; /* Add a subtle border */
             width: 100%;
             max-width: 400px;
             text-align: center;
         }
 
-        h2 {
-            margin-bottom: 1rem;
-            color: #4a4a4a;
+        h3 {
+            margin-bottom: 1.5rem;
+            color: #007bff;
+            font-size: 24px;
         }
 
+        /* Form Styling */
         form {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            align-items: center; /* Center all form elements */
+            gap: 1.5rem;
         }
 
         label {
             font-size: 0.9rem;
+            font-weight: 600;
             color: #555;
+            text-align: center;
         }
 
         input[type="email"] {
-            padding: 0.8rem;
+            padding: 0.9rem;
             font-size: 1rem;
             border: 1px solid #ccc;
             border-radius: 8px;
+            width: 100%;
+            max-width: 300px;
             outline: none;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
         input[type="email"]:focus {
             border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
         }
 
+        /* Button Styling */
         .primary {
-            padding: 0.8rem;
+            padding: 0.9rem;
             font-size: 1rem;
+            font-weight: 600;
             background-color: #007bff;
             color: #fff;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            width: 100%;
+            max-width: 300px;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
         .primary:hover {
@@ -77,14 +91,15 @@
         }
 
         .primary:focus {
-            outline: 2px solid #80bdff;
-            outline-offset: 2px;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
         }
 
         .primary:active {
-            background-color: #004085;
+            transform: scale(0.98);
         }
 
+        /* Media Queries */
         @media (max-width: 480px) {
             .container {
                 padding: 1.5rem;
@@ -112,11 +127,17 @@
 </head>
 <body>
 <div class="container">
-    <h2>Forgot Password</h2>
+    <h3>Reset Your Password</h3>
     <form action="/sendOtp" method="POST" onsubmit="return validateEmail(event)">
         <label for="email">Enter your registered email ID:</label>
         <input type="email" id="email" name="email" required placeholder="Email address">
         <button type="submit" class="primary">Send OTP</button>
+        <!-- Display error message if it exists -->
+        <?php if (isset($errorMessage) && !empty($errorMessage)) : ?>
+            <p style="color: red; font-size: 0.9rem; margin-top: 1rem;">
+                <?= htmlspecialchars($errorMessage) ?>
+            </p>
+        <?php endif; ?>
     </form>
 </div>
 </body>

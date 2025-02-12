@@ -41,6 +41,11 @@ class EvangelistModel extends UserModel
         return $this->saveRecordViaApi($params,$password);
     }
 
+    public function resetPwd1($email,$password)
+    {
+        return $this->resetPwd($email,$password);
+    }
+
     public function rules(): array
     {
         return [

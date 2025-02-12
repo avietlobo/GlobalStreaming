@@ -78,13 +78,21 @@
             text-decoration: none;
             color: #4CAF50;
         }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
     </style>
 </head>
 <body>
 <div class="container">
-    <h2>Reset Password</h2>
+    <h2>Reset Your Password</h2>
     <form action="/resetPassword" method="POST">
-        <input type="hidden" name="email" value="<?php echo htmlspecialchars($_GET['email']); ?>">
+<!--        <input type="hidden" name="email" value="--><?php //echo htmlspecialchars($_GET['email']); ?><!--">-->
 
         <label for="password">New Password:</label>
         <input type="password" id="password" name="password" required>
@@ -92,11 +100,36 @@
         <label for="confirm_password">Confirm Password:</label>
         <input type="password" id="confirm_password" name="confirm_password" required>
 
-        <button type="submit" class="primary">Reset Password</button>
+        <button type="submit" class="primary">Set New Password</button>
     </form>
     <div class="form-footer">
         <p>Remembered your password? <a href="/login">Login here</a></p>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirm_password");
+        const errorMessage = document.createElement("p");
+
+        errorMessage.classList.add("error-message");
+        confirmPassword.insertAdjacentElement("afterend", errorMessage);
+
+        function validatePasswords() {
+            if (confirmPassword.value.trim() !== "" && password.value !== confirmPassword.value) {
+                errorMessage.textContent = "Passwords do not match!";
+                errorMessage.style.display = "block";
+            } else {
+                errorMessage.style.display = "none";
+            }
+        }
+
+        password.addEventListener("input", validatePasswords);
+        confirmPassword.addEventListener("input", validatePasswords);
+    });
+</script>
+
 </body>
+
 </html>

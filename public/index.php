@@ -39,6 +39,7 @@ $app-> router->post('/sendOtp', [AuthController::class, 'sendOtp']);
 $app-> router->post('/verifyOtp', [AuthController::class, 'verifyOtp']);
 $app-> router->get('/verifyOtp', [AuthController::class, 'verifyOtp']);
 $app-> router->get('/resetPassword', [AuthController::class, 'resetPassword']);
+$app-> router->post('/resetPassword', [AuthController::class, 'resetPassword']);
 
 $app-> router->get('/evngRegistration', [AuthController::class, 'evngRegistration']);
 $app-> router->get('/appRegistration', [AuthController::class, 'appRegistration']);

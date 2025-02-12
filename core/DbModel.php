@@ -317,6 +317,17 @@ abstract class DbModel extends Model
         $statement->execute();
     }
 
+    public function resetPwd($email, $password)
+    {
+        $tableName = 'evangelist';
+        $statement = self::prepare("UPDATE $tableName SET password = :password WHERE email = :email");
+        $statement->bindValue(":email", $email);
+        $statement->bindValue(":password", $password);
+        $statement->execute();
+
+
+    }
+
     public function saveRecordViaApi($record, $password)
     {
 

@@ -63,6 +63,61 @@ use app\core\Application;
             box-shadow: 0 0 5px rgba(76, 175, 80, 0.6);
         }
 
+        .primary-link1 {
+            color: #007bff; /* Calming blue color */
+            text-decoration: underline;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .primary-link1:hover {
+            text-decoration: none; /* Removes underline on hover for a cleaner effect */
+            color: #0056b3; /* Slightly darker blue for hover effect */
+        }
+
+        .forgot-password-container1 {
+            text-align: center; /* Centers the link */
+            margin-top: 1rem; /* Adds spacing for better readability */
+        }
+
+        .primary-link2 {
+            color: #007bff;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none; /* Start with no underline for a cleaner look */
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .primary-link2::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -2px; /* Positioned just below the text */
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .primary-link2:hover {
+            color: #0056b3; /* Darker shade for hover effect */
+        }
+
+        .primary-link2:hover::after {
+            opacity: 1;
+            transform: scaleX(1.1); /* Slightly expands the underline */
+        }
+
+        .forgot-password-container2 {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+
         /* Reset default anchor tag styles (if any) */
         a {
             text-decoration: none;
@@ -167,9 +222,9 @@ use app\core\Application;
                             </div>
                         </form>
                         <?php if (Application::$app->session->get('UI') === 'evg'): ?>
-                            <div class="forgot-password-container">
-                                <a href="/forgotPassword" class="primary-link">
-                                    Forgot Password
+                            <div class="forgot-password-container1">
+                                <a href="/forgotPassword" class="primary-link1">
+                                    Forgot password?
                                 </a>
                             </div>
                         <?php endif; ?>

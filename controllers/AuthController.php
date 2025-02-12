@@ -305,7 +305,7 @@ class AuthController extends Controller
 
     public function forgotPassword()
     {
-        $this->setLayout('main1');
+        $this->setLayout('main2');
         return $this->render('forgotPassword', [
             'model' => ''
         ]);
@@ -317,9 +317,40 @@ class AuthController extends Controller
     public function resetPassword(Request $request, Response $response)
     {
         if ($request->isPost()) {
+            $email = Application::$app->session->get('otp_email');
+            $password = $_POST['password'];
+            $confirmPassword = $_POST['confirm_password'];
+            // Validate input
+            if (!$email || !$password || !$confirmPassword) {
+                return $this->render('resetPassword', [
+                    'error' => 'All fields are required.'
+                ]);
+            }
+
+            if ($password !== $confirmPassword) {
+                return $this->render('resetPassword', [
+                    'error' => 'Passwords do not match.'
+                ]);
+            }
+
+
+
+            $evangelistModel = new EvangelistModel();
+            $evangelistModel->resetPwd1($email,$password);
+
+            $this->setLayout('main1');
+
+//            return $this->render('resetPassword1', [
+//                'success' => 'Your password has been successfully reset.'
+//            ]);
+            return $this->render('resetPassword1', [
+                'successMessage' => "Your password has been reset successfully. Redirecting to login..."
+            ]);
+
 
 
         }
+        $this->setLayout('main1');
         return $this->render('resetPassword', [
             'model' => ''
         ]);
@@ -335,8 +366,13 @@ class AuthController extends Controller
             $otpEmail = Application::$app->session->get('otp_email');
             $otpExpires = Application::$app->session->get('otp_expires');
             if (time() > $otpExpires) {
-                echo "OTP has expired.";
-                return;
+
+                $errorMessage = "Your OTP has expired. Please request a new one.";
+                $this->setLayout('main2');
+                return $this->render('verifyOtp', [
+                    'errorMessage' => $errorMessage
+                ]);
+
             }
             if ($enteredOtp == $storedOtp) {
                 Application::$app->session->remove('otp'); // Remove OTP from session
@@ -348,6 +384,7 @@ class AuthController extends Controller
 
 
         }
+        $this->setLayout('main1');
         return $this->render('verifyOtp', [
             'model' => ''
         ]);
@@ -361,9 +398,14 @@ class AuthController extends Controller
         // Check if email exists in the database
         $user = EvangelistModel::findEvangelistUsingEmailId($email);
 
+
         if (!$user) {
-            echo "Email not registered.";
-            return;
+            // Display the same view with an error message
+            $errorMessage = "No account found for this email address. Please try again";
+            $this->setLayout('main2');
+            return $this->render('forgotPassword', [
+                'errorMessage' => $errorMessage
+            ]);
         }
 
         // Generate a random OTP
@@ -396,10 +438,14 @@ class AuthController extends Controller
             $mail->Body = "Your OTP is <strong>$otp</strong>. It is valid for 5 minutes.";
 
             $mail->send();
-            echo 'OTP sent successfully.';
+            //echo 'OTP sent successfully.';
             // Redirect to the OTP verification page
-            header("Location: /verifyOtp");
-            exit();
+            $this->setLayout('main2');
+            return $this->render('verifyOtp', [
+                'regEmail' => $email
+            ]);
+//            header("Location: /verifyOtp");
+//            exit();
 
         } catch (Exception $e) {
             echo "Error in sending email: {$mail->ErrorInfo}";
