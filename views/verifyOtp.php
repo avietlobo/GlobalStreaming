@@ -130,7 +130,7 @@
 
     </form>
     <!-- Form for resending OTP -->
-    <form id="resend-otp-form" action="/sendOtp" method="POST" style="display: none;">
+    <form id="resend-otp-form" action="/sendOtpAgain" method="POST" style="display: none;">
         <!-- Add this input field for email -->
 
 

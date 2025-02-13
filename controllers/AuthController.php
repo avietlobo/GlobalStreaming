@@ -379,7 +379,12 @@ class AuthController extends Controller
                 Application::$app->session->remove('otp_expires');
                 header("Location: /resetPassword?email=$otpEmail");
             } else {
-                echo "Invalid OTP.";
+
+                $errorMessage = "Invalid OTP.";
+                $this->setLayout('main2');
+                return $this->render('verifyOtp', [
+                    'errorMessage' => $errorMessage
+                ]);
             }
 
 
@@ -388,6 +393,58 @@ class AuthController extends Controller
         return $this->render('verifyOtp', [
             'model' => ''
         ]);
+
+
+    }
+
+    public function sendOtpAgain(Request $request, Response $response)
+    {
+        $email = Application::$app->session->get('otp_email');
+
+        // Generate a random OTP
+        $otp = random_int(100000, 999999);
+
+        // Save OTP in the session or database (with expiration time)
+        Application::$app->session->set('otp', $otp);
+        Application::$app->session->set('otp_email', $email);
+        Application::$app->session->set('otp_expires', time() + 300); // Expires in 5 minutes
+
+        // Send OTP via email
+        $mail = new PHPMailer(true);
+        try {
+            // Server settings
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'avietlobo@gmail.com'; // Your Gmail address
+            $mail->Password = 'nykl tufv thrh opzv';   // App Password (not Gmail password)
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+            // Recipients
+            $mail->setFrom('avietlobo@gmail.com', 'Your App Name');
+            $mail->addAddress($email);
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = 'Your Password Reset OTP';
+            $mail->Body = "Your OTP is <strong>$otp</strong>. It is valid for 5 minutes.";
+
+            $mail->send();
+            //echo 'OTP sent successfully.';
+            // Redirect to the OTP verification page
+            $this->setLayout('main2');
+            return $this->render('verifyOtp', [
+                'regEmail' => $email
+            ]);
+//            header("Location: /verifyOtp");
+//            exit();
+
+        } catch (Exception $e) {
+            echo "Error in sending email: {$mail->ErrorInfo}";
+        }
+
+
 
 
     }

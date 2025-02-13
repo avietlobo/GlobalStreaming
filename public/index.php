@@ -36,6 +36,7 @@ $app-> router->post('/', [AuthController::class, 'login']);
 $app-> router->post('/login', [AuthController::class, 'loginEvangelist']);
 $app-> router->get('/forgotPassword', [AuthController::class, 'forgotPassword']);
 $app-> router->post('/sendOtp', [AuthController::class, 'sendOtp']);
+$app-> router->post('/sendOtpAgain', [AuthController::class, 'sendOtpAgain']);
 $app-> router->post('/verifyOtp', [AuthController::class, 'verifyOtp']);
 $app-> router->get('/verifyOtp', [AuthController::class, 'verifyOtp']);
 $app-> router->get('/resetPassword', [AuthController::class, 'resetPassword']);
