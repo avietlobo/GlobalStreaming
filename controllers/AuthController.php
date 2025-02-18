@@ -421,7 +421,6 @@ class AuthController extends Controller
             $mail->Username = $_ENV['MAIL_ID'];; // Your Hostinger address
             //$mail->Username = 'avietlobo@gmail.com'; // Your Gmail address
             $mail->Password =$_ENV['MAIL_PASSWORD'];;
-            //$mail->Password = 'nykl tufv thrh opzv';   // App Password (not Gmail password)
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
@@ -491,7 +490,6 @@ class AuthController extends Controller
             $mail->Username = $_ENV['MAIL_ID'];; // Your Hostinger address
             //$mail->Username = 'avietlobo@gmail.com'; // Your Gmail address
             $mail->Password =$_ENV['MAIL_PASSWORD'];
-            //$mail->Password = 'nykl tufv thrh opzv';   // App Password (not Gmail password)
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
