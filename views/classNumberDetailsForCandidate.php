@@ -240,7 +240,25 @@
     function goBackToDetails() {
         // Base URL of the first view
         //const baseUrl = '/getClassDetails';
-        const baseUrl = 'http://localhost:9094/getClassDetails';
+
+        <?php
+        $region = $_ENV['REGION'];
+        $baseUrl = '';
+
+        if ($region === 'LOCAL') {
+            $baseUrl = $_ENV['BASE_URL'];
+        } elseif ($region === 'UAT') {
+            $baseUrl = $_ENV['TEST_BASE_URL'];
+        } elseif ($region === 'PROD') {
+            $baseUrl = $_ENV['PROD_BASE_URL'];
+        }
+        ?>
+
+        // JavaScript variable set by PHP
+        const baseUrl = "<?php echo $baseUrl; ?>";
+
+
+        //const baseUrl = 'http://localhost:9094/getClassDetails';
 
         //For prod
         //const baseUrl = 'http://godsownwisdom.com/getClassDetails';

@@ -414,15 +414,20 @@ class AuthController extends Controller
         try {
             // Server settings
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPDebug = 0;
+            $mail->Host = 'smtp.hostinger.com';
+            //$mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'avietlobo@gmail.com'; // Your Gmail address
-            $mail->Password = 'nykl tufv thrh opzv';   // App Password (not Gmail password)
+            $mail->Username = $_ENV['MAIL_ID'];; // Your Hostinger address
+            //$mail->Username = 'avietlobo@gmail.com'; // Your Gmail address
+            $mail->Password =$_ENV['MAIL_PASSWORD'];;
+            //$mail->Password = 'nykl tufv thrh opzv';   // App Password (not Gmail password)
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
             // Recipients
-            $mail->setFrom('avietlobo@gmail.com', 'Your App Name');
+            $mail->setFrom($_ENV['MAIL_ID'], 'Gods Own Wisdom');
+            //$mail->setFrom('avietlobo@gmail.com', 'Your App Name');
             $mail->addAddress($email);
 
             // Content
@@ -452,6 +457,7 @@ class AuthController extends Controller
     public function sendOtp(Request $request, Response $response)
     {
         $email = $_POST['email'];
+        //echo 'MAIL_PASSWORD: ' . $_ENV['MAIL_PASSWORD'];
         // Check if email exists in the database
         $user = EvangelistModel::findEvangelistUsingEmailId($email);
 
@@ -478,15 +484,20 @@ class AuthController extends Controller
         try {
             // Server settings
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPDebug = 0;
+            $mail->Host = 'smtp.hostinger.com';
+            //$mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'avietlobo@gmail.com'; // Your Gmail address
-            $mail->Password = 'nykl tufv thrh opzv';   // App Password (not Gmail password)
+            $mail->Username = $_ENV['MAIL_ID'];; // Your Hostinger address
+            //$mail->Username = 'avietlobo@gmail.com'; // Your Gmail address
+            $mail->Password =$_ENV['MAIL_PASSWORD'];
+            //$mail->Password = 'nykl tufv thrh opzv';   // App Password (not Gmail password)
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
             // Recipients
-            $mail->setFrom('avietlobo@gmail.com', 'Your App Name');
+            $mail->setFrom($_ENV['MAIL_ID'], 'Gods Own Wisdom');
+            //$mail->setFrom('avietlobo@gmail.com', 'Your App Name');
             $mail->addAddress($email);
 
             // Content
@@ -517,7 +528,9 @@ class AuthController extends Controller
         $loginForm = new LoginForm();
         Application::$app->session->set('UI', 'evg');
         if ($request->isPost()) {
+
             $loginForm->loadData($request->getBody());
+
             $hiddenField = $_POST["hidden_field"];
             if (!empty($username) || !empty($password) || !empty($hiddenField)) {
                 return;
@@ -538,19 +551,29 @@ class AuthController extends Controller
             }
 
             if ($loginForm->loginEvangelist()) {
+                $evangelistName= Application::$app->session->get('nameFinal');
 //                $id = Application::$app->session->get('user');
-                $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist'=> $loginForm->username],$loginForm->username);
-                $data1 = EvangelistModel::findworkGroupForEvangelist(['evangelist'=> $loginForm->username],$loginForm->username);
+                //$data = CandidateModel::findAllCandidatesForEvangelist(['evangelist'=> $loginForm->username],$loginForm->username);
+                //$data1 = EvangelistModel::findworkGroupForEvangelist(['evangelist'=> $loginForm->username],$loginForm->username);
+
+                $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist'=> $evangelistName],$evangelistName);
+                $data1 = EvangelistModel::findworkGroupForEvangelist(['evangelist'=> $evangelistName],$evangelistName);
+
+
 //                error_log("evngDashboardData: " . print_r($data1, true));
 //                error_log("evngDashboardData: " . print_r($data, true));
 
 // In the loginEvangelist method of your AuthController
 // Assuming $data is the array of candidates
+
 Application::$app->session->set('evngDashboardData', $data);
 Application::$app->session->set('evngDashboardData2', $data1);
-Application::$app->session->set('evngName', $loginForm->username);
+//Application::$app->session->set('evngName', $loginForm->username);
+Application::$app->session->set('evngName', $evangelistName);
 Application::$app->session->set('loginForm', $loginForm);
                 $this->setLayout('main1');
+
+
 
                 return $this->render('evngDashboard', [
                     'models' => $data,'modes' => $loginForm

@@ -380,40 +380,59 @@ abstract class DbModel extends Model
         $statement->execute();
     }
 
-    public function saveRecordViaApi3($record)
+    public function saveRecordViaApi3($record,$candidateModel)
     {
+        try {
+            $tableName = $this->tableName();
+            $attributes = $this->attributes();
 
-        $tableName = $this->tableName();
-        $attributes = $this->attributes();
-
-
-        $params = array_map(fn($attr) => ":$attr", $attributes);
-
-        // Always set the 'recordDate' to the current date and time in UTC format
-        $record['recordDate'] = gmdate('Y-m-d H:i:s');
+            error_log("Entered");
 
 
-        $statement = self::prepare("INSERT INTO $tableName (" . implode(',', $attributes) . ") 
+            $params = array_map(fn($attr) => ":$attr", $attributes);
+
+            // Always set the 'recordDate' to the current date and time in UTC format
+            $record['recordDate'] = gmdate('Y-m-d H:i:s');
+
+
+            $statement = self::prepare("INSERT INTO $tableName (" . implode(',', $attributes) . ") 
         VALUES(" . implode(',', $params) . ")");
 //        echo '<pre>';
 //        var_dump($statement);
 //        echo '</pre>';
 
 
-        $index = 0;
-        foreach ($record as $key => $value) {
-            //echo $key;
-            //echo $value;
+            $index = 0;
+            foreach ($record as $key => $value) {
+                //echo $key;
+                //echo $value;
 
-            // uncomment this code if you want record date to be stored based on input
+                // uncomment this code if you want record date to be stored based on input
 //            if ($key === 'recordDate') {
 //                $value = date('Y-m-d H:i:s', strtotime($value));
 //            }
 
-            $statement->bindValue(":$attributes[$index]", $value);
-            $index++;
+                $statement->bindValue(":$attributes[$index]", $value);
+                $index++;
+            }
+            $statement->execute();
+
         }
-        $statement->execute();
+        catch (\Exception $e) {
+            // Check for duplicate entry error (MySQL error code 1062)
+            if ($e->getCode() == 23000) { // 23000 is the generic SQL state code for constraint violations
+                //echo "Validation error: Mobile number already exists.";
+                error_log("Entered2");
+                $duplicateField = 'mobileNumber'; // Change this to the actual attribute causing the error
+                $candidateModel->addError($duplicateField, self::RULE_UNIQUE, ['field' => $duplicateField]);
+                error_log("Entered3");
+                //return;
+            } else {
+                // Log or handle other database errors
+                error_log("Entered4");
+                echo "Database error: " . $e->getMessage();
+            }
+        }
     }
 
 

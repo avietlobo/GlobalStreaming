@@ -17,8 +17,10 @@
 
     <div class="mbsc-row">
         <div class="mbsc-col-12 mbsc-col-md-6 mbsc-col-lg-3">
-<?php echo $form->field($model,'mobile')  ?>
+            <!-- This will automatically handle error display -->
+            <?php echo $form->field($model, 'mobile') ?>
         </div>
+    </div>
 
 <input type="hidden" name="recordDate" value="<?php echo htmlspecialchars($model->recordDate); ?>">
 <?php echo $form->field($model,'participantName')  ?>

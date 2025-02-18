@@ -494,7 +494,8 @@ $designation = $dashboardData[0]->designation;
 
 
     function handleCardClick(index, cardElement) {
-        const evngName = '<?php echo htmlspecialchars($_SESSION['loginForm']->username); ?>';
+        //const evngName = '<?php echo htmlspecialchars($_SESSION['loginForm']->username); ?>';
+        const evngName = '<?php echo htmlspecialchars(Application::$app->session->get('nameFinal')); ?>';
         const participantElement = cardElement.querySelector('p:nth-child(1)');
         const mobileElement = cardElement.querySelector('p:nth-child(2)');
 

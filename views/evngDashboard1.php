@@ -319,7 +319,7 @@ $designation = $dashboardData[0]->designation;
 
             foreach ($candidates as $candidate) {
                 ?>
-                <div class="card" data-id="<?php echo $candidate->id; ?>">
+                <div class="card" data-id="<?php echo $candidate->mobile; ?>">
 
                     <div class="card-content">
                         <p><strong><?php echo htmlspecialchars($candidate->participantName); ?></strong></p>
@@ -334,9 +334,9 @@ $designation = $dashboardData[0]->designation;
 
                     </div>
                     <div class="card-icons">
-                        <!-- <i class="fas fa-plus plus-icon" onclick="handlePlusClick(event, '<?php echo $candidate->id; ?>')"></i> -->
+                        <!-- <i class="fas fa-plus plus-icon" onclick="handlePlusClick(event, '<?php echo $candidate->mobile; ?>')"></i> -->
 
-                        <i class="fas fa-edit edit-icon" onclick="handleEditClick(event, '<?php echo $candidate->id; ?>')"></i>
+                        <i class="fas fa-edit edit-icon" onclick="handleEditClick(event, '<?php echo $candidate->mobile; ?>')"></i>
                     </div>
                 </div>
                 <?php
@@ -454,7 +454,8 @@ $designation = $dashboardData[0]->designation;
 
 
     function handleCardClick(index, cardElement) {
-        const evngName = '<?php echo htmlspecialchars($_SESSION['loginForm']->username); ?>';
+        //const evngName = '<?php echo htmlspecialchars($_SESSION['loginForm']->username); ?>';
+        const evngName = '<?php echo htmlspecialchars(Application::$app->session->get('nameFinal')); ?>';
         const participantElement = cardElement.querySelector('p:nth-child(1)');
         const mobileElement = cardElement.querySelector('p:nth-child(2)');
 
