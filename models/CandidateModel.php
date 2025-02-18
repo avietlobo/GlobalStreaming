@@ -36,9 +36,9 @@ class CandidateModel extends DbModel
         return 'candidate';
     }
 
-    public function registerCandidate($params)
+    public function registerCandidate($params,$candidateModel)
     {
-        return $this->saveRecordViaApi3($params);
+        return $this->saveRecordViaApi3($params,$candidateModel);
     }
 
     public function updateCandidate($params)

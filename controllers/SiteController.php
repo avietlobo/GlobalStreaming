@@ -81,7 +81,8 @@ use app\models\WGroupModel;
                  error_log($_POST['country']);
                  $candidateModel->updateCandidate($_POST);
              }
-             $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist' => $_SESSION['loginForm']->username], $_SESSION['loginForm']->username);
+             //$data = CandidateModel::findAllCandidatesForEvangelist(['evangelist' => $_SESSION['loginForm']->username], $_SESSION['loginForm']->username);
+             $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist' => Application::$app->session->get('nameFinal')], Application::$app->session->get('nameFinal'));
 
 
              Application::$app->session->set('evngDashboardData', $data);
@@ -448,9 +449,22 @@ use app\models\WGroupModel;
              $inputData = json_decode(file_get_contents("php://input"), true);
              if (empty($inputData)) {
 
+
                  if ($candidateModel->validate()) {
-                     $candidateModel->registerCandidate($_POST);
-                     $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist' => $_SESSION['loginForm']->username], $_SESSION['loginForm']->username);
+                     $candidateModel->registerCandidate($_POST,$candidateModel);
+                     if (!empty($candidateModel->errors)) {
+                         // Add the specific error for the 'mobile' field if it doesn't already exist
+                         if (!isset($candidateModel->errors['mobile'])) {
+                             $candidateModel->errors['mobile'][] = "Mobile number already registered.";
+                         }
+
+                         $this->setLayout('auth');
+                         return $this->render('candidate', [
+                             'model' => $candidateModel
+                         ]);
+                     }
+                     //$data = CandidateModel::findAllCandidatesForEvangelist(['evangelist' => $_SESSION['loginForm']->username], $_SESSION['loginForm']->username);
+                     $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist' => Application::$app->session->get('nameFinal')], Application::$app->session->get('nameFinal'));
 
 
                      Application::$app->session->set('evngDashboardData', $data);

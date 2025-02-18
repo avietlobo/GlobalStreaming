@@ -97,12 +97,14 @@ class LoginForm extends Model
         public function loginEvangelist()
     {
 
-        $username = EvangelistModel::findOne1(['evngName'=> $this->username]);
+        $username = EvangelistModel::findOne1(['email'=> $this->username]);
 
 
-        $record = EvangelistModel::findOne1(['evngName'=> $this->username, 'password'=> $this->password]);
-
-
+        $record = EvangelistModel::findOne1(['email'=> $this->username, 'password'=> $this->password]);
+        if ($record) {
+            $evngName = $record->evngName; // Access the email attribute
+            Application::$app->session->set('nameFinal', $evngName);
+        }
         if(!$username){
             $this->addSingleError('username','Username is incorrect');
             error_log("Username is incorrect: " . $this->username);
@@ -118,6 +120,7 @@ class LoginForm extends Model
 
 
         //return true;
+
         return Application::$app->login1($record);
         //error_log("DB check successful");
 

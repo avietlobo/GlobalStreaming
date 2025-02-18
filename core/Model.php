@@ -51,20 +51,20 @@ abstract class Model
             {
                 $this->addError($attribute, self::RULE_MIN, $rule);
             }
-            if($ruleName === self::RULE_UNIQUE)
-            {
-             $className = $rule['class'];
-             $uniqueAttr = $rule['attribute'] ?? $attribute;
-             $tableName = $className::tableName();
-             $statement = Application::$app->db->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = :attr");
-                $statement->bindValue(':attr', $value);
-                $statement->execute();
-                $record = $statement->fetchObject();
-                if($record)
-                {
-                    $this->addError($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
-                }
-            }
+//            if($ruleName === self::RULE_UNIQUE)
+//            {
+//             $className = $rule['class'];
+//             $uniqueAttr = $rule['attribute'] ?? $attribute;
+//             $tableName = $className::tableName();
+//             $statement = Application::$app->db->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = :attr");
+//                $statement->bindValue(':attr', $value);
+//                $statement->execute();
+//                $record = $statement->fetchObject();
+//                if($record)
+//                {
+//                    $this->addError($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
+//                }
+//            }
 
 
 //               if ($ruleName === self::RULE_UNIQUE) {
