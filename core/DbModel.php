@@ -1627,7 +1627,7 @@ ORDER BY
             WHEN 'Withdrawn' THEN 2
             WHEN 'Active' THEN 3
             WHEN 'Inactive' THEN 4
-            WHEN 'Exit' THEN 5
+           WHEN 'Exit/Drop-out' THEN 5
             ELSE 6  -- To handle any other statuses, if needed
         END ASC
 ");
@@ -1653,7 +1653,8 @@ ORDER BY
     public static function findEvangelistUsingEmailId($email)
     {
         $tableName = (new \app\models\EvangelistModel())->tableName();
-        $statement = self::prepare("SELECT * FROM $tableName WHERE email = '$email'");
+        $statement = self::prepare("SELECT * FROM $tableName WHERE email = :email");
+        $statement->bindParam(':email', $email);
         $statement->execute();
         $evangelistDetail = $statement->fetchAll(\PDO::FETCH_CLASS, EvangelistModel::class);
         return $evangelistDetail;

@@ -31,7 +31,7 @@ class RegisterModel extends UserModel
     public string $remark = '';
     public string $classLink ='';
     public string $feedback = '';
-    public string $password = '';
+    public ?string $password = null; // Allow null values
 
 
     public function tableName(): string

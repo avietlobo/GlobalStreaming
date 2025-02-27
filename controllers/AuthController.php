@@ -9,6 +9,7 @@ namespace app\controllers;
 
 use app\core\Application;
 use app\core\Controller;
+use app\core\DbModel;
 use app\core\middlewares\AuthMiddleware;
 use app\core\Request;
 use app\core\Response;
@@ -461,6 +462,7 @@ class AuthController extends Controller
         $user = EvangelistModel::findEvangelistUsingEmailId($email);
 
 
+
         if (!$user) {
             // Display the same view with an error message
             $errorMessage = "No account found for this email address. Please try again";
@@ -492,6 +494,7 @@ class AuthController extends Controller
             $mail->Password =$_ENV['MAIL_PASSWORD'];
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
+            //$mail->Port = 465;
 
             // Recipients
             $mail->setFrom($_ENV['MAIL_ID'], 'Gods Own Wisdom');

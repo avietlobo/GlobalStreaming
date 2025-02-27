@@ -226,6 +226,7 @@
                 <option value="Honduras" <?php echo (isset($data['country']) && $data['country'] === 'Honduras') ? 'selected' : ''; ?>>Honduras</option>
                 <option value="Hungary" <?php echo (isset($data['country']) && $data['country'] === 'Hungary') ? 'selected' : ''; ?>>Hungary</option>
                 <option value="Iceland" <?php echo (isset($data['country']) && $data['country'] === 'Iceland') ? 'selected' : ''; ?>>Iceland</option>
+                <option value="Special Case 1" <?php echo (isset($data['country']) && $data['country'] === 'Special Case 1') ? 'selected' : ''; ?>>Special Case 1</option>
                 <option value="Indonesia" <?php echo (isset($data['country']) && $data['country'] === 'Indonesia') ? 'selected' : ''; ?>>Indonesia</option>
                 <option value="Iran" <?php echo (isset($data['country']) && $data['country'] === 'Iran') ? 'selected' : ''; ?>>Iran</option>
                 <option value="Iraq" <?php echo (isset($data['country']) && $data['country'] === 'Iraq') ? 'selected' : ''; ?>>Iraq</option>
@@ -275,11 +276,13 @@
                 <option value="Nicaragua" <?php echo (isset($data['country']) && $data['country'] === 'Nicaragua') ? 'selected' : ''; ?>>Nicaragua</option>
                 <option value="Niger" <?php echo (isset($data['country']) && $data['country'] === 'Niger') ? 'selected' : ''; ?>>Niger</option>
                 <option value="Nigeria" <?php echo (isset($data['country']) && $data['country'] === 'Nigeria') ? 'selected' : ''; ?>>Nigeria</option>
+                <option value="North Korea" <?php echo (isset($data['country']) && $data['country'] === 'North Korea') ? 'selected' : ''; ?>>North Korea</option>
                 <option value="North Macedonia" <?php echo (isset($data['country']) && $data['country'] === 'North Macedonia') ? 'selected' : ''; ?>>North Macedonia</option>
                 <option value="Norway" <?php echo (isset($data['country']) && $data['country'] === 'Norway') ? 'selected' : ''; ?>>Norway</option>
                 <option value="Oman" <?php echo (isset($data['country']) && $data['country'] === 'Oman') ? 'selected' : ''; ?>>Oman</option>
-                <option value="Pakistan" <?php echo (isset($data['country']) && $data['country'] === 'Pakistan') ? 'selected' : ''; ?>>Pakistan</option>
+                <option value="Special Case 2" <?php echo (isset($data['country']) && $data['country'] === 'Special Case 2') ? 'selected' : ''; ?>>Special Case 2</option>
                 <option value="Palau" <?php echo (isset($data['country']) && $data['country'] === 'Palau') ? 'selected' : ''; ?>>Palau</option>
+                <option value="Palestine State" <?php echo (isset($data['country']) && $data['country'] === 'Palestine State') ? 'selected' : ''; ?>>Palestine State</option>
                 <option value="Panama" <?php echo (isset($data['country']) && $data['country'] === 'Panama') ? 'selected' : ''; ?>>Panama</option>
                 <option value="Papua New Guinea" <?php echo (isset($data['country']) && $data['country'] === 'Papua New Guinea') ? 'selected' : ''; ?>>Papua New Guinea</option>
                 <option value="Paraguay" <?php echo (isset($data['country']) && $data['country'] === 'Paraguay') ? 'selected' : ''; ?>>Paraguay</option>
@@ -287,6 +290,7 @@
                 <option value="Philippines" <?php echo (isset($data['country']) && $data['country'] === 'Philippines') ? 'selected' : ''; ?>>Philippines</option>
                 <option value="Poland" <?php echo (isset($data['country']) && $data['country'] === 'Poland') ? 'selected' : ''; ?>>Poland</option>
                 <option value="Portugal" <?php echo (isset($data['country']) && $data['country'] === 'Portugal') ? 'selected' : ''; ?>>Portugal</option>
+                <option value="Peurto Rico" <?php echo (isset($data['country']) && $data['country'] === 'Peurto Rico') ? 'selected' : ''; ?>>Peurto Rico</option>
                 <option value="Qatar" <?php echo (isset($data['country']) && $data['country'] === 'Qatar') ? 'selected' : ''; ?>>Qatar</option>
                 <option value="Romania" <?php echo (isset($data['country']) && $data['country'] === 'Romania') ? 'selected' : ''; ?>>Romania</option>
                 <option value="Russia" <?php echo (isset($data['country']) && $data['country'] === 'Russia') ? 'selected' : ''; ?>>Russia</option>
@@ -308,6 +312,7 @@
                 <option value="Solomon Islands" <?php echo (isset($data['country']) && $data['country'] === 'Solomon Islands') ? 'selected' : ''; ?>>Solomon Islands</option>
                 <option value="Somalia" <?php echo (isset($data['country']) && $data['country'] === 'Somalia') ? 'selected' : ''; ?>>Somalia</option>
                 <option value="South Africa" <?php echo (isset($data['country']) && $data['country'] === 'South Africa') ? 'selected' : ''; ?>>South Africa</option>
+                <option value="South Korea" <?php echo (isset($data['country']) && $data['country'] === 'South Korea') ? 'selected' : ''; ?>>South Korea</option>
                 <option value="South Sudan" <?php echo (isset($data['country']) && $data['country'] === 'South Sudan') ? 'selected' : ''; ?>>South Sudan</option>
                 <option value="Spain" <?php echo (isset($data['country']) && $data['country'] === 'Spain') ? 'selected' : ''; ?>>Spain</option>
                 <option value="Sri Lanka" <?php echo (isset($data['country']) && $data['country'] === 'Sri Lanka') ? 'selected' : ''; ?>>Sri Lanka</option>
@@ -332,28 +337,15 @@
                 <option value="Ukraine" <?php echo (isset($data['country']) && $data['country'] === 'Ukraine') ? 'selected' : ''; ?>>Ukraine</option>
                 <option value="United Arab Emirates" <?php echo (isset($data['country']) && $data['country'] === 'United Arab Emirates') ? 'selected' : ''; ?>>United Arab Emirates</option>
                 <option value="United Kingdom" <?php echo (isset($data['country']) && $data['country'] === 'United Kingdom') ? 'selected' : ''; ?>>United Kingdom</option>
-                <option value="United States" <?php echo (isset($data['country']) && $data['country'] === 'United States') ? 'selected' : ''; ?>>United States</option>
+                <option value="United States of America" <?php echo (isset($data['country']) && $data['country'] === 'United States of America') ? 'selected' : ''; ?>>United States of America</option>
                 <option value="Uruguay" <?php echo (isset($data['country']) && $data['country'] === 'Uruguay') ? 'selected' : ''; ?>>Uruguay</option>
                 <option value="Uzbekistan" <?php echo (isset($data['country']) && $data['country'] === 'Uzbekistan') ? 'selected' : ''; ?>>Uzbekistan</option>
-                <option value="Taiwan" <?php echo (isset($data['country']) && $data['country'] === 'Taiwan') ? 'selected' : ''; ?>>Taiwan</option>
-                <option value="Tajikistan" <?php echo (isset($data['country']) && $data['country'] === 'Tajikistan') ? 'selected' : ''; ?>>Tajikistan</option>
-                <option value="Tanzania" <?php echo (isset($data['country']) && $data['country'] === 'Tanzania') ? 'selected' : ''; ?>>Tanzania</option>
-                <option value="Thailand" <?php echo (isset($data['country']) && $data['country'] === 'Thailand') ? 'selected' : ''; ?>>Thailand</option>
-                <option value="Timor-Leste" <?php echo (isset($data['country']) && $data['country'] === 'Timor-Leste') ? 'selected' : ''; ?>>Timor-Leste</option>
-                <option value="Togo" <?php echo (isset($data['country']) && $data['country'] === 'Togo') ? 'selected' : ''; ?>>Togo</option>
-                <option value="Tonga" <?php echo (isset($data['country']) && $data['country'] === 'Tonga') ? 'selected' : ''; ?>>Tonga</option>
-                <option value="Trinidad and Tobago" <?php echo (isset($data['country']) && $data['country'] === 'Trinidad and Tobago') ? 'selected' : ''; ?>>Trinidad and Tobago</option>
-                <option value="Tunisia" <?php echo (isset($data['country']) && $data['country'] === 'Tunisia') ? 'selected' : ''; ?>>Tunisia</option>
-                <option value="Turkey" <?php echo (isset($data['country']) && $data['country'] === 'Turkey') ? 'selected' : ''; ?>>Turkey</option>
-                <option value="Turkmenistan" <?php echo (isset($data['country']) && $data['country'] === 'Turkmenistan') ? 'selected' : ''; ?>>Turkmenistan</option>
-                <option value="Tuvalu" <?php echo (isset($data['country']) && $data['country'] === 'Tuvalu') ? 'selected' : ''; ?>>Tuvalu</option>
-                <option value="Uganda" <?php echo (isset($data['country']) && $data['country'] === 'Uganda') ? 'selected' : ''; ?>>Uganda</option>
-                <option value="Ukraine" <?php echo (isset($data['country']) && $data['country'] === 'Ukraine') ? 'selected' : ''; ?>>Ukraine</option>
-                <option value="United Arab Emirates" <?php echo (isset($data['country']) && $data['country'] === 'United Arab Emirates') ? 'selected' : ''; ?>>United Arab Emirates</option>
-                <option value="United Kingdom" <?php echo (isset($data['country']) && $data['country'] === 'United Kingdom') ? 'selected' : ''; ?>>United Kingdom</option>
-                <option value="United States" <?php echo (isset($data['country']) && $data['country'] === 'United States') ? 'selected' : ''; ?>>United States</option>
-                <option value="Uruguay" <?php echo (isset($data['country']) && $data['country'] === 'Uruguay') ? 'selected' : ''; ?>>Uruguay</option>
-                <option value="Uzbekistan" <?php echo (isset($data['country']) && $data['country'] === 'Uzbekistan') ? 'selected' : ''; ?>>Uzbekistan</option>
+                <option value="Vanuatu" <?php echo (isset($data['country']) && $data['country'] === 'Vanuatu') ? 'selected' : ''; ?>>Vanuatu</option>
+                <option value="Venezuela" <?php echo (isset($data['country']) && $data['country'] === 'Venezuela') ? 'selected' : ''; ?>>Venezuela</option>
+                <option value="Vietnam" <?php echo (isset($data['country']) && $data['country'] === 'Vietnam') ? 'selected' : ''; ?>>Vietnam</option>
+                <option value="Yemen" <?php echo (isset($data['country']) && $data['country'] === 'Yemen') ? 'selected' : ''; ?>>Yemen</option>
+                <option value="Zambia" <?php echo (isset($data['country']) && $data['country'] === 'Zambia') ? 'selected' : ''; ?>>Zambia</option>
+
             </select>
         </div>
 
@@ -444,7 +436,7 @@
                 <option value="Exit/Drop-out" <?php echo (isset($data['activeStatus']) && $data['activeStatus'] === 'Exit/Drop-out') ? 'selected' : ''; ?>>Exit/Drop-out</option>
                 <option value="Completed" <?php echo (isset($data['activeStatus']) && $data['activeStatus'] === 'Completed') ? 'selected' : ''; ?>>Completed</option>
                 <option value="Withdrawn" <?php echo (isset($data['activeStatus']) && $data['activeStatus'] === 'Withdrawn') ? 'selected' : ''; ?>>Withdrawn</option>
-                <option value="Inactive" <?php echo (isset($data['activeStatus']) && $data['activeStatus'] === 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
+                <option value="InActive" <?php echo (isset($data['activeStatus']) && $data['activeStatus'] === 'InActive') ? 'selected' : ''; ?>>InActive</option>
             </select>
         </div>
 

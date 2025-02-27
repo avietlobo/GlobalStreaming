@@ -73,10 +73,13 @@ class LoginForm extends Model
             $this->updateLastLoginTime($record);
         }
 
-        if($record->login_attempts>=3)
-        {
-            echo "Login attempts exceeded!!";
-            return false;
+        if ($record->login_attempts >= 3) {
+            if ($record->classFrom == 1) {
+                $this->updateLastLoginTime($record);
+            } else {
+                echo "Login attempts exceeded!!";
+                return false;
+            }
         }
 
         $this->handleLoginAttempts($record->login_attempts, $record);
