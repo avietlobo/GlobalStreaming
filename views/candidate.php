@@ -103,6 +103,7 @@
     'Honduras' => 'Honduras',
     'Hungary' => 'Hungary',
     'Iceland' => 'Iceland',
+    'Special Case 1' => 'Special Case 1',
     'Indonesia' => 'Indonesia',
     'Iran' => 'Iran',
     'Iraq' => 'Iraq',
@@ -156,6 +157,7 @@
     'North Macedonia' => 'North Macedonia',
     'Norway' => 'Norway',
     'Oman' => 'Oman',
+    'Special Case 2' => 'Special Case 2',
     'Palau' => 'Palau',
     'Palestine State' => 'Palestine State',
     'Panama' => 'Panama',
@@ -289,7 +291,7 @@ echo $form->field($model, 'evangelist')->dropdownField([
     'Exit' => 'Exit/Drop-out',
     'Completed' => 'Completed',
     'Withdrawn' => 'Withdrawn',
-    'Inactive' => 'Inactive'
+    'InActive' => 'InActive'
 ]) ?>
 
 

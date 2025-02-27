@@ -289,7 +289,7 @@ $designation = $dashboardData[0]->designation;
         'Completed' => [],
         'Withdrawn' => [],
         'Active' => [],
-        'Inactive' => [],
+        'InActive' => [],
         'Exit/Drop-out' => [],
     ];
 
@@ -298,8 +298,11 @@ $designation = $dashboardData[0]->designation;
     ];
 
     foreach ($candidates as $candidate) {
-        $status = ucfirst(strtolower(trim($candidate->activeStatus)));
+        //echo "Status: " . htmlspecialchars($candidate->activeStatus) . "<br>";
+        //$status = ucfirst(strtolower(trim($candidate->activeStatus)));
+        $status = trim($candidate->activeStatus);
         $status = $statusMapping[$status] ?? $status;
+        //echo "Status after mapping: " . htmlspecialchars($status) . "<br>";
 
         if (isset($groupedCandidates[$status])) {
             $groupedCandidates[$status][] = $candidate;
@@ -323,6 +326,9 @@ $designation = $dashboardData[0]->designation;
 
     <?php
     foreach ($groupedCandidates as $status => $candidates) {
+//        echo "<pre>";
+//        var_dump($groupedCandidates);
+//        echo "</pre>";
         if (!empty($candidates)) {
             echo "<div class='status-section'>";
             echo "<div class='status-title'>$status</div>";
@@ -420,7 +426,8 @@ $designation = $dashboardData[0]->designation;
             const mobile = card.querySelector('p:nth-child(2)').innerText.toLowerCase();
             const matchesSearchTerm = participantName.includes(searchTerm) || mobile.includes(searchTerm);
             const status = card.parentElement.querySelector('.status-title').innerText.toLowerCase();
-            const matchesStatus = !statusFilter || status.includes(statusFilter);
+            //const matchesStatus = !statusFilter || status.includes(statusFilter);
+            const matchesStatus = !statusFilter || status.trim() === statusFilter;
 
             card.style.display = matchesSearchTerm && matchesStatus ? 'block' : 'none';
         });
