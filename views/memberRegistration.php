@@ -217,6 +217,10 @@
             border-radius: 5px;
             text-align: center;
         }
+
+        .error-message.show {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -289,14 +293,33 @@
             <div class="error-message" id="memberContactError">A valid contact number is required.</div>
         </div>
 
+        <!-- Upload Photo Section -->
         <div class="form-group">
             <label for="uploadPhoto">Upload Photo</label>
-            <input type="file" id="uploadPhoto" name="uploadPhoto" accept="image/*" required>
+            <input type="file" id="uploadPhoto" name="uploadPhoto" accept="image/*"> <!-- REMOVED required -->
             <p class="note">Note: Image size should not exceed 1MB.</p>
-            <div class="error-message" id="uploadPhotoError">Please upload a valid image file.</div>
-
+            <div class="error-message <?= !empty($photoErrorMessage) ? 'show' : '' ?>">
+                <?= !empty($photoErrorMessage) ? htmlspecialchars($photoErrorMessage) : 'Please upload or capture a photo.' ?>
+            </div>
             <!-- Image preview -->
             <img id="photoPreview" src="" alt="Photo Preview">
+
+            <!-- Hidden input to store base64 captured image -->
+            <input type="hidden" name="capturedPhoto" id="capturedPhoto">
+
+            <!-- Camera capture button -->
+            <div style="margin-top: 10px;">
+                <button type="button" onclick="startCamera()" style="background: none; border: none; cursor: pointer;">
+                    <i class="fas fa-camera" style="font-size: 22px; color: #007bff;"></i> Capture Photo
+                </button>
+            </div>
+
+            <!-- Camera modal and canvas (you can customize this) -->
+            <div id="cameraModal" style="display:none;">
+                <video id="video" autoplay style="width:100%; max-height: 250px;"></video><br>
+                <button type="button" onclick="capturePhoto()">Take Photo</button>
+                <button type="button" onclick="closeCamera()">Close</button>
+            </div>
         </div>
 
         <div class="form-group">
@@ -316,9 +339,11 @@
             <label for="designation">Designation</label>
             <select id="designation" name="designation" required>
                 <option value="">Select Designation</option>
+                <option value="Caretaker">Caretaker</option>
                 <option value="Management">Management</option>
                 <option value="Evangelist">Evangelist</option>
                 <option value="Evng Coordinator">Evng Coordinator</option>
+                <option value="Event Leader">Event Leader</option>
             </select>
             <div class="error-message" id="designationError">Please select a designation.</div>
         </div>
@@ -416,6 +441,48 @@
 </div>
 
 <script>
+    let videoStream;
+
+    function startCamera() {
+        document.getElementById("cameraModal").style.display = "block";
+        const video = document.getElementById("video");
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                videoStream = stream;
+                video.srcObject = stream;
+            })
+            .catch((err) => {
+                alert("Unable to access camera: " + err.message);
+            });
+    }
+
+    function closeCamera() {
+        document.getElementById("cameraModal").style.display = "none";
+        if (videoStream) {
+            videoStream.getTracks().forEach(track => track.stop());
+        }
+    }
+
+    function capturePhoto() {
+        const video = document.getElementById("video");
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        const context = canvas.getContext("2d");
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const dataUrl = canvas.toDataURL("image/jpeg");
+
+        document.getElementById("photoPreview").src = dataUrl;
+        document.getElementById("photoPreview").style.display = "block";
+        document.getElementById("capturedPhoto").value = dataUrl;
+
+        closeCamera();
+    }</script>
+
+<script>
     function validateForm() {
         let isValid = true;
 
@@ -453,19 +520,20 @@
         }
 
         // Validate Upload Photo
-        const uploadPhoto = document.getElementById('uploadPhoto');
-        const photoSize = uploadPhoto.files[0] ? uploadPhoto.files[0].size : 0;
-        if (photoSize === 0) {
-            showError('uploadPhotoError', 'Please upload a valid image file.');
-            uploadPhoto.classList.add('input-error');
-            isValid = false;
-        } else if (photoSize > 1048576) { // 1MB
-            showError('uploadPhotoError', 'The photo file size must be under 1MB.');
-            uploadPhoto.classList.add('input-error');
-            isValid = false;
+        const fileInput = document.getElementById("uploadPhoto");
+        const capturedPhoto = document.getElementById("capturedPhoto").value;
+        const uploadPhotoError = document.getElementById("uploadPhotoError");
+
+        if (!fileInput.files.length && !capturedPhoto) {
+            uploadPhotoError.style.display = "block";
+            fileInput.classList.add("input-error");
+            return false;
         } else {
-            uploadPhoto.classList.add('input-valid');
+            uploadPhotoError.style.display = "none";
+            fileInput.classList.remove("input-error");
+            return true;
         }
+    }
 
         // Validate Fellowship
         const fellowship = document.getElementById('fellowship');

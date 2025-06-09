@@ -197,7 +197,8 @@ session_write_close();
 
 
 
-</audio>
+
+</div>
 <!--<div id="status" class="incomplete">-->
 <!--        <span>Play status: </span>-->
 <!--        <span class="status complete">COMPLETE</span>-->

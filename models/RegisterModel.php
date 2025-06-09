@@ -44,14 +44,30 @@ class RegisterModel extends UserModel
         return $this->save();
     }
 
+    public function saveClassDetails7D($candidate)
+    {
+        return $this->saveClass7D($candidate);
+    }
+
     public function saveClassDetails($candidate)
     {
         return $this->saveClass($candidate);
     }
 
+    public function getUserDetailsByUsername7D($username,$candidate, $mobile)
+    {
+        return $this->getAllClassRequests7D($username,$candidate,$mobile);
+    }
+
+
     public function getUserDetailsByUsername($username,$candidate, $mobile)
     {
         return $this->getAllClassRequests($username,$candidate,$mobile);
+    }
+
+    public function register17D($params,$password)
+    {
+        return $this->saveRecordViaApi7D($params,$password);
     }
 
     public function register1($params,$password)

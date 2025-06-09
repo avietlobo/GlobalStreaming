@@ -138,6 +138,57 @@
             h1 { font-size: 1.5em; }
             .card { padding: 10px; }
         }
+
+
+        /* Styling for the Copy Button */
+        .copy-button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;  /* Adds space between the class link and the button */
+        }
+
+        .copy-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .copy-button:focus {
+            outline: none;
+        }
+
+        .copy-button .material-icons {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+
+        .copy-container {
+            display: block;  /* Block display to make button appear below the link */
+            margin-top: 20px; /* Adds space before button */
+        }
+
+        .copied-feedback {
+            font-size: 0.9em;
+            color: #4CAF50;
+            margin-top: 10px; /* Adds space between "Copied!" message and the button */
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .copied-feedback.show {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -207,10 +258,15 @@
         <p><?= $status; ?></p>
 
         <p><strong>Class Link:</strong></p>
-        <p>
-            <a href="https://godsownwisdom.com" target="_blank">
+        <p class="copy-container">
+            <a href="https://godsownwisdom.com" target="_blank" id="classLink">
                 https://godsownwisdom.com # User: <?= $username; ?> # Pass: <?= $password; ?>
             </a>
+            <button class="copy-button" onclick="copyClassLink()">
+                <span class="material-icons">content_copy</span> Copy
+            </button>
+            <span id="copiedFeedback" class="copied-feedback">Copied!</span> <!-- "Copied" message -->
+
         </p>
 
         <p><strong>Media Type:</strong></p>
@@ -236,6 +292,71 @@
     //     event.preventDefault(); // Prevent default link behavior
     //     window.location.href = '/evngDashboard'; // Replace with your desired URL
     // });
+
+    // Ensure the DOM is fully loaded before the function is called
+    // Function to copy class link to clipboard
+    // function copyClassLink() {
+    //     // Get the text content of the class link
+    //     const classLinkElement = document.getElementById('classLink');
+    //
+    //     // Ensure the element exists before proceeding
+    //     if (classLinkElement) {
+    //         const classLink = classLinkElement.textContent;
+    //
+    //         // Create a new textarea element to use for copying the content
+    //         const textArea = document.createElement('textarea');
+    //         textArea.value = classLink;  // Set the value of the textarea to the class link text
+    //         document.body.appendChild(textArea);  // Append the textarea to the document body
+    //         textArea.select();  // Select the text in the textarea
+    //         textArea.setSelectionRange(0, 99999);  // For mobile devices
+    //         document.execCommand('copy');  // Execute the copy command
+    //         document.body.removeChild(textArea);  // Remove the textarea from the DOM
+    //
+    //         // Show "Copied!" feedback message
+    //         const copiedFeedback = document.getElementById('copiedFeedback');
+    //         copiedFeedback.classList.add('show'); // Show the "Copied!" text
+    //
+    //         // Hide the "Copied!" message after 2 seconds
+    //         setTimeout(function() {
+    //             copiedFeedback.classList.remove('show');
+    //         }, 2000);
+    //     } else {
+    //         // If classLink element is not found, show an error
+    //         console.error('Class Link element not found!');
+    //     }
+    // }
+
+    function copyClassLink() {
+        // Get the text content of the class link
+        const classLinkElement = document.getElementById('classLink');
+
+        // Ensure the element exists before proceeding
+        if (classLinkElement) {
+            const classLink = classLinkElement.textContent;
+
+            // Use Clipboard API for modern browsers
+            navigator.clipboard.writeText(classLink).then(function() {
+                // Show "Copied!" feedback message
+                const copiedFeedback = document.getElementById('copiedFeedback');
+                copiedFeedback.classList.add('show'); // Show the "Copied!" text
+
+                // Hide the "Copied!" message after 2 seconds
+                setTimeout(function() {
+                    copiedFeedback.classList.remove('show');
+                }, 5000);
+            }).catch(function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        } else {
+            // If classLink element is not found, show an error
+            console.error('Class Link element not found!');
+        }
+    }
+
+    // Ensure the DOM is fully loaded before any interactions
+    document.addEventListener('DOMContentLoaded', function () {
+        // Any other DOM-specific logic can be added here
+    });
 
     function goBackToDetails() {
         // Base URL of the first view

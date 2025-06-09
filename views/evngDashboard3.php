@@ -190,6 +190,34 @@ use app\models\EvangelistModel;
         .floating-button:hover {
             background-color: #0056b3;
         }
+        .seven-day-badge {
+            background-color: #007BFF; /* Match other blue buttons */
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 0; /* Remove extra padding */
+            border-radius: 50%; /* Make it fully circular */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            margin: 5px; /* Ensure spacing is consistent */
+            width: 40px; /* Ensure perfect circle */
+            height: 47px; /* Ensure perfect circle */
+            text-align: center;
+        }
+
+        .seven-day-badge:hover {
+            background-color: #0056b3;
+        }
+
+        .icon-button-group {
+            display: flex; /* Ensure buttons are on the same row */
+            align-items: center;
+            gap: 8px; /* Adjust spacing between buttons */
+        }
     </style>
 </head>
 <body>
@@ -224,19 +252,48 @@ $designation = $dashboardData[0]->designation;
 
 ?>
 <div class="icon-button-group">
-    <?php if ($designation == 'Evangelist'): ?>
+    <?php if ($designation == 'Event Leader'): ?>
         <button class="icon-button" title="Evangelist Registration" onclick="window.location.href='/evngRegistration';">
             <i class="fas fa-user-plus"></i>
         </button>
         <button class="icon-button" title="View Submitted Registrations" onclick="window.location.href='/viewRegistration';">
             <i class="fas fa-list"></i>
         </button>
+        <button class="icon-button" title="View all Registrations" onclick="window.location.href='/viewAllRegistrations';">
+            <i class="fas fa-list"></i>
+        </button>
+        <button class="icon-button seven-day-badge" title="View Candidates" onclick="window.location.href='view7DCan';">
+            7D
+        </button>
 
     <?php endif; ?>
 </div>
 
+<div class="icon-button-group search-icons">
+    <?php if ($designation == 'Evng Coordinator' ): ?>
+        <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
+            <i class="fas fa-file-alt"></i>
+        </button>
+        <button class="icon-button" title="Evangelist Registration" onclick="window.location.href='/evngRegistration';">
+            <i class="fas fa-user-plus"></i>
+        </button>
+        <button class="icon-button" title="View Submitted Registrations" onclick="window.location.href='/viewRegistration';">
+            <i class="fas fa-list"></i>
+        </button>
+        <button class="icon-button" title="View all Registrations" onclick="window.location.href='/viewAllRegistrations';">
+            <i class="fas fa-list"></i>
+        </button>
+        <button class="icon-button seven-day-badge" title="7D Approval" onclick="window.location.href='view7DApproval';">
+            7D ✓
+        </button>
+    <?php endif; ?>
+</div>
+
+
+
 <div class="icon-button-group">
-    <?php if ($designation !== 'Evangelist'): ?>
+    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator'): ?>
+
         <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
             <i class="fas fa-file-alt"></i>
         </button>
@@ -248,6 +305,12 @@ $designation = $dashboardData[0]->designation;
         </button>
         <button class="icon-button" title="View Submitted Registrations" onclick="window.location.href='/viewRegistration';">
             <i class="fas fa-list"></i>
+        </button>
+        <button class="icon-button" title="View all Registrations" onclick="window.location.href='/viewAllRegistrations';">
+            <i class="fas fa-list"></i>
+        </button>
+        <button class="icon-button seven-day-badge" title="View Candidates" onclick="window.location.href='view7DCan';">
+            7D
         </button>
     <?php endif; ?>
 </div>
@@ -270,6 +333,7 @@ $designation = $dashboardData[0]->designation;
         'Active' => [],
         'InActive' => [],
         'Exit/Drop-out' => [],
+        'Ready for 7D Sathvartha' => [],
     ];
 
     $statusMapping = [
@@ -299,6 +363,7 @@ $designation = $dashboardData[0]->designation;
             <option value="completed">Completed</option>
             <option value="withdrawn">Withdrawn</option>
             <option value="inactive">Inactive</option>
+            <option value="Ready for 7D Sathvartha">Ready for 7D Sathvartha</option>
         </select>
     </div>
 

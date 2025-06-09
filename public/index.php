@@ -32,8 +32,23 @@ use app\core\Application;
 
 $app-> router->get('/', [AuthController::class, 'login']);
 $app-> router->post('/', [AuthController::class, 'login']);
- $app-> router->get('/login', [AuthController::class, 'loginEvangelist']);
+$app-> router->get('/v2', [AuthController::class, 'loginV2']);
+$app-> router->post('/v2', [AuthController::class, 'loginV2']);
+$app-> router->get('/login', [AuthController::class, 'loginEvangelist']);
 $app-> router->post('/login', [AuthController::class, 'loginEvangelist']);
+$app-> router->get('/viewAllCanAttendenceMarking', [AuthController::class, 'viewAllCanAttendenceMarking']);
+$app-> router->post('/saveAttendance', [AuthController::class, 'saveAttendance']);
+$app-> router->get('/searchAttendancePage', [AuthController::class, 'searchAttendancePage']);
+
+
+
+
+
+
+$app-> router->get('/view7DCan', [AuthController::class, 'view7DCan']);
+$app-> router->get('/view7DApproval', [AuthController::class, 'view7DApproval']);
+$app-> router->get('/view7DApproved', [AuthController::class, 'view7DApproved']);
+$app-> router->post('/approve7DCandidate', [AuthController::class, 'approve7DCandidate']);
 $app-> router->get('/forgotPassword', [AuthController::class, 'forgotPassword']);
 $app-> router->post('/sendOtp', [AuthController::class, 'sendOtp']);
 $app-> router->post('/sendOtpAgain', [AuthController::class, 'sendOtpAgain']);
@@ -45,6 +60,8 @@ $app-> router->post('/resetPassword', [AuthController::class, 'resetPassword']);
 $app-> router->get('/evngRegistration', [AuthController::class, 'evngRegistration']);
 $app-> router->get('/appRegistration', [AuthController::class, 'appRegistration']);
 $app-> router->get('/viewRegistration', [AuthController::class, 'viewRegistration']);
+$app-> router->get('/viewAllRegistrations', [AuthController::class, 'viewAllRegistrations']);
+
 
 $app-> router->post('/rejectRegistration', [AuthController::class, 'rejectRegistration']);
 $app-> router->post('/approveRegistration', [AuthController::class, 'approveRegistration']);
@@ -98,10 +115,12 @@ $app-> router->get('/wGroupCounts', [SiteController::class, 'wGroupCounts']);
 $app-> router->get('/statusCounts', [SiteController::class, 'statusCounts']);
 $app-> router->get('/canDetails', [SiteController::class, 'candidateDetailedRecord']);
 $app->router->post('/storeSessionData', [SiteController::class, 'storeSessionData']);
+$app->router->post('/storeSessionData7D', [SiteController::class, 'storeSessionData7D']);
 // Add this line to your existing routing configuration
 $app->router->get('/editCandidate', [SiteController::class, 'editCandidate']);
+$app->router->get('/editCandidate7D', [SiteController::class, 'editCandidate7D']);
 $app->router->post('/updateCandidate', [SiteController::class, 'updateCandidate']);
-
+$app->router->post('/updateCandidate7D', [SiteController::class, 'updateCandidate7D']);
 $app-> router->get('/video', [AuthController::class, 'video']);
 $app-> router->get('/logout', [AuthController::class, 'logout']);
 $app-> router->post('/logout', [AuthController::class, 'logout']);
@@ -110,21 +129,29 @@ $app-> router->post('/logoutEv', [AuthController::class, 'logoutEvangelistPortal
 
 $app-> router->get('/profile', [AuthController::class, 'profile']);
 $app-> router->get('/evngDashboard', [AuthController::class, 'evngDashboard']);
+$app-> router->get('/evngDashboard7', [AuthController::class, 'evngDashboard7']);
 $app-> router->get('/evngDashboard1', [AuthController::class, 'evngDashboard1']);
 $app-> router->get('/candidate', [SiteController::class, 'candidate']);
 $app-> router->get('/getAllCan', [SiteController::class, 'getAllCandidate']);
 $app-> router->post('/getClassDetails', [SiteController::class, 'getClassDetailsForCandidate']);
+$app-> router->post('/getClassDetails7D', [SiteController::class, 'getClassDetailsForCandidate7D']);
 $app-> router->get('/getClassNumber', [SiteController::class, 'getClassNumberDetailsForCandidate']);
+$app-> router->get('/getClassNumber7D', [SiteController::class, 'getClassNumberDetailsForCandidate7D']);
 $app-> router->get('/editClassDetails', [SiteController::class, 'getEditClassDetails']);
+$app-> router->get('/editClassDetails7D', [SiteController::class, 'getEditClassDetails7D']);
 $app-> router->post('/saveClassDetails', [SiteController::class, 'saveClassDetails']);
+$app-> router->post('/saveClassDetails7D', [SiteController::class, 'saveClassDetails7D']);
 
 
 
 $app-> router->post('/getClassDetails1', [SiteController::class, 'getClassDetailsForCandidate1']);
 $app-> router->get('/getClassDetails', [SiteController::class, 'getClassDetailsForCandidate']);
+$app-> router->get('/getClassDetails7D', [SiteController::class, 'getClassDetailsForCandidate7D']);
 $app-> router->post('/candidate', [SiteController::class, 'candidate']);
 $app-> router->get('/register', [\app\controllers\AuthController::class, 'register1']);
 $app-> router->post('/register', [\app\controllers\AuthController::class, 'register1']);
+$app-> router->get('/register7D', [\app\controllers\AuthController::class, 'register17D']);
+$app-> router->post('/register7D', [\app\controllers\AuthController::class, 'register17D']);
 $app-> router->get('/registerEv', [\app\controllers\AuthController::class, 'registerEvangelist']);
 $app-> router->post('/registerEv', [\app\controllers\AuthController::class, 'registerEvangelist']);
 $app-> router->post('/update_session', [\app\controllers\AuthController::class, 'update_session']);

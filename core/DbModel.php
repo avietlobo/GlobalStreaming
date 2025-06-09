@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use app\models\CandidateModel7D;
 use app\models\EvangelistModel;
 use app\models\EvangelistReviewModel;
 use app\models\RegisterModel;
@@ -22,6 +23,34 @@ abstract class DbModel extends Model
     private const STATUS_INACTIVE = 'InActive';
     private const STATUS_COMPLETED = 'Completed';
     private const STATUS_ACTIVE = 'Active';
+
+    public static function saveAttendance($mobile, $participantName, $evangelist, $evngEmail, $isOnlineSathAttended, $location, $feedback, $attendedDate)
+    {
+        $tableName = 'online_sathvartha';
+        $isOnlineSathAttended1 = $isOnlineSathAttended ? (int)$isOnlineSathAttended : 0;
+
+        // Prepare and execute the SQL query
+        $statement = self::prepare("INSERT INTO $tableName (mobile, participantName, evangelist, evngEmail, isOnlineSathAttended, location, feedback, attendedDate) 
+            VALUES (:mobile, :participantName, :evangelist,:evngEmail,:isOnlineSathAttended,:location,:feedback,:attendedDate)");
+
+
+
+         // Bind parameters
+        $statement->bindParam(':mobile', $mobile);
+        $statement->bindParam(':participantName', $participantName);
+        $statement->bindParam(':evangelist', $evangelist);
+        $statement->bindParam(':evngEmail', $evngEmail);
+        $statement->bindParam(':isOnlineSathAttended', $isOnlineSathAttended1);
+        $statement->bindParam(':location', $location);
+        $statement->bindParam(':feedback', $feedback);
+        $statement->bindParam(':attendedDate', $attendedDate);
+        if ($statement->execute()) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "error" => $statement->errorInfo()[2]]);
+        }
+        return true;
+    }
 
     public function save()
     {
@@ -47,6 +76,24 @@ abstract class DbModel extends Model
 
     }
 
+
+    public function saveClass7D($candidate)
+    {
+        // Extract individual fields from the $candidate array
+        $evangelist = $candidate['evangelist'] ?? null;
+        $participantName = $candidate['participantName'] ?? null;
+        $classNo = $candidate['classNo'] ?? null;
+        $status = $candidate['status'] ?? null;
+        $mediaType = $candidate['mediaType'] ?? null;
+        $remark = $candidate['remark'] ?? null;
+        $mobile = $candidate['mobile'] ?? null;
+        $password = $candidate['password'] ?? null;
+
+        $tableName = '7dcandetails';
+        $statement = self::prepare("UPDATE $tableName SET status = '$status',mediaType= '$mediaType',remark ='$remark',password= '$password' WHERE evangelist = '$evangelist' AND participant = '$participantName' AND mobile = '$mobile' AND classFrom= '$classNo'");
+        $statement->execute();
+    }
+
     public function saveClass($candidate)
     {
         // Extract individual fields from the $candidate array
@@ -63,6 +110,35 @@ abstract class DbModel extends Model
         $statement = self::prepare("UPDATE $tableName SET status = '$status',mediaType= '$mediaType',remark ='$remark',password= '$password' WHERE evangelist = '$evangelist' AND participant = '$participantName' AND mobile = '$mobile' AND classFrom= '$classNo'");
         $statement->execute();
 
+    }
+
+    public function getMediaTypeCandidate7D($name, $candidate, $mobile)
+    {
+        $tableName = '7dcandidate';
+        $statement = self::prepare("SELECT * FROM $tableName WHERE evangelist = :name AND participantName = :candidate AND mobile = :mobile");
+
+        // Bind parameters
+        $statement->bindParam(':name', $name);
+        $statement->bindParam(':candidate', $candidate);
+        $statement->bindParam(':mobile', $mobile);
+
+        $statement->execute();
+
+        // Fetch one candidate as an instance of CandidateModel
+        //$candidateModel = $statement->fetch(\PDO::FETCH_CLASS, CandidateModel::class);
+
+        $candidateModel = $statement->fetch(Application::$app->db->pdo::FETCH_ASSOC);
+
+        if ($candidateModel === false) {
+            // Handle case where no candidate was found
+            return null; // or throw an exception, or return an empty model
+        }
+
+//        echo '<pre>';
+//        var_dump($candidateModel);
+//        echo '</pre>';
+
+        return $candidateModel;
     }
 
     public function getMediaTypeCandidate($name, $candidate, $mobile)
@@ -94,6 +170,23 @@ abstract class DbModel extends Model
         return $candidateModel;
     }
 
+    public function getAllClassRequests7D($name, $candidate, $mobile)
+    {
+
+        $tableName = '7dcandetails';
+        //$statement = self::prepare("SELECT * FROM $tableName WHERE evangelist = '$name' AND participant = '$candidate' AND mobile = '$mobile'");
+        $statement = self::prepare("SELECT * FROM $tableName WHERE  participant = '$candidate' AND mobile = '$mobile'");
+
+        $statement->execute();
+        // Fetch all rows instead of just one
+        $classes = $statement->fetchAll(\PDO::FETCH_CLASS, RegisterModel::class);
+//        echo '<pre>';
+//        var_dump($mobile);
+//        echo '</pre>';
+
+        return $classes;
+    }
+
     public function getAllClassRequests($name, $candidate, $mobile)
     {
         $tableName = $this->tableName();
@@ -108,6 +201,17 @@ abstract class DbModel extends Model
         return $classes;
     }
 
+    public static function updateLoginAttempt7D($loginAttempt, $record)
+    {
+        //echo "correct";
+        $tableName = "7dcandetails";
+        $statement = self::prepare("UPDATE $tableName SET login_attempts = :loginAttempt WHERE participant = :participant AND password = :password");
+        $statement->bindValue(":loginAttempt", $loginAttempt + 1);
+        $statement->bindValue(":participant", $record->participant);
+        $statement->bindValue(":password", $record->password);
+        $statement->execute();
+    }
+
     public static function updateLoginAttempt($loginAttempt, $record)
     {
         //echo "correct";
@@ -117,6 +221,47 @@ abstract class DbModel extends Model
         $statement->bindValue(":participant", $record->participant);
         $statement->bindValue(":password", $record->password);
         $statement->execute();
+    }
+
+    public static function checkLoginValidity7D($record): bool
+    {
+        $tableName = "7dcandetails";
+        $statement = self::prepare("SELECT last_login,classFrom FROM $tableName WHERE participant = :participant AND password = :password");
+        $statement->bindValue(":participant", $record->participant);
+        $statement->bindValue(":password", $record->password);
+        $statement->execute();
+        $result = $statement->fetch(Application::$app->db->pdo::FETCH_ASSOC);
+//        if ($result) {
+        // Now you can access the last_login value in the $lastLogin variable
+        $lastLoginTime = strtotime($result['last_login']);
+//            echo $result['last_login'];
+//            echo '<pre>';
+//            var_dump($result['last_login']);
+//            echo '</pre>';
+        $currentTime = strtotime(self::getCurrentUTCDateTime());
+//            echo self::getCurrentUTCDateTime();
+//            echo '<pre>';
+//            var_dump(self::getCurrentUTCDateTime());
+//            echo '</pre>';
+        $diffInSeconds = $currentTime - $lastLoginTime;
+//            echo '<pre>';
+//            var_dump($diffInSeconds);
+//            echo '</pre>';
+
+        if ($result['classFrom'] == 1) {
+            return true;
+        }
+
+
+        if ($diffInSeconds <= 172800) {
+            //echo "Session is expired.";
+            return true;
+        } else {
+            echo "Session is expired.";
+            return false;
+            //return false;
+        }
+//        }
     }
 
     public static function checkLoginValidity($record): bool
@@ -158,6 +303,17 @@ abstract class DbModel extends Model
             //return false;
         }
 //        }
+    }
+
+    public static function updateLastLoginField7D($record)
+    {
+        $tableName = "7dcandetails";
+        $utcDateTime = self::getCurrentUTCDateTime();
+        $statement = self::prepare("UPDATE $tableName SET last_login = :last_login WHERE participant = :participant AND password = :password");
+        $statement->bindValue(":last_login", $utcDateTime);
+        $statement->bindValue(":participant", $record->participant);
+        $statement->bindValue(":password", $record->password);
+        $statement->execute();
     }
 
     public static function updateLastLoginField($record)
@@ -262,6 +418,21 @@ abstract class DbModel extends Model
     }
 
 
+
+    public function viewAllRegMembersSoFar()
+    {
+        $tableName = $this->tableName();
+
+        // SQL query to insert the data into the `evangelist_in_review` table
+        $statement = self::prepare("SELECT * FROM $tableName ");
+        $referredBy=Application::$app->session->get('loginForm')->username;
+        //$statement->bindValue(":referredBy", $referredBy);
+        $result=$statement->execute();
+
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function viewRegMembersSoFar()
     {
         $tableName = $this->tableName();
@@ -326,6 +497,58 @@ abstract class DbModel extends Model
         $statement->execute();
 
 
+    }
+
+    public function saveRecordViaApi7D($record, $password)
+    {
+
+        $tableName = '7dcandetails';
+        $attributes = $this->attributes();
+
+
+        $params = array_map(fn($attr) => ":$attr", $attributes);
+
+
+        $statement = self::prepare("INSERT INTO $tableName (" . implode(',', $attributes) . ") 
+        VALUES(" . implode(',', $params) . ")");
+//        echo '<pre>';
+//        var_dump($statement);
+//        echo '</pre>';
+//
+//        echo '<pre>';
+//        var_dump($params);
+//        echo '</pre>';
+
+
+        $index = 0;
+        foreach ($record as $key => $value) {
+//            echo $key;
+//            echo $value;
+
+            // newly added code on line 129-131
+            if ($key === 'recordDate') {
+                // Check if $value is not empty and a valid date
+                if (!empty($value) && strtotime($value) !== false) {
+                    $value = date('Y-m-d H:i:s', strtotime($value));
+                } else {
+                    // If $value is empty or not a valid date, set current UTC date-time
+                    $value = gmdate('Y-m-d H:i:s');
+                }
+            }
+
+            if ($key === 'entryDate') {
+                $value = date('Y-m-d H:i:s', strtotime($value));
+            }
+
+
+            $statement->bindValue(":$attributes[$index]", $value);
+            $index++;
+        }
+        $classFromInt = (int)$record['classFrom'];
+        $statement->bindValue(":classFrom", $classFromInt);
+        $statement->bindValue(":password", $password);
+//        echo $password;
+        $statement->execute();
     }
 
     public function saveRecordViaApi($record, $password)
@@ -435,6 +658,36 @@ abstract class DbModel extends Model
         }
     }
 
+    public function saveRecordViaApi47D($record)
+    {
+
+
+        $tableName = "7dcandidate";
+        //$utcDateTime = self::getCurrentUTCDateTime();
+        //$statement = self::prepare("UPDATE $tableName SET last_login = :last_login WHERE participant = :participant AND password = :password");
+        $statement = self::prepare("UPDATE $tableName SET country = :country, language = :language, source = :source, mediaType = :mediaType, activeStatus = :activeStatus WHERE participantName = :participantName AND evangelist = :evangelist AND mobile = :mobile");
+
+        $statement->bindValue(":country", $record['country']);
+        $statement->bindValue(":language", $record['language']);
+        $statement->bindValue(":source", $record['source']);
+        $statement->bindValue(":mediaType", $record['mediaType']);
+        $statement->bindValue(":activeStatus", $record['activeStatus']);
+
+        $statement->bindValue(":participantName", $record['participantName']);
+        $statement->bindValue(":evangelist", $record['evangelist']);
+        $statement->bindValue(":mobile", $record['mobile']);
+
+        $statement->execute();
+
+        error_log($record['country']);
+        error_log($record['language']);
+        error_log($record['source']);
+        error_log($record['mediaType']);
+
+
+    }
+
+
 
     public function saveRecordViaApi4($record)
     {
@@ -454,6 +707,7 @@ abstract class DbModel extends Model
         $statement->bindValue(":participantName", $record['participantName']);
         $statement->bindValue(":evangelist", $record['evangelist']);
         $statement->bindValue(":mobile", $record['mobile']);
+
         $statement->execute();
 
         error_log($record['country']);
@@ -461,9 +715,6 @@ abstract class DbModel extends Model
         error_log($record['source']);
         error_log($record['mediaType']);
 
-//        echo '<pre>';
-//        var_dump($statement);
-//        echo '</pre>';
 
     }
 
@@ -532,6 +783,29 @@ abstract class DbModel extends Model
 
     }
 
+    public static function findOne7D($where)
+    {
+        $tableName = '7dcandetails';
+        //$tableName = static::tableName();
+
+
+//            echo '<pre>';
+//            var_dump($tableName);
+//            echo '</pre>';
+
+        $attributes = array_keys($where);
+        $sql = implode(" AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+        $statement = self::prepare("SELECT * FROM $tableName WHERE $sql");
+        foreach ($where as $key => $item) {
+
+            $statement->bindValue(":$key", $item);
+        }
+
+        $statement->execute();
+        //return $statement->fetchAll();
+        return $statement->fetchObject(static::class);
+    }
+
     public static function findOne($where)
     {
         $tableName = (new \app\models\RegisterModel)->tableName();
@@ -576,6 +850,27 @@ abstract class DbModel extends Model
         $statement->execute();
         //return $statement->fetchAll();
         return $statement->fetchObject(static::class);
+    }
+    public static function findCandidateClassDetails7D($where)
+    {
+        $tableName = '7dcandetails';
+        //$tableName = static::tableName();
+
+
+//            echo '<pre>';
+//            var_dump($tableName);
+//            echo '</pre>';
+
+        $attributes = array_keys($where);
+        $sql = implode(" AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+        $statement = self::prepare("SELECT * FROM $tableName WHERE $sql");
+        foreach ($where as $key => $item) {
+            $statement->bindValue(":$key", $item);
+        }
+
+        $statement->execute();
+        //return $statement->fetchAll();
+        return $statement->fetchObject(RegisterModel::class);
     }
 
     public static function findCandidateClassDetails($where)
@@ -1235,6 +1530,82 @@ GROUP BY
         return $groups;
     }
 
+    public static function findAllCandidates($offset = 0, $limit = 10)
+    {
+        $tableName = (new \app\models\CandidateModel())->tableName();
+        $tableName2 = 'online_sathvartha';
+
+        $query = "SELECT
+                c.mobile, c.recordDate, c.participantName, c.country,
+                c.language, c.evangelist, c.source, c.allotedDays,
+                c.mediaType, c.activeStatus, c.userid, c.wgroup,
+                os.location, os.attendedDate, os.feedback
+              FROM $tableName AS c
+              LEFT JOIN $tableName2 AS os ON c.mobile = os.mobile
+              ORDER BY c.recordDate DESC  -- Ensure consistent ordering
+              LIMIT :limit OFFSET :offset";
+
+        $statement = self::prepare($query);
+        $statement->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        $statement->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function searchCandidates($search, $offset, $limit)
+    {
+        $offset = (int)$offset;
+        $limit = (int)$limit;
+
+        $sql = "SELECT
+            c.mobile, c.recordDate, c.participantName, c.country,
+            c.language, c.evangelist, c.source, c.allotedDays,
+            c.mediaType, c.activeStatus, c.userid, c.wgroup,
+            os.location, os.attendedDate, os.feedback
+        FROM candidate AS c
+        LEFT JOIN online_sathvartha AS os ON c.mobile = os.mobile
+        WHERE (c.participantName LIKE :search OR c.mobile LIKE :search)
+        ORDER BY c.participantName ASC
+        LIMIT :limit OFFSET :offset";
+
+        $stmt = self::prepare($sql);
+        $searchTerm = '%' . $search . '%';
+
+        $stmt->bindValue(':search', $searchTerm, \PDO::PARAM_STR);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function countSearchCandidates($search)
+    {
+        $sql = "SELECT COUNT(*) as count FROM candidate 
+            WHERE (participantName LIKE :search OR mobile LIKE :search)";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(':search', '%' . $search . '%', \PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['count'] ?? 0;
+    }
+
+
+    // Add a method to get total count
+    public static function countAllCandidates()
+    {
+        $tableName = (new \app\models\CandidateModel())->tableName();
+        $query = "SELECT COUNT(*) as total FROM $tableName";
+
+        $statement = self::prepare($query);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        return $result['total'];
+    }
+
 
 
     public static function findcountrywiseCandidateDetails($country,$activeStatus,$language)
@@ -1609,6 +1980,141 @@ ORDER BY
         }
      }
 
+    public static function saveRecordIn7DCandidate($data)
+    {
+        $tableName = '7dcandidate';
+
+        // Prepare and execute the SQL query
+        $statement = self::prepare("INSERT INTO $tableName (mobile, recordDate, participantName, country, language, evangelist, source, allotedDays,mediaType,activeStatus,userid,remark,wgroup,caretaker_email,updatedBy) 
+            VALUES (:mobile, :recordDate, :participantName,:country,:language,:evangelist,:source,:allotedDays,:mediaType,:activeStatus,:userid,:remark,:wgroup,:caretaker_email,:updatedBy)");
+
+
+        //echo $data['mobile'];
+// Example: Accessing individual fields
+        $mobile = $data['mobile'] ?? null;
+        $recordDate = $data['recordDate'] ?? null;
+        $participantName = $data['participantName'] ?? null;
+        $country = $data['country'] ?? null;
+        $language = $data['language'] ?? null;
+        $evangelist = $data['evangelist'] ?? null;
+        $source = $data['source'] ?? null;
+        $allotedDays = $data['allotedDays'] ?? null;
+        $mediaType = $data['mediaType'] ?? null;
+        $activeStatus = $data['activeStatus'] ?? null;
+        $userid = $data['userid'] ?? null;
+        $remark = $data['remark'] ?? null;
+        $wgroup = $data['wgroup'] ?? null;
+        $updatedBy =Application::$app->session->get('nameFinal');
+        $caretakerEmail = $data['caretaker_email'] ?? null;
+        $statement->bindValue(':mobile', $mobile);
+        $statement->bindValue(':recordDate', $recordDate);
+        $statement->bindValue(':participantName', $participantName);
+        $statement->bindValue(':country', $country);
+        $statement->bindValue(':language', $language);
+        $statement->bindValue(':evangelist', $evangelist);
+        $statement->bindValue(':source', $source);
+        $statement->bindValue(':allotedDays', $allotedDays);
+        $statement->bindValue(':mediaType', $mediaType);
+        $statement->bindValue(':activeStatus', 'Active');
+        $statement->bindValue(':userid', $userid);
+        $statement->bindValue(':remark', $remark);
+        $statement->bindValue(':wgroup', $wgroup);
+        $statement->bindValue(':caretaker_email', $caretakerEmail);
+        $statement->bindValue(':updatedBy', $updatedBy);
+
+        if ($statement->execute()) {
+            //echo json_encode(["success" => true]);
+        } else {
+            //echo json_encode(["success" => false, "error" => $statement->errorInfo()[2]]);
+        }
+        return true;
+    }
+
+    public static function findAllApprovedCandidatesFor7D()
+    {
+        $tableName = '7dcandidate';
+        $statement = self::prepare("SELECT * FROM $tableName");        //$statement->bindValue(':activeStatus', 'Ready for 7D Sathvartha');
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_CLASS, CandidateModel::class);
+    }
+
+    public static function findAllCandidatesFor7D()
+    {
+        $tableName = (new \app\models\CandidateModel())->tableName();
+        $statement = self::prepare("SELECT * FROM $tableName WHERE activeStatus = 'Ready for 7D Sathvartha' AND mobile NOT IN (
+    SELECT mobile FROM 7dcandidate
+)");        //$statement->bindValue(':activeStatus', 'Ready for 7D Sathvartha');
+        $statement->execute();
+       return $statement->fetchAll(\PDO::FETCH_CLASS, CandidateModel::class);
+    }
+
+    public static function findAllCandidatesForEvangelist7D($where,$name)
+    {
+        $tableName = '7dcandidate';
+        //s$attributes = array_keys($where);
+        $statement = self::prepare("
+    SELECT * 
+    FROM $tableName 
+    WHERE caretaker_email = '$name' 
+    ORDER BY 
+        CASE activeStatus
+            WHEN 'Completed' THEN 1
+            WHEN 'Withdrawn' THEN 2
+            WHEN 'Active' THEN 3
+            WHEN 'Inactive' THEN 4
+           WHEN 'Exit/Drop-out' THEN 5
+            ELSE 6  -- To handle any other statuses, if needed
+        END ASC
+");
+
+
+
+
+        $statement->execute();
+        // Fetch all rows instead of just one
+        $candidates = $statement->fetchAll(\PDO::FETCH_CLASS, CandidateModel7D::class);
+
+//        echo '<pre>';
+//        var_dump($candidates);
+//        echo '</pre>';
+        return $candidates;
+    }
+
+
+    public static function getCandidateByMobile($mobile)
+    {
+        $tableName = 'candidate';
+        $statement = self::prepare("SELECT * FROM $tableName WHERE mobile = :mobile LIMIT 1"); // Ensure single record
+        $statement->bindValue(':mobile', $mobile);
+        // Execute the statement
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+
+
+    public static function verifyOnlineSathvarthaStatus($mobile)
+    {
+        $tableName = 'online_sathvartha';
+        $statement = self::prepare("SELECT mobile FROM $tableName WHERE mobile = :mobile LIMIT 1"); // Ensure single record
+        $statement->bindValue(':mobile', $mobile);
+        // Execute the statement
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_COLUMN) ?: null; // Return null if not found
+
+    }
+
+
+    public static function getClassNumbersForCandidate($mobile)
+{
+    $tableName = (new \app\models\RegisterModel())->tableName();
+    $statement = self::prepare("SELECT classFrom FROM $tableName WHERE mobile = :mobile");
+    $statement->bindValue(':mobile', $mobile);
+    // Execute the statement
+    $statement->execute();
+    return $statement->fetchAll(\PDO::FETCH_COLUMN); // Fetch all values as an array
+}
+
+
     public static function findAllCandidatesForEvangelist($where,$name)
     {
         $tableName = (new \app\models\CandidateModel())->tableName();
@@ -1628,7 +2134,8 @@ ORDER BY
             WHEN 'Active' THEN 3
             WHEN 'Inactive' THEN 4
            WHEN 'Exit/Drop-out' THEN 5
-            ELSE 6  -- To handle any other statuses, if needed
+           WHEN 'Ready for 7D Sathvartha' THEN 6
+            ELSE 7  -- To handle any other statuses, if needed
         END ASC
 ");
         //$statement = self::prepare("SELECT * FROM $tableName WHERE evangelist = '$name'");
@@ -1658,6 +2165,20 @@ ORDER BY
         $statement->execute();
         $evangelistDetail = $statement->fetchAll(\PDO::FETCH_CLASS, EvangelistModel::class);
         return $evangelistDetail;
+    }
+
+    public static function findworkGroupForEvangelist7D($where,$name)
+    {
+
+        $tableName = (new \app\models\EvangelistModel())->tableName();
+        $statement = self::prepare("SELECT * FROM $tableName WHERE evngName = '$name'");
+        $statement->execute();
+        // Fetch all rows instead of just one
+        $evangelistDetails = $statement->fetchAll(\PDO::FETCH_CLASS, EvangelistModel::class);
+//        echo '<pre>';
+//        var_dump($evangelistDetails);
+//        echo '</pre>';
+        return $evangelistDetails;
     }
 
 

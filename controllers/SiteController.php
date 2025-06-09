@@ -28,6 +28,25 @@ use app\models\WGroupModel;
          $this->registerMiddleware(new AuthMiddleware(['profile', 'video']));
      }
 
+     public function editCandidate7D(Request $request)
+     {
+         // Fetch data from session or request
+         $data = $_SESSION['storedData7D'] ?? null;
+         $candidateModel = new CandidateModel();
+
+         if ($request->isPost()) {
+             $candidateModel->loadData($request->getBody());
+             $inputData = json_decode(file_get_contents("php://input"), true);
+             if (empty($inputData)) {
+                 exit();
+             }
+         }
+
+         $this->setLayout('main1');
+         return $this->render('editCandidate7D', ['data' => $data]);
+
+     }
+
      public function editCandidate(Request $request)
      {
          // Fetch data from session or request
@@ -55,7 +74,9 @@ use app\models\WGroupModel;
          return $this->render('editCandidate', ['data' => $data]);
      }
 
-     public function updateCandidate(Request $request)
+
+
+     public function updateCandidate7D(Request $request)
      {
 
          // Fetch data from session or request
@@ -79,7 +100,7 @@ use app\models\WGroupModel;
                  error_log($candidateModel->evangelist);
                  error_log($candidateModel->mobile);
                  error_log($_POST['country']);
-                 $candidateModel->updateCandidate($_POST);
+                 $candidateModel->updateCandidate7D($_POST);
              }
              //$data = CandidateModel::findAllCandidatesForEvangelist(['evangelist' => $_SESSION['loginForm']->username], $_SESSION['loginForm']->username);
              $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist' => Application::$app->session->get('nameFinal')], Application::$app->session->get('nameFinal'));
@@ -95,6 +116,97 @@ use app\models\WGroupModel;
          // Redirect or show success message
 //        header('Location: /evngDashboard');
 //        exit();
+     }
+
+
+     public function updateCandidate(Request $request)
+     {
+
+         // Fetch data from session or request
+         $data = $_SESSION['storedData'] ?? null;
+         $candidateModel = new CandidateModel();
+
+
+         if ($request->isPost()) {
+
+
+             $candidateModel->loadData($request->getBody());
+             error_log($candidateModel->participantName);
+
+             // 🔐 FETCH existing candidate record to check status
+             $existingCandidate = CandidateModel::getCandidateByMobile($candidateModel->mobile); // <-- Add this method to your model
+
+             if ($existingCandidate && $existingCandidate['activeStatus'] === "Ready for 7D Sathvartha") {
+                 // ⛔️ Block modifications
+                 $data1['error_active_status'] = "Cannot modify data. Status is already 'Ready for 7D Sathvartha'.";
+                 $this->setLayout('main1');
+                 return $this->render('editCandidate', ['data' => $data, 'data1' => $data1]);
+             }
+
+
+             $inputData = json_decode(file_get_contents("php://input"), true);
+             if (empty($inputData)) {
+
+                 // Load language mappings
+                 $languageMappings = include __DIR__ . '/../views/language_class_mappings.php';
+
+                 // Check if status is "Ready for 7D Sathvartha"
+                 if ($candidateModel->activeStatus === "Ready for 7D Sathvartha") {
+                     // Get the required number of classes for the candidate's language
+                     $requiredClasses = $languageMappings[$candidateModel->language] ?? 0;
+                     $mobileData =CandidateModel::verifyOnlineSathvarthaStatus($candidateModel->mobile);
+
+                     if ($mobileData) {
+                         $candidateModel->updateCandidate($_POST);
+                     } else {
+                         if ($requiredClasses > 0) {
+                             // Fetch all classFrom values for this candidate
+                             $existingClasses = CandidateModel::getClassNumbersForCandidate($candidateModel->mobile);
+
+                             // Generate the expected class numbers (from 2 to required number)
+                             $expectedClasses = range(2, $requiredClasses);
+
+
+                             // Check if all expected classes exist
+                             if (array_diff($expectedClasses, $existingClasses)) {
+
+                                 // Fetch data from session or request
+                                 $data = $_SESSION['storedData'] ?? null;
+
+                                 $data1['error_active_status'] = "Cannot update status. All required class entries are not present.";
+                                 $this->setLayout('main1');
+                                 return $this->render('editCandidate', ['data' => $data,'data1'=>$data1]); // Stay on the same page
+                             }
+                             else
+                             {
+                                 $candidateModel->updateCandidate($_POST);
+                             }
+                         }
+                     }
+
+
+
+
+                 }
+
+                 else
+                 {
+                     $candidateModel->updateCandidate($_POST);
+                 }
+
+
+             }
+             //$data = CandidateModel::findAllCandidatesForEvangelist(['evangelist' => $_SESSION['loginForm']->username], $_SESSION['loginForm']->username);
+             $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist' => Application::$app->session->get('nameFinal')], Application::$app->session->get('nameFinal'));
+
+
+             Application::$app->session->set('evngDashboardData', $data);
+             $this->setLayout('main1');
+             return $this->render('evngDashboard1');
+
+         }
+
+
      }
 
 
@@ -443,9 +555,13 @@ use app\models\WGroupModel;
 
      public function candidate(Request $request)
      {
+
          $candidateModel = new CandidateModel();
          if ($request->isPost()) {
              $candidateModel->loadData($request->getBody());
+//             echo '<pre>';
+//             print_r($candidateModel);
+//             echo '</pre>';
              $inputData = json_decode(file_get_contents("php://input"), true);
              if (empty($inputData)) {
 
@@ -469,6 +585,7 @@ use app\models\WGroupModel;
 
                      Application::$app->session->set('evngDashboardData', $data);
                      $this->setLayout('main1');
+
 
                      return $this->render('evngDashboard3');
                      //return 'New candidate added successully';
@@ -525,6 +642,28 @@ use app\models\WGroupModel;
              'model' => $candidateModel
          ]);
 
+
+
+     }
+
+
+
+     public function storeSessionData7D(Request $request)
+     {
+         // Check if the request is a POST request
+         if ($request->isPost()) {
+             $data = $request->getBody();
+
+             // Store session data
+             $_SESSION['storedData7D'] = $data;
+
+             // Respond with success
+             echo json_encode(['status' => 'success']);
+             return;
+         }
+
+         // Handle non-POST requests or return an error
+         echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
      }
 
      public function storeSessionData(Request $request)
@@ -577,7 +716,47 @@ use app\models\WGroupModel;
 //     }
 
 
+    public function saveClassDetails7D() {
+        // Generate a 6-digit random numeric password
+        $password = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+        // Extract form data from the $_POST array
+        $candidate = [
+            'evangelist' => $_POST['evangelist'] ?? null,
+            'participantName' => $_POST['participant'] ?? null,
+            'classNo' => $_POST['classFrom'] ?? null,
+            'status' => $_POST['status'] ?? null,
+            'password' => $password,
+            'mediaType' => $_POST['mediaType'] ?? null,
+            'remark' => $_POST['remark'] ?? null,
+            'mobile' => $_POST['mobile'] ?? null,
+        ];
 
+
+
+        $registerModel = new RegisterModel();
+        $userDetails = $registerModel->saveClassDetails7D($candidate);
+        // Prepare query parameters for redirection
+        $queryParams = http_build_query([
+            'classFrom' => $candidate['classNo'],
+            'status' => $candidate['status'],
+            'username' => $candidate['participantName'],
+            'password' => $password, // Use appropriate password (replace if needed)
+            'remark' => $candidate['remark'],
+            'mobile' => urlencode($candidate['mobile']),
+            'mediaType' => $candidate['mediaType'],
+        ]);
+
+        //Redirect to the target view with query parameters
+        header("Location: /getClassNumber7D?$queryParams");
+        exit(); // Ensure no further code is executed after the redirect
+
+
+        //return $this->render('classNumberDetailsForCandidate1',  ['data' => $queryParams]);
+
+
+
+
+    }
 
     public function saveClassDetails() {
 
@@ -623,10 +802,36 @@ use app\models\WGroupModel;
     }
 
 
+    public function getEditClassDetails7D() {
+        $this->setLayout('main1');
+        return $this->render('editClassDetails7D');
+    }
+
     public function getEditClassDetails() {
 
         $this->setLayout('main1');
         return $this->render('editClassDetails');
+    }
+
+
+
+    public function getClassNumberDetailsForCandidate7D()
+    {
+        $classFrom = $_GET['classFrom'] ?? null;
+        $status = $_GET['status'] ?? null;
+        // Prepare the data to be passed to the view
+        $userDetails =   Application::$app->session->get('userDetails');
+
+        $data = [
+            'classFrom' => $classFrom,
+            'status' => $status,
+            'password' => '',
+            'message' => "Details for Class $classFrom with status $status",  // Optional message for demonstration
+        ];
+        $this->setLayout('main1');
+        return $this->render('classNumberDetailsForCandidate7D',  ['data' => $data]);
+
+
     }
 
 public function getClassNumberDetailsForCandidate()
@@ -647,6 +852,33 @@ public function getClassNumberDetailsForCandidate()
 }
 
 
+    public function getClassDetailsForCandidate7D() {
+
+        $registerModel = new RegisterModel();
+        // Extract parameters from the URL
+        $username = $_GET['username'] ?? null;
+        $candidate = $_GET['candidate'] ?? null;
+        $mobile = isset($_GET['mobile']) ? rawurldecode($_GET['mobile']) : null;
+        $index = $_GET['index'] ?? null;
+        Application::$app->session->set('index7D', $index);
+
+        // Validate and sanitize parameters as needed
+
+
+
+
+        // Example: Fetch details based on $username and $candidate
+        $userDetails = $registerModel->getUserDetailsByUsername7D($username,$candidate,$mobile);
+//        Application::$app->session->set('userDetails', $userDetails);
+//        echo '<pre>';
+//        var_dump(Application::$app->session->get('userDetails'));
+//        echo '</pre>';
+
+        // Render the view with the user details
+        $this->setLayout('main1');
+        return $this->render('classDetailsForCandidate7D', ['userDetails' => $userDetails]);
+
+    }
 
     public function getClassDetailsForCandidate() {
 

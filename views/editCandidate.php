@@ -127,6 +127,15 @@
     </a>
 </div>
 
+<?php if (!empty($data1['errors'])): ?>
+    <div style="color: red; margin-bottom: 15px;">
+        <ul>
+            <?php foreach ($data1['errors'] as $error): ?>
+                <li><?php echo htmlspecialchars($error); ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
 
 <div class="container">
     <h1>Edit Candidate</h1>
@@ -437,7 +446,13 @@
                 <option value="Completed" <?php echo (isset($data['activeStatus']) && $data['activeStatus'] === 'Completed') ? 'selected' : ''; ?>>Completed</option>
                 <option value="Withdrawn" <?php echo (isset($data['activeStatus']) && $data['activeStatus'] === 'Withdrawn') ? 'selected' : ''; ?>>Withdrawn</option>
                 <option value="InActive" <?php echo (isset($data['activeStatus']) && $data['activeStatus'] === 'InActive') ? 'selected' : ''; ?>>InActive</option>
+                <option value="Ready for 7D Sathvartha" <?php echo (isset($data['activeStatus']) && $data['activeStatus'] === 'Ready for 7D Sathvartha') ? 'selected' : ''; ?>>Ready for 7D Sathvartha</option>
             </select>
+            <?php if (!empty($data1['error_active_status'])): ?>
+                <p style="color: red; font-size: 14px; margin-top: 5px;">
+                    <?php echo $data1['error_active_status']; ?>
+                </p>
+            <?php endif; ?>
         </div>
 
 

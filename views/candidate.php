@@ -25,6 +25,7 @@
 <input type="hidden" name="recordDate" value="<?php echo htmlspecialchars($model->recordDate); ?>">
 <?php echo $form->field($model,'participantName')  ?>
 <?php echo $form->field($model, 'country')->dropdownField([
+    '' => 'Select Country',  // Add this line for the placeholder
     'Afghanistan' => 'Afghanistan',
     'Albania' => 'Albania',
     'Algeria' => 'Algeria',

@@ -66,6 +66,11 @@ class EvangelistReviewModel extends UserModel
         return $this->getRegMembers();
     }
 
+    public function viewAllRegMembers()
+    {
+        return $this->viewAllRegMembersSoFar();
+    }
+
     public function viewRegMembers()
     {
         return $this->viewRegMembersSoFar();

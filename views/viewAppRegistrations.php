@@ -122,9 +122,10 @@
                 <th>Mobile</th>
                 <th>Fellowship</th>
                 <th>Email</th>
+                <th>Registered By</th>
                 <th>Status</th>
                 <th>Rejected Reason</th>
-                <th>Updated By</th>
+                <th>Approved/Rejected By</th>
                 <th>Designation</th>
             </tr>
             </thead>
@@ -140,6 +141,7 @@
                     <td><?= $member['mobile'] ?></td>
                     <td><?= $member['fellowship'] ?></td>
                     <td><?= $member['email'] ?></td>
+                    <td><?= $member['referredBy'] ?></td>
                     <td><?= $member['status'] ?></td>
                     <td><?= isset($member['reject_reason']) ? $member['reject_reason'] : 'N/A' ?></td>
                     <td><?= $member['updatedBy'] ?></td>

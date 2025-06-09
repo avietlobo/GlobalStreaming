@@ -213,6 +213,55 @@ use app\models\EvangelistModel;
         .floating-button:hover {
             background-color: #0056b3;
         }
+
+        .seven-day-badge {
+            background-color: #007BFF; /* Match other blue buttons */
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 0; /* Remove extra padding */
+            border-radius: 50%; /* Make it fully circular */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            margin: 5px; /* Ensure spacing is consistent */
+            width: 40px; /* Ensure perfect circle */
+            height: 47px; /* Ensure perfect circle */
+            text-align: center;
+        }
+
+        .seven-day-badge:hover {
+            background-color: #0056b3;
+        }
+
+        .icon-button-group {
+            display: flex; /* Ensure buttons are on the same row */
+            align-items: center;
+            gap: 8px; /* Adjust spacing between buttons */
+        }
+
+
+        .attendance-link img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .attendance-link i {
+            font-size: 18px;
+        }
+
+        .attendance-link:hover {
+            background-color: #45a049; /* Darker Green */
+            text-decoration: none;
+        }
+
+        .attendance-link:active {
+            background-color: #3e8e41; /* Pressed Effect */
+        }
+
     </style>
 </head>
 <body>
@@ -237,20 +286,101 @@ $dashboardData = Application::$app->session->get('evngDashboardData2');
 $designation = $dashboardData[0]->designation;
 
 ?>
+
 <div class="icon-button-group">
-    <?php if ($designation == 'Evangelist'): ?>
+    <?php if ($designation == 'Caretaker'): ?>
+
+        <button class="icon-button seven-day-badge" title="View Candidates" onclick="window.location.href='view7DCan';">
+            7D
+        </button>
+    <?php endif; ?>
+</div>
+
+
+
+
+<div class="icon-button-group">
+    <?php if ($designation == 'Event Leader'): ?>
+        <!--    <button class="icon-button" title="Evangelist Registration" onclick="window.location.href='/evngRegistration';">-->
+        <!--        <i class="fas fa-user-plus"></i>-->
+        <!--    </button>-->
+        <!--    <button class="icon-button" title="View Submitted Registrations" onclick="window.location.href='/viewRegistration';">-->
+        <!--        <i class="fas fa-list"></i>-->
+        <!--    </button>-->
+        <!--    <button class="icon-button seven-day-badge" title="View Candidates" onclick="window.location.href='view7DCan';">-->
+        <!--        7D-->
+        <!--    </button>-->
+        <!--    <button class="icon-button seven-day-badge" title="Attendance Marking System" onclick="window.location.href='view7DCan';">-->
+        <!--        <i class="fa-solid fa-clipboard-user"></i> Online-->
+        <!--    </button>-->
+
+        <a href="#" class="attendance-link" title="Attendance Marking System" onclick="window.location.href='viewAllCanAttendenceMarking';">
+            <img src="check.png" alt="Attendance Icon">
+        </a>
+
+        <!--    <a href="#" class="attendance-link tooltip" onclick="markAttendance()" data-title="Mark Attendance for Online Sathvartha">-->
+        <!--        <img src="check.png" alt="Attendance Icon">-->
+        <!--    </a>-->
+
+
+        <!--    <a href="#" class="attendance-link" onclick="window.location.href='view7DCan';">Mark Attendance for Online Sathvartha</a>-->
+
+    <?php endif; ?>
+</div>
+
+<div class="icon-button-group search-icons">
+    <?php if ($designation == 'Evng Coordinator' ): ?>
+        <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
+            <i class="fas fa-file-alt"></i>
+        </button>
         <button class="icon-button" title="Evangelist Registration" onclick="window.location.href='/evngRegistration';">
             <i class="fas fa-user-plus"></i>
         </button>
         <button class="icon-button" title="View Submitted Registrations" onclick="window.location.href='/viewRegistration';">
             <i class="fas fa-list"></i>
         </button>
-
+        <button class="icon-button" title="View all Registrations" onclick="window.location.href='/viewAllRegistrations';">
+            <i class="fas fa-list"></i>
+        </button>
+        <button class="icon-button seven-day-badge" title="7D Approval" onclick="window.location.href='view7DApproval';">
+            7D ✓
+        </button>
+        <button class="icon-button seven-day-badge" title="7D Approved Candidates" onclick="window.location.href='view7DApproved';">
+            7D List
+        </button>
     <?php endif; ?>
 </div>
 
+<div class="icon-button-group search-icons">
+    <?php if ($designation == 'Management' ): ?>
+        <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
+            <i class="fas fa-file-alt"></i>
+        </button>
+        <button class="icon-button" title="Evangelist Registration" onclick="window.location.href='/evngRegistration';">
+            <i class="fas fa-user-plus"></i>
+        </button>
+        <button class="icon-button" title="View Submitted Registrations" onclick="window.location.href='/viewRegistration';">
+            <i class="fas fa-list"></i>
+        </button>
+        <button class="icon-button" title="View all Registrations" onclick="window.location.href='/viewAllRegistrations';">
+            <i class="fas fa-list"></i>
+        </button>
+        <button class="icon-button" title="Approval/Rejection" onclick="window.location.href='/appRegistration';">
+            <i class="fas fa-check-circle"></i>
+        </button>
+        <button class="icon-button seven-day-badge" title="7D Approval" onclick="window.location.href='view7DApproval';">
+            7D ✓
+        </button>
+        <button class="icon-button seven-day-badge" title="7D Approved Candidates" onclick="window.location.href='view7DApproved';">
+            7D List
+        </button>
+    <?php endif; ?>
+</div>
+
+
+
 <div class="icon-button-group">
-    <?php if ($designation !== 'Evangelist'): ?>
+    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'Caretaker' && $designation !== 'Management'): ?>
         <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
             <i class="fas fa-file-alt"></i>
         </button>
@@ -262,6 +392,12 @@ $designation = $dashboardData[0]->designation;
         </button>
         <button class="icon-button" title="View Submitted Registrations" onclick="window.location.href='/viewRegistration';">
             <i class="fas fa-list"></i>
+        </button>
+        <button class="icon-button" title="View all Registrations" onclick="window.location.href='/viewAllRegistrations';">
+            <i class="fas fa-list"></i>
+        </button>
+        <button class="icon-button seven-day-badge" title="View Candidates" onclick="window.location.href='view7DCan';">
+            7D
         </button>
     <?php endif; ?>
 </div>
@@ -280,6 +416,7 @@ $designation = $dashboardData[0]->designation;
         'Active' => [],
         'InActive' => [],
         'Exit/Drop-out' => [],
+        'Ready for 7D Sathvartha' => [],
     ];
 
     $statusMapping = [
@@ -309,6 +446,7 @@ $designation = $dashboardData[0]->designation;
             <option value="completed">Completed</option>
             <option value="withdrawn">Withdrawn</option>
             <option value="inactive">Inactive</option>
+            <option value="Ready for 7D Sathvartha">Ready for 7D Sathvartha</option>
         </select>
     </div>
 
@@ -349,11 +487,13 @@ $designation = $dashboardData[0]->designation;
     ?>
 </div>
 
-<div class="button-container">
-    <a id="addCandidateButton" class="floating-button">
-        <i class="fas fa-plus"></i>
-    </a>
-</div>
+<?php if ($designation != 'Caretaker' && $designation != 'Event Leader'): ?>
+    <div class="button-container">
+        <a id="addCandidateButton" class="floating-button">
+            <i class="fas fa-plus"></i>
+        </a>
+    </div>
+<?php endif; ?>
 
 <script>
     document.getElementById('addCandidateButton').addEventListener('click', function() {

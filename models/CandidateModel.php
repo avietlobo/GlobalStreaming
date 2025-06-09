@@ -41,6 +41,12 @@ class CandidateModel extends DbModel
         return $this->saveRecordViaApi3($params,$candidateModel);
     }
 
+    public function updateCandidate7D($params)
+    {
+        return $this->saveRecordViaApi47D($params);
+    }
+
+
     public function updateCandidate($params)
     {
         return $this->saveRecordViaApi4($params);
@@ -58,7 +64,8 @@ class CandidateModel extends DbModel
     {
         return [
             'mobile' => [self::RULE_REQUIRED,[self::RULE_MIN, 'min' => 2],[self::RULE_UNIQUE, 'class' => self::class]],
-            'participantName' => [self::RULE_REQUIRED]
+            'participantName' => [self::RULE_REQUIRED],
+            'country' => [self::RULE_REQUIRED]
 
         ];
 
@@ -84,6 +91,12 @@ class CandidateModel extends DbModel
     {
         return "id";
     }
+
+    public function getMediaType7D($username,$candidate, $mobile)
+    {
+        return $this->getMediaTypeCandidate7D($username,$candidate,$mobile);
+    }
+
 
     public function getMediaType($username,$candidate, $mobile)
     {

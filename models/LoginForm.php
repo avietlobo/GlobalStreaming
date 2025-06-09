@@ -38,6 +38,64 @@ class LoginForm extends Model
         ];
     }
 
+    public function login7D()
+    {
+
+        $username = RegisterModel::findOne7D(['participant'=> $this->username]);
+
+
+        $record = RegisterModel::findOne7D(['participant'=> $this->username, 'password'=> $this->password]);
+
+//            echo '<pre>';
+//            var_dump($record->login_attempts);
+//            echo '</pre>';
+
+//        $attempt= $record->login_attempts;
+//        echo '<pre>';
+//        var_dump($attempt);
+//        echo '</pre>';
+
+        if(!$username){
+            $this->addSingleError('username','Username is incorrect');
+//            echo '<pre>';
+//            var_dump($this->errors);
+//            echo '</pre>';
+            return false;
+        }
+
+        if(!$record){
+            $this->addSingleError('password','password is incorrect');
+            return false;
+        }
+
+        if($record->login_attempts==0)
+        {
+            $this->updateLastLoginTime7D($record);
+        }
+
+        if ($record->login_attempts >= 3) {
+            if ($record->classFrom == 1) {
+                $this->updateLastLoginTime7D($record);
+            } else {
+                echo "Login attempts exceeded!!";
+                return false;
+            }
+        }
+
+        $this->handleLoginAttempts7D($record->login_attempts, $record);
+//        if(!($this->checkLoginValidity($record)))
+//        {
+//            exit;
+//            //return false;
+//        }
+        if($this->checkLoginValidity7D($record))
+        {
+            return Application::$app->login($record);
+        }
+//        return (  && Application::$app->login($record));
+
+    }
+
     public function login()
     {
 
@@ -106,7 +164,9 @@ class LoginForm extends Model
         $record = EvangelistModel::findOne1(['email'=> $this->username, 'password'=> $this->password]);
         if ($record) {
             $evngName = $record->evngName; // Access the email attribute
+            $emailY = $record->email; // Access the email attribute
             Application::$app->session->set('nameFinal', $evngName);
+            Application::$app->session->set('emailY', $emailY);
         }
         if(!$username){
             $this->addSingleError('username','Username is incorrect');
@@ -130,9 +190,29 @@ class LoginForm extends Model
 
     }
 
+    public function updateLastLoginTime7D($record)
+    {
+        RegisterModel::updateLastLoginField7D($record);
+    }
+
     public function updateLastLoginTime($record)
     {
         RegisterModel::updateLastLoginField($record);
+    }
+
+    public function handleLoginAttempts7D($loginAttempts, $completeRecord) {
+//     if($loginAttempts >=3)
+//     {
+//         echo "User account disabled due to multiple failed login attempts.";
+//         return false;
+//     }
+//     else
+//     {
+        RegisterModel::updateLoginAttempt7D($loginAttempts,$completeRecord);
+        //return true;
+
+
+
     }
 
     public function handleLoginAttempts($loginAttempts, $completeRecord) {
@@ -148,6 +228,12 @@ class LoginForm extends Model
 
 
 
+    }
+
+    public function checkLoginValidity7D($record) : bool
+    {
+        //echo "Hi";
+        return RegisterModel::checkLoginValidity7D($record);
     }
 
     public function checkLoginValidity($record) : bool
