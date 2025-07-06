@@ -37,10 +37,18 @@ $app-> router->post('/v2', [AuthController::class, 'loginV2']);
 $app-> router->get('/login', [AuthController::class, 'loginEvangelist']);
 $app-> router->post('/login', [AuthController::class, 'loginEvangelist']);
 $app-> router->get('/viewAllCanAttendenceMarking', [AuthController::class, 'viewAllCanAttendenceMarking']);
+$app-> router->get('/viewAllTelecallersList', [AuthController::class, 'viewAllTelecallersList']);
+$app-> router->get('/viewAllSMList', [AuthController::class, 'viewAllSMList']);
+
+$app-> router->post('/bulkAssignTelecaller', [AuthController::class, 'bulkAssignTelecaller']);
+$app-> router->post('/bulkAssignSm', [AuthController::class, 'bulkAssignSm']);
+
 $app-> router->post('/saveAttendance', [AuthController::class, 'saveAttendance']);
 $app-> router->get('/searchAttendancePage', [AuthController::class, 'searchAttendancePage']);
 
 
+$app-> router->get('/csvFileUpload', [AuthController::class, 'csvFileUpload']);
+$app-> router->post('/process_upload', [AuthController::class, 'process_upload']);
 
 
 

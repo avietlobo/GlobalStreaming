@@ -15,10 +15,13 @@ use app\core\Request;
 use app\core\Response;
 use app\gateway\CanDetailsGateway;
 use app\models\CandidateModel;
+use app\models\DataBankModel;
 use app\models\EvangelistModel;
 use app\models\EvangelistReviewModel;
 use app\models\LoginForm;
 use app\models\RegisterModel;
+use app\models\TelecallerSMModel;
+use app\models\UploadProcessLogModel;
 use app\models\VideoWatchHistoryModel;
 use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -726,6 +729,103 @@ class AuthController extends Controller
             'models' => $candidates]);
     }
 
+    function isValidCSVHeader($header): bool
+    {
+        $expected = ['mobile','name','record_date','telecaller','email','source','country','city','referredBy','group_name','fellowship','language'];
+        return $header === $expected;
+    }
+
+
+    function generateProcessId(): string
+    {
+        return uniqid('PID-') . '-' . bin2hex(random_bytes(4));
+    }
+
+
+    public function process_upload(Request $request, Response $response)
+    {
+
+
+
+        $fileTmpPath = $_FILES['csv_file']['tmp_name'];
+        $rows = array_map('str_getcsv', file($fileTmpPath));
+        $header = array_map('trim', array_shift($rows));
+        if (!$this->isValidCSVHeader($header)) {
+            die("Invalid CSV header format.");
+        }
+
+        if ($_FILES['csv_file']['error'] !== UPLOAD_ERR_OK) {
+            die("Error uploading file.");
+        }
+
+        $fileTmpPath = $_FILES['csv_file']['tmp_name'];
+        $rows = array_map('str_getcsv', file($fileTmpPath));
+        $header = array_map('trim', array_shift($rows));
+
+        if (!$this->isValidCSVHeader($header)) {
+            die("Invalid CSV header format.");
+        }
+
+        if (count($rows) < 1) {
+            die("CSV file cannot have less than 1 row.");
+        }
+
+        if (count($rows) > 1000) {
+            die("CSV file cannot have more than 1000 rows.");
+        }
+
+        $processId = $this->generateProcessId();
+        $uploadTime = date('Y-m-d H:i:s');
+        $status = 'Processing';
+        $errorFile = "logs/{$processId}_errors.csv";
+        $outputFile = "logs/{$processId}_output.csv";
+
+        if (!is_dir('logs')) {
+            mkdir('logs', 0777, true);
+        }
+
+        file_put_contents($errorFile, implode(",", $header) . ",error\n");
+        file_put_contents($outputFile, implode(",", $header) . "\n");
+
+        $evngName = Application::$app->session->get('nameFinal');
+        UploadProcessLogModel::uploadProcessId($processId, $evngName,$uploadTime, $status, $errorFile, $outputFile);
+        DataBankModel::loadDataBank($rows,$header,$errorFile,$outputFile,$processId);
+
+        $allUploads = UploadProcessLogModel::getUploadsByUser($evngName);
+
+        return $this->render('process_upload', [
+            'errorFilePath' => "logs/{$processId}_errors.csv",
+            'outputFilePath' => "logs/{$processId}_output.csv",
+            'processId' => $processId,
+            'allUploads' => $allUploads
+        ]);
+    }
+
+
+
+
+
+
+
+    public function csvFileUpload(Request $request, Response $response)
+    {
+
+        $evngName = Application::$app->session->get('nameFinal'); // assuming session has uploader's name
+        $allUploads = UploadProcessLogModel::getUploadsByUser($evngName);
+
+        //return $this->render('csvUploadForm');
+        return $this->render('csvUploadForm', [
+            'allUploads' => $allUploads
+        ]);
+
+
+//        return $this->render('csvUploadForm', [
+//            'models' => $data
+//        ]);
+
+    }
+
+
     public function view7DCan(Request $request, Response $response)
     {
         $evangelistName= Application::$app->session->get('nameFinal');
@@ -794,6 +894,104 @@ class AuthController extends Controller
             'totalPages' => $totalPages,
             'currentPage' => $page,
             'search' => $search
+        ]);
+    }
+
+
+
+
+
+
+    public function bulkAssignSm(Request $request, Response $response)
+    {
+        $dataBankModel = new DataBankModel();
+        $telecallerSMModel = new TelecallerSMModel();
+
+
+        if ($request->isPost()) {
+
+            $selectedMobiles = $_POST['selected_contacts'];
+            $contacts = $_POST['contacts'] ?? [];
+            $assignedTo = $_POST['assignedTo']; // Replace with current logged-in user if available
+            $assignMode = $_POST['assignMode'] ?? 'assign';  // default
+            $status = 'Pending';     // Default status
+            $callDate = date('Y-m-d');
+            if ($assignMode === 'assign') {
+                error_log("Entered block 2");
+               DataBankModel::bulkAssignDataBankRecords($selectedMobiles,$contacts,$assignedTo);
+            } elseif ($assignMode === 'reassign') {
+                error_log("Entered block 3");
+                DataBankModel::bulkReassignDataBankRecords($selectedMobiles, $assignedTo);
+            }
+        }
+        $allRecords2= DataBankModel::getAllSMDataBankRecords();
+
+        return $this->render('sm_list', [
+            'records' => $allRecords2
+        ]);
+
+
+    }
+
+    public function bulkAssignTelecaller(Request $request, Response $response)
+    {
+        $dataBankModel = new DataBankModel();
+        $telecallerSMModel = new TelecallerSMModel();
+
+
+
+        if ($request->isPost()) {
+
+            $selectedMobiles = $_POST['selected_contacts'];
+            $contacts = $_POST['contacts'] ?? [];
+            $assignedTo = $_POST['assignedTo']; // Replace with current logged-in user if available
+            $assignMode = $_POST['assignMode'] ?? 'assign';  // default
+            $status = 'Pending';     // Default status
+            $callDate = date('Y-m-d');
+
+            error_log("Entered block 1");
+            if ($assignMode === 'assign') {
+                error_log("Entered block 2");
+                $allRecords= DataBankModel::bulkAssignDataBankRecords($selectedMobiles,$contacts,$assignedTo);
+            } elseif ($assignMode === 'reassign') {
+                error_log("Entered block 3");
+                $allRecords= DataBankModel::bulkReassignDataBankRecords($selectedMobiles, $assignedTo);
+            }
+
+
+
+        }
+
+
+        $allRecords= DataBankModel::getAllPHONEDataBankRecords();
+
+
+        return $this->render('telecallers_list', [
+            'records' => $allRecords
+        ]);
+
+    }
+
+
+    public function viewAllSMList(Request $request, Response $response)
+    {
+        $dataBankModel = new DataBankModel();
+        $allRecords= DataBankModel::getAllSMDataBankRecords();
+
+
+        return $this->render('sm_list', [
+            'records' => $allRecords
+        ]);
+    }
+
+    public function viewAllTelecallersList(Request $request, Response $response)
+    {
+        $dataBankModel = new DataBankModel();
+        $allRecords= DataBankModel::getAllPHONEDataBankRecords();
+
+
+        return $this->render('telecallers_list', [
+            'records' => $allRecords
         ]);
     }
 

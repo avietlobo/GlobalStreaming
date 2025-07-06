@@ -269,6 +269,16 @@ $designation = $dashboardData[0]->designation;
     <?php endif; ?>
 </div>
 
+<?php if ($designation == 'Evangelist'): ?>
+    <button class="icon-button seven-day-badge" title="My Task" onclick="window.location.href='view7DCan';">
+        My Task
+    </button>
+    <button class="icon-button seven-day-badge" title="My Preference" onclick="window.location.href='view7DCan';">
+        My Preference
+    </button>
+
+<?php endif; ?>
+
 <div class="icon-button-group search-icons">
     <?php if ($designation == 'Evng Coordinator' ): ?>
         <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">

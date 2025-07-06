@@ -287,6 +287,16 @@ $designation = $dashboardData[0]->designation;
 
 ?>
 
+<?php if ($designation == 'Evangelist'): ?>
+    <button class="icon-button seven-day-badge" title="My Task" onclick="window.location.href='view7DCan';">
+        My Task
+    </button>
+    <button class="icon-button seven-day-badge" title="My Preference" onclick="window.location.href='view7DCan';">
+        My Preference
+    </button>
+
+<?php endif; ?>
+
 <div class="icon-button-group">
     <?php if ($designation == 'Caretaker'): ?>
 
@@ -327,6 +337,21 @@ $designation = $dashboardData[0]->designation;
 
     <?php endif; ?>
 </div>
+
+<?php if ($designation == 'TaskManager'): ?>
+
+
+    <a href="#" class="attendance-link" title="View Telecaller Tasks" onclick="window.location.href='viewAllTelecallersList';">
+        <img src="phone.png" alt="Attendance Icon">
+    </a>
+
+    <a href="#" class="attendance-link" title="View SM Tasks" onclick="window.location.href='viewAllSMList';">
+        <img src="social-media.png" alt="Attendance Icon">
+    </a>
+
+<?php endif; ?>
+
+
 
 <div class="icon-button-group search-icons">
     <?php if ($designation == 'Evng Coordinator' ): ?>
@@ -380,7 +405,7 @@ $designation = $dashboardData[0]->designation;
 
 
 <div class="icon-button-group">
-    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'Caretaker' && $designation !== 'Management'): ?>
+    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'Caretaker' && $designation !== 'Management'  && $designation !== 'TaskManager'): ?>
         <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
             <i class="fas fa-file-alt"></i>
         </button>

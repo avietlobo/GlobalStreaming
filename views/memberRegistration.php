@@ -344,6 +344,8 @@
                 <option value="Evangelist">Evangelist</option>
                 <option value="Evng Coordinator">Evng Coordinator</option>
                 <option value="Event Leader">Event Leader</option>
+                <option value="TaskManager">Task Manager</option>
+                <option value="TaskManager">Telecaller</option>
             </select>
             <div class="error-message" id="designationError">Please select a designation.</div>
         </div>

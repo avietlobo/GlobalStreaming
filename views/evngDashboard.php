@@ -275,11 +275,16 @@ $designation = $dashboardData[0]->designation;
 ?>
 <!--// use this code if you don't want to use icons-->
 
-<?php //if ($designation == 'Evangelist'): ?>
-<!--    <button id="addRegButton" class="primary">Evangelist Registration</button>-->
-<!--    <button id="viewButton" class="primary">View Submitted Registrations</button>-->
-<!---->
-<?php //endif; ?>
+<?php if ($designation == 'Evangelist'): ?>
+    <button class="icon-button seven-day-badge" title="My Task" onclick="window.location.href='view7DCan';">
+        My Task
+    </button>
+
+    <button class="icon-button seven-day-badge" title="My Preference" onclick="window.location.href='view7DCan';">
+        My Preference
+    </button>
+
+<?php endif; ?>
 <!---->
 <!---->
 <?php //if ($designation !== 'Evangelist'): ?>
@@ -329,6 +334,21 @@ $designation = $dashboardData[0]->designation;
 <?php endif; ?>
 </div>
 
+<?php if ($designation == 'TaskManager'): ?>
+
+
+    <a href="#" class="attendance-link" title="View Telecaller Tasks" onclick="window.location.href='viewAllTelecallersList';">
+        <img src="phone.png" alt="Attendance Icon">
+    </a>
+
+    <a href="#" class="attendance-link" title="View SM Tasks" onclick="window.location.href='viewAllSMList';">
+        <img src="social-media.png" alt="Attendance Icon">
+    </a>
+
+<?php endif; ?>
+
+
+
 
 <div class="icon-button-group search-icons">
     <?php if ($designation == 'Evng Coordinator' ): ?>
@@ -349,6 +369,9 @@ $designation = $dashboardData[0]->designation;
         </button>
         <button class="icon-button seven-day-badge" title="7D Approved Candidates" onclick="window.location.href='view7DApproved';">
             7D List
+        </button>
+        <button class="icon-button seven-day-badge" title="CSV File upload" onclick="window.location.href='csvFileUpload';">
+            CSV 📁
         </button>
     <?php endif; ?>
 </div>
@@ -380,7 +403,7 @@ $designation = $dashboardData[0]->designation;
 </div>
 
 <div class="icon-button-group search-icons">
-    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'Caretaker' && $designation !== 'Management'): ?>
+    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'Caretaker' && $designation !== 'Management' && $designation !== 'TaskManager'): ?>
         <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
             <i class="fas fa-file-alt"></i>
         </button>

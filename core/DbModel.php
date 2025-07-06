@@ -3,10 +3,13 @@
 namespace app\core;
 
 use app\models\CandidateModel7D;
+use app\models\DataBankModel;
 use app\models\EvangelistModel;
 use app\models\EvangelistReviewModel;
 use app\models\RegisterModel;
 use app\models\CandidateModel;
+use app\models\TelecallerSMModel;
+use app\models\UploadProcessLogModel;
 
 abstract class DbModel extends Model
 {
@@ -1608,6 +1611,145 @@ GROUP BY
 
 
 
+    public static function bulkReassignDataBankRecords($selectedMobiles, $assignedTo)
+    {
+        $stmt = self::prepare("UPDATE telecaller_sm SET assignedTo = :assignedTo WHERE mobile = :mobile");
+
+        foreach ($selectedMobiles as $mobile) {
+            $stmt->execute([
+                ':mobile' => $mobile,
+                ':assignedTo' => $assignedTo
+            ]);
+
+            if ($stmt->rowCount() === 0) {
+                error_log("⚠️ No record found to reassign for mobile: $mobile");
+            } else {
+                error_log("✅ Reassigned $mobile to $assignedTo");
+            }
+        }
+    }
+
+
+    public static function bulkAssignDataBankRecords($selectedMobiles,$contacts,$assignedTo)
+    {
+
+        $tableName = (new \app\models\DataBankModel())->tableName();
+        foreach ($selectedMobiles as $mobile) {
+            // Skip if mobile data is missing
+            if (!isset($contacts[$mobile])) {
+                continue;
+            }
+
+            $c = $contacts[$mobile];
+
+            $stmt = self::prepare("
+            INSERT IGNORE INTO telecaller_sm (
+                mobile, name, record_date, type, email, source, country,
+                city, referred_by, group_name, fellowship, language,
+                assignedTo
+            ) VALUES (
+                :mobile, :name, :record_date, :type, :email, :source, :country,
+                :city, :referred_by, :group_name, :fellowship, :language,
+                :assignedTo
+            )
+        ");
+
+            $stmt->execute([
+                ':mobile' => $mobile,
+                ':name' => $c['name'],
+                ':record_date' => $c['record_date'],
+                ':type' => $c['type'],
+                ':email' => $c['email'],
+                ':source' => $c['source'],
+                ':country' => $c['country'],
+                ':city' => $c['city'],
+                ':referred_by' => $c['referred_by'],
+                ':group_name' => $c['group_name'],
+                ':fellowship' => $c['fellowship'],
+                ':language' => $c['language'],
+                ':assignedTo' => $assignedTo
+            ]);
+        }
+
+
+    }
+
+    public static function getAllSMDataBankRecordsAfterAssignment()
+    {
+        $tableName = (new \app\models\TelecallerSMModel())->tableName();
+        $query = "SELECT * FROM $tableName where type = 'SM'";
+
+        $statement = self::prepare($query);
+        $statement->execute();
+
+        return $statement->fetchAll(\PDO::FETCH_CLASS, TelecallerSMModel::class);
+    }
+
+    public static function getAllSMDataBankRecords()
+    {
+        $dataBankTable = (new \app\models\DataBankModel())->tableName();
+        $telecallerTable = (new \app\models\TelecallerSMModel())->tableName();
+
+        $query = "
+        SELECT 
+            d.*, 
+            t.assignedTo, 
+            t.status, 
+            t.callDate
+        FROM $dataBankTable d
+        LEFT JOIN $telecallerTable t ON d.mobile = t.mobile
+        WHERE d.type = 'SM'
+    ";
+
+        $statement = self::prepare($query);
+        $statement->execute();
+
+
+        return $statement->fetchAll(\PDO::FETCH_CLASS, TelecallerSMModel::class);
+    }
+
+    public static function getAllPHONEDataBankRecordsAfterAssignment()
+    {
+        $tableName = (new \app\models\TelecallerSMModel())->tableName();
+        $query = "SELECT * FROM $tableName where type = 'PHONE'";
+
+        $statement = self::prepare($query);
+        $statement->execute();
+
+        return $statement->fetchAll(\PDO::FETCH_CLASS, TelecallerSMModel::class);
+    }
+
+    public static function getAllPHONEDataBankRecords()
+    {
+//        $tableName = (new \app\models\DataBankModel())->tableName();
+//        $query = "SELECT * FROM $tableName where type = 'PHONE'";
+//
+//        $statement = self::prepare($query);
+//        $statement->execute();
+
+        $dataBankTable = (new \app\models\DataBankModel())->tableName();
+        $telecallerTable = (new \app\models\TelecallerSMModel())->tableName();
+
+        $query = "
+        SELECT 
+            d.*, 
+            t.assignedTo, 
+            t.status, 
+            t.callDate
+        FROM $dataBankTable d
+        LEFT JOIN $telecallerTable t ON d.mobile = t.mobile
+        WHERE d.type = 'PHONE'
+    ";
+
+        $statement = self::prepare($query);
+        $statement->execute();
+
+
+        return $statement->fetchAll(\PDO::FETCH_CLASS, TelecallerSMModel::class);
+    }
+
+
+
     public static function findcountrywiseCandidateDetails($country,$activeStatus,$language)
     {
 
@@ -2046,6 +2188,150 @@ ORDER BY
 )");        //$statement->bindValue(':activeStatus', 'Ready for 7D Sathvartha');
         $statement->execute();
        return $statement->fetchAll(\PDO::FETCH_CLASS, CandidateModel::class);
+    }
+
+
+
+    public static function loadDataBank($rows,$header,$errorFile,$outputFile,$processId)
+    {
+
+        $mobileSet = [];
+        $inserted = 0;
+        $skipped = 0;
+
+        foreach ($rows as $index => $row) {
+            $row = array_map('trim', $row);
+            $assoc = array_combine($header, $row);
+            $mobile = $assoc['mobile'];
+            $name = $assoc['name'];
+            $record_date = $assoc['record_date'];
+            if (empty($record_date)) {
+                $record_date = date('Y-m-d H:i:s'); // Or 'Y-m-d' if only date is needed
+            }
+            $telecallerInput = $assoc['mobile'];
+            if (preg_match('/^\+?\d[\d\s\-]{7,}$/', $telecallerInput)) {
+                $type = 'PHONE';
+            } elseif (filter_var($telecallerInput, FILTER_VALIDATE_URL)) {
+                $type = 'SM';
+            } else {
+                $type = 'NA'; // fallback if neither
+            }
+            $email = $assoc['email'];
+            $source = $assoc['source'];
+            $country = $assoc['country'];
+            $city = $assoc['city'];
+            $referredBy = $assoc['referredBy'];
+            $group_name = $assoc['group_name'];
+            $fellowship = $assoc['fellowship'];
+            $language = $assoc['language'];
+
+            if (empty($mobile) || isset($mobileSet[$mobile])) {
+                $skipped++;
+                file_put_contents($errorFile, implode(",", $row) . ",Duplicate or empty mobile\n", FILE_APPEND);
+                continue;
+            }
+
+
+            // Check DB uniqueness
+            $stmt = self::prepare("SELECT COUNT(*) FROM data_bank WHERE mobile = :mobile");
+            $stmt->bindValue(':mobile', $mobile);
+            $stmt->execute();
+            if ($stmt->fetchColumn() > 0) {
+                $skipped++;
+                file_put_contents($errorFile, implode(",", $row) . ",Mobile exists in DB\n", FILE_APPEND);
+                continue;
+            }
+
+            try {
+                $statement = self::prepare("INSERT INTO data_bank (
+    mobile, name, record_date, type, email, source, country, city, 
+    referred_by, group_name, fellowship, language
+) VALUES (
+    :mobile, :name, :record_date, :type, :email, :source, :country, :city,
+    :referred_by, :group_name, :fellowship, :language
+)");
+
+            $statement->bindValue(':mobile', $mobile);
+            $statement->bindValue(':name', $name);
+            $statement->bindValue(':record_date', $record_date);
+            $statement->bindValue(':type', $type);
+            $statement->bindValue(':email', $email);
+            $statement->bindValue(':source', $source);
+            $statement->bindValue(':country', $country);
+            $statement->bindValue(':city', $city);
+            $statement->bindValue(':referred_by', $referredBy);
+            $statement->bindValue(':group_name', $group_name);
+            $statement->bindValue(':fellowship', $fellowship);
+            $statement->bindValue(':language', $language);
+            $success = $statement->execute();
+
+                $inserted++;
+                $mobileSet[$mobile] = true;
+                file_put_contents($outputFile, implode(",", $row) . "\n", FILE_APPEND);
+            } catch (\PDOException $e) {
+                // ✅ Log any insert error to error file, don't crash app
+                $skipped++;
+                file_put_contents($errorFile, implode(",", $row) . ",DB insert error: " . $e->getMessage() . "\n", FILE_APPEND);
+                continue;
+            }
+
+
+        }
+
+        // Set status based on result
+        $statusFinal = ($inserted > 0) ? 'Completed' : 'Failed';
+
+        // Update process log
+
+        $total = count($rows);
+        $statement3 = self::prepare("UPDATE upload_process_log SET status = :status,inserted_rows= :inserted_rows,skipped_rows =:skipped_rows,total_rows= :total_rows WHERE process_id  = :process_id ");
+
+        $statement3->bindValue(':status', ($inserted > 0) ? 'Completed' : 'Failed');
+        $statement3->bindParam(':inserted_rows', $inserted);
+        $statement3->bindParam(':skipped_rows', $skipped);
+        $statement3->bindParam(':total_rows', $total);
+        $statement3->bindParam(':process_id', $processId);
+
+
+        $statement3->execute();
+
+
+    }
+
+
+    public static function getUploadsByUser($evngName)
+    {
+
+        $tableName = 'upload_process_log';
+        $statement = self::prepare("SELECT * FROM $tableName WHERE uploadedBy = :username ORDER BY upload_time DESC");
+        $statement->bindValue(':username', $evngName);
+        $statement->execute();
+        //return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $uploadedFiles = $statement->fetchAll(\PDO::FETCH_CLASS, UploadProcessLogModel::class);
+        return $uploadedFiles;
+    }
+
+    public static function uploadProcessId($processId, $evngName,$uploadTime, $status, $errorFile, $outputFile)
+    {
+        $tableName = 'upload_process_log';
+
+        // Prepare and execute the SQL query
+        $statement = self::prepare("INSERT INTO $tableName (process_id, uploadedBy, upload_time, status, total_rows, inserted_rows, skipped_rows, error_file, output_file) 
+            VALUES (:process_id, :uploadedBy,:upload_time, :status, :total_rows, :inserted_rows, :skipped_rows, :error_file, :output_file)");
+
+        $statement->bindValue(':process_id', $processId);
+        $statement->bindValue(':uploadedBy', $evngName);
+        $statement->bindValue(':upload_time', $uploadTime);
+        $statement->bindValue(':status', $status);
+        $statement->bindValue(':total_rows', 0, \PDO::PARAM_INT);
+        $statement->bindValue(':inserted_rows', 0, \PDO::PARAM_INT);
+        $statement->bindValue(':skipped_rows', 0, \PDO::PARAM_INT);
+        $statement->bindValue(':error_file', $errorFile);
+        $statement->bindValue(':output_file', $outputFile);
+
+       $statement->execute();
+
+
     }
 
     public static function findAllCandidatesForEvangelist7D($where,$name)
