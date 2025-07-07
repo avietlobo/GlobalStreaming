@@ -276,14 +276,15 @@ $designation = $dashboardData[0]->designation;
 <!--// use this code if you don't want to use icons-->
 
 <?php if ($designation == 'Evangelist'): ?>
-    <button class="icon-button seven-day-badge" title="My Task" onclick="window.location.href='view7DCan';">
-        My Task
-    </button>
+    <div class="icon-button-group">
+        <button class="icon-button seven-day-badge" title="My Task" onclick="window.location.href='viewMyTasks';">
+            My Task
+        </button>
 
-    <button class="icon-button seven-day-badge" title="My Preference" onclick="window.location.href='view7DCan';">
-        My Preference
-    </button>
-
+        <button class="icon-button seven-day-badge" title="My Preference" onclick="window.location.href='view7DCan';">
+            My Preference
+        </button>
+    </div>
 <?php endif; ?>
 <!---->
 <!---->

@@ -39,6 +39,9 @@ $app-> router->post('/login', [AuthController::class, 'loginEvangelist']);
 $app-> router->get('/viewAllCanAttendenceMarking', [AuthController::class, 'viewAllCanAttendenceMarking']);
 $app-> router->get('/viewAllTelecallersList', [AuthController::class, 'viewAllTelecallersList']);
 $app-> router->get('/viewAllSMList', [AuthController::class, 'viewAllSMList']);
+$app-> router->get('/viewMyTasks', [AuthController::class, 'viewMyTasks']);
+$app-> router->get('/viewTaskDetails', [AuthController::class, 'viewTaskDetails']);
+
 
 $app-> router->post('/bulkAssignTelecaller', [AuthController::class, 'bulkAssignTelecaller']);
 $app-> router->post('/bulkAssignSm', [AuthController::class, 'bulkAssignSm']);

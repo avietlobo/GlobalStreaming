@@ -288,13 +288,15 @@ $designation = $dashboardData[0]->designation;
 ?>
 
 <?php if ($designation == 'Evangelist'): ?>
-    <button class="icon-button seven-day-badge" title="My Task" onclick="window.location.href='view7DCan';">
-        My Task
-    </button>
-    <button class="icon-button seven-day-badge" title="My Preference" onclick="window.location.href='view7DCan';">
-        My Preference
-    </button>
+    <div class="icon-button-group">
+        <button class="icon-button seven-day-badge" title="My Task" onclick="window.location.href='viewMyTasks';">
+            My Task
+        </button>
 
+        <button class="icon-button seven-day-badge" title="My Preference" onclick="window.location.href='view7DCan';">
+            My Preference
+        </button>
+    </div>
 <?php endif; ?>
 
 <div class="icon-button-group">

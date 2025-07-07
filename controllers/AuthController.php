@@ -916,14 +916,22 @@ class AuthController extends Controller
             $assignMode = $_POST['assignMode'] ?? 'assign';  // default
             $status = 'Pending';     // Default status
             $callDate = date('Y-m-d');
+
+            error_log("Entered block 1");
             if ($assignMode === 'assign') {
                 error_log("Entered block 2");
-               DataBankModel::bulkAssignDataBankRecords($selectedMobiles,$contacts,$assignedTo);
+                $allRecords= DataBankModel::bulkAssignDataBankRecords($selectedMobiles,$contacts,$assignedTo);
             } elseif ($assignMode === 'reassign') {
                 error_log("Entered block 3");
-                DataBankModel::bulkReassignDataBankRecords($selectedMobiles, $assignedTo);
+                $allRecords= DataBankModel::bulkReassignDataBankRecords($selectedMobiles, $assignedTo);
             }
+
+            // ✅ Redirect back to filtered/paginated view with success flag
+            header("Location: /viewAllSMList?assigned=1");
+            exit;
+
         }
+
         $allRecords2= DataBankModel::getAllSMDataBankRecords();
 
         return $this->render('sm_list', [
@@ -958,7 +966,9 @@ class AuthController extends Controller
                 $allRecords= DataBankModel::bulkReassignDataBankRecords($selectedMobiles, $assignedTo);
             }
 
-
+            // ✅ Redirect back to filtered/paginated view with success flag
+            header("Location: /viewAllTelecallersList?assigned=1");
+            exit;
 
         }
 
@@ -973,7 +983,7 @@ class AuthController extends Controller
     }
 
 
-    public function viewAllSMList(Request $request, Response $response)
+    public function viewAllSMList1(Request $request, Response $response)
     {
         $dataBankModel = new DataBankModel();
         $allRecords= DataBankModel::getAllSMDataBankRecords();
@@ -984,14 +994,114 @@ class AuthController extends Controller
         ]);
     }
 
-    public function viewAllTelecallersList(Request $request, Response $response)
+
+
+    public function viewTaskDetails(Request $request, Response $response)
     {
+        $mobile = $_GET['mobile'] ?? null;
+
+        if (!$mobile) {
+           echo("Mobile number is missing.");
+
+        }
+
+        $task = TelecallerSMModel::findMob(['mobile' => $mobile]);
+
+        if (!$task) {
+            echo("No data found for this mobile.");
+
+        }
+
+        // Render the view and pass the $task
+        return $this->render('viewTaskDetails', [
+            'task' => $task
+        ]);
+
+    }
+
+
+    public function viewMyTasks(Request $request, Response $response)
+    {
+        $assignedTo = Application::$app->session->get('nameFinal'); // Logged-in user
+        $tasks = TelecallerSMModel::getMyTasks($assignedTo);
+
+        return $this->render('myTasksView', [
+            'tasks' => $tasks
+        ]);
+    }
+
+    public function viewAllSMList(Request $request, Response $response)
+    {
+        $filters = $_GET['filter'] ?? [];
+        $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+
+        // Step 3: Set pagination limit and offset
+        $limit = 20;
+        $offset = ($page - 1) * $limit;
+
+        // Step 4: Fetch filtered & paginated records
+        $data = DataBankModel::getFilteredSMData($filters, $limit, $offset);
+
+        // Step 5: Return to view with additional data
+        return $this->render('sm_list', [
+            'records' => $data['records'],
+            'totalRecords' => $data['totalRecords'],
+            'filters' => $filters,
+            'currentPage' => $page,
+            'limit' => $limit
+        ]);
+    }
+
+    public function viewAllTelecallersList1(Request $request, Response $response)
+    {
+//        // Get filter values
+//        $filters = $request->getQueryParam('filter') ?? [];
+//
+//        // Get current page number
+//        $page = max(1, (int)$request->getQueryParam('page', 1));
+//
+//        // Limit per page
+//        $limit = 50;
+//        $offset = ($page - 1) * $limit;
+
+
         $dataBankModel = new DataBankModel();
         $allRecords= DataBankModel::getAllPHONEDataBankRecords();
+        //$data= DataBankModel::getFilteredTelecallerData($filters, $limit, $offset);
+
+//        return $this->render('telecallers_list', [
+//            'records' => $data['records'],
+//            'totalRecords' => $data['totalRecords'],
+//            'filters' => $filters,
+//            'currentPage' => $page,
+//            'limit' => $limit
+//        ]);
 
 
         return $this->render('telecallers_list', [
             'records' => $allRecords
+        ]);
+    }
+
+    public function viewAllTelecallersList(Request $request, Response $response)
+    {
+        $filters = $_GET['filter'] ?? [];
+        $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+
+        // Step 3: Set pagination limit and offset
+        $limit = 20;
+        $offset = ($page - 1) * $limit;
+
+        // Step 4: Fetch filtered & paginated records
+        $data = DataBankModel::getFilteredTelecallerData($filters, $limit, $offset);
+
+        // Step 5: Return to view with additional data
+        return $this->render('telecallers_list', [
+            'records' => $data['records'],
+            'totalRecords' => $data['totalRecords'],
+            'filters' => $filters,
+            'currentPage' => $page,
+            'limit' => $limit
         ]);
     }
 

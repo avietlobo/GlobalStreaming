@@ -1,3 +1,0 @@
-mobile,name,record_date,telecaller,email,source,country,city,referredBy,group_name,fellowship,language,error
-1'234677777777777777777778,aviet,,,,data_scrape,Nepal,Pokran,peter,Velankani,Pisgah,English,DB insert error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'referredBy' in 'field list'
-9#$%^&**()112356,lobo,,,test@abc.com,data_scrape,Poland,Poland,John,UK Malyalees,Canaan,Malayalam,DB insert error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'referredBy' in 'field list'

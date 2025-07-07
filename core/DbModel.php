@@ -809,6 +809,31 @@ abstract class DbModel extends Model
         return $statement->fetchObject(static::class);
     }
 
+
+    public static function findMob($where)
+    {
+        $tableName = 'telecaller_sm';
+        $conditions = [];
+        $params = [];
+
+        foreach ($where as $key => $value) {
+            $conditions[] = "$key = :$key";
+            $params[":$key"] = $value;
+        }
+
+        $whereClause = implode(" AND ", $conditions);
+        $sql = "SELECT * FROM $tableName WHERE $whereClause LIMIT 1";
+
+        $stmt = self::prepare($sql);
+        foreach ($params as $key => $val) {
+            $stmt->bindValue($key, $val);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchObject(static::class);
+    }
+
+
     public static function findOne($where)
     {
         $tableName = (new \app\models\RegisterModel)->tableName();
@@ -1685,6 +1710,19 @@ GROUP BY
         return $statement->fetchAll(\PDO::FETCH_CLASS, TelecallerSMModel::class);
     }
 
+
+
+    public static function getMyTasks($assignedToName)
+    {
+        $telecallerTable = (new \app\models\TelecallerSMModel())->tableName();
+        $query = "SELECT * FROM $telecallerTable WHERE assignedTo = :assignedTo ORDER BY callDate DESC
+        ";
+        $statement = self::prepare($query);
+        $statement->bindValue(':assignedTo', $assignedToName);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public static function getAllSMDataBankRecords()
     {
         $dataBankTable = (new \app\models\DataBankModel())->tableName();
@@ -1718,6 +1756,160 @@ GROUP BY
 
         return $statement->fetchAll(\PDO::FETCH_CLASS, TelecallerSMModel::class);
     }
+
+    public static function getFilteredSMData($filters = [], $limit = 50, $offset = 0)
+    {
+        $dataBankTable = (new \app\models\DataBankModel())->tableName();
+        $telecallerTable = (new \app\models\TelecallerSMModel())->tableName();
+
+        $where = ["d.type = 'SM'"];
+        $params = [];
+
+        // Build dynamic WHERE clauses
+        if (!empty($filters['source'])) {
+            $where[] = "d.source LIKE ?";
+            $params[] = "%" . $filters['source'] . "%";
+        }
+        if (!empty($filters['country'])) {
+            $where[] = "d.country LIKE ?";
+            $params[] = "%" . $filters['country'] . "%";
+        }
+        if (!empty($filters['city'])) {
+            $where[] = "d.city LIKE ?";
+            $params[] = "%" . $filters['city'] . "%";
+        }
+        if (!empty($filters['group_name'])) {
+            $where[] = "d.group_name LIKE ?";
+            $params[] = "%" . $filters['group_name'] . "%";
+        }
+        if (!empty($filters['fellowship'])) {
+            $where[] = "d.fellowship LIKE ?";
+            $params[] = "%" . $filters['fellowship'] . "%";
+        }
+        if (!empty($filters['language'])) {
+            $where[] = "d.language LIKE ?";
+            $params[] = "%" . $filters['language'] . "%";
+        }
+        if (!empty($filters['assignedTo'])) {
+            $where[] = "t.assignedTo LIKE ?";
+            $params[] = "%" . $filters['assignedTo'] . "%";
+        }
+
+        if (!empty($filters['status'])) {
+            $where[] = "t.status LIKE ?";
+            $params[] = "%" . $filters['status'] . "%";
+        }
+
+
+        $whereSql = implode(' AND ', $where);
+
+        // Count total records for pagination
+        $countQuery = "SELECT COUNT(*) FROM $dataBankTable d LEFT JOIN $telecallerTable t ON d.mobile = t.mobile WHERE $whereSql";
+        $countStmt = self::prepare($countQuery);
+        $countStmt->execute($params);
+        $totalRecords = $countStmt->fetchColumn();
+
+        // Main data query
+        $query = "
+        SELECT 
+            d.*, 
+            t.assignedTo, 
+            t.status, 
+            t.callDate
+        FROM $dataBankTable d
+        LEFT JOIN $telecallerTable t ON d.mobile = t.mobile
+        WHERE $whereSql
+        LIMIT $limit OFFSET $offset
+    ";
+
+        $stmt = self::prepare($query);
+        $stmt->execute($params);
+        $records = $stmt->fetchAll(\PDO::FETCH_CLASS, TelecallerSMModel::class);
+
+        return [
+            'records' => $records,
+            'totalRecords' => $totalRecords
+        ];
+    }
+
+
+
+
+    public static function getFilteredTelecallerData($filters = [], $limit = 50, $offset = 0)
+    {
+        $dataBankTable = (new \app\models\DataBankModel())->tableName();
+        $telecallerTable = (new \app\models\TelecallerSMModel())->tableName();
+
+        $where = ["d.type = 'PHONE'"];
+        $params = [];
+
+        // Build dynamic WHERE clauses
+        if (!empty($filters['source'])) {
+            $where[] = "d.source LIKE ?";
+            $params[] = "%" . $filters['source'] . "%";
+        }
+        if (!empty($filters['country'])) {
+            $where[] = "d.country LIKE ?";
+            $params[] = "%" . $filters['country'] . "%";
+        }
+        if (!empty($filters['city'])) {
+            $where[] = "d.city LIKE ?";
+            $params[] = "%" . $filters['city'] . "%";
+        }
+        if (!empty($filters['group_name'])) {
+            $where[] = "d.group_name LIKE ?";
+            $params[] = "%" . $filters['group_name'] . "%";
+        }
+        if (!empty($filters['fellowship'])) {
+            $where[] = "d.fellowship LIKE ?";
+            $params[] = "%" . $filters['fellowship'] . "%";
+        }
+        if (!empty($filters['language'])) {
+            $where[] = "d.language LIKE ?";
+            $params[] = "%" . $filters['language'] . "%";
+        }
+        if (!empty($filters['assignedTo'])) {
+            $where[] = "t.assignedTo LIKE ?";
+            $params[] = "%" . $filters['assignedTo'] . "%";
+        }
+
+        if (!empty($filters['status'])) {
+            $where[] = "t.status LIKE ?";
+            $params[] = "%" . $filters['status'] . "%";
+        }
+
+
+        $whereSql = implode(' AND ', $where);
+
+        // Count total records for pagination
+        $countQuery = "SELECT COUNT(*) FROM $dataBankTable d LEFT JOIN $telecallerTable t ON d.mobile = t.mobile WHERE $whereSql";
+        $countStmt = self::prepare($countQuery);
+        $countStmt->execute($params);
+        $totalRecords = $countStmt->fetchColumn();
+
+        // Main data query
+        $query = "
+        SELECT 
+            d.*, 
+            t.assignedTo, 
+            t.status, 
+            t.callDate
+        FROM $dataBankTable d
+        LEFT JOIN $telecallerTable t ON d.mobile = t.mobile
+        WHERE $whereSql
+        LIMIT $limit OFFSET $offset
+    ";
+
+        $stmt = self::prepare($query);
+        $stmt->execute($params);
+        $records = $stmt->fetchAll(\PDO::FETCH_CLASS, TelecallerSMModel::class);
+
+        return [
+            'records' => $records,
+            'totalRecords' => $totalRecords
+        ];
+    }
+
 
     public static function getAllPHONEDataBankRecords()
     {
@@ -2209,7 +2401,13 @@ ORDER BY
                 $record_date = date('Y-m-d H:i:s'); // Or 'Y-m-d' if only date is needed
             }
             $telecallerInput = $assoc['mobile'];
-            if (preg_match('/^\+?\d[\d\s\-]{7,}$/', $telecallerInput)) {
+            if (
+                // Matches +91 98765 43210 or 98765-43210 or similar
+                preg_match('/^\+?\d[\d\s\-]{5,}$/', $telecallerInput)
+                ||
+                // Accept plain digit-only mobile numbers like 123460 (min 6 digits)
+                preg_match('/^\d{6,}$/', $telecallerInput)
+            ) {
                 $type = 'PHONE';
             } elseif (filter_var($telecallerInput, FILTER_VALIDATE_URL)) {
                 $type = 'SM';

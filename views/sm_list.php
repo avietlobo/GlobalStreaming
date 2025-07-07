@@ -79,10 +79,44 @@
             ✅ Bulk assignment successful!
         </div>
     <?php endif; ?>
+    <!-- 🔍 FILTER FORM (GET) -->
+    <form method="GET" action="/viewAllSMList">
+        <div class="table-wrapper">
+            <div style="margin-bottom: 20px;">
+                <label>🌐 Source:
+                    <input type="text" name="filter[source]" value="<?= htmlspecialchars($_GET['filter']['source'] ?? '') ?>">
+                </label>
+                <label>🇮🇳 Country:
+                    <input type="text" name="filter[country]" value="<?= htmlspecialchars($_GET['filter']['country'] ?? '') ?>">
+                </label>
+                <label>🏙️ City:
+                    <input type="text" name="filter[city]" value="<?= htmlspecialchars($_GET['filter']['city'] ?? '') ?>">
+                </label>
+                <label>👪 Group Name:
+                    <input type="text" name="filter[group_name]" value="<?= htmlspecialchars($_GET['filter']['group_name'] ?? '') ?>">
+                </label>
+                <label>⛪ Fellowship:
+                    <input type="text" name="filter[fellowship]" value="<?= htmlspecialchars($_GET['filter']['fellowship'] ?? '') ?>">
+                </label>
+                <label>🗣️ Language:
+                    <input type="text" name="filter[language]" value="<?= htmlspecialchars($_GET['filter']['language'] ?? '') ?>">
+                </label>
+                <label>👨‍💼 Assigned To:
+                    <input type="text" name="filter[assignedTo]" value="<?= htmlspecialchars($_GET['filter']['assignedTo'] ?? '') ?>">
+                </label>
 
-    <form action="/bulkAssignSm" method="POST">
+                <label>📌 Status:
+                    <input type="text" name="filter[status]" value="<?= htmlspecialchars($_GET['filter']['status'] ?? '') ?>">
+                </label>
+                <button type="submit" style="background-color: #007BFF; color: white;">🔍 Apply Filters</button>
+            </div>
+        </div>
+    </form>
+    <!--    <form action="/bulkAssignTelecaller" method="POST">-->
+    <form id="assignForm" action="/bulkAssignSm" method="POST">
         <input type="hidden" name="assignedTo" id="assignedToInput">
         <div class="table-wrapper">
+
             <table>
                 <thead>
                 <tr>
@@ -144,6 +178,27 @@
                 <?php endforeach; ?>
                 </tbody>
             </table>
+            <?php
+            $totalPages = ceil(($totalRecords ?? 0) / ($limit ?? 50));
+            $currentPage = $currentPage ?? 1;
+            ?>
+
+            <!-- Record Summary -->
+            <div style="margin-top: 10px; color: #333;">
+                Showing <?= count($records) ?> of <?= $totalRecords ?? 0 ?> records
+            </div>
+
+            <!-- Pagination -->
+            <?php if ($totalPages > 1): ?>
+                <div style="margin-top: 15px; text-align: center;">
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <a href="?<?= http_build_query(['filter' => $_GET['filter'] ?? [], 'page' => $i]) ?>"
+                           style="padding: 8px 12px; margin: 2px; background: <?= $currentPage == $i ? '#007BFF' : '#ccc' ?>; color: white; border-radius: 5px; text-decoration: none;">
+                            <?= $i ?>
+                        </a>
+                    <?php endfor; ?>
+                </div>
+            <?php endif; ?>
         </div>
 
         <br>
@@ -158,6 +213,7 @@
         </div>
     </form>
 </div>
+
 
 <script>
     document.getElementById('select-all').addEventListener('change', function () {
@@ -248,7 +304,8 @@
         document.getElementById('assignedToInput').value = selectedName;
 
         // Optional: pass assignMode as hidden input (useful if needed in backend)
-        const form = document.querySelector('form');
+        //const form = document.querySelector('form');
+        const form = document.getElementById('assignForm');
         let modeInput = document.getElementById('assignModeInput');
         if (!modeInput) {
             modeInput = document.createElement('input');
@@ -341,7 +398,7 @@
         <h3 id="assignModalTitle">Select Telecaller</h3>
         <select id="telecallerSelect" style="padding: 8px; width: 100%; margin-top: 10px;">
             <option value="">-- Select --</option>
-            <option value="John">John</option>
+            <option value="Aviet">Aviet</option>
             <option value="Peter">Peter</option>
             <option value="Luke">Luke</option>
         </select>
