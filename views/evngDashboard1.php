@@ -296,6 +296,9 @@ $designation = $dashboardData[0]->designation;
         <button class="icon-button seven-day-badge" title="My Preference" onclick="window.location.href='view7DCan';">
             My Preference
         </button>
+        <button class="icon-button seven-day-badge" title="My Preference" onclick="window.location.href='view7DCan';">
+            My Word sessions
+        </button>
     </div>
 <?php endif; ?>
 

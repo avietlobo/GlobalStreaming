@@ -10,6 +10,7 @@ use app\models\RegisterModel;
 use app\models\CandidateModel;
 use app\models\TelecallerSMModel;
 use app\models\UploadProcessLogModel;
+use app\models\WordSessionModel;
 
 abstract class DbModel extends Model
 {
@@ -606,6 +607,40 @@ abstract class DbModel extends Model
         $statement->execute();
     }
 
+    public function saveCandidateViaDataDistribution($mobile,$name, $country, $language, $evangelist, $source, $allotedDays, $mediaType, $activeStatus, $wgroup, $userid, $remark)
+    {
+        $stmt = self::prepare("
+        INSERT INTO candidate (
+            mobile, recordDate, participantName, country, language,
+            evangelist, source, allotedDays, mediaType, activeStatus,
+            userid, remark, wgroup
+        ) VALUES (
+            :mobile, NOW(), :name, :country, :language,
+            :evangelist, :source, :allotedDays, :mediaType, :activeStatus,
+            :userid, :remark, :wgroup
+        )
+    ");
+
+        $stmt->bindValue(":mobile", $mobile);
+        $stmt->bindValue(":name", $name);
+        $stmt->bindValue(":country", $country);
+        $stmt->bindValue(":language", $language);
+        $stmt->bindValue(":evangelist", $evangelist);
+        $stmt->bindValue(":source", $source);
+        $stmt->bindValue(":allotedDays", $allotedDays);
+        $stmt->bindValue(":mediaType", $mediaType);
+        $stmt->bindValue(":activeStatus", $activeStatus);
+        $stmt->bindValue(":userid", $userid);
+        $stmt->bindValue(":remark", $remark);
+        $stmt->bindValue(":wgroup", $wgroup);
+
+        if ($stmt->execute()) {
+            //echo json_encode(["success" => true]);
+        } else {
+            //echo json_encode(["success" => false, "message" => "DB insert failed"]);
+        }
+    }
+
     public function saveRecordViaApi3($record,$candidateModel)
     {
         try {
@@ -807,6 +842,28 @@ abstract class DbModel extends Model
         $statement->execute();
         //return $statement->fetchAll();
         return $statement->fetchObject(static::class);
+    }
+
+
+
+
+    public static function isMobileRegistered($mobile)
+    {
+        $stmt = self::prepare("SELECT COUNT(*) FROM candidate WHERE mobile = :mobile");
+        $stmt->bindValue(":mobile", $mobile);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
+
+    public static function updateStatusTask($mobile,$callDate,$status, $remarks)
+    {
+        $tableName = 'telecaller_sm';
+        $stmt = self::prepare("UPDATE telecaller_sm SET callDate = :callDate, status = :status, remarks = :remarks WHERE mobile = :mobile");
+        $stmt->bindValue(":callDate", $callDate);
+        $stmt->bindValue(":status", $status);
+        $stmt->bindValue(":remarks", $remarks);
+        $stmt->bindValue(":mobile", $mobile);
+        return $stmt->execute(); // ✅ Must return to let controller know if it succeeded
     }
 
 
@@ -2598,6 +2655,62 @@ ORDER BY
     return $statement->fetchAll(\PDO::FETCH_COLUMN); // Fetch all values as an array
 }
 
+    public static function getWordSessionsByMobile($mobile)
+    {
+        $stmt = self::prepare("
+        SELECT 
+            session_id, 
+            session_date, 
+            status,
+            CASE session_id
+                WHEN 1 THEN 'Session 1: SALVATION'
+                WHEN 2 THEN 'Session 2: 2ND COMING'
+                WHEN 3 THEN 'Session 3: Appa'
+                WHEN 4 THEN 'Session 4: Church'
+                WHEN 5 THEN 'Session 5: Amma'
+                ELSE CONCAT('Session ', session_id)
+            END AS session_name
+        FROM word_session 
+        WHERE mobile = :mobile 
+        ORDER BY session_date DESC
+    ");
+
+        $stmt->bindParam(':mobile', $mobile);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSessionModel::class);
+    }
+
+
+
+    public static function saveWordSession($mobile,$session_id,$sessionDate, $status,$evangelist,$participant,$wgroup,$language,$remark,$feedback)
+    {
+
+            $stmt = self::prepare("
+                INSERT INTO word_session 
+                (mobile, session_id, session_date, status, evangelist, participant, wgroup, language, remark, feedback, created_at, updated_at)
+                VALUES 
+                (:mobile, :session_id, :session_date, :status, :evangelist, :participant, :wgroup, :language, :remark, :feedback, :created_at, :updated_at)
+            ");
+
+        $stmt->bindParam(':mobile', $mobile);
+        $stmt->bindParam(':session_id', $session_id);
+        $stmt->bindParam(':session_date', $sessionDate);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':evangelist', $evangelist);
+        $stmt->bindParam(':participant', $participant);
+        $stmt->bindParam(':wgroup', $wgroup);
+        $stmt->bindParam(':language', $language);
+        $stmt->bindParam(':remark', $remark);
+        $stmt->bindParam(':feedback', $feedback);
+        $stmt->bindParam(':created_at', $now);
+        $stmt->bindParam(':updated_at', $now);
+
+
+        $stmt->execute();
+
+
+    }
 
     public static function findAllCandidatesForEvangelist($where,$name)
     {

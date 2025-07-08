@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>📄 Task Details</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <style>
         :root {
             --bg-color: #f9f9f9;
@@ -59,13 +58,14 @@
         }
 
         .card {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            max-width: 600px;
-            margin: auto;
-        }
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    max-width: 600px;
+    width: 100%;
+    margin: 20px auto;
+}
 
         .detail-row {
             margin: 12px 0;
@@ -149,22 +149,6 @@
             fill: white;
         }
 
-        @media (max-width: 600px) {
-            .card {
-                padding: 16px;
-            }
-
-            .detail-row strong {
-                width: 110px;
-            }
-
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-        }
-
         .modal {
             display: none;
             position: fixed;
@@ -186,17 +170,12 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
 
-        .modal-content label {
-            display: block;
-            margin: 10px 0 4px;
-        }
-
         .modal-content input,
         .modal-content textarea,
         .modal-content select {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
+            padding: 10px;
+            margin-bottom: 12px;
             border-radius: 6px;
             border: 1px solid #ccc;
             font-size: 1em;
@@ -205,7 +184,92 @@
         .modal-actions {
             display: flex;
             justify-content: space-between;
+            gap: 10px;
         }
+
+        .tab-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+
+        .tab-content {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+             .card {
+        padding: 16px;
+        width: 100%;
+        margin: 10px auto;
+    }
+            .detail-row {
+                font-size: 0.95rem;
+                display: flex;
+                flex-direction: column;
+            }
+            .detail-row strong {
+                width: 100%;
+                margin-bottom: 2px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                margin-bottom: 16px;
+            }
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+
+        input[readonly] {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .modal-content select,
+        .modal-content input {
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 8px;
+            font-size: 1em;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+
     </style>
 </head>
 <body>
@@ -262,26 +326,233 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="detail-row">
-        <strong>📱 Mobile:</strong> <?= htmlspecialchars($task->mobile) ?>
-    </div>
-    <div class="detail-row">
-        <strong>👤 Name:</strong> <?= htmlspecialchars($task->name) ?>
-    </div>
-    <div class="detail-row">
-        <strong>📅 Record Date:</strong> <?= htmlspecialchars($task->record_date) ?>
-    </div>
-    <div class="detail-row">
-        <strong>🏳️ Country:</strong> <?= htmlspecialchars($task->country) ?>
-    </div>
-    <div class="detail-row">
-        <strong>🏙️ City:</strong> <?= htmlspecialchars($task->city) ?>
-    </div>
-    <div class="detail-row">
-        <strong>🗣️ Language:</strong> <?= htmlspecialchars($task->language) ?>
+<div style="display: flex; justify-content: center;">
+    <div class="card">
+        <div class="detail-row">
+            <strong>📱 Mobile:</strong> <?= htmlspecialchars($task->mobile) ?>
+        </div>
+        <div class="detail-row">
+            <strong>👤 Name:</strong> <?= htmlspecialchars($task->name) ?>
+        </div>
+        <div class="detail-row">
+            <strong>📅 Record Date:</strong> <?= htmlspecialchars($task->record_date) ?>
+        </div>
+        <div class="detail-row">
+            <strong>🏳️ Country:</strong> <?= htmlspecialchars($task->country) ?>
+        </div>
+        <div class="detail-row">
+            <strong>🏙️ City:</strong> <?= htmlspecialchars($task->city) ?>
+        </div>
+        <div class="detail-row">
+            <strong>🗣️ Language:</strong> <?= htmlspecialchars($task->language) ?>
+        </div>
+        <div class="detail-row">
+            <strong>📞 Status:</strong> <?= htmlspecialchars(!empty($task->status) ? $task->status : 'Unassigned') ?>
+        </div>
     </div>
 </div>
+
+<?php
+$showTabs = isset($task->status) && $task->status === 'Positive';
+?>
+<div id="tabsContainer" style="<?= $showTabs ? '' : 'display:none;' ?>; margin-top: 30px;">
+    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <button class="tab-btn" onclick="openTab('tab1')">Register Candidate since Positive</button>
+        <button class="tab-btn" onclick="openTab1('tab2')">Streaming Classes</button>
+        <button class="tab-btn" onclick="openTab1('tab3')">Word sharing</button>
+        <button class="tab-btn" onclick="openTab('tab4')">Home mission</button>
+        <button class="tab-btn" onclick="openTab('tab5')">Online Sathvartha</button>
+    </div>
+
+
+
+   <div id="tab1" class="tab-content">
+       <?php if ($alreadyRegistered): ?>
+        <div style="padding: 20px; background: #e2f0d9; border-radius: 10px; color: #2e7d32;">
+            ✅ Candidate already registered.
+        </div>
+    <?php else: ?>
+    <form id="candidateForm" method="post" action="/saveCandidate">
+        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            <!-- Left Column -->
+            <div style="flex: 1; min-width: 300px;">
+ <!-- 📱 Mobile -->
+<div class="form-group">
+    <label>📱 Mobile*</label>
+    <input type="text" name="mobile" required readonly value="<?= htmlspecialchars($task->mobile) ?>">
+</div>
+
+<!-- 👤 Participant Name -->
+<div class="form-group">
+    <label>👤 Participant Name*</label>
+    <input type="text" name="participantName" required readonly value="<?= htmlspecialchars($task->name) ?>">
+</div>
+                <div class="form-group">
+                    <label>🌎 Country</label>
+                  <select name="country" required>
+                        <option value="">Select Country</option>
+                        <option value="India">India</option>
+                        <option value="Bhutan">Bhutan</option>
+                        <option value="United States">United States of America</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>🗣️ Language</label>
+                  <select name="language" required>
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Kannada">Kannada</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div style="flex: 1; min-width: 300px;">
+                <div class="form-group">
+                    <label>🙏 Evangelist</label>
+    <input type="text" name="evangelist" required value="<?= htmlspecialchars($_SESSION['evngName'] ?? '') ?>" readonly>
+                </div>
+                <div class="form-group">
+                    <label>📲 Source</label>
+                     <select name="source" required>
+                        <option value="Facebook">Facebook</option>
+                        <option value="TeleCall">TeleCall</option>
+                        <option value="Telegram">Telegram</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>🗓️ Allotted Days</label>
+                  <select name="allotedDays" required>
+                        <option value="Random">Random Days</option>
+                        <option value="Sunday">Sunday</option>
+                        <option value="Daily">Daily</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>🎞️ Media Type</label>
+                   <select name="mediaType" required>
+                        <option value="Web Video">Web Video</option>
+                        <option value="Web Audio">Web Audio</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>📌 Active Status</label>
+                    <select name="activeStatus" required>
+                        <option value="Active">Active</option>
+                        <option value="Exit">Exit/Drop-out</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                <?php
+// Pull session data
+$evangelistData = \app\core\Application::$app->session->get('evngDashboardData2');
+
+$wgroup = '';
+$email = '';
+
+if (!empty($evangelistData) && isset($evangelistData[0]->wgroupId)) {
+    $wgroup = $evangelistData[0]->wgroupId;
+}
+
+if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
+    $email = $evangelistData[0]->email;
+}
+?>
+
+<!-- 👥 Work Group -->
+<div class="form-group">
+    <label>👥 Work Group</label>
+    <input type="text" name="workGroup_display" value="<?= htmlspecialchars($wgroup) ?>" disabled style="background-color: #e9ecef; color: #6c757d;">
+    <input type="hidden" name="workGroup" value="<?= htmlspecialchars($wgroup) ?>">
+</div>
+
+<!-- 🆔 User ID -->
+<div class="form-group">
+    <label>🆔 User ID</label>
+    <input type="text" name="userId_display" value="<?= htmlspecialchars($email) ?>" disabled style="background-color: #e9ecef; color: #6c757d;">
+    <input type="hidden" name="userId" value="<?= htmlspecialchars($email) ?>">
+</div>
+                <div class="form-group">
+                    <label>💬 Remark</label>
+                    <textarea name="remark" rows="3" style="resize: vertical;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: right; margin-top: 20px;">
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+            <a href="/evngDashboard1" class="btn btn-secondary btn-sm">Cancel</a>
+        </div>
+    </form>
+         <?php endif; ?>
+</div>
+    <div id="tab2" class="tab-content" style="display:none;"></div>
+    <div id="tab3" class="tab-content" style="display:none;">
+        <h3>Word sharing to Candidate</h3>
+
+        <form id="wordSharingForm" method="post" action="/saveWordSharingAssignment">
+            <div class="form-group">
+                <label for="language">Select Language</label>
+                <select name="language" id="language" required>
+                    <option value="">-- Select Language --</option>
+                    <option value="Hindi">Hindi</option>
+                    <option value="English">English</option>
+                    <option value="Kannada">Kannada</option>
+                    <!-- Add more if needed -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Assignment Type</label><br>
+                <label><input type="radio" name="assignmentType" value="self" checked> I will take the topics</label><br>
+                <label><input type="radio" name="assignmentType" value="colleague"> Assign to a colleague</label>
+            </div>
+
+            <div class="form-group" id="colleagueSection" style="display: none;">
+                <label for="colleague">Select Colleague</label>
+                <select name="colleague" id="colleague">
+                    <option value="">-- Select Colleague --</option>
+                    <option value="Alice">Alice</option>
+                    <option value="David">David</option>
+                    <!-- Populate dynamically from DB if needed -->
+                </select>
+            </div>
+
+            <div class="form-group" id="addBtnSection">
+                <button type="button" class="btn btn-primary" onclick="openSessionModal()">Add</button>
+            </div>
+        </form>
+        <div id="sessionModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>📆 Schedule Word Session</h3>
+                <form id="sessionScheduleForm">
+                    <label for="sessionName">Select Session</label>
+                    <select id="sessionName" name="sessionName" required>
+                        <option value="">-- Select Session --</option>
+                        <option value="1">Session 1: SALVATION</option>
+                        <option value="2">Session 2: 2ND COMING</option>
+                        <option value="3">Session 3: Appa</option>
+                        <option value="4">Session 4: Church</option>
+                        <option value="5">Session 5: Amma</option>
+                    </select>
+
+                    <label for="sessionDate">Select Date & Time</label>
+                    <input type="datetime-local" id="sessionDate" name="sessionDate" required>
+
+                    <div class="modal-actions">
+                        <button type="button" onclick="closeSessionModal()">Cancel</button>
+                        <button type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="savedSessions" style="margin-top: 20px;"></div>
+    </div>
+    <div id="tab4" class="tab-content" style="display:none;">📕 This is Tab4 content</div>
+    <div id="tab5" class="tab-content" style="display:none;">📗 This is Tab5 content</div>
+</div>
+
 
 <a class="back-link" href="/viewMyTasks">← Back to My Tasks</a>
 
@@ -297,6 +568,307 @@
         0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
     </svg>
 </a>
+<script>
+    document.getElementById("sessionScheduleForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const sessionId = document.getElementById("sessionName").value;
+        const sessionDate = document.getElementById("sessionDate").value;
+
+        if (!sessionId || !sessionDate) {
+            alert("Please fill out all fields.");
+            return;
+        }
+
+        const data = new URLSearchParams();
+        data.append("mobile", "<?= htmlspecialchars($task->mobile) ?>");
+        data.append("participant", "<?= htmlspecialchars($task->name) ?>");
+        data.append("language", "<?= htmlspecialchars($task->language) ?>");
+        data.append("sessionName", sessionId);
+        data.append("sessionDate", sessionDate);
+
+        fetch("/saveWordSession", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        })
+            .then(res => res.json())
+            .then(response => {
+                if (response.success) {
+                    alert("✅ " + response.message);
+                    closeSessionModal();
+                    // Clear previously loaded data flag so we can reload
+                    const tab3 = document.getElementById("tab3");
+                    tab3.dataset.loaded = ""; // Clear flag
+                    openTab1('tab3'); // Reload the tab content to show updated sessions
+                } else {
+                    alert("❌ " + response.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Error occurred while saving session.");
+            });
+    });
+
+</script>
+<script>
+    function openSessionModal() {
+        document.getElementById("sessionModal").style.display = "flex";
+    }
+
+    function closeSessionModal() {
+        document.getElementById("sessionModal").style.display = "none";
+    }
+
+    // Handle session schedule form submit
+    document.getElementById("sessionScheduleForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const sessionName = document.getElementById("sessionName").value;
+        const sessionDate = document.getElementById("sessionDate").value;
+
+        if (!sessionName || !sessionDate) {
+            alert("Please fill out all fields.");
+            return;
+        }
+
+        // ✅ You can use AJAX here to POST to your backend
+        // For now, just show a success message
+        alert(`Session "${sessionName}" scheduled for ${sessionDate}`);
+
+        // Close the modal
+        closeSessionModal();
+    });
+</script>
+
+<script>
+    document.querySelectorAll('input[name="assignmentType"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            const type = this.value;
+
+            document.getElementById('colleagueSection').style.display = (type === 'colleague') ? 'block' : 'none';
+            document.getElementById('addBtnSection').style.display = (type === 'self') ? 'block' : 'none';
+        });
+    });
+</script>
+
+<script>
+    document.getElementById("candidateForm").addEventListener("submit", function(e) {
+        e.preventDefault(); // Prevent default form submission
+
+        const form = e.target;
+        const formData = new URLSearchParams();
+        for (const pair of new FormData(form)) {
+            formData.append(pair[0], pair[1]);
+        }
+
+        fetch('/saveCandidate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Candidate saved successfully!");
+                    window.location.href = "/viewMyTasks";
+                } else {
+                    alert("Failed: " + data.message);
+                }
+            })
+            .catch(e => {
+                console.error("Request failed", e);
+                alert("Request failed. Please try again.");
+            });
+</script>
+
+<script>
+    // Embed PHP values as JS variables
+    const candidateMobile = "<?= htmlspecialchars($task->mobile) ?>";
+    const candidateName = "<?= htmlspecialchars($task->name) ?>";
+</script>
+<script>
+    function openTab(tabId) {
+        const allTabs = document.querySelectorAll('.tab-content');
+        allTabs.forEach(tab => tab.style.display = 'none');
+
+        const selectedTab = document.getElementById(tabId);
+        selectedTab.style.display = 'block';
+
+        // Load candidate form only when opening Tab 1
+        if (tabId === 'tab1' && !selectedTab.dataset.loaded) {
+            fetch('/candidatePartial')
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to load content');
+                    return response.text();
+                })
+                .then(html => {
+                    selectedTab.innerHTML = html;
+                    selectedTab.dataset.loaded = "true";
+                })
+                .catch(error => {
+                    selectedTab.innerHTML = '<p style="color:red;">Error loading form.</p>';
+                    console.error(error);
+                });
+        }
+        // ✅ Tab 3 (Word Sharing Sessions)
+        if (tabId === 'tab3' && !selectedTab.dataset.loaded) {
+            const sessionContainer = document.getElementById("savedSessions");
+            sessionContainer.innerHTML = "<p>🔄 Loading saved sessions...</p>";
+
+            fetch(`/getWordSessions?mobile=${encodeURIComponent(candidateMobile)}`)
+                .then(response => response.json())
+                .then(data => {
+                    sessionContainer.innerHTML = ""; // Clear loading text
+                    if (data.success && Array.isArray(data.sessions)) {
+                        if (data.sessions.length === 0) {
+                            sessionContainer.innerHTML = "<p>📭 No sessions found.</p>";
+                        } else {
+                            data.sessions.forEach(session => {
+                                const div = document.createElement("div");
+                                div.className = "form-group";
+                                div.innerHTML = `
+                                <strong>📖 Session ${session.session_id}</strong> <br>
+                                📅 ${session.session_date} <br>
+                                📌 Status: ${session.status}
+                                <hr>
+                            `;
+                                sessionContainer.appendChild(div);
+                            });
+                        }
+                    } else {
+                        sessionContainer.innerHTML = "<p style='color:red;'>Failed to load sessions.</p>";
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    sessionContainer.innerHTML = "<p style='color:red;'>Error occurred while fetching sessions.</p>";
+                });
+
+            selectedTab.dataset.loaded = "true"; // Prevent reloading unless tab is refreshed
+        }
+    }
+</script>
+
+<script>
+    function openTab1(tabId) {
+        const allTabs = document.querySelectorAll('.tab-content');
+        allTabs.forEach(tab => tab.style.display = 'none');
+
+        const selectedTab = document.getElementById(tabId);
+        selectedTab.style.display = 'block';
+
+        // 🔵 Streaming Classes Tab
+        if (tabId === 'tab2' && !selectedTab.dataset.loaded) {
+            const mobile = encodeURIComponent(candidateMobile);
+            const username = encodeURIComponent("<?= htmlspecialchars($_SESSION['evngName'] ?? '') ?>");
+            const candidate = encodeURIComponent("<?= htmlspecialchars($task->name) ?>");
+            const index = encodeURIComponent("<?= htmlspecialchars($task->id ?? 0) ?>");
+
+            const url = `/getClassDetails?username=${username}&candidate=${candidate}&mobile=${mobile}`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to load class details');
+                    return response.text();
+                })
+                .then(html => {
+                    selectedTab.innerHTML = html;
+                    selectedTab.dataset.loaded = "true";
+                })
+                .catch(error => {
+                    console.error(error);
+                    selectedTab.innerHTML = '<p style="color:red;">Error loading class details.</p>';
+                });
+        }
+
+        // ✅ Tab 3 (Word Sharing Sessions)
+        if (tabId === 'tab3' && !selectedTab.dataset.loaded) {
+            const sessionContainer = document.getElementById("savedSessions");
+            sessionContainer.innerHTML = "<p>🔄 Loading saved sessions...</p>";
+
+            fetch(`/getWordSessions?mobile=${encodeURIComponent(candidateMobile)}`)
+                .then(response => response.json())
+                .then(data => {
+                    sessionContainer.innerHTML = ""; // Clear loading text
+                    if (data.success && Array.isArray(data.sessions)) {
+                        if (data.sessions.length === 0) {
+                            sessionContainer.innerHTML = "<p>📭 No sessions found.</p>";
+                        } else {
+                            data.sessions.forEach(session => {
+                                const div = document.createElement("div");
+                                div.className = "form-group";
+                                div.innerHTML = `
+                                <strong>📖 Session ${session.session_id}</strong> <br>
+                                📅 ${session.session_date} <br>
+                                📌 Status: ${session.status}
+                                <hr>
+                            `;
+                                sessionContainer.appendChild(div);
+                            });
+                        }
+                    } else {
+                        sessionContainer.innerHTML = "<p style='color:red;'>Failed to load sessions.</p>";
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    sessionContainer.innerHTML = "<p style='color:red;'>Error occurred while fetching sessions.</p>";
+                });
+
+            selectedTab.dataset.loaded = "true"; // Prevent reloading unless tab is refreshed
+        }
+    }
+</script>
+
+
+<script>
+    document.getElementById("editForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const form = this;
+        const formData = new FormData(form);
+        const status = formData.get("status");
+
+        fetch("/updateTaskDetails", {
+            method: "POST",
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Updated successfully!");
+                    closeModal();
+
+                    // Show tabs if status is Positive
+                    if (status === "Positive") {
+                        document.getElementById("tabsContainer").style.display = "block";
+                    }
+
+                } else {
+                    alert("Update failed: " + data.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("An error occurred while updating.");
+            });
+    });
+</script>
+
+<script>
+    function openTab(tabId) {
+        const allTabs = document.querySelectorAll('.tab-content');
+        allTabs.forEach(tab => tab.style.display = 'none');
+
+        document.getElementById(tabId).style.display = 'block';
+    }
+</script>
 
 <script>
     function openEditForm() {

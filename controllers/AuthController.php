@@ -995,6 +995,27 @@ class AuthController extends Controller
     }
 
 
+    public function updateTaskDetails(Request $request, Response $response)
+    {
+
+        $mobile = $_POST['mobile'] ?? '';
+        $callDate = $_POST['call_date'] ?? '';
+        $status = $_POST['status'] ?? '';
+        $remark = $_POST['remark'] ?? '';
+
+        if (!$mobile || !$callDate || !$status || !$remark) {
+            echo json_encode(['success' => false, 'message' => 'All fields are required.']);
+            return;
+        }
+
+        $result = TelecallerSMModel::updateStatusTask( $mobile,$callDate,$status, $remark);
+        if ($result) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed to update record.']);
+        }
+
+    }
 
     public function viewTaskDetails(Request $request, Response $response)
     {
@@ -1005,6 +1026,9 @@ class AuthController extends Controller
 
         }
 
+        $alreadyRegistered = CandidateModel::isMobileRegistered($mobile);
+
+
         $task = TelecallerSMModel::findMob(['mobile' => $mobile]);
 
         if (!$task) {
@@ -1014,7 +1038,8 @@ class AuthController extends Controller
 
         // Render the view and pass the $task
         return $this->render('viewTaskDetails', [
-            'task' => $task
+            'task' => $task,
+            'alreadyRegistered' => $alreadyRegistered
         ]);
 
     }

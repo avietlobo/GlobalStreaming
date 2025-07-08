@@ -406,7 +406,7 @@
         <!--        <button onclick="confirmAssign()" style="background: #007BFF;">✅ Confirm Assign</button>-->
         <button id="assignConfirmBtn" onclick="confirmAssign()" style="background: #007BFF;">✅ Confirm Assign</button>
         <button onclick="closeAssignModal()" style="background: #6c757d; margin-left: 10px;">❌ Cancel</button>
-    </div>
+    </div> 
 </div>
 
 

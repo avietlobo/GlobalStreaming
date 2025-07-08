@@ -41,6 +41,8 @@ $app-> router->get('/viewAllTelecallersList', [AuthController::class, 'viewAllTe
 $app-> router->get('/viewAllSMList', [AuthController::class, 'viewAllSMList']);
 $app-> router->get('/viewMyTasks', [AuthController::class, 'viewMyTasks']);
 $app-> router->get('/viewTaskDetails', [AuthController::class, 'viewTaskDetails']);
+$app-> router->post('/updateTaskDetails', [AuthController::class, 'updateTaskDetails']);
+
 
 
 $app-> router->post('/bulkAssignTelecaller', [AuthController::class, 'bulkAssignTelecaller']);
@@ -159,6 +161,11 @@ $app-> router->post('/getClassDetails1', [SiteController::class, 'getClassDetail
 $app-> router->get('/getClassDetails', [SiteController::class, 'getClassDetailsForCandidate']);
 $app-> router->get('/getClassDetails7D', [SiteController::class, 'getClassDetailsForCandidate7D']);
 $app-> router->post('/candidate', [SiteController::class, 'candidate']);
+$app-> router->post('/saveWordSession', [SiteController::class, 'saveWordSession']);
+$app-> router->get('/getWordSessions', [SiteController::class, 'getWordSessions']);
+
+
+$app-> router->post('/saveCandidate', [SiteController::class, 'saveCandidateDataDist']);
 $app-> router->get('/register', [\app\controllers\AuthController::class, 'register1']);
 $app-> router->post('/register', [\app\controllers\AuthController::class, 'register1']);
 $app-> router->get('/register7D', [\app\controllers\AuthController::class, 'register17D']);

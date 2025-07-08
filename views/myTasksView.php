@@ -109,6 +109,30 @@
                 font-size: 18px;
             }
         }
+
+        .flag-wrapper {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 6px;
+            position: relative;
+        }
+
+        .flag-pole {
+            width: 2px;
+            height: 16px;
+            background-color: green;
+            margin-right: 3px;
+        }
+
+        .flag-body {
+            width: 16px;
+            height: 12px;
+            background-color: green;
+            clip-path: polygon(0 0, 100% 25%, 100% 75%, 0% 100%);
+            border-radius: 2px 0 0 2px;
+            position: relative;
+            top: -1px;
+        }
     </style>
 </head>
 <body>
@@ -118,11 +142,296 @@
 </div>
 
 <h2>📋 My Assigned Tasks</h2>
+<?php
+function getCountryCode($countryName) {
+    $map = [
+        'Afghanistan' => 'af',
+        'Albania' => 'al',
+        'Algeria' => 'dz',
+        'Andorra' => 'ad',
+        'Angola' => 'ao',
+        'Antigua and Barbuda' => 'ag',
+        'Argentina' => 'ar',
+        'Armenia' => 'am',
+        'Australia' => 'au',
+        'Austria' => 'at',
+        'Azerbaijan' => 'az',
+        'Bahamas' => 'bs',
+        'Bahrain' => 'bh',
+        'Bangladesh' => 'bd',
+        'Barbados' => 'bb',
+        'Belarus' => 'by',
+        'Belgium' => 'be',
+        'Belize' => 'bz',
+        'Benin' => 'bj',
+        'Bhutan' => 'bt',
+        'Bolivia' => 'bo',
+        'Bosnia and Herzegovina' => 'ba',
+        'Botswana' => 'bw',
+        'Brazil' => 'br',
+        'Brunei' => 'bn',
+        'Bulgaria' => 'bg',
+        'Burkina Faso' => 'bf',
+        'Burundi' => 'bi',
+        'Cabo Verde' => 'cv',
+        'Cambodia' => 'kh',
+        'Cameroon' => 'cm',
+        'Canada' => 'ca',
+        'Central African Republic' => 'cf',
+        'Chad' => 'td',
+        'Chile' => 'cl',
+        'China' => 'cn',
+        'Colombia' => 'co',
+        'Comoros' => 'km',
+        'Congo (Brazzaville)' => 'cg',
+        'Congo (Kinshasa)' => 'cd',
+        'Costa Rica' => 'cr',
+        'Croatia' => 'hr',
+        'Cuba' => 'cu',
+        'Cyprus' => 'cy',
+        'Czech Republic' => 'cz',
+        'Denmark' => 'dk',
+        'Djibouti' => 'dj',
+        'Dominica' => 'dm',
+        'Dominican Republic' => 'do',
+        'Ecuador' => 'ec',
+        'Egypt' => 'eg',
+        'El Salvador' => 'sv',
+        'Equatorial Guinea' => 'gq',
+        'Eritrea' => 'er',
+        'Estonia' => 'ee',
+        'Eswatini' => 'sz',
+        'Ethiopia' => 'et',
+        'Fiji' => 'fj',
+        'Finland' => 'fi',
+        'France' => 'fr',
+        'Gabon' => 'ga',
+        'Gambia' => 'gm',
+        'Georgia' => 'ge',
+        'Germany' => 'de',
+        'Ghana' => 'gh',
+        'Greece' => 'gr',
+        'Grenada' => 'gd',
+        'Guatemala' => 'gt',
+        'Guinea' => 'gn',
+        'Guinea-Bissau' => 'gw',
+        'Guyana' => 'gy',
+        'Haiti' => 'ht',
+        'Honduras' => 'hn',
+        'Hungary' => 'hu',
+        'Iceland' => 'is',
+        'India' => 'in',
+        'Indonesia' => 'id',
+        'Iran' => 'ir',
+        'Iraq' => 'iq',
+        'Ireland' => 'ie',
+        'Israel' => 'il',
+        'Italy' => 'it',
+        'Ivory Coast' => 'ci',
+        'Jamaica' => 'jm',
+        'Japan' => 'jp',
+        'Jordan' => 'jo',
+        'Kazakhstan' => 'kz',
+        'Kenya' => 'ke',
+        'Kiribati' => 'ki',
+        'Kuwait' => 'kw',
+        'Kyrgyzstan' => 'kg',
+        'Laos' => 'la',
+        'Latvia' => 'lv',
+        'Lebanon' => 'lb',
+        'Lesotho' => 'ls',
+        'Liberia' => 'lr',
+        'Libya' => 'ly',
+        'Liechtenstein' => 'li',
+        'Lithuania' => 'lt',
+        'Luxembourg' => 'lu',
+        'Madagascar' => 'mg',
+        'Malawi' => 'mw',
+        'Malaysia' => 'my',
+        'Maldives' => 'mv',
+        'Mali' => 'ml',
+        'Malta' => 'mt',
+        'Marshall Islands' => 'mh',
+        'Mauritania' => 'mr',
+        'Mauritius' => 'mu',
+        'Mexico' => 'mx',
+        'Micronesia' => 'fm',
+        'Moldova' => 'md',
+        'Monaco' => 'mc',
+        'Mongolia' => 'mn',
+        'Montenegro' => 'me',
+        'Morocco' => 'ma',
+        'Mozambique' => 'mz',
+        'Myanmar' => 'mm',
+        'Namibia' => 'na',
+        'Nauru' => 'nr',
+        'Nepal' => 'np',
+        'Netherlands' => 'nl',
+        'New Zealand' => 'nz',
+        'Nicaragua' => 'ni',
+        'Niger' => 'ne',
+        'Nigeria' => 'ng',
+        'North Korea' => 'kp',
+        'North Macedonia' => 'mk',
+        'Norway' => 'no',
+        'Oman' => 'om',
+        'Pakistan' => 'pk',
+        'Palau' => 'pw',
+        'Palestine' => 'ps',
+        'Panama' => 'pa',
+        'Papua New Guinea' => 'pg',
+        'Paraguay' => 'py',
+        'Peru' => 'pe',
+        'Philippines' => 'ph',
+        'Poland' => 'pl',
+        'Portugal' => 'pt',
+        'Qatar' => 'qa',
+        'Romania' => 'ro',
+        'Russia' => 'ru',
+        'Rwanda' => 'rw',
+        'Saint Kitts and Nevis' => 'kn',
+        'Saint Lucia' => 'lc',
+        'Saint Vincent and the Grenadines' => 'vc',
+        'Samoa' => 'ws',
+        'San Marino' => 'sm',
+        'Sao Tome and Principe' => 'st',
+        'Saudi Arabia' => 'sa',
+        'Senegal' => 'sn',
+        'Serbia' => 'rs',
+        'Seychelles' => 'sc',
+        'Sierra Leone' => 'sl',
+        'Singapore' => 'sg',
+        'Slovakia' => 'sk',
+        'Slovenia' => 'si',
+        'Solomon Islands' => 'sb',
+        'Somalia' => 'so',
+        'South Africa' => 'za',
+        'South Korea' => 'kr',
+        'South Sudan' => 'ss',
+        'Spain' => 'es',
+        'Sri Lanka' => 'lk',
+        'Sudan' => 'sd',
+        'Suriname' => 'sr',
+        'Sweden' => 'se',
+        'Switzerland' => 'ch',
+        'Syria' => 'sy',
+        'Taiwan' => 'tw',
+        'Tajikistan' => 'tj',
+        'Tanzania' => 'tz',
+        'Thailand' => 'th',
+        'Timor-Leste' => 'tl',
+        'Togo' => 'tg',
+        'Tonga' => 'to',
+        'Trinidad and Tobago' => 'tt',
+        'Tunisia' => 'tn',
+        'Turkey' => 'tr',
+        'Turkmenistan' => 'tm',
+        'Tuvalu' => 'tv',
+        'Uganda' => 'ug',
+        'Ukraine' => 'ua',
+        'United Arab Emirates' => 'ae',
+        'United Kingdom' => 'gb',
+        'United States' => 'us',
+        'Uruguay' => 'uy',
+        'Uzbekistan' => 'uz',
+        'Vanuatu' => 'vu',
+        'Vatican City' => 'va',
+        'Venezuela' => 've',
+        'Vietnam' => 'vn',
+        'Yemen' => 'ye',
+        'Zambia' => 'zm',
+        'Zimbabwe' => 'zw'
+    ];
 
-<?php foreach ($tasks as $task): ?>
+    return $map[$countryName] ?? '';
+}
+?>
+
+<form method="GET" style="margin: 10px 0; display: flex; flex-wrap: wrap; gap: 10px;">
+    <input type="text" name="name" placeholder="🔍 Search Name" value="<?= htmlspecialchars($_GET['name'] ?? '') ?>" style="padding: 6px; border-radius: 6px; border: 1px solid #ccc;">
+
+    <select name="status" style="padding: 6px; border-radius: 6px;">
+        <option value="">All Status</option>
+        <option value="Positive" <?= ($_GET['status'] ?? '') === 'Positive' ? 'selected' : '' ?>>Positive</option>
+        <option value="Negative" <?= ($_GET['status'] ?? '') === 'Negative' ? 'selected' : '' ?>>Negative</option>
+        <option value="Neutral" <?= ($_GET['status'] ?? '') === 'Neutral' ? 'selected' : '' ?>>Neutral</option>
+        <option value="No Response" <?= ($_GET['status'] ?? '') === 'No Response' ? 'selected' : '' ?>>No Response</option>
+        <option value="Unassigned" <?= ($_GET['status'] ?? '') === 'Unassigned' ? 'selected' : '' ?>>Unassigned</option>
+    </select>
+
+    <select name="country" style="padding: 6px; border-radius: 6px;">
+        <option value="">All Countries</option>
+        <?php
+        $countries = array_unique(array_map(fn($t) => $t['country'], $tasks));
+        sort($countries);
+        foreach ($countries as $c):
+            ?>
+            <option value="<?= htmlspecialchars($c) ?>" <?= ($_GET['country'] ?? '') === $c ? 'selected' : '' ?>>
+                <?= htmlspecialchars($c) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+
+    <button type="submit" style="padding: 6px 12px; background: var(--accent-color); color: white; border: none; border-radius: 6px;">Filter</button>
+</form>
+
+<?php
+$nameFilter = strtolower($_GET['name'] ?? '');
+$statusFilter = strtolower($_GET['status'] ?? '');
+$countryFilter = $_GET['country'] ?? '';
+
+$filteredTasks = array_filter($tasks, function ($task) use ($nameFilter, $statusFilter, $countryFilter) {
+    $taskStatus = strtolower(trim($task['status'] ?? ''));
+    $taskCountry = $task['country'] ?? '';
+    $taskName = strtolower($task['name'] ?? '');
+
+    // Normalize unassigned
+    if ($taskStatus === '' || $taskStatus === null) {
+        $taskStatus = 'unassigned';
+    }
+
+    return
+        ($nameFilter === '' || strpos($taskName, $nameFilter) !== false) &&
+        ($statusFilter === '' || $taskStatus === strtolower($statusFilter)) &&
+        ($countryFilter === '' || $taskCountry === $countryFilter);
+});
+?>
+
+<?php foreach ($filteredTasks as $task): ?>
     <a href="/viewTaskDetails?mobile=<?= urlencode($task['mobile']) ?>" class="task-card">
         <div class="task-name">👤 <?= htmlspecialchars($task['name']) ?></div>
-        <div class="task-country">🏳️ <?= htmlspecialchars($task['country']) ?></div>
+        <?php
+        $code = getCountryCode($task['country']);
+        $flagUrl = $code ? "https://flagcdn.com/w40/$code.png" : '';
+        ?>
+        <div class="task-country">
+            <?php if ($flagUrl): ?>
+                <img src="<?= $flagUrl ?>" alt="<?= htmlspecialchars($task['country']) ?> Flag" style="height: 14px; vertical-align: middle; border-radius: 2px; margin-right: 6px;">
+            <?php else: ?>
+                🏳️
+            <?php endif; ?>
+            <?= htmlspecialchars($task['country']) ?>
+        </div>
+        <div class="task-status">
+            <?php if (!empty($task['status'])): ?>
+                <?php
+                $status = strtolower(trim($task['status']));
+                ?>
+                <?php if ($status === 'positive'): ?>
+                    📝 <span style="color: green; font-weight: bold;">Positive</span>
+                <?php elseif ($status === 'negative'): ?>
+                    ❌ <span style="color: red; font-weight: bold;">Negative</span>
+                <?php elseif ($status === 'neutral'): ?>
+                    ⚖️ <span style="color: #444; font-weight: 500;">Neutral</span>
+                <?php elseif ($status === 'no response'): ?>
+                    🤐 <span style="color: orange; font-weight: bold; ">No Response</span>
+                <?php else: ?>
+                    🏳️ <?= htmlspecialchars($task['status']) ?>
+                <?php endif; ?>
+            <?php else: ?>
+                ❗ <span style="color: #888; font-style: italic;">Unassigned</span>
+            <?php endif; ?>
+        </div>
     </a>
 <?php endforeach; ?>
 
@@ -139,6 +448,27 @@
         }
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
 
+        // Auto-submit on dropdown change
+        form.querySelectorAll("select").forEach(select => {
+            select.addEventListener("change", () => {
+                form.submit();
+            });
+        });
+
+        // Auto-submit on typing in search box (with short delay)
+        const nameInput = form.querySelector("input[name='name']");
+        let debounceTimer;
+        nameInput.addEventListener("input", () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                form.submit();
+            }, 500); // Adjust delay if needed
+        });
+    });
+</script>
 </body>
 </html>

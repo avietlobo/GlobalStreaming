@@ -12,6 +12,7 @@ use app\models\LoginForm;
 use app\models\RegisterModel;
 use app\core\middlewares\AuthMiddleware;
 use app\models\WGroupModel;
+use DateTime;
 
 /**
  * Class SitController
@@ -552,6 +553,98 @@ use app\models\WGroupModel;
          return $this->render('languageCounts', ['data' => $data]);
      }
 
+
+
+
+
+     public function saveCandidateDataDist(Request $request)
+     {
+         $candidateModel = new CandidateModel();
+
+         if ($request->isPost()) {
+             $mobile = $_POST['mobile'] ?? '';
+             $name = $_POST['participantName'] ?? '';
+             $country = $_POST['country'] ?? '';
+             $city = $_POST['city'] ?? '';
+             $language = $_POST['language'] ?? '';
+             $evangelist = $_POST['evangelist'] ?? '';
+             $source = $_POST['source'] ?? '';
+             $allotedDays = $_POST['allotedDays'] ?? '';
+             $mediaType = $_POST['mediaType'] ?? '';
+             $activeStatus = $_POST['activeStatus'] ?? '';
+             $workGroup = $_POST['workGroup'] ?? '';
+             $userId = $_POST['userId'] ?? '';
+             $remark = $_POST['remark'] ?? '';
+
+             $candidateModel->loadData($request->getBody());
+             $candidateModel->saveCandidateViaDataDistribution($mobile,$name,$country,$language,$evangelist,$source,$allotedDays,$mediaType,$activeStatus,$workGroup,$userId,$remark);
+             return $this->render('evngDashboard3');
+         }
+     }
+
+
+
+
+
+     public function getWordSessions(Request $request)
+     {
+         $mobile = $_GET['mobile'] ?? '';
+         if (empty($mobile)) {
+             echo json_encode(['success' => false, 'message' => 'Mobile number missing']);
+             return;
+         }
+
+         $sessions = CandidateModel::getWordSessionsByMobile($mobile);
+
+         echo json_encode(['success' => true, 'sessions' => $sessions]);
+     }
+
+     public function saveWordSession(Request $request)
+     {
+         $candidateModel = new CandidateModel();
+         if ($request->isPost()) {
+
+             $mobile = $_POST['mobile'] ?? '';
+             $sessionId = $_POST['sessionName'] ?? '';
+             $sessionDate = $_POST['sessionDate'] ?? '';
+             $evangelist = Application::$app->session->get('nameFinal');
+             $participant = $_POST['participant'] ?? '';
+             $wgroup = $_SESSION['evngDashboardData2'][0]->wgroupId ?? '';
+             $language = $_POST['language'] ?? '';
+
+             if (empty($mobile) || empty($sessionId) || empty($sessionDate)) {
+                 echo json_encode(['success' => false, 'message' => 'Missing required fields']);
+                 return;
+             }
+
+             $status = 'Scheduled';
+             $remark = '';
+             $feedback = '';
+             $now = (new DateTime())->format('Y-m-d H:i:s');
+try {
+    CandidateModel::saveWordSession(
+        $mobile,
+        $sessionId,
+        $sessionDate,
+        $status,
+        $evangelist,
+        $participant,
+        $wgroup,
+        $language,
+        $remark,
+        $feedback
+    );
+
+    echo json_encode(['success' => true, 'message' => 'Session saved successfully']);
+} catch (\Throwable $e) {
+    echo json_encode(['success' => false, 'message' => 'DB Error: ' . $e->getMessage()]);
+}
+
+
+         }
+
+
+     }
 
      public function candidate(Request $request)
      {
