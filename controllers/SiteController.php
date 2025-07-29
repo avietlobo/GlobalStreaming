@@ -12,6 +12,8 @@ use app\models\LoginForm;
 use app\models\RegisterModel;
 use app\core\middlewares\AuthMiddleware;
 use app\models\WGroupModel;
+use app\models\WordSessionModel;
+use app\models\WordSharingApprovalModel;
 use DateTime;
 
 /**
@@ -174,7 +176,7 @@ use DateTime;
                                  // Fetch data from session or request
                                  $data = $_SESSION['storedData'] ?? null;
 
-                                 $data1['error_active_status'] = "Cannot update status. All required class entries are not present.";
+                                 $data1['error_active_status'] = "Cannot update status. All required classes are not completed by candidate or online Sathvartha not attended.";
                                  $this->setLayout('main1');
                                  return $this->render('editCandidate', ['data' => $data,'data1'=>$data1]); // Stay on the same page
                              }
@@ -583,8 +585,119 @@ use DateTime;
      }
 
 
+     public function getApprovals(Request $request)
+     {
+         $wordSharingApprovalModel = new WordSharingApprovalModel();
+         header('Content-Type: application/json');
+         $mobile = $_GET['mobile'] ?? '';
+         if (!$mobile) {
+             echo json_encode(['success' => false, 'message' => 'Mobile is required']);
+             return;
+         }
+         $approvals = WordSharingApprovalModel::getWordSessionsByMobileApproval($mobile);
+         echo json_encode(['success' => true, 'approvals' => $approvals]);
 
 
+
+     }
+
+     public function approveWordSession(Request $request)
+     {
+         $wordModel = new WordSharingApprovalModel();
+         $evangelist = Application::$app->session->get('nameFinal');
+
+         if ($request->isPost()) {
+             $mobile = $request->getBody()['mobile'] ?? null;
+             $action = $request->getBody()['action'] ?? null;
+
+
+
+             if ($mobile && in_array($action, ['Approved', 'Rejected'])) {
+                 $wordModel::updateStatus($mobile, $evangelist, $action);
+                 // If Approved, also update telecaller_sm
+                 if ($action === 'Approved') {
+                     $wordModel::updateTelecallerReassigned($mobile, $evangelist);
+                 }
+
+
+                 Application::$app->response->redirect('/viewAssignedWordSessions');
+                 exit;
+             }
+         }
+
+         $sessions = $wordModel::getSessionsByEvangelist($evangelist);
+
+         return $this->render('word_sessions', [
+             'sessions' => $sessions
+         ]);
+     }
+
+
+     public function viewAssignedWordSessions(Request $request)
+     {
+         // Assume evangelist's name is stored in session
+         $evangelist =  Application::$app->session->get('nameFinal');
+
+         $wordModel = new WordSharingApprovalModel();
+         $sessions = $wordModel::getSessionsByEvangelist($evangelist);
+
+         return $this->render('word_sessions', [
+             'sessions' => $sessions
+         ]);
+     }
+
+     public function wordSessionDetail(Request $request)
+     {
+         $mobile = $_GET['mobile'] ?? '';
+         $language = $_GET['language'] ?? '';
+         $participant = $_GET['participant'] ?? '';
+
+         if (empty($mobile)) {
+             echo "Mobile number missing!";
+             return;
+         }
+         $evangelist =  Application::$app->session->get('nameFinal');
+
+         //$candidate = CandidateModel::getCandidateByMobile($mobile);
+         //$wordSessions = WordSessionModel::getWordSessionsByMobile($mobile);// reuse from earlier
+         $wordSessions = WordSessionModel::getWordSessionsByEvangelist($mobile,$evangelist);
+
+
+         return $this->render('word_session_detail', [
+             'mobile' => $mobile,
+             'language'=> $language,
+             'participant'=> $participant,
+             'wordSessions' => $wordSessions,
+         ]);
+     }
+
+
+     public function getWordSessionsApproved(Request $request)
+     {
+         $evangelist = Application::$app->session->get('nameFinal');
+
+         $sessions=WordSessionModel::getWordSessionsAssigned($evangelist);
+         return $this->render('mywordsessions', [
+             'sessions' => $sessions
+         ]);
+
+     }
+
+
+
+     public function getWordSessionsOfAssignedEvng(Request $request)
+     {
+         $mobile = $_GET['mobile'] ?? '';
+         if (empty($mobile)) {
+             echo json_encode(['success' => false, 'message' => 'Mobile number missing']);
+             return;
+         }
+         $evangelist = Application::$app->session->get('nameFinal');
+         //echo $evangelist;
+         $sessions = CandidateModel::getWordSessionsByMobileAndAssignedTo($mobile,$evangelist);
+
+         echo json_encode(['success' => true, 'sessions' => $sessions]);
+     }
 
      public function getWordSessions(Request $request)
      {
@@ -598,6 +711,84 @@ use DateTime;
 
          echo json_encode(['success' => true, 'sessions' => $sessions]);
      }
+
+
+     public function reassignWordSharing(Request $request)
+     {
+         header('Content-Type: application/json'); // ✅ tell browser this is JSON
+         $candidateModel = new CandidateModel();
+         if ($request->isPost()) {
+             $mobile = $_POST['mobile'] ?? '';
+             $candidate = $_POST['candidate_name'] ?? '';
+             $assignedBy = $_POST['assigned_by'] ?? '';
+             $assignedTo = $_POST['assigned_to'] ?? '';
+             $remarks = $_POST['remarks'] ?? '';
+             $language = $_POST['language'] ?? '';
+             $status = 'Pending';
+
+             $success = CandidateModel::reassignWordSession($mobile,$candidate,$assignedBy,$assignedTo,$status,$remarks,$language);
+             if ($success) {
+                 echo json_encode(['success' => true]);
+             } else {
+                 echo json_encode([
+                     'success' => false,
+                     'message' => 'Database insert failed'
+                 ]);
+             }
+         }
+         echo json_encode(['success' => false, 'message' => 'Invalid request']);
+
+     }
+
+
+
+     public function saveWordSessionByReassignedEvangelist(Request $request)
+     {
+
+         if ($request->isPost()) {
+             $mobile = $_POST['mobile'] ?? '';
+             $sessionId = $_POST['sessionName'] ?? '';
+             $sessionDate = $_POST['sessionDate'] ?? '';
+             $evangelist = Application::$app->session->get('nameFinal');
+             $participant = $_POST['participant'] ?? '';
+             $wgroup = $_SESSION['evngDashboardData2'][0]->wgroupId ?? '';
+             $language = $_POST['language'] ?? '';
+
+             if (empty($mobile) || empty($sessionId) || empty($sessionDate)) {
+                 echo json_encode(['success' => false, 'message' => 'Missing required fields']);
+                 return;
+             }
+
+             $status = 'Scheduled';
+             $remark = '';
+             $feedback = '';
+             $now = (new DateTime())->format('Y-m-d H:i:s');
+
+             try {
+                 CandidateModel::saveWordSession(
+                     $mobile,
+                     $sessionId,
+                     $sessionDate,
+                     $status,
+                     $evangelist,
+                     $participant,
+                     $wgroup,
+                     $language,
+                     $remark,
+                     $feedback,
+                     $now,
+                     $now
+                 );
+
+                 echo json_encode(['success' => true, 'message' => 'Session saved successfully']);
+             } catch (\Throwable $e) {
+                 echo json_encode(['success' => false, 'message' => 'DB Error: ' . $e->getMessage()]);
+             }
+         }
+
+     }
+
+
 
      public function saveWordSession(Request $request)
      {

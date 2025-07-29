@@ -87,16 +87,16 @@ echo $form->field($model, 'participant')->dropdownField([
 ]);
 ?>
 <?php
-// Get evangelist data from session
-$evangelistData = \app\core\Application::$app->session->get('evngDashboardData7');
-// Default value for evangelist
-$evangelist = '';
-
-// Check if evangelistData is not empty and the first element has the evangelist property
-if (!empty($evangelistData) && isset($evangelistData[0]->evangelist)) {
-// Get the evangelist value from the first element
-$evangelist = $evangelistData[0]->evangelist;
-}
+//// Get evangelist data from session
+//$evangelistData = \app\core\Application::$app->session->get('evngDashboardData7');
+//// Default value for evangelist
+//$evangelist = '';
+//
+//// Check if evangelistData is not empty and the first element has the evangelist property
+//if (!empty($evangelistData) && isset($evangelistData[0]->evangelist)) {
+//// Get the evangelist value from the first element
+//$evangelist = $evangelistData[0]->evangelist;
+//}
 
 // Render the form field with the retrieved evangelist value
 echo $form->field($model, 'evangelist')->dropdownField([
@@ -170,7 +170,7 @@ $classOptions = [];
 // Check if the current language exists in the mapping
 if (array_key_exists($language, $languageToClassCount)) {
     // Generate options for classFrom dropdown based on the mapped value
-    for ($i = 2; $i <= $languageToClassCount[$language]; $i++) {
+    for ($i = 1; $i <= $languageToClassCount[$language]; $i++) {
         $classOptions[$i] = $i;
     }
 

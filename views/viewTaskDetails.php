@@ -488,9 +488,10 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
          <?php endif; ?>
 </div>
     <div id="tab2" class="tab-content" style="display:none;"></div>
+
     <div id="tab3" class="tab-content" style="display:none;">
         <h3>Word sharing to Candidate</h3>
-
+<!--        <div id="approvalStatus" style="margin-top: 20px;"></div>-->
         <form id="wordSharingForm" method="post" action="/saveWordSharingAssignment">
             <div class="form-group">
                 <label for="language">Select Language</label>
@@ -517,12 +518,21 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                     <option value="David">David</option>
                     <!-- Populate dynamically from DB if needed -->
                 </select>
+                <div class="form-group" id="reassignSection" style="display: none;">
+                    <button type="button" class="btn btn-warning" onclick="sendReassignRequest()">🔁 Reassign</button>
+                </div>
             </div>
 
             <div class="form-group" id="addBtnSection">
                 <button type="button" class="btn btn-primary" onclick="openSessionModal()">Add</button>
             </div>
+
+            <!-- ✅ MOVE THIS HERE -->
+            <div id="approvalStatus" style="margin-top: 20px;"></div>
         </form>
+
+        <!-- ✅ Display approval history here -->
+<!--        <div id="approvalStatus" style="margin-top: 20px;"></div>-->
         <div id="sessionModal" class="modal" style="display: none;">
             <div class="modal-content">
                 <h3>📆 Schedule Word Session</h3>
@@ -549,6 +559,7 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
         </div>
         <div id="savedSessions" style="margin-top: 20px;"></div>
     </div>
+
     <div id="tab4" class="tab-content" style="display:none;">📕 This is Tab4 content</div>
     <div id="tab5" class="tab-content" style="display:none;">📗 This is Tab5 content</div>
 </div>
@@ -568,6 +579,56 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
         0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
     </svg>
 </a>
+<script>
+    function sendReassignRequest() {
+        const colleague = document.getElementById("colleague").value;
+        const language = document.getElementById("language").value;
+        if (!colleague) {
+            alert("Please select a colleague.");
+            return;
+        }
+
+        const data = new URLSearchParams();
+        data.append("mobile", candidateMobile);
+        data.append("candidate_name", candidateName);
+        data.append("language", language);
+        data.append("assigned_by", "<?= $_SESSION['evngName'] ?? '' ?>");
+        data.append("assigned_to", colleague);
+        data.append("remarks", "Word sharing reassignment request");
+
+        fetch("/reassignWordSharing", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        })
+            .then(res => res.json())
+            .then(response => {
+                if (response.success) {
+                    alert("✅ Reassignment request sent successfully!");
+                } else {
+                    alert("❌ Failed: " + response.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("An error occurred while sending request.");
+            });
+    }
+
+</script>
+
+<script>
+    document.querySelectorAll('input[name="assignmentType"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            const type = this.value;
+            document.getElementById('colleagueSection').style.display = (type === 'colleague') ? 'block' : 'none';
+            document.getElementById('reassignSection').style.display = (type === 'colleague') ? 'block' : 'none';
+            document.getElementById('addBtnSection').style.display = (type === 'self') ? 'block' : 'none';
+        });
+    });
+</script>
 <script>
     document.getElementById("sessionScheduleForm").addEventListener("submit", function (e) {
         e.preventDefault();
@@ -718,6 +779,7 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
         }
         // ✅ Tab 3 (Word Sharing Sessions)
         if (tabId === 'tab3' && !selectedTab.dataset.loaded) {
+
             const sessionContainer = document.getElementById("savedSessions");
             sessionContainer.innerHTML = "<p>🔄 Loading saved sessions...</p>";
 
@@ -729,15 +791,19 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                         if (data.sessions.length === 0) {
                             sessionContainer.innerHTML = "<p>📭 No sessions found.</p>";
                         } else {
+                            let html = "<h4>📝 My Word Sessions</h4><div style='display: flex; flex-direction: column; gap: 12px;'>";
+
                             data.sessions.forEach(session => {
                                 const div = document.createElement("div");
                                 div.className = "form-group";
                                 div.innerHTML = `
                                 <strong>📖 Session ${session.session_id}</strong> <br>
                                 📅 ${session.session_date} <br>
-                                📌 Status: ${session.status}
+                                📌 Status: ${session.status} <br>
+                                📌 Assigned To: ${session.evangelist}
                                 <hr>
                             `;
+                                html += "</div>";
                                 sessionContainer.appendChild(div);
                             });
                         }
@@ -750,9 +816,57 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                     sessionContainer.innerHTML = "<p style='color:red;'>Error occurred while fetching sessions.</p>";
                 });
 
+            loadApprovalStatus(); // ✅ Load approval history from DB
             selectedTab.dataset.loaded = "true"; // Prevent reloading unless tab is refreshed
         }
+        const statusDiv = document.getElementById("approvalStatus");
+
     }
+</script>
+
+<script>
+    function loadApprovalStatus() {
+        fetch(`/getApprovals?mobile=${encodeURIComponent(candidateMobile)}`)
+            .then(res => res.json())
+            .then(data => {
+                let html = "<h4>📝 Reassignment History</h4><div style='display: flex; flex-direction: column; gap: 12px;'>";
+                const statusDiv = document.getElementById("approvalStatus");
+                if (data.success && Array.isArray(data.approvals)) {
+                    if (data.approvals.length === 0) {
+                        statusDiv.innerHTML = "<p style='color: gray;'>No previous reassignments.</p>";
+                    } else {
+                        let html = "<h4>📝 Reassignment History</h4>";
+                        data.approvals.forEach(item => {
+                            const color = item.status === 'Approved' ? 'green' :
+                                item.status === 'Rejected' ? 'red' : 'orange';
+
+                            html += `
+        <div style="
+            border: 1px solid #ccc;
+            border-left: 5px solid ${color};
+            padding: 12px 16px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        ">
+            <p><strong>📲 Assigned to:</strong> ${item.assigned_to}</p>
+            <p><strong>🔁 Status:</strong> <span style="color: ${color};">${item.status}</span></p>
+            <p><strong>🕓 On:</strong> ${new Date(item.created_at).toLocaleString()}</p>
+        </div>
+    `;
+                        });
+                        html += "</div>";
+                        statusDiv.innerHTML = html;
+                    }
+                } else {
+                    statusDiv.innerHTML = "<p style='color:red;'>Failed to load approvals.</p>";
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById("approvalStatus").innerHTML = "<p style='color:red;'>Error fetching data.</p>";
+            });
+    }
+
 </script>
 
 <script>
@@ -802,13 +916,21 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                         } else {
                             data.sessions.forEach(session => {
                                 const div = document.createElement("div");
-                                div.className = "form-group";
-                                div.innerHTML = `
-                                <strong>📖 Session ${session.session_id}</strong> <br>
-                                📅 ${session.session_date} <br>
-                                📌 Status: ${session.status}
-                                <hr>
-                            `;
+                                div.className = "form-group";div.innerHTML = `
+    <div style="
+        border: 1px solid #ddd;
+        border-left: 4px solid #1DA1F2;
+        background: #f5faff;
+        padding: 12px 16px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+    ">
+        <p><strong>📖 Session ${session.session_id}</strong></p>
+        <p><strong>📅 Date:</strong> ${session.session_date}</p>
+        <p><strong>📌 Status:</strong> ${session.status}</p>
+        <p><strong>📌 Assigned To:</strong> ${session.evangelist}</p>
+    </div>
+`;
                                 sessionContainer.appendChild(div);
                             });
                         }
@@ -820,8 +942,9 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                     console.error(error);
                     sessionContainer.innerHTML = "<p style='color:red;'>Error occurred while fetching sessions.</p>";
                 });
+            loadApprovalStatus(); // ✅ <-- THIS WAS MISSING
 
-            selectedTab.dataset.loaded = "true"; // Prevent reloading unless tab is refreshed
+            selectedTab.dataset.loaded = "true"; // ✅
         }
     }
 </script>

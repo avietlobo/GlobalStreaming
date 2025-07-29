@@ -11,6 +11,7 @@ use app\models\CandidateModel;
 use app\models\TelecallerSMModel;
 use app\models\UploadProcessLogModel;
 use app\models\WordSessionModel;
+use app\models\WordSharingApprovalModel;
 
 abstract class DbModel extends Model
 {
@@ -2655,6 +2656,114 @@ ORDER BY
     return $statement->fetchAll(\PDO::FETCH_COLUMN); // Fetch all values as an array
 }
 
+
+    public static function getWordSessionsByMobileApproval($mobile)
+    {
+        $stmt = self::prepare("
+        SELECT assigned_to, status, created_at FROM word_sharing_approval WHERE mobile = :mobile ORDER BY created_at DESC
+    ");
+        $stmt->bindValue(':mobile', $mobile);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSharingApprovalModel::class);
+    }
+
+
+
+    public static function updateTelecallerReassigned($mobile, $assignedTo)
+    {
+        $table = 'telecaller_sm';
+        $stmt = self::prepare("UPDATE $table SET reassignedTo = :assignedTo WHERE mobile = :mobile");
+        $stmt->bindValue(':assignedTo', $assignedTo);
+        $stmt->bindValue(':mobile', $mobile);
+        $stmt->execute();
+    }
+
+    public static function updateStatus($mobile, $assignedTo, $status)
+    {
+        $table = 'word_sharing_approval';
+        $stmt = self::prepare("UPDATE $table SET status = :status, updated_at = NOW() WHERE mobile = :mobile AND assigned_to = :assignedTo");
+        $stmt->bindValue(':status', $status);
+        $stmt->bindValue(':mobile', $mobile);
+        $stmt->bindValue(':assignedTo', $assignedTo);
+        $stmt->execute();
+    }
+
+    public static function getSessionsByEvangelist($evangelist)
+    {
+        $table = 'word_sharing_approval';
+        $stmt = self::prepare("SELECT * FROM $table WHERE assigned_to = :evangelist ORDER BY created_at DESC");
+        $stmt->bindValue(':evangelist', $evangelist);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSharingApprovalModel::class);
+    }
+
+    public static function getWordSessionsAssigned($name)
+    {
+
+        $stmt = self::prepare("
+        SELECT mobile, name, city, country, language, status, callDate, remarks
+        FROM telecaller_sm
+        WHERE reassignedTo = :name
+        ORDER BY callDate DESC
+    ");
+        $stmt->bindParam(':name', $name);
+        $stmt->execute();
+
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSessionModel::class);
+    }
+
+
+    public static function getWordSessionsByEvangelist($mobile,$evangelist)
+    {
+        $stmt = self::prepare("
+        SELECT mobile, session_id,session_date,evangelist,participant,wgroup,language,remark,feedback
+        FROM word_session
+        WHERE evangelist = :name and mobile = :mobile
+    
+    ");
+        $stmt->bindParam(':name', $evangelist);
+        $stmt->bindParam(':mobile', $mobile);
+        $stmt->execute();
+
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSessionModel::class);
+
+    }
+
+    public static function getWordSessionsByMobileAndAssignedTo($mobile,$assignedTo)
+    {
+        $stmt = self::prepare("
+        SELECT 
+            session_id, 
+            session_date, 
+            status,
+            participant,
+            language,
+            CASE session_id
+                WHEN 1 THEN 'Session 1: SALVATION'
+                WHEN 2 THEN 'Session 2: 2ND COMING'
+                WHEN 3 THEN 'Session 3: Appa'
+                WHEN 4 THEN 'Session 4: Church'
+                WHEN 5 THEN 'Session 5: Amma'
+                ELSE CONCAT('Session ', session_id)
+            END AS session_name
+        FROM word_session 
+        WHERE mobile = :mobile 
+                and evangelist = :evangelist
+        ORDER BY session_date DESC
+    ");
+
+        $stmt->bindParam(':mobile', $mobile);
+        $stmt->bindParam(':evangelist', $assignedTo);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSessionModel::class);
+    }
+
+
+
     public static function getWordSessionsByMobile($mobile)
     {
         $stmt = self::prepare("
@@ -2662,6 +2771,9 @@ ORDER BY
             session_id, 
             session_date, 
             status,
+            participant,
+            language,
+            evangelist,
             CASE session_id
                 WHEN 1 THEN 'Session 1: SALVATION'
                 WHEN 2 THEN 'Session 2: 2ND COMING'
@@ -2679,6 +2791,39 @@ ORDER BY
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSessionModel::class);
+    }
+
+    public static function reassignWordSession($mobile,$candidate,$assignedBy,$assignedTo,$status,$remarks,$language)
+    {
+
+        $stmt = self::prepare("
+                INSERT INTO word_sharing_approval 
+                (mobile,candidateName,assigned_by, assigned_to,status, remarks, language, created_at, updated_at)
+                VALUES 
+                (:mobile, :candidateName,:assigned_by, :assigned_to, :status,:remarks, :language, :created_at, :updated_at)
+            ");
+
+        $stmt->bindParam(':mobile', $mobile);
+        $stmt->bindParam(':candidateName', $candidate);
+        $stmt->bindParam(':assigned_by', $assignedBy);
+        $stmt->bindParam(':assigned_to', $assignedTo);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':remarks', $remarks);
+        $stmt->bindParam(':language', $language);
+        $stmt->bindParam(':created_at', $now);
+        $stmt->bindParam(':updated_at', $now);
+
+
+        $result = $stmt->execute();
+
+        if (!$result) {
+            $errorInfo = $stmt->errorInfo();
+            file_put_contents('log_error.txt', "DB ERROR: " . json_encode($errorInfo) . "\n", FILE_APPEND);
+        }
+
+        return $result;
+
+
     }
 
 
@@ -2753,6 +2898,116 @@ ORDER BY
 
         return $candidates;
     }
+
+
+    public static function findlocalOrganizers()
+    {
+        $tableName = (new \app\models\EvangelistModel())->tableName();
+        $statement = self::prepare("SELECT evngName FROM evangelist WHERE designation = 'localOrganizer'");
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_CLASS, EvangelistModel::class);
+    }
+
+    public static function getEventById($id)
+    {
+        $db = Application::$app->db;
+        $stmt = $db->prepare("SELECT * FROM sathvartha_events WHERE id = :id");
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public static function updateEvent($id, $data,$totalAttended,$positiveCount,$attendanceReportPath)
+    {
+        $db = Application::$app->db;
+        $stmt = $db->prepare("UPDATE sathvartha_events SET
+        event_name = :event_name,
+        start_date = :start_date,
+        end_date = :end_date,
+        event_organizer = :event_organizer,
+        local_organizer = :local_organizer,
+        main_language = :main_language,
+        translation_language = :translation_language,
+        total_attended = :total_attended,
+        positive_count = :positive_count,
+          attendance_report = :attendance_report
+        WHERE id = :id
+    ");
+
+        $stmt->bindValue(':event_name', $data['event_name']);
+        $stmt->bindValue(':start_date', $data['start_date']);
+        $stmt->bindValue(':end_date', $data['end_date']);
+        $stmt->bindValue(':event_organizer', $data['event_organizer']);
+        $stmt->bindValue(':local_organizer', $data['local_organizer']);
+        $stmt->bindValue(':main_language', $data['main_language']);
+        $stmt->bindValue(':translation_language', $data['translation_language']);
+        $stmt->bindValue(':attendance_report', $attendanceReportPath);
+        $stmt->bindValue(':total_attended', $totalAttended, \PDO::PARAM_INT);
+        $stmt->bindValue(':positive_count', $positiveCount, \PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id);
+        return $stmt->execute();
+    }
+    public static function getAllEvents()
+    {
+        $table = (new \app\models\SathvarthaEventModel())->tableName();
+        $stmt = self::prepare("SELECT * FROM $table ORDER BY created_at DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+
+
+    public static function findSathvarthaOrganizers()
+    {
+        $tableName = (new \app\models\EvangelistModel())->tableName();
+        $statement = self::prepare("SELECT evngName FROM evangelist WHERE designation = 'sathvarthaOrganizer'");
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_CLASS, EvangelistModel::class);
+
+    }
+    public static function saveSathvarthaEvent($data)
+    {
+        $table = (new \app\models\SathvarthaEventModel())->tableName();
+        // Prepare and execute the SQL query
+        $statement = self::prepare("INSERT INTO $table (
+        event_name, start_date, end_date,
+        main_language, translation_language,
+        event_organizer, local_organizer,
+        event_link, notes,
+        created_by, updated_by,
+        created_at, updated_at) 
+        VALUES (
+        :event_name, :start_date, :end_date,
+        :main_language, :translation_language,
+        :event_organizer, :local_organizer,
+        :event_link, :notes,
+        :created_by, :updated_by,
+        :created_at, :updated_at
+    )");
+
+        return $statement->execute([
+            ':event_name' => $data['event_name'],
+            ':start_date' => $data['start_date'],
+            ':end_date' => $data['end_date'],
+            ':main_language' => $data['main_language'],
+            ':translation_language' => $data['translation_language'],
+            ':event_organizer' => $data['event_organizer'],
+            ':local_organizer' => $data['local_organizer'],
+            ':event_link' => $data['event_link'],
+            ':notes' => $data['notes'],
+            ':created_by' => $data['created_by'],
+            ':updated_by' => $data['updated_by'],
+            ':created_at' => $data['created_at'],
+            ':updated_at' => $data['updated_at'],
+        ]);
+
+
+
+    }
+
+
+
 
     public static function findEvangelistUsingEmailId($email)
     {

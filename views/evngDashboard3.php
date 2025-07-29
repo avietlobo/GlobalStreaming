@@ -265,6 +265,14 @@ $designation = $dashboardData[0]->designation;
         <button class="icon-button seven-day-badge" title="View Candidates" onclick="window.location.href='view7DCan';">
             7D
         </button>
+        <a href="#" class="attendance-link" title="Add New Sathvartha Event" onclick="window.location.href='addNewSathEvent';">
+            <img src="event.png" alt="Attendance Icon">
+        </a>
+
+        <a href="#" class="attendance-link" title="Add New Home mission Event" onclick="window.location.href='viewAllCanAttendenceMarking';">
+            <img src="home.png" alt="Attendance Icon">
+        </a>
+
 
     <?php endif; ?>
 </div>
@@ -278,8 +286,11 @@ $designation = $dashboardData[0]->designation;
         <button class="icon-button seven-day-badge" title="My Preference" onclick="window.location.href='view7DCan';">
             My Preference
         </button>
-        <button class="icon-button seven-day-badge" title="My Preference" onclick="window.location.href='view7DCan';">
+        <button class="icon-button seven-day-badge" title="My Word sessions" onclick="window.location.href='getWordSessionsApproved';">
             My Word sessions
+        </button>
+        <button class="icon-button seven-day-badge" title="Approve Word sessions" onclick="window.location.href='viewAssignedWordSessions';">
+            Approve Word sessions
         </button>
     </div>
 <?php endif; ?>

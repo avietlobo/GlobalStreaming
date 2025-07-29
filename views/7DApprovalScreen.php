@@ -311,7 +311,9 @@
             <option value="">-- Select Caretaker Email --</option>
     <option value="josseyalencheril@gmail.com">Jossey Jommon (joalencheril@gmail.com)</option>
     <option value="yesuelizabethemmanuel2021@gmail.com">Liza Elizabeth (priyankay@caretaker.com)</option>
-        </select>
+    <option value="theodoralilyrozario@gmail.com">Theodora Rozario (theodoralilyrozario@gmail.com)</option>
+
+</select>
 
         <div style="display: flex; justify-content: flex-end; gap: 10px;">
             <button type="button" onclick="closeCaretakerModal()" class="reject-btn" style="

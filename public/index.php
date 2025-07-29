@@ -40,6 +40,14 @@ $app-> router->get('/viewAllCanAttendenceMarking', [AuthController::class, 'view
 $app-> router->get('/viewAllTelecallersList', [AuthController::class, 'viewAllTelecallersList']);
 $app-> router->get('/viewAllSMList', [AuthController::class, 'viewAllSMList']);
 $app-> router->get('/viewMyTasks', [AuthController::class, 'viewMyTasks']);
+$app-> router->get('/addNewSathEvent', [AuthController::class, 'addNewSathEvent']);
+$app-> router->post('/addNewSathEvent', [AuthController::class, 'addNewSathEvent']);
+
+$app-> router->get('/event-details', [AuthController::class, 'viewEvent']);
+$app-> router->get('/edit-event', [AuthController::class, 'editEvent']);
+$app-> router->post('/edit-event', [AuthController::class, 'editEvent']);
+
+
 $app-> router->get('/viewTaskDetails', [AuthController::class, 'viewTaskDetails']);
 $app-> router->post('/updateTaskDetails', [AuthController::class, 'updateTaskDetails']);
 
@@ -162,7 +170,22 @@ $app-> router->get('/getClassDetails', [SiteController::class, 'getClassDetailsF
 $app-> router->get('/getClassDetails7D', [SiteController::class, 'getClassDetailsForCandidate7D']);
 $app-> router->post('/candidate', [SiteController::class, 'candidate']);
 $app-> router->post('/saveWordSession', [SiteController::class, 'saveWordSession']);
+$app-> router->post('/reassignWordSharing', [SiteController::class, 'reassignWordSharing']);
+
+$app-> router->post('/saveWordSessionByReassignedEvangelist', [SiteController::class, 'saveWordSessionByReassignedEvangelist']);
+
+
+$app-> router->get('/getApprovals', [SiteController::class, 'getApprovals']);
 $app-> router->get('/getWordSessions', [SiteController::class, 'getWordSessions']);
+$app-> router->get('/getWordSessionsOfAssignedEvng', [SiteController::class, 'getWordSessionsOfAssignedEvng']);
+$app->router->get('/wordSessionDetail', [SiteController::class, 'wordSessionDetail']);
+$app-> router->get('/getWordSessionsApproved', [SiteController::class, 'getWordSessionsApproved']);
+$app-> router->get('/viewAssignedWordSessions', [SiteController::class, 'viewAssignedWordSessions']);
+$app-> router->post('/viewAssignedWordSessions', [SiteController::class, 'viewAssignedWordSessions']);
+$app-> router->get('/approveWordSession', [SiteController::class, 'approveWordSession']);
+$app-> router->post('/approveWordSession', [SiteController::class, 'approveWordSession']);
+
+
 
 
 $app-> router->post('/saveCandidate', [SiteController::class, 'saveCandidateDataDist']);

@@ -3,7 +3,7 @@
 // language_class_mappings.php
 
 return [
-    'English' => 70,
+    'English' => 50,
     'Spanish' => 35,
     'Malayalam' => 50,
     'Hindi' => 56,

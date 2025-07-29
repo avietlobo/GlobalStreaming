@@ -20,6 +20,7 @@ use app\models\EvangelistModel;
 use app\models\EvangelistReviewModel;
 use app\models\LoginForm;
 use app\models\RegisterModel;
+use app\models\SathvarthaEventModel;
 use app\models\TelecallerSMModel;
 use app\models\UploadProcessLogModel;
 use app\models\VideoWatchHistoryModel;
@@ -1045,6 +1046,138 @@ class AuthController extends Controller
     }
 
 
+    public function viewEvent(Request $request)
+    {
+        $id = $_GET['id'] ?? null;
+        $event = SathvarthaEventModel::getEventById($id);
+
+        if (!$event) {
+            Application::$app->response->redirect('/addNewSathEvent');
+            return;
+        }
+
+        return $this->render('viewEvent', ['event' => $event]);
+    }
+
+    public function editEvent(Request $request)
+    {
+        $id = $_GET['id'] ?? null;
+        $event = SathvarthaEventModel::getEventById($id);
+        $evangelistModel = new EvangelistModel();
+
+        $sathvarthaOrganizers = EvangelistModel::findSathvarthaOrganizers();
+        $localOrganizers = EvangelistModel::findlocalOrganizers();
+
+        if (!$event) {
+            Application::$app->response->redirect('/sathvartha-event');
+            return;
+        }
+
+        if ($request->isPost()) {
+            $data = $request->getBody();
+            $totalAttended = $_POST['total_attended'] ?? 0;
+            $positiveCount = $_POST['positive_count'] ?? 0;
+
+            // ✅ Handle file upload
+            $uploadDir = Application::$ROOT_DIR . '/public/uploads/zoomReports/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $attendanceFile = $_FILES['attendance_report'] ?? null;
+            $uploadedPath = $event['attendance_report']; // Default to existing
+
+            if ($attendanceFile && $attendanceFile['error'] === UPLOAD_ERR_OK) {
+                $ext = pathinfo($attendanceFile['name'], PATHINFO_EXTENSION);
+                $allowed = ['xlsx', 'xls', 'csv', 'txt', 'zip'];
+                if (in_array(strtolower($ext), $allowed)) {
+                    $filename = 'attendance_' . uniqid() . '.' . $ext;
+                    $targetPath = $uploadDir . $filename;
+
+                    if (move_uploaded_file($attendanceFile['tmp_name'], $targetPath)) {
+                        $uploadedPath = '/uploads/zoomReports/' . $filename;
+                    }
+                }
+            }
+            $data['attendance_report'] = $uploadedPath;
+
+
+
+            SathvarthaEventModel::updateEvent($id, $data,$totalAttended,$positiveCount,$uploadedPath);
+
+            Application::$app->session->setFlash('success', 'Event updated successfully!');
+            Application::$app->response->redirect('/addNewSathEvent');
+            return;
+        }
+
+        return $this->render('editEvent', [
+            'event' => $event,
+            'localOrganizers' => $localOrganizers,
+            'sathvarthaOrganizers' => $sathvarthaOrganizers
+        ]);
+    }
+
+
+
+    public function addNewSathEvent(Request $request, Response $response)
+    {
+        $evangelistModel = new EvangelistModel();
+        $assignedTo = Application::$app->session->get('nameFinal'); // Logged-in user
+        $tasks = TelecallerSMModel::getMyTasks($assignedTo);
+        // Fetch organizers from evangelist table
+        $localOrganizers = EvangelistModel::findlocalOrganizers();
+        $sathvarthaOrganizers = EvangelistModel::findSathvarthaOrganizers();
+        $existingEvents = SathvarthaEventModel::getAllEvents(); // Create this method to fetch events
+
+        $errorMessage = '';
+
+        if ($request->isPost()) {
+            $body = $request->getBody();
+            $eventData = [
+                'event_name' => $body['event_name'],
+                'start_date' => $body['start_date'],
+                'end_date' => $body['end_date'],
+                'main_language' => $body['main_language'],
+                'translation_language' => $body['translation_language'],
+                'event_organizer' => $body['event_organizer'],
+                'local_organizer' => $body['local_organizer'],
+                'event_link' => $body['event_link'],
+                'notes' => $body['notes'],
+                'created_by' => $assignedTo,
+                'updated_by' => $assignedTo,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+
+            try {
+                $saved = SathvarthaEventModel::saveSathvarthaEvent($eventData);
+                if ($saved) {
+                    Application::$app->response->redirect('/evngDashboard1');
+                } else {
+                    $errorMessage = "❌ Something went wrong. Please try again.";
+                }
+            } catch (\PDOException $e) {
+                if ($e->errorInfo[1] == 1062) {
+                    // Duplicate entry MySQL error code
+                    $errorMessage = "⚠️ Event name already exists. Please use a different name.";
+                } else {
+                    $errorMessage = "❌ Database error: " . $e->getMessage();
+                }
+            }
+        }
+
+        $this->setLayout('main1');
+        return $this->render('sathvarthaEvent', [
+            'tasks' => $tasks,
+            'sathvarthaOrganizers' => $sathvarthaOrganizers,
+            'localOrganizers' => $localOrganizers,
+            'errorMessage' => $errorMessage,
+            'formData' => $eventData ?? [],
+            'existingEvents' => $existingEvents
+        ]);
+    }
+
+
     public function viewMyTasks(Request $request, Response $response)
     {
         $assignedTo = Application::$app->session->get('nameFinal'); // Logged-in user
@@ -1433,6 +1566,9 @@ Application::$app->session->set('loginForm', $loginForm);
         $ind=Application::$app->session->get('index7D');
         $mobile = $data[$ind]->mobile;
         $evangelist = $data[$ind]->evangelist;
+        echo '<pre>';
+        var_dump($evangelist);
+        echo '</pre>';
         $participantName = $data[$ind]->participantName;
 
 
@@ -1441,7 +1577,7 @@ Application::$app->session->set('loginForm', $loginForm);
 
 
         return $this->render('register7D', [
-            'model' => $registerModel,'mediaType'=> $mediaType// Pass the global variable
+            'model' => $registerModel,'mediaType'=> $mediaType, 'evangelist'=> $evangelist// Pass the global variable
         ]);
     }
 
