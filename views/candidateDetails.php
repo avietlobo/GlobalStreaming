@@ -167,10 +167,21 @@
     <?php else: ?>
         <p>No details found for the selected participant.</p>
     <?php endif; ?>
-    <a href="/addAppointment"
-       class="add-appointment-btn">
-        ➕ Add Appointment
-    </a>
+    <?php if (!empty($evangelist)): ?>
+        <?php
+        // Assuming you want to pass the first evangelist's data
+        $row = $evangelist[0];
+        $queryParams = http_build_query([
+            'participantName' => $row['participantName'] ?? '',
+            'mobile' => $row['mobile'] ?? '',
+            'evangelist' => $row['evangelist'] ?? '',
+            'country' => $country ?? ''
+        ]);
+        ?>
+        <a href="/addAppointment?<?= $queryParams ?>" class="add-appointment-btn">
+            ➕ Add Appointment
+        </a>
+    <?php endif; ?>
     <br><br>
     <a class="back-link" href="javascript:history.back()">← Back to Evangelists</a>
 

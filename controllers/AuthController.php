@@ -1157,10 +1157,41 @@ class AuthController extends Controller
     public function addAppointment(Request $request, Response $response)
     {
         $this->setLayout('main1');
-        return $this->render('addAppointment', [
-            'language' => ''
-        ]);
-    }
+
+
+            $participantName = $_GET['participantName'] ?? '';
+            $recordDate = $_GET['recordDate'] ?? '';
+            $mobile = $_GET['mobile'] ?? '';
+            $evangelist = $_GET['evangelist'] ?? '';
+            $country = $_GET['country'] ?? '';
+            $source = $_GET['source'] ?? '';
+            $allotedDays = $_GET['allotedDays'] ?? '';
+            $mediaType = $_GET['mediaType'] ?? '';
+            $activeStatus = $_GET['activeStatus'] ?? '';
+            $userid = $_GET['userid'] ?? '';
+            $remark = $_GET['remark'] ?? '';
+            $wgroup = $_GET['wgroup'] ?? '';
+
+            // Pass them to view
+            return $this->render('addAppointment', [
+                'participantName' => $participantName,
+                'mobile' => $mobile,
+                'evangelist' => $evangelist,
+                'country' => $country
+            ]);
+        }
+
+
+//        return $this->render('addAppointment', [
+//            'language' => ''
+//        ]);
+
+
+
+
+
+
+
 
     public function getCandidateDetails(Request $request, Response $response)
     {

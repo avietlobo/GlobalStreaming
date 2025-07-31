@@ -104,6 +104,15 @@
                 grid-template-columns: 1fr;
             }
         }
+        input[readonly] {
+            background-color: #2c2c2c;
+            color: #aaa;
+            cursor: not-allowed;
+        }
+        body.light-mode input[readonly] {
+            background-color: #eee;
+            color: #888;
+        }
     </style>
 </head>
 <body>
@@ -121,23 +130,27 @@
 
         <div class="form-group">
             <label for="candidateName">Candidate Name</label>
-            <input type="text" id="candidateName" name="candidateName" placeholder="Enter candidate name" required>
-        </div>
+            <input type="text" id="candidateName" name="candidateName"
+                   placeholder="Enter candidate name" required
+                   value="<?= htmlspecialchars($participantName ?? '') ?>" readonly>      </div>
 
         <div class="form-group">
             <label for="candidateMobile">Candidate Mobile</label>
-            <input type="text" id="candidateMobile" name="candidateMobile" placeholder="Enter candidate mobile" required>
-        </div>
+            <input type="text" id="candidateMobile" name="candidateMobile"
+                   placeholder="Enter candidate mobile" required
+                   value="<?= htmlspecialchars($mobile ?? '') ?>" readonly>     </div>
 
         <div class="form-group">
             <label for="evangelistName">Evangelist Name</label>
-            <input type="text" id="evangelistName" name="evangelistName" placeholder="Enter evangelist name" required>
-        </div>
+            <input type="text" id="evangelistName" name="evangelistName"
+                   placeholder="Enter evangelist name" required
+                   value="<?= htmlspecialchars($evangelist ?? '') ?>" readonly>      </div>
 
         <div class="form-group">
             <label for="country">Country</label>
-            <input type="text" id="country" name="country" placeholder="Enter country" required>
-        </div>
+            <input type="text" id="country" name="country"
+                   placeholder="Enter country" required
+                   value="<?= htmlspecialchars($country ?? '') ?>" readonly>      </div>
 
         <div class="form-group">
             <label for="place">Place</label>
