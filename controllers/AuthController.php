@@ -1118,6 +1118,115 @@ class AuthController extends Controller
     }
 
 
+    public function getCandidatesByLangAndCountry(Request $request, Response $response)
+    {
+        $lang = $_GET['lang'] ?? '';
+        $country = $_GET['country'] ?? '';
+
+        $data = CandidateModel::getEvangelistsByLangAndCountry($lang, $country);
+
+        $this->setLayout('main1');
+        return $this->render('evangelistsByCountry', [
+            'language' => $lang,
+            'country' => $country,
+            'evangelists' => $data
+        ]);
+    }
+
+
+
+
+    public function getCandidatesByEvangelist(Request $request, Response $response)
+    {
+        $lang = $_GET['lang'] ?? '';
+        $country = $_GET['country'] ?? '';
+        $evangelist = $_GET['evangelist'] ?? '';
+
+        $candidates = CandidateModel::getCandidatesByEvangelist($lang, $country, $evangelist);
+        $this->setLayout('main1');
+
+        return $this->render('candidatesByEvangelist', [
+            'language' => $lang,
+            'country' => $country,
+            'evangelist' => $evangelist,
+            'candidates' => $candidates
+        ]);
+    }
+
+
+    public function addAppointment(Request $request, Response $response)
+    {
+        $this->setLayout('main1');
+        return $this->render('addAppointment', [
+            'language' => ''
+        ]);
+    }
+
+    public function getCandidateDetails(Request $request, Response $response)
+    {
+        $lang = $_GET['lang'] ?? '';
+        $country = $_GET['country'] ?? '';
+        $participantName = $_GET['participantName'] ?? '';
+        $evangelist = $_GET['evangelist'] ?? '';
+
+        $details = CandidateModel::getEvangelistDetails($lang, $country, $participantName,$evangelist);
+        $this->setLayout('main1');
+        return $this->render('candidateDetails', [
+            'language' => $lang,
+            'country' => $country,
+            'participantName' => $participantName,
+            'evangelist' => $details // or rename key to 'details'
+        ]);
+    }
+
+
+
+    public function getCandidatesByLanguage(Request $request, Response $response)
+    {
+        $lang = $_GET['lang'] ?? '';
+
+        $data = CandidateModel::getCountriesByLanguage($lang);
+        $this->setLayout('main1');
+        return $this->render('countriesByLanguage', [
+            'language' => $lang,
+            'countries' => $data
+        ]);
+    }
+
+
+    public function viewCandidates(Request $request, Response $response)
+    {
+        $candidateModel = new CandidateModel();
+
+         $data = CandidateModel::findCandidatesCountLanguageWise();
+        $this->setLayout('main1');
+        //echo $data;
+
+        return $this->render('viewCandidates', [
+            'languages' => $data // <-- PASS THIS TO THE VIEW
+        ]);
+
+    }
+
+
+    public function viewAppointments(Request $request, Response $response)
+    {
+
+        return $this->render('viewAppointments', [
+            'tasks' => ''
+        ]);
+
+    }
+
+    public function viewAppointmentsTabs(Request $request, Response $response)
+    {
+        $tab = $_GET['tab'] ?? 'candidates'; // default tab
+
+        return $this->render('viewAppointmentsTabs', [
+            'activeTab' => $tab
+        ]);
+    }
+
 
     public function addNewSathEvent(Request $request, Response $response)
     {

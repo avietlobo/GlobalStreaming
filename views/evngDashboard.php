@@ -339,6 +339,10 @@ $designation = $dashboardData[0]->designation;
         <img src="home.png" alt="Attendance Icon">
     </a>
 
+    <a href="#" class="attendance-link" title="View Appointments" onclick="window.location.href='viewCandidates';">
+        <img src="appointment.png" alt="Appointments Icon">
+    </a>
+
 <!--    <a href="#" class="attendance-link tooltip" onclick="markAttendance()" data-title="Mark Attendance for Online Sathvartha">-->
 <!--        <img src="check.png" alt="Attendance Icon">-->
 <!--    </a>-->

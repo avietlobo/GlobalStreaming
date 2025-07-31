@@ -1616,6 +1616,100 @@ GROUP BY
         return $groups;
     }
 
+    public static function getEvangelistDetails($lang, $country, $participantName, $evangelist)
+    {
+        $tableName = 'candidate'; // Updated table name
+
+        $query = "SELECT 
+                mobile,
+                recordDate,
+                participantName,
+                country,
+                language,
+                evangelist,
+                source,
+                allotedDays,
+                mediaType,
+                activeStatus,
+                userid,
+                remark,
+                wgroup
+              FROM $tableName
+              WHERE language = :lang 
+                AND country = :country 
+                AND evangelist = :evangelist
+                AND participantName = :participantName";
+
+        $statement = self::prepare($query);
+        $statement->bindValue(':lang', $lang);
+        $statement->bindValue(':country', $country);
+        $statement->bindValue(':participantName', $participantName);
+        $statement->bindValue(':evangelist', $evangelist);
+        $statement->execute();
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function getCandidatesByEvangelist($lang, $country, $evangelist)
+    {
+        $tableName = (new \app\models\CandidateModel())->tableName();
+
+        $query = "SELECT participantName FROM $tableName 
+              WHERE language = :lang AND country = :country AND evangelist = :evangelist";
+
+        $statement = self::prepare($query);
+        $statement->bindValue(':lang', $lang);
+        $statement->bindValue(':country', $country);
+        $statement->bindValue(':evangelist', $evangelist);
+        $statement->execute();
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+
+    public static function getEvangelistsByLangAndCountry($lang, $country)
+    {
+        $tableName = (new \app\models\CandidateModel())->tableName();
+        $query = "SELECT evangelist, COUNT(*) as count 
+              FROM $tableName 
+              WHERE language = :lang AND country = :country 
+              GROUP BY evangelist";
+
+        $statement = self::prepare($query);
+        $statement->bindValue(':lang', $lang);
+        $statement->bindValue(':country', $country);
+        $statement->execute();
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+
+    public static function getCountriesByLanguage($lang)
+    {
+        $tableName = (new \app\models\CandidateModel())->tableName();
+        $query = "SELECT country, COUNT(*) as count FROM $tableName WHERE language = :lang GROUP BY country";
+        $statement = self::prepare($query);
+        $statement->bindValue(':lang', $lang);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+    public static function findCandidatesCountLanguageWise()
+    {
+        $tableName = (new \app\models\CandidateModel())->tableName();
+        $query = "SELECT language, COUNT(*) as count
+FROM $tableName
+GROUP BY language;";
+        $statement = self::prepare($query);
+        $statement->execute();
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
     public static function findAllCandidates($offset = 0, $limit = 10)
     {
         $tableName = (new \app\models\CandidateModel())->tableName();
