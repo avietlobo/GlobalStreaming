@@ -3041,6 +3041,22 @@ ORDER BY
         $stmt->bindValue(':id', $id);
         return $stmt->execute();
     }
+
+    public static function getAllEventNames()
+    {
+        $table = (new \app\models\SathvarthaEventModel())->tableName();
+        $stmt = self::prepare("SELECT event_name FROM $table ORDER BY created_at DESC");
+        $stmt->execute();
+        // Fetch only the event_name column values as a simple array
+        $results = $stmt->fetchAll(\PDO::FETCH_COLUMN); // returns array of event names
+
+        // Optional: Log the result
+        error_log(print_r($results, true));
+
+        return $results;
+
+    }
+
     public static function getAllEvents()
     {
         $table = (new \app\models\SathvarthaEventModel())->tableName();
@@ -3048,6 +3064,26 @@ ORDER BY
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
+    }
+
+    public static function findallTypesOfOrganizers()
+    {
+        $table = (new \app\models\EvangelistModel())->tableName();
+        $stmt = self::prepare("SELECT evngName, designation FROM $table WHERE designation IN ('SathvarthaOrganizer', 'PanelMember', 'LocalOrganizer', 'Caretaker')");
+        $stmt->execute();
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        // Group only evngName by designation
+        $grouped = [];
+        foreach ($results as $row) {
+            $designation = $row['designation'];
+            if (!isset($grouped[$designation])) {
+                $grouped[$designation] = [];
+            }
+            $grouped[$designation][] = $row['evngName']; // Only name
+        }
+
+        return $grouped;
     }
 
 

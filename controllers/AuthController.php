@@ -1172,13 +1172,31 @@ class AuthController extends Controller
             $remark = $_GET['remark'] ?? '';
             $wgroup = $_GET['wgroup'] ?? '';
 
+            // Get Event IDS
+            $eventNames = SathvarthaEventModel::getAllEventNames();
+
+            // Get max class Status
+
+            // Get Sathvartha organizer
+            $organizersByDesignation = EvangelistModel::findallTypesOfOrganizers();
+
+
+
+            // Get panel member
+
+            // Get local organizer
+
+            // Get caring Team member
+
             // Pass them to view
-            return $this->render('addAppointment', [
-                'participantName' => $participantName,
-                'mobile' => $mobile,
-                'evangelist' => $evangelist,
-                'country' => $country
-            ]);
+        return $this->render('addAppointment', [
+            'participantName' => $participantName,
+            'mobile' => $mobile,
+            'evangelist' => $evangelist,
+            'country' => $country,
+            'eventNames' => $eventNames,
+            'organizers' => $organizersByDesignation  // key point
+        ]);
         }
 
 

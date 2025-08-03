@@ -124,8 +124,15 @@
 <div class="container">
     <form action="/appointments/add" method="GET">
         <div class="form-group">
-            <label for="eventID">Event ID</label>
-            <input type="text" id="eventID" name="eventID" placeholder="Enter event ID" required>
+            <label for="event_name">Event Name</label>
+            <select name="event_name" id="event_name" required>
+                <option value="">-- Select Event --</option>
+                <?php foreach ($eventNames as $eventName): ?>
+                    <option value="<?= htmlspecialchars($eventName) ?>">
+                        <?= htmlspecialchars($eventName) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
         </div>
 
         <div class="form-group">
@@ -177,9 +184,15 @@
             <input type="time" id="indianStandardTime" name="indianStandardTime" required>
         </div>
 
+        <!-- Sathvartha Organizer Dropdown -->
         <div class="form-group">
-            <label for="sathvarthaOrganizer">Sathvartha Organizer</label>
-            <input type="text" id="sathvarthaOrganizer" name="sathvarthaOrganizer" placeholder="Enter organizer name" required>
+            <label for="sathvartha_organizer">Sathvartha Organizer</label>
+            <select name="sathvartha_organizer" id="sathvartha_organizer">
+                <option value="">-- Select Sathvartha Organizer --</option>
+                <?php foreach ($organizers['SathvarthaOrganizer'] ?? [] as $name): ?>
+                    <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
 
         <div class="form-group">
@@ -187,9 +200,15 @@
             <textarea id="evangelistFeedback" name="evangelistFeedback" placeholder="Enter feedback" rows="3"></textarea>
         </div>
 
+        <!-- Panel Member Dropdown -->
         <div class="form-group">
-            <label for="panelMember">Panel Member</label>
-            <input type="text" id="panelMember" name="panelMember" placeholder="Enter panel member" required>
+            <label for="panel_member">Panel Member</label>
+            <select name="panel_member" id="panel_member">
+                <option value="">-- Select Panel Member --</option>
+                <?php foreach ($organizers['PanelMember'] ?? [] as $name): ?>
+                    <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
 
         <div class="form-group">
@@ -217,9 +236,15 @@
             <textarea id="panelFeedback" name="panelFeedback" placeholder="Enter panel feedback" rows="3"></textarea>
         </div>
 
+        <!-- Local Organizer Dropdown -->
         <div class="form-group">
-            <label for="localOrganizer">Local Organizer</label>
-            <input type="text" id="localOrganizer" name="localOrganizer" placeholder="Enter local organizer" required>
+            <label for="local_organizer">Local Organizer</label>
+            <select name="local_organizer" id="local_organizer">
+                <option value="">-- Select Local Organizer --</option>
+                <?php foreach ($organizers['LocalOrganizer'] ?? [] as $name): ?>
+                    <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
 
         <div class="form-group">
@@ -268,9 +293,15 @@
             </select>
         </div>
 
+        <!-- Caretaker Dropdown -->
         <div class="form-group">
-            <label for="caringTeamMember">Caring Team Member</label>
-            <input type="text" id="caringTeamMember" name="caringTeamMember" placeholder="Enter caring team member">
+            <label for="caring_team_member">Caring Team Member</label>
+            <select name="caring_team_member" id="caring_team_member">
+                <option value="">-- Select Caring Team Member --</option>
+                <?php foreach ($organizers['Caretaker'] ?? [] as $name): ?>
+                    <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
 
         <div class="form-group">
@@ -285,6 +316,15 @@
                 <option value="Good">Good</option>
                 <option value="Average">Average</option>
                 <option value="Poor">Poor</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="travelStatus">Travelled to Zion</label>
+            <select id="travelStatus" name="travelStatus" required>
+                <option value="">Select status</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
             </select>
         </div>
 
