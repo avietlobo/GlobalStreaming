@@ -122,7 +122,7 @@
     <button class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>
 </div>
 <div class="container">
-    <form action="/appointments/add" method="GET">
+    <form action="/saveAppointment" method="POST">
         <div class="form-group">
             <label for="event_name">Event Name</label>
             <select name="event_name" id="event_name" required>
@@ -165,29 +165,26 @@
         </div>
 
         <div class="form-group">
-            <label for="classStatus">Class Status</label>
-            <select id="classStatus" name="classStatus" required>
-                <option value="">Select status</option>
-                <option value="Scheduled">Scheduled</option>
-                <option value="Completed">Completed</option>
-                <option value="Cancelled">Cancelled</option>
-            </select>
+            <label for="classFrom">Highest Class Number Attended</label>
+            <input type="text" id="classFrom" name="classFrom"
+                   value="<?= htmlspecialchars($highesClassNumberAttended ?? 'No class streamed yet') ?>" readonly>
+        </div>
+
+
+        <div class="form-group">
+            <label for="istDateTime">Appointment Date & Time (IST)</label>
+            <input type="datetime-local" id="istDateTime" name="istDateTime" required>
         </div>
 
         <div class="form-group">
-            <label for="candidateAppointmentDate">Candidate Appointment Date</label>
-            <input type="date" id="candidateAppointmentDate" name="candidateAppointmentDate" required>
-        </div>
-
-        <div class="form-group">
-            <label for="indianStandardTime">Indian Standard Time</label>
-            <input type="time" id="indianStandardTime" name="indianStandardTime" required>
+            <label for="istDateTime">Appointment Date & Time for Candidate zone</label>
+            <input type="datetime-local" id="istDateTime" name="istDateTime" required>
         </div>
 
         <!-- Sathvartha Organizer Dropdown -->
         <div class="form-group">
             <label for="sathvartha_organizer">Sathvartha Organizer</label>
-            <select name="sathvartha_organizer" id="sathvartha_organizer">
+            <select name="sathvartha_organizer" id="sathvartha_organizer" required>
                 <option value="">-- Select Sathvartha Organizer --</option>
                 <?php foreach ($organizers['SathvarthaOrganizer'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
@@ -203,7 +200,7 @@
         <!-- Panel Member Dropdown -->
         <div class="form-group">
             <label for="panel_member">Panel Member</label>
-            <select name="panel_member" id="panel_member">
+            <select name="panel_member" id="panel_member" required>
                 <option value="">-- Select Panel Member --</option>
                 <?php foreach ($organizers['PanelMember'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
@@ -225,9 +222,9 @@
             <label for="faithStatus">Faith Status</label>
             <select id="faithStatus" name="faithStatus" required>
                 <option value="">Select status</option>
-                <option value="Strong">In Faith</option>
-                <option value="Average">Not In Faith</option>
-                <option value="Weak">Neutral Faith</option>
+                <option value="In Faith">In Faith</option>
+                <option value="Not In Faith">Not In Faith</option>
+                <option value="Neutral Faith">Neutral Faith</option>
             </select>
         </div>
 
@@ -239,7 +236,7 @@
         <!-- Local Organizer Dropdown -->
         <div class="form-group">
             <label for="local_organizer">Local Organizer</label>
-            <select name="local_organizer" id="local_organizer">
+            <select name="local_organizer" id="local_organizer" required>
                 <option value="">-- Select Local Organizer --</option>
                 <?php foreach ($organizers['LocalOrganizer'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
@@ -272,7 +269,7 @@
             <label for="sathvarthaAttendance">Sathvartha Attendance</label>
             <select id="sathvarthaAttendance" name="sathvarthaAttendance" required>
                 <option value="">Select attendance</option>
-                <option value="Present">Pending</option>
+                <option value="Pending">Pending</option>
                 <option value="Absent">Attended</option>
                 <option value="Not Attended">Not Attended</option>
                 <option value="Negative">Negative</option>
@@ -296,7 +293,7 @@
         <!-- Caretaker Dropdown -->
         <div class="form-group">
             <label for="caring_team_member">Caring Team Member</label>
-            <select name="caring_team_member" id="caring_team_member">
+            <select name="caring_team_member" id="caring_team_member" required>
                 <option value="">-- Select Caring Team Member --</option>
                 <?php foreach ($organizers['Caretaker'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
@@ -305,9 +302,12 @@
         </div>
 
         <div class="form-group">
-            <label for="googleMeetCaringTeam">Google Meet Caring Team</label>
-            <input type="text" id="googleMeetCaringTeam" name="googleMeetCaringTeam" placeholder="Enter Google Meet caring team">
-        </div>
+            <label for="googleMeetCaringTeam">Google Meet by Caring Team</label>
+            <select id="googleMeetCaringTeam" name="googleMeetCaringTeam" required>
+                <option value="">Select status</option>
+                <option value="Conducted">Conducted</option>
+                <option value="Not Conducted">Not Conducted</option>
+            </select>        </div>
 
         <div class="form-group">
             <label for="caringStatus">Caring Status</label>

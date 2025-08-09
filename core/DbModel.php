@@ -57,6 +57,81 @@ abstract class DbModel extends Model
         return true;
     }
 
+
+    public static function saveAppointment(
+        $candidate_mobile, $event_name,
+        $appointment_datetime_ist, $appointment_datetime_candidate_zone,
+        $candidate_country, $place, $class_status,
+        $sathvartha_organizer_name, $panel_member_name, $caring_team_member_name, $local_organizer_name,
+        $google_meet_status, $faith_status, $sathvartha_ready_status, $fellowship_status,
+        $evangelist_feedback, $panel_feedback, $local_organizer_feedback, $final_feedback,
+        $sathvartha_attendance_status, $sathvartha_feedback,
+        $caring_google_meet_status, $caring_status, $travel_status
+    ) {
+        $tableName = 'appointments';
+
+        $stmt = self::prepare("INSERT INTO $tableName (
+        candidate_mobile, event_name,
+        appointment_datetime_ist, appointment_datetime_candidate_zone,
+        candidate_country, place, class_status,
+        sathvartha_organizer_name, panel_member_name, caring_team_member_name, local_organizer_name,
+        google_meet_status, faith_status, sathvartha_ready_status, fellowship_status,
+        evangelist_feedback, panel_feedback, local_organizer_feedback, final_feedback,
+        sathvartha_attendance_status, sathvartha_feedback,
+        caring_google_meet_status, caring_status, travel_status
+    ) VALUES (
+        :candidate_mobile, :event_name,
+        :appointment_datetime_ist, :appointment_datetime_candidate_zone,
+        :candidate_country, :place, :class_status,
+        :sathvartha_organizer_name, :panel_member_name, :caring_team_member_name, :local_organizer_name,
+        :google_meet_status, :faith_status, :sathvartha_ready_status, :fellowship_status,
+        :evangelist_feedback, :panel_feedback, :local_organizer_feedback, :final_feedback,
+        :sathvartha_attendance_status, :sathvartha_feedback,
+        :caring_google_meet_status, :caring_status, :travel_status
+    )");
+
+        // Bind parameters
+        $stmt->bindParam(':candidate_mobile', $candidate_mobile);
+        $stmt->bindParam(':event_name', $event_name);
+        $stmt->bindParam(':appointment_datetime_ist', $appointment_datetime_ist);
+        $stmt->bindParam(':appointment_datetime_candidate_zone', $appointment_datetime_candidate_zone);
+        $stmt->bindParam(':candidate_country', $candidate_country);
+        $stmt->bindParam(':place', $place);
+        $stmt->bindParam(':class_status', $class_status);
+
+        $stmt->bindParam(':sathvartha_organizer_name', $sathvartha_organizer_name);
+        $stmt->bindParam(':panel_member_name', $panel_member_name);
+        $stmt->bindParam(':caring_team_member_name', $caring_team_member_name);
+        $stmt->bindParam(':local_organizer_name', $local_organizer_name);
+
+        $stmt->bindParam(':google_meet_status', $google_meet_status);
+        $stmt->bindParam(':faith_status', $faith_status);
+        $stmt->bindParam(':sathvartha_ready_status', $sathvartha_ready_status);
+        $stmt->bindParam(':fellowship_status', $fellowship_status);
+
+        $stmt->bindParam(':evangelist_feedback', $evangelist_feedback);
+        $stmt->bindParam(':panel_feedback', $panel_feedback);
+        $stmt->bindParam(':local_organizer_feedback', $local_organizer_feedback);
+        $stmt->bindParam(':final_feedback', $final_feedback);
+
+        $stmt->bindParam(':sathvartha_attendance_status', $sathvartha_attendance_status);
+        $stmt->bindParam(':sathvartha_feedback', $sathvartha_feedback);
+        $stmt->bindParam(':caring_google_meet_status', $caring_google_meet_status);
+        $stmt->bindParam(':caring_status', $caring_status);
+        $stmt->bindParam(':travel_status', $travel_status);
+
+        if ($stmt->execute()) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode([
+                "success" => false,
+                "error" => $stmt->errorInfo()[2] // detailed DB error
+            ]);
+        }
+
+        return true;
+    }
+
     public function save()
     {
         $tableName = $this->tableName();
@@ -1616,6 +1691,26 @@ GROUP BY
         return $groups;
     }
 
+    public static function getAppointmentsById($id)
+    {
+        $pdo = Application::$app->db->pdo;
+        $stmt = $pdo->prepare("SELECT * FROM appointments WHERE id = :id ORDER BY appointment_datetime_ist DESC");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+    public static function getAppointmentsByParticipant($mobile)
+    {
+        $pdo = Application::$app->db->pdo;
+        $stmt = $pdo->prepare("SELECT * FROM appointments WHERE candidate_mobile = :mobile ORDER BY appointment_datetime_ist DESC");
+        $stmt->bindParam(':mobile', $mobile);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
     public static function getEvangelistDetails($lang, $country, $participantName, $evangelist)
     {
         $tableName = 'candidate'; // Updated table name
@@ -1694,6 +1789,43 @@ GROUP BY
         $statement->bindValue(':lang', $lang);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function updateChangedAppointmentFields($candidateMobile, $filteredData,$debug = false)
+    {
+        $pdo = Application::$app->db->pdo;
+
+        // Build the SET clause dynamically
+        $fieldsToUpdate = [];
+        $params = [];
+
+        foreach ($filteredData as $column => $value) {
+            $fieldsToUpdate[] = "$column = ?";
+            $params[] = $value;
+        }
+
+        // If nothing to update, exit
+        if (empty($fieldsToUpdate)) {
+            return false;
+        }
+
+        // Always update the updated_at timestamp
+        $fieldsToUpdate[] = "updated_at = NOW()";
+
+        // Add candidate mobile for WHERE clause
+        $params[] = $candidateMobile;
+
+        // Final SQL
+        $sql = "UPDATE appointments SET " . implode(', ', $fieldsToUpdate) . " WHERE candidate_mobile = ?";
+
+        if ($debug) {
+            error_log("DEBUG SQL: $sql");
+            error_log("DEBUG PARAMS: " . print_r($params, true));
+        }
+
+        $stmt = self::prepare($sql);
+
+        return $stmt->execute($params);
     }
 
 
@@ -2737,6 +2869,24 @@ ORDER BY
         $statement->execute();
         return $statement->fetch(\PDO::FETCH_COLUMN) ?: null; // Return null if not found
 
+    }
+
+    public static function getMaxClassFromForCandidate($mobile)
+    {
+        $tableName = (new \app\models\RegisterModel())->tableName();
+        error_log("Getting max classFrom for mobile: " . $mobile);
+        error_log("Using table: " . $tableName);
+
+        $statement = self::prepare("SELECT MAX(classFrom) FROM $tableName WHERE mobile = :mobile");
+        $statement->bindValue(':mobile', $mobile);
+
+        $executed = $statement->execute();
+        error_log("Statement executed: " . ($executed ? 'true' : 'false'));
+
+        $result = $statement->fetchColumn();
+        error_log("Fetched max classFrom: " . var_export($result, true));
+
+        return $result;
     }
 
 

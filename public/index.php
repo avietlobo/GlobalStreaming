@@ -44,12 +44,18 @@ $app-> router->get('/addNewSathEvent', [AuthController::class, 'addNewSathEvent'
 $app-> router->post('/addNewSathEvent', [AuthController::class, 'addNewSathEvent']);
 $app-> router->get('/viewAppointmentsTabs', [AuthController::class, 'viewAppointmentsTabs']);
 $app-> router->get('/viewAppointments', [AuthController::class, 'viewAppointments']);
+$app-> router->get('/viewAppointment', [AuthController::class, 'viewAppointment']);
 $app-> router->get('/viewCandidates', [AuthController::class, 'viewCandidates']);
 $app->router->get('/getCandidatesByLanguage', [AuthController::class, 'getCandidatesByLanguage']);
 $app->router->get('/getCandidatesByLangAndCountry', [AuthController::class, 'getCandidatesByLangAndCountry']);
 $app->router->get('/getCandidatesByEvangelist', [AuthController::class, 'getCandidatesByEvangelist']);
 $app->router->get('/getCandidateDetails', [AuthController::class, 'getCandidateDetails']);
 $app->router->get('/addAppointment', [AuthController::class, 'addAppointment']);
+$app->router->post('/saveAppointment', [AuthController::class, 'saveAppointment']);
+$app->router->get('/editAppointment', [AuthController::class, 'editAppointment']);
+$app->router->post('/updateAppointment', [AuthController::class, 'updateAppointment']);
+
+
 
 $app-> router->get('/event-details', [AuthController::class, 'viewEvent']);
 $app-> router->get('/edit-event', [AuthController::class, 'editEvent']);

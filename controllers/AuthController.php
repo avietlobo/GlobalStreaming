@@ -38,6 +38,11 @@ class AuthController extends Controller
 {
 
     private $userId;
+    public $mobile;
+    public $language;
+    public $evangelist;
+    public $participantName;
+    public $country;
 
 
     public function __construct()
@@ -1141,6 +1146,8 @@ class AuthController extends Controller
         $lang = $_GET['lang'] ?? '';
         $country = $_GET['country'] ?? '';
         $evangelist = $_GET['evangelist'] ?? '';
+        $mobile = $_GET['mobile'] ?? '';
+        echo $mobile;
 
         $candidates = CandidateModel::getCandidatesByEvangelist($lang, $country, $evangelist);
         $this->setLayout('main1');
@@ -1149,8 +1156,69 @@ class AuthController extends Controller
             'language' => $lang,
             'country' => $country,
             'evangelist' => $evangelist,
-            'candidates' => $candidates
+            'candidates' => $candidates,
+            'mobile' => $mobile
         ]);
+    }
+
+
+    public function saveAppointment(Request $request, Response $response)
+    {
+        if ($request->isPost()) {
+            $data = [
+                $_POST['candidateMobile'] ?? null,
+                $_POST['event_name'] ?? null,
+                $_POST['istDateTime'] ?? null,
+                $_POST['candidateDateTime'] ?? $_POST['istDateTime'], // fallback if no candidate time provided
+                $_POST['country'] ?? null,
+                $_POST['place'] ?? null,
+                $_POST['classFrom'] ?? null,
+                $_POST['sathvartha_organizer'] ?? null,
+                $_POST['panel_member'] ?? null,
+                $_POST['caring_team_member'] ?? null,
+                $_POST['local_organizer'] ?? null,
+                $_POST['googleMeetStatus'] ?? null,
+                $_POST['faithStatus'] ?? null,
+                $_POST['sathvarthaReadyStatus'] ?? null,
+                $_POST['fellowshipStatus'] ?? null,
+                $_POST['evangelistFeedback'] ?? null,
+                $_POST['panelFeedback'] ?? null,
+                $_POST['localOrganizerFeedback'] ?? null,
+                $_POST['finalFeedback'] ?? null,
+                $_POST['sathvarthaAttendance'] ?? null,
+                $_POST['sathvarthaFeedback'] ?? null,
+                $_POST['googleMeetCaringTeam'] ?? null,
+                $_POST['caringStatus'] ?? null,
+                $_POST['travelStatus'] ?? null,
+            ];
+
+             echo  $_POST['candidateMobile'];
+            $saved = SathvarthaEventModel::saveAppointment(...$data);
+
+
+            if ($saved) {
+
+
+                error_log("Language: " . $this->language);
+                error_log("Country: " . $this->country);
+                error_log("Participant: " . $this->participantName);
+                error_log("Evangelist: " . $this->evangelist);
+
+                // ✅ Redirect with query params to /getCandidateDetails
+                $redirectUrl = "/getCandidateDetails?lang=" . urlencode(Application::$app->session->get('tt1')) .
+                    "&country=" . urlencode(Application::$app->session->get('tt2')) .
+                    "&participantName=" . urlencode(Application::$app->session->get('tt3')) .
+                    "&evangelist=" . urlencode(Application::$app->session->get('tt4'));
+
+                $response->redirect($redirectUrl);
+
+            } else {
+
+                // ✅ Perform the redirect
+
+                echo json_encode(["success" => false, "message" => "Failed to save appointment"]);
+            }
+        }
     }
 
 
@@ -1179,6 +1247,7 @@ class AuthController extends Controller
 
             // Get Sathvartha organizer
             $organizersByDesignation = EvangelistModel::findallTypesOfOrganizers();
+            $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($mobile);
 
 
 
@@ -1195,7 +1264,8 @@ class AuthController extends Controller
             'evangelist' => $evangelist,
             'country' => $country,
             'eventNames' => $eventNames,
-            'organizers' => $organizersByDesignation  // key point
+            'organizers' => $organizersByDesignation,  // key point
+            'highesClassNumberAttended' => $highesClassNumberAttended // 👈 Pass it here
         ]);
         }
 
@@ -1218,13 +1288,28 @@ class AuthController extends Controller
         $participantName = $_GET['participantName'] ?? '';
         $evangelist = $_GET['evangelist'] ?? '';
 
+
+        Application::$app->session->set('tt1', $lang);
+        Application::$app->session->set('tt2', $country);
+        Application::$app->session->set('tt3', $participantName);
+        Application::$app->session->set('tt4', $evangelist);
+
+
         $details = CandidateModel::getEvangelistDetails($lang, $country, $participantName,$evangelist);
+
+
+        $mobile = $details[0]['mobile'];
+        $this->mobile=$mobile;
+        $appointments = CandidateModel::getAppointmentsByParticipant($mobile); // 👈 Add this line
+
         $this->setLayout('main1');
         return $this->render('candidateDetails', [
             'language' => $lang,
             'country' => $country,
             'participantName' => $participantName,
-            'evangelist' => $details // or rename key to 'details'
+            'evangelist' => $details,
+            'mobile' => $mobile,
+            'appointments' => $appointments // 👈 Pass to view
         ]);
     }
 
@@ -1256,6 +1341,152 @@ class AuthController extends Controller
         ]);
 
     }
+
+
+    public function updateAppointment(Request $request, Response $response)
+    {
+        // Read raw JSON from fetch()
+        $rawInput = file_get_contents('php://input');
+        $postData = json_decode($rawInput, true);
+
+        // Validate JSON
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $response->setStatusCode(400);
+            echo 'Invalid JSON data.';
+            return;
+        }
+
+        // Extract candidate mobile number
+        $candidateMobile = $postData['candidateMobile'] ?? null;
+        if (!$candidateMobile) {
+            $response->setStatusCode(400);
+            echo 'Candidate mobile is required.';
+            return;
+        }
+
+        // Map incoming form keys to DB columns
+        $fieldMap = [
+            'event_name'                     => 'event_name',
+            'istDateTime'                    => 'appointment_datetime_ist',
+            'appointment_datetime_candidate_zone' => 'appointment_datetime_candidate_zone',
+            'place'                          => 'place',
+            'sathvartha_organizer'           => 'sathvartha_organizer_name',
+            'panel_member'                   => 'panel_member_name',
+            'caring_team_member'             => 'caring_team_member_name',
+            'local_organizer'                 => 'local_organizer_name',
+            'googleMeetStatus'               => 'google_meet_status',
+            'faithStatus'                    => 'faith_status',
+            'sathvarthaReadyStatus'          => 'sathvartha_ready_status',
+            'fellowshipStatus'               => 'fellowship_status',
+            'evangelistFeedback'             => 'evangelist_feedback',
+            'panelFeedback'                  => 'panel_feedback',
+            'localOrganizerFeedback'         => 'local_organizer_feedback',
+            'finalFeedback'                  => 'final_feedback',
+            'sathvarthaAttendanceStatus'     => 'sathvartha_attendance_status',
+            'sathvarthaFeedback'             => 'sathvartha_feedback',
+            'googleMeetCaringTeam'           => 'caring_google_meet_status',
+            'caringStatus'                   => 'caring_status',
+            'travelStatus'                   => 'travel_status'
+        ];
+
+        // Filter only the allowed fields with mapped DB column names
+        $filteredData = [];
+        foreach ($fieldMap as $formKey => $dbColumn) {
+            if (isset($postData[$formKey])) {
+                $filteredData[$dbColumn] = $postData[$formKey];
+            }
+        }
+
+        // If no fields are being updated
+        if (empty($filteredData)) {
+            $response->setStatusCode(400);
+            echo 'No valid fields provided for update.';
+            return;
+        }
+
+        // Perform the DB update
+        $updated = CandidateModel::updateChangedAppointmentFields($candidateMobile, $filteredData, true);
+
+        // Send response
+        if ($updated) {
+            header('Location: /viewAppointment?id=16');
+            exit;
+        } else {
+            $response->setStatusCode(500);
+            echo 'No changes made or update failed.';
+        }
+    }
+
+    public function editAppointment(Request $request, Response $response)
+    {
+        $id = $_GET['id'] ?? null;
+        $appointments = CandidateModel::getAppointmentsById($id);
+
+
+        if (!$appointments || empty($appointments)) {
+            die("No appointment found.");
+        }
+
+        $appointment = $appointments[0];
+
+        // Get event names and organizers
+        $eventNames = SathvarthaEventModel::getAllEventNames();
+        $organizersByDesignation = EvangelistModel::findallTypesOfOrganizers();
+        $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($appointment['candidate_mobile']);
+
+        $participantName= Application::$app->session->get('tt3');
+        $evangelist=Application::$app->session->get('tt4');
+
+
+
+        return $this->render('appointmentForm1', [
+            'appointment' => $appointment,
+            'participantName' =>$participantName ?? '',
+            'evangelist' =>$evangelist ?? '',
+            'mobile' => $appointment['candidate_mobile'] ?? '',
+            'country' => $appointment['candidate_country'] ?? '',
+            'place' => $appointment['place'] ?? '',
+            'appointment_datetime_ist' => $appointment['appointment_datetime_ist'] ?? '',
+            'appointment_datetime_candidate_zone ' => $appointment['appointment_datetime_candidate_zone'] ?? '',
+            'eventNames' => $eventNames,
+            'faithStatus' => $appointment['faith_status'] ?? '',
+            'googleMeetStatus' => $appointment['google_meet_status'] ?? '',
+            'caringStatus' => $appointment['caring_status'] ?? '',
+            'travelStatus' => $appointment['travel_status'] ?? '',
+            'caringGoogleMeetStatus' => $appointment['caring_google_meet_status'] ?? '',
+            'fellowshipStatus' => $appointment['fellowship_status'] ?? '',
+            'sathvarthaAttendanceStatus' => $appointment['sathvartha_attendance_status'] ?? '',
+            'caringTeamMember' => $appointment['caring_team_member_name'] ?? '',
+            'localOrganizer' => $appointment['local_organizer_name'] ?? '',
+            'panelMember' => $appointment['panel_member_name'] ?? '',
+            'sathvarthaOrganizer' => $appointment['sathvartha_organizer_name'] ?? '',
+            'organizers' => $organizersByDesignation,
+            'highesClassNumberAttended' => $highesClassNumberAttended,
+            'sathvarthaFeedback' => $appointment['sathvartha_feedback'] ?? '',
+            'finalFeedback' => $appointment['final_feedback'] ?? '',
+            'localOrganizerFeedback' => $appointment['local_organizer_feedback'] ?? '',
+            'panelFeedback' => $appointment['panel_feedback'] ?? '',
+            'sathvarthaReadyStatus' => $appointment['sathvartha_ready_status'] ?? '',
+            'evangelistFeedback' => $appointment['evangelist_feedback'] ?? '',
+        ]);
+    }
+
+
+    public function viewAppointment(Request $request, Response $response)
+    {
+        $id = $_GET['id'] ?? null;
+        $appointments = CandidateModel::getAppointmentsById($id);
+        $participantName=Application::$app->session->get('tt3');
+        $evangelist=Application::$app->session->get('tt4');
+
+
+        return $this->render('viewAppointment', [
+            'appointments' => $appointments,
+            'participantName' => $participantName,
+            'evangelist' => $evangelist
+        ]);
+    }
+
 
 
     public function viewAppointments(Request $request, Response $response)

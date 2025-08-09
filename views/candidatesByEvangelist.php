@@ -158,7 +158,7 @@
                 <div>
                     <a
                         class="card-link"
-                        href="/getCandidateDetails?lang=<?= urlencode($language) ?>&country=<?= urlencode($country) ?>&participantName=<?= urlencode($candidate['participantName']) ?>&evangelist=<?= urlencode($evangelist) ?>"
+                        href="/getCandidateDetails?lang=<?= urlencode($language) ?>&country=<?= urlencode($country) ?>&participantName=<?= urlencode($candidate['participantName']) ?>&evangelist=<?= urlencode($evangelist) ?>&mobile=<?= urlencode($mobile) ?>"
                     >
                         <div class="card">
                             <div class="card-title"><?= htmlspecialchars($evangelist) ?></div>

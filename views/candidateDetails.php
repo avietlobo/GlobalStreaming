@@ -9,13 +9,15 @@
             --bg-color: #000;
             --text-color: #fff;
             --container-bg: #111;
-            --highlight: #00ff00;
+            --highlight: #00ff99;
             --label-color: #ccc;
             --border-color: #333;
             --back-bg: #222;
             --back-hover: #333;
-            --button-bg: #00ff00;
+            --button-bg: #00ff99;
             --button-text: #000;
+            --scrollbar-thumb: linear-gradient(45deg, #00ffcc, #ff00cc);
+            --scrollbar-track: #444;
         }
 
         body.light-mode {
@@ -29,6 +31,8 @@
             --back-hover: #e0e0e0;
             --button-bg: #007bff;
             --button-text: #fff;
+            --scrollbar-thumb: linear-gradient(45deg, #007bff, #66ccff);
+            --scrollbar-track: #ccc;
         }
 
         body {
@@ -61,12 +65,12 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 30px auto;
             background: var(--container-bg);
             padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
         }
 
         table {
@@ -75,9 +79,10 @@
             border-collapse: collapse;
         }
 
-        td {
+        th, td {
             padding: 10px;
             border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
         }
 
         td.label {
@@ -101,9 +106,9 @@
             background-color: var(--back-hover);
         }
 
-        .appointment-button {
+        .add-appointment-btn {
             display: inline-block;
-            margin-top: 20px;
+            margin: 20px 0;
             text-decoration: none;
             background-color: var(--button-bg);
             color: var(--button-text);
@@ -112,26 +117,51 @@
             font-weight: bold;
             transition: background-color 0.3s ease;
             border: none;
-            cursor: pointer;
         }
 
-        .appointment-button:hover {
+        .add-appointment-btn:hover {
             filter: brightness(1.1);
         }
 
-        @media (max-width: 600px) {
-            td {
-                display: block;
-                width: 100%;
-                box-sizing: border-box;
-            }
+        /* 🌈 Scrollable table container */
+        .scroll-wrapper {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
 
+        .scroll-wrapper::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        .scroll-wrapper::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 10px;
+        }
+
+        .scroll-wrapper::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 10px;
+        }
+
+        .scroll-wrapper::-webkit-scrollbar-thumb:hover {
+            filter: brightness(1.2);
+        }
+
+        .scroll-wrapper table {
+            min-width: 1800px;
+        }
+
+        @media (max-width: 600px) {
             td.label {
                 background: var(--back-bg);
             }
 
             h2 {
                 font-size: 20px;
+            }
+
+            .container {
+                padding: 15px;
             }
         }
     </style>
@@ -167,9 +197,9 @@
     <?php else: ?>
         <p>No details found for the selected participant.</p>
     <?php endif; ?>
+
     <?php if (!empty($evangelist)): ?>
         <?php
-        // Assuming you want to pass the first evangelist's data
         $row = $evangelist[0];
         $queryParams = http_build_query([
             'participantName' => $row['participantName'] ?? '',
@@ -182,11 +212,90 @@
             ➕ Add Appointment
         </a>
     <?php endif; ?>
+
+    <!-- 🎨 Appointments Table with colorful horizontal scroll -->
+    <div class="scroll-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Candidate Mobile</th>
+                <th>Event Name</th>
+                <th>Appointment IST</th>
+                <th>Appointment Candidate Zone</th>
+                <th>Country</th>
+                <th>Place</th>
+                <th>Class Status</th>
+                <th>Sathvartha Organizer</th>
+                <th>Panel Member</th>
+                <th>Caring Team Member</th>
+                <th>Local Organizer</th>
+                <th>Google Meet Status</th>
+                <th>Faith Status</th>
+                <th>Sathvartha Ready Status</th>
+                <th>Fellowship Status</th>
+                <th>Evangelist Feedback</th>
+                <th>Panel Feedback</th>
+                <th>Local Organizer Feedback</th>
+                <th>Final Feedback</th>
+                <th>Sathvartha Attendance</th>
+                <th>Sathvartha Feedback</th>
+                <th>Caring Google Meet Status</th>
+                <th>Caring Status</th>
+                <th>Travel Status</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($appointments)): ?>
+                <?php foreach ($appointments as $appointment): ?>
+                    <tr class="clickable-row" data-id="<?= $appointment['id'] ?>">
+                        <td><?= htmlspecialchars($appointment['candidate_mobile']) ?></td>
+                        <td><?= htmlspecialchars($appointment['event_name']) ?></td>
+                        <td><?= htmlspecialchars($appointment['appointment_datetime_ist']) ?></td>
+                        <td><?= htmlspecialchars($appointment['appointment_datetime_candidate_zone']) ?></td>
+                        <td><?= htmlspecialchars($appointment['candidate_country']) ?></td>
+                        <td><?= htmlspecialchars($appointment['place']) ?></td>
+                        <td><?= htmlspecialchars($appointment['class_status']) ?></td>
+                        <td><?= htmlspecialchars($appointment['sathvartha_organizer_name']) ?></td>
+                        <td><?= htmlspecialchars($appointment['panel_member_name']) ?></td>
+                        <td><?= htmlspecialchars($appointment['caring_team_member_name']) ?></td>
+                        <td><?= htmlspecialchars($appointment['local_organizer_name']) ?></td>
+                        <td><?= htmlspecialchars($appointment['google_meet_status']) ?></td>
+                        <td><?= htmlspecialchars($appointment['faith_status']) ?></td>
+                        <td><?= htmlspecialchars($appointment['sathvartha_ready_status']) ?></td>
+                        <td><?= htmlspecialchars($appointment['fellowship_status']) ?></td>
+                        <td><?= htmlspecialchars($appointment['evangelist_feedback']) ?></td>
+                        <td><?= htmlspecialchars($appointment['panel_feedback']) ?></td>
+                        <td><?= htmlspecialchars($appointment['local_organizer_feedback']) ?></td>
+                        <td><?= htmlspecialchars($appointment['final_feedback']) ?></td>
+                        <td><?= htmlspecialchars($appointment['sathvartha_attendance_status']) ?></td>
+                        <td><?= htmlspecialchars($appointment['sathvartha_feedback']) ?></td>
+                        <td><?= htmlspecialchars($appointment['caring_google_meet_status']) ?></td>
+                        <td><?= htmlspecialchars($appointment['caring_status']) ?></td>
+                        <td><?= htmlspecialchars($appointment['travel_status']) ?></td>
+                        <td><?= htmlspecialchars($appointment['created_at']) ?></td>
+                        <td><?= htmlspecialchars($appointment['updated_at']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr><td colspan="26">No appointments found.</td></tr>
+            <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+
     <br><br>
     <a class="back-link" href="javascript:history.back()">← Back to Evangelists</a>
-
-
 </div>
+<script>
+    document.querySelectorAll('.clickable-row').forEach(row => {
+        row.addEventListener('click', () => {
+            const id = row.getAttribute('data-id');
+            window.location.href = `/viewAppointment?id=${id}`;
+        });
+    });
+</script>
 
 <script>
     const toggleBtn = document.getElementById('themeToggle');
