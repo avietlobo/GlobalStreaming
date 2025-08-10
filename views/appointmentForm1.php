@@ -175,7 +175,7 @@
 
         <div class="form-group">
             <label for="istDateTime">Appointment Date & Time (IST)</label>
-            <input type="datetime-local" id="istDateTime" name="istDateTime" value="<?= htmlspecialchars($appointment_datetime_ist ?? '') ?>" required>
+            <input type="datetime-local" id="istDateTime" name="istDateTime" value="<?= htmlspecialchars($appointment['appointment_datetime_ist'] ?? '') ?>" required>
         </div>
 
         <div class="form-group">
@@ -344,6 +344,22 @@
                 <option value="No" <?= ($travelStatus ?? '') === 'No' ? 'selected' : '' ?>>No</option>
             </select>
         </div>
+
+        <div class="form-group">
+            <label for="transportRequired">Transport Required</label>
+            <select id="transportRequired" name="transportRequired" required>
+                <option value="">Select status</option>
+                <option value="Yes" <?= ($transportRequired ?? '') === 'Yes' ? 'selected' : '' ?>>Yes</option>
+                <option value="No" <?= ($transportRequired ?? '') === 'No' ? 'selected' : '' ?>>No</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="caringistDateTime">Appointment Date & Time (IST)</label>
+            <input type="datetime-local" id="caringistDateTime" name="caringistDateTime" value="<?= htmlspecialchars($appointment['caring_google_meet_date'] ?? '') ?>" required>
+        </div>
+
+
 
 
 

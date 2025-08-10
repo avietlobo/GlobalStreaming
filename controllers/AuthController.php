@@ -1168,8 +1168,8 @@ class AuthController extends Controller
             $data = [
                 $_POST['candidateMobile'] ?? null,
                 $_POST['event_name'] ?? null,
-                $_POST['istDateTime'] ?? null,
-                $_POST['candidateDateTime'] ?? $_POST['istDateTime'], // fallback if no candidate time provided
+                $_POST['istDateTimeZ'] ?? null,
+                $_POST['istDateTime'] ?? $_POST['istDateTimeZ'], // fallback if no candidate time provided
                 $_POST['country'] ?? null,
                 $_POST['place'] ?? null,
                 $_POST['classFrom'] ?? null,
@@ -1190,6 +1190,12 @@ class AuthController extends Controller
                 $_POST['googleMeetCaringTeam'] ?? null,
                 $_POST['caringStatus'] ?? null,
                 $_POST['travelStatus'] ?? null,
+                $_POST['transportStatus'] ?? null,
+                $_POST['caringistDateTime'] ?? null,
+
+
+
+
             ];
 
              echo  $_POST['candidateMobile'];
@@ -1386,7 +1392,10 @@ class AuthController extends Controller
             'sathvarthaFeedback'             => 'sathvartha_feedback',
             'googleMeetCaringTeam'           => 'caring_google_meet_status',
             'caringStatus'                   => 'caring_status',
-            'travelStatus'                   => 'travel_status'
+            'travelStatus'                   => 'travel_status',
+            'transportRequired'              => 'transport_required',
+            'caringistDateTime'              => 'caring_google_meet_date'
+
         ];
 
         // Filter only the allowed fields with mapped DB column names
@@ -1468,6 +1477,8 @@ class AuthController extends Controller
             'panelFeedback' => $appointment['panel_feedback'] ?? '',
             'sathvarthaReadyStatus' => $appointment['sathvartha_ready_status'] ?? '',
             'evangelistFeedback' => $appointment['evangelist_feedback'] ?? '',
+            'transportRequired' => $appointment['transport_required'] ?? '',
+            'caringGoogleMeetDate' => $appointment['caring_google_meet_date'] ?? ''
         ]);
     }
 

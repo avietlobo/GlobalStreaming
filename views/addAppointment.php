@@ -172,8 +172,8 @@
 
 
         <div class="form-group">
-            <label for="istDateTime">Appointment Date & Time (IST)</label>
-            <input type="datetime-local" id="istDateTime" name="istDateTime" required>
+            <label for="istDateTimeZ">Appointment Date & Time (IST)</label>
+            <input type="datetime-local" id="istDateTimeZ" name="istDateTimeZ" required>
         </div>
 
         <div class="form-group">
@@ -326,6 +326,20 @@
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
             </select>
+        </div>
+
+        <div class="form-group">
+            <label for="transportStatus">Transport required</label>
+            <select id="transportStatus" name="transportStatus" required>
+                <option value="">Select status</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="caringistDateTime">Google meet Appointment Date for Caretaker</label>
+            <input type="datetime-local" id="caringistDateTime" name="caringistDateTime" required>
         </div>
 
 
