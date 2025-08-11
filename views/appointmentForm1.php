@@ -137,6 +137,19 @@
         </div>
 
         <div class="form-group">
+            <label for="event_name1">Home Mission Name</label>
+            <select name="event_name1" id="event_name1">
+                <option value="">-- Select Event --</option>
+                <?php foreach ($eventNames1 as $eventName1): ?>
+                    <option value="<?= htmlspecialchars($eventName1) ?>"
+                        <?= (isset($appointment['event_name_hs']) && $appointment['event_name_hs'] === $eventName1) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($eventName1) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="form-group">
             <label for="candidateName">Candidate Name</label>
             <input type="text" id="candidateName" name="candidateName"
                    placeholder="Enter candidate name" required

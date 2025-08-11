@@ -269,9 +269,10 @@ $designation = $dashboardData[0]->designation;
             <img src="event.png" alt="Attendance Icon">
         </a>
 
-        <a href="#" class="attendance-link" title="Add New Home mission Event" onclick="window.location.href='viewAllCanAttendenceMarking';">
+        <a href="#" class="attendance-link" title="Add New Home mission Event" onclick="window.location.href='addNewHomeEvent';">
             <img src="home.png" alt="Attendance Icon">
         </a>
+
 
         <a href="#" class="attendance-link" title="View Appointments" onclick="window.location.href='viewCandidates';">
             <img src="appointment.png" alt="Appointments Icon">

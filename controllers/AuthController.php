@@ -1050,6 +1050,19 @@ class AuthController extends Controller
 
     }
 
+    public function viewEvent1(Request $request)
+    {
+        $id = $_GET['id'] ?? null;
+        $event = SathvarthaEventModel::getEventById1($id);
+
+        if (!$event) {
+            Application::$app->response->redirect('/addNewHomeEvent');
+            return;
+        }
+
+        return $this->render('viewEvent1', ['event' => $event]);
+    }
+
 
     public function viewEvent(Request $request)
     {
@@ -1062,6 +1075,65 @@ class AuthController extends Controller
         }
 
         return $this->render('viewEvent', ['event' => $event]);
+    }
+
+
+    public function editEvent1(Request $request)
+    {
+        $id = $_GET['id'] ?? null;
+        $event = SathvarthaEventModel::getEventById1($id);
+        $evangelistModel = new EvangelistModel();
+
+        $sathvarthaOrganizers = EvangelistModel::findSathvarthaOrganizers();
+        $localOrganizers = EvangelistModel::findlocalOrganizers();
+
+        if (!$event) {
+            Application::$app->response->redirect('/sathvartha-event');
+            return;
+        }
+
+        if ($request->isPost()) {
+            $data = $request->getBody();
+            $totalAttended = $_POST['total_attended'] ?? 0;
+            $positiveCount = $_POST['positive_count'] ?? 0;
+
+            // ✅ Handle file upload
+            $uploadDir = Application::$ROOT_DIR . '/public/uploads/hsReports/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $attendanceFile = $_FILES['attendance_report'] ?? null;
+            $uploadedPath = $event['attendance_report']; // Default to existing
+
+            if ($attendanceFile && $attendanceFile['error'] === UPLOAD_ERR_OK) {
+                $ext = pathinfo($attendanceFile['name'], PATHINFO_EXTENSION);
+                $allowed = ['xlsx', 'xls', 'csv', 'txt', 'zip'];
+                if (in_array(strtolower($ext), $allowed)) {
+                    $filename = 'attendance_' . uniqid() . '.' . $ext;
+                    $targetPath = $uploadDir . $filename;
+
+                    if (move_uploaded_file($attendanceFile['tmp_name'], $targetPath)) {
+                        $uploadedPath = '/uploads/hsReports/' . $filename;
+                    }
+                }
+            }
+            $data['attendance_report'] = $uploadedPath;
+
+
+
+            SathvarthaEventModel::updateEvent1($id, $data,$totalAttended,$positiveCount,$uploadedPath);
+
+            Application::$app->session->setFlash('success', 'Event updated successfully!');
+            Application::$app->response->redirect('/addNewHomeEvent');
+            return;
+        }
+
+        return $this->render('editEvent1', [
+            'event' => $event,
+            'localOrganizers' => $localOrganizers,
+            'sathvarthaOrganizers' => $sathvarthaOrganizers
+        ]);
     }
 
     public function editEvent(Request $request)
@@ -1249,6 +1321,8 @@ class AuthController extends Controller
             // Get Event IDS
             $eventNames = SathvarthaEventModel::getAllEventNames();
 
+            $eventNames1 = SathvarthaEventModel::getAllEventNames1();
+
             // Get max class Status
 
             // Get Sathvartha organizer
@@ -1270,6 +1344,7 @@ class AuthController extends Controller
             'evangelist' => $evangelist,
             'country' => $country,
             'eventNames' => $eventNames,
+            'eventNames1' => $eventNames1,
             'organizers' => $organizersByDesignation,  // key point
             'highesClassNumberAttended' => $highesClassNumberAttended // 👈 Pass it here
         ]);
@@ -1305,7 +1380,7 @@ class AuthController extends Controller
 
 
         $mobile = $details[0]['mobile'];
-        $this->mobile=$mobile;
+        //this->mobile=$mobile;
         $appointments = CandidateModel::getAppointmentsByParticipant($mobile); // 👈 Add this line
 
         $this->setLayout('main1');
@@ -1394,7 +1469,8 @@ class AuthController extends Controller
             'caringStatus'                   => 'caring_status',
             'travelStatus'                   => 'travel_status',
             'transportRequired'              => 'transport_required',
-            'caringistDateTime'              => 'caring_google_meet_date'
+            'caringistDateTime'              => 'caring_google_meet_date',
+            'event_name1'                  => 'event_name_hs'
 
         ];
 
@@ -1440,12 +1516,15 @@ class AuthController extends Controller
 
         // Get event names and organizers
         $eventNames = SathvarthaEventModel::getAllEventNames();
+        $eventNames1 = SathvarthaEventModel::getAllEventNames1();
         $organizersByDesignation = EvangelistModel::findallTypesOfOrganizers();
         $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($appointment['candidate_mobile']);
 
         $participantName= Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
-
+        echo '<pre>';
+        var_dump($eventNames1);
+        echo '</pre>';
 
 
         return $this->render('appointmentForm1', [
@@ -1458,6 +1537,7 @@ class AuthController extends Controller
             'appointment_datetime_ist' => $appointment['appointment_datetime_ist'] ?? '',
             'appointment_datetime_candidate_zone ' => $appointment['appointment_datetime_candidate_zone'] ?? '',
             'eventNames' => $eventNames,
+            'eventNames1' => $eventNames1,
             'faithStatus' => $appointment['faith_status'] ?? '',
             'googleMeetStatus' => $appointment['google_meet_status'] ?? '',
             'caringStatus' => $appointment['caring_status'] ?? '',
@@ -1518,6 +1598,67 @@ class AuthController extends Controller
         ]);
     }
 
+
+
+
+    public function addNewHomeEvent(Request $request, Response $response)
+    {
+        $evangelistModel = new EvangelistModel();
+        $assignedTo = Application::$app->session->get('nameFinal'); // Logged-in user
+        $tasks = TelecallerSMModel::getMyTasks($assignedTo);
+        // Fetch organizers from evangelist table
+        $localOrganizers = EvangelistModel::findlocalOrganizers();
+        $sathvarthaOrganizers = EvangelistModel::findSathvarthaOrganizers();
+        $existingEvents = SathvarthaEventModel::getAllEvents1(); // Create this method to fetch events
+
+        $errorMessage = '';
+
+        if ($request->isPost()) {
+            $body = $request->getBody();
+            $eventData = [
+                'event_name' => $body['event_name'],
+                'start_date' => $body['start_date'],
+                'end_date' => $body['end_date'],
+                'main_language' => $body['main_language'],
+                'translation_language' => $body['translation_language'],
+                'event_organizer' => $body['event_organizer'],
+                'local_organizer' => $body['local_organizer'],
+                'event_link' => $body['event_link'],
+                'notes' => $body['notes'],
+                'created_by' => $assignedTo,
+                'updated_by' => $assignedTo,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+
+            try {
+                $saved = SathvarthaEventModel::saveHomeMissionEvent($eventData);
+                if ($saved) {
+                    Application::$app->response->redirect('/evngDashboard1');
+                } else {
+                    $errorMessage = "❌ Something went wrong. Please try again.";
+                }
+            } catch (\PDOException $e) {
+                if ($e->errorInfo[1] == 1062) {
+                    // Duplicate entry MySQL error code
+                    $errorMessage = "⚠️ Event name already exists. Please use a different name.";
+                } else {
+                    $errorMessage = "❌ Database error: " . $e->getMessage();
+                }
+            }
+        }
+
+        $this->setLayout('main1');
+        return $this->render('homeMissionEvent', [
+            'tasks' => $tasks,
+            'sathvarthaOrganizers' => $sathvarthaOrganizers,
+            'localOrganizers' => $localOrganizers,
+            'errorMessage' => $errorMessage,
+            'formData' => $eventData ?? [],
+            'existingEvents' => $existingEvents
+        ]);
+
+    }
 
     public function addNewSathEvent(Request $request, Response $response)
     {

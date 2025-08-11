@@ -136,6 +136,18 @@
         </div>
 
         <div class="form-group">
+            <label for="event_name1">Home Mission Name</label>
+            <select name="event_name1" id="event_name1">
+                <option value="">-- Select Event --</option>
+                <?php foreach ($eventNames1 as $eventName): ?>
+                    <option value="<?= htmlspecialchars($eventName) ?>">
+                        <?= htmlspecialchars($eventName) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="form-group">
             <label for="candidateName">Candidate Name</label>
             <input type="text" id="candidateName" name="candidateName"
                    placeholder="Enter candidate name" required
@@ -210,7 +222,7 @@
 
         <div class="form-group">
             <label for="googleMeetStatus">Google Meet Status</label>
-            <select id="googleMeetStatus" name="googleMeetStatus" required>
+            <select id="googleMeetStatus" name="googleMeetStatus">
                 <option value="">Select status</option>
                 <option value="Not Conducted">Not Conducted</option>
                 <option value="Conducted">Conducted</option>
@@ -220,7 +232,7 @@
 
         <div class="form-group">
             <label for="faithStatus">Faith Status</label>
-            <select id="faithStatus" name="faithStatus" required>
+            <select id="faithStatus" name="faithStatus">
                 <option value="">Select status</option>
                 <option value="In Faith">In Faith</option>
                 <option value="Not In Faith">Not In Faith</option>
@@ -251,7 +263,7 @@
 
         <div class="form-group">
             <label for="sathvarthaReadyStatus">Sathvartha Ready Status</label>
-            <select id="sathvarthaReadyStatus" name="sathvarthaReadyStatus" required>
+            <select id="sathvarthaReadyStatus" name="sathvarthaReadyStatus">
                 <option value="">Select status</option>
                 <option value="Not Checked">Not Checked</option>
                 <option value="Ready">Ready</option>
@@ -267,7 +279,7 @@
 
         <div class="form-group">
             <label for="sathvarthaAttendance">Sathvartha Attendance</label>
-            <select id="sathvarthaAttendance" name="sathvarthaAttendance" required>
+            <select id="sathvarthaAttendance" name="sathvarthaAttendance">
                 <option value="">Select attendance</option>
                 <option value="Pending">Pending</option>
                 <option value="Absent">Attended</option>
@@ -283,7 +295,7 @@
 
         <div class="form-group">
             <label for="fellowshipStatus">Fellowship Status</label>
-            <select id="fellowshipStatus" name="fellowshipStatus" required>
+            <select id="fellowshipStatus" name="fellowshipStatus">
                 <option value="">Select status</option>
                 <option value="Not In Fellowship">Not In Fellowship</option>
                 <option value="In Fellowship">In Fellowship</option>
@@ -303,7 +315,7 @@
 
         <div class="form-group">
             <label for="googleMeetCaringTeam">Google Meet by Caring Team</label>
-            <select id="googleMeetCaringTeam" name="googleMeetCaringTeam" required>
+            <select id="googleMeetCaringTeam" name="googleMeetCaringTeam" >
                 <option value="">Select status</option>
                 <option value="Conducted">Conducted</option>
                 <option value="Not Conducted">Not Conducted</option>
@@ -311,7 +323,7 @@
 
         <div class="form-group">
             <label for="caringStatus">Caring Status</label>
-            <select id="caringStatus" name="caringStatus" required>
+            <select id="caringStatus" name="caringStatus" >
                 <option value="">Select status</option>
                 <option value="Good">Good</option>
                 <option value="Average">Average</option>
@@ -321,7 +333,7 @@
 
         <div class="form-group">
             <label for="travelStatus">Travelled to Zion</label>
-            <select id="travelStatus" name="travelStatus" required>
+            <select id="travelStatus" name="travelStatus" >
                 <option value="">Select status</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
@@ -330,7 +342,7 @@
 
         <div class="form-group">
             <label for="transportStatus">Transport required</label>
-            <select id="transportStatus" name="transportStatus" required>
+            <select id="transportStatus" name="transportStatus" >
                 <option value="">Select status</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
@@ -339,7 +351,7 @@
 
         <div class="form-group">
             <label for="caringistDateTime">Google meet Appointment Date for Caretaker</label>
-            <input type="datetime-local" id="caringistDateTime" name="caringistDateTime" required>
+            <input type="datetime-local" id="caringistDateTime" name="caringistDateTime" >
         </div>
 
 

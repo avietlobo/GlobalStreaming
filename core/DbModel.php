@@ -3156,6 +3156,15 @@ ORDER BY
         return $statement->fetchAll(\PDO::FETCH_CLASS, EvangelistModel::class);
     }
 
+    public static function getEventById1($id)
+    {
+        $db = Application::$app->db;
+        $stmt = $db->prepare("SELECT * FROM home_mission_events WHERE id = :id");
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
     public static function getEventById($id)
     {
         $db = Application::$app->db;
@@ -3163,6 +3172,37 @@ ORDER BY
         $stmt->bindValue(':id', $id);
         $stmt->execute();
         return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public static function updateEvent1($id, $data,$totalAttended,$positiveCount,$attendanceReportPath)
+    {
+        $db = Application::$app->db;
+        $stmt = $db->prepare("UPDATE home_mission_events SET
+        event_name = :event_name,
+        start_date = :start_date,
+        end_date = :end_date,
+        event_organizer = :event_organizer,
+        local_organizer = :local_organizer,
+        main_language = :main_language,
+        translation_language = :translation_language,
+        total_attended = :total_attended,
+        positive_count = :positive_count,
+          attendance_report = :attendance_report
+        WHERE id = :id
+    ");
+
+        $stmt->bindValue(':event_name', $data['event_name']);
+        $stmt->bindValue(':start_date', $data['start_date']);
+        $stmt->bindValue(':end_date', $data['end_date']);
+        $stmt->bindValue(':event_organizer', $data['event_organizer']);
+        $stmt->bindValue(':local_organizer', $data['local_organizer']);
+        $stmt->bindValue(':main_language', $data['main_language']);
+        $stmt->bindValue(':translation_language', $data['translation_language']);
+        $stmt->bindValue(':attendance_report', $attendanceReportPath);
+        $stmt->bindValue(':total_attended', $totalAttended, \PDO::PARAM_INT);
+        $stmt->bindValue(':positive_count', $positiveCount, \PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id);
+        return $stmt->execute();
     }
 
     public static function updateEvent($id, $data,$totalAttended,$positiveCount,$attendanceReportPath)
@@ -3196,6 +3236,21 @@ ORDER BY
         return $stmt->execute();
     }
 
+    public static function getAllEventNames1()
+    {
+        $table = 'home_mission_events';
+        $stmt = self::prepare("SELECT event_name FROM $table ORDER BY created_at DESC");
+        $stmt->execute();
+        // Fetch only the event_name column values as a simple array
+        $results = $stmt->fetchAll(\PDO::FETCH_COLUMN); // returns array of event names
+
+        // Optional: Log the result
+        error_log(print_r($results, true));
+
+        return $results;
+
+    }
+
     public static function getAllEventNames()
     {
         $table = (new \app\models\SathvarthaEventModel())->tableName();
@@ -3214,6 +3269,15 @@ ORDER BY
     public static function getAllEvents()
     {
         $table = (new \app\models\SathvarthaEventModel())->tableName();
+        $stmt = self::prepare("SELECT * FROM $table ORDER BY created_at DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+    public static function getAllEvents1()
+    {
+        $table = 'home_mission_events';
         $stmt = self::prepare("SELECT * FROM $table ORDER BY created_at DESC");
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -3289,6 +3353,47 @@ ORDER BY
 
 
     }
+
+    public static function saveHomeMissionEvent($data)
+    {
+        $table = 'home_mission_events';
+        // Prepare and execute the SQL query
+        $statement = self::prepare("INSERT INTO $table (
+        event_name, start_date, end_date,
+        main_language, translation_language,
+        event_organizer, local_organizer,
+        event_link, notes,
+        created_by, updated_by,
+        created_at, updated_at) 
+        VALUES (
+        :event_name, :start_date, :end_date,
+        :main_language, :translation_language,
+        :event_organizer, :local_organizer,
+        :event_link, :notes,
+        :created_by, :updated_by,
+        :created_at, :updated_at
+    )");
+
+        return $statement->execute([
+            ':event_name' => $data['event_name'],
+            ':start_date' => $data['start_date'],
+            ':end_date' => $data['end_date'],
+            ':main_language' => $data['main_language'],
+            ':translation_language' => $data['translation_language'],
+            ':event_organizer' => $data['event_organizer'],
+            ':local_organizer' => $data['local_organizer'],
+            ':event_link' => $data['event_link'],
+            ':notes' => $data['notes'],
+            ':created_by' => $data['created_by'],
+            ':updated_by' => $data['updated_by'],
+            ':created_at' => $data['created_at'],
+            ':updated_at' => $data['updated_at'],
+        ]);
+
+
+
+    }
+
 
 
 
