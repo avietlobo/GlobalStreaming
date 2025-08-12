@@ -16,28 +16,39 @@ use app\models\EvangelistModel;
     <style>
 
 
+        .icon-button-group {
+            display: flex;
+            gap: 6px; /* less gap between buttons */
+            flex-wrap: wrap;
+        }
+
         .icon-button {
-            background-color: #007BFF;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 10px;
-            font-size: 18px;
-            border-radius: 50%;
+            padding: 4px 8px; /* reduced padding for compact size */
+            font-size: 13px; /* smaller text */
+            border-radius: 4px;
             cursor: pointer;
-            margin: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s, transform 0.2s;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .icon-button i {
+            font-size: 14px; /* smaller icon */
         }
 
         .icon-button:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
+            background-color: #45a049;
+            transform: translateY(-1px);
         }
 
-        .icon-button:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+        .icon-button:active {
+            transform: translateY(0);
         }
+
 
 
 
@@ -274,8 +285,21 @@ $designation = $dashboardData[0]->designation;
         </a>
 
 
-        <a href="#" class="attendance-link" title="View Appointments" onclick="window.location.href='viewCandidates';">
+        <a href="#" class="attendance-link" title="Add Appointments" onclick="window.location.href='viewCandidates';">
+            <img src="appointment1.png" alt="Appointments Icon">
+        </a>
+
+        <a href="#" class="attendance-link" title="View Appointments" onclick="window.location.href='viewAllAppointmentsReadonly';">
             <img src="appointment.png" alt="Appointments Icon">
+        </a>
+
+
+        <a href="#" class="attendance-link" title="Sathvartha Ready" onclick="window.location.href='viewAllAppointmentsSR';">
+            <img src="appointment.png" alt="Appointments Icon">
+        </a>
+
+        <a href="#" class="attendance-link" title="In Fellowship" onclick="window.location.href='viewAllAppointmentsIF';">
+            <img src="church.png" alt="Appointments Icon">
         </a>
 
 
@@ -283,20 +307,41 @@ $designation = $dashboardData[0]->designation;
     <?php endif; ?>
 </div>
 
+<?php if ($designation == 'LocalOrganizer'): ?>
+
+    <a href="#" class="attendance-link" title="View Appointments" onclick="window.location.href='viewAllAppointmentsLO';">
+        <img src="home.png" alt="Attendance Icon">
+    </a>
+
+
+<?php endif; ?>
+
+<?php if ($designation == 'PanelMember'): ?>
+
+    <a href="#" class="attendance-link" title="View Appointments" onclick="window.location.href='viewAllAppointments';">
+        <img src="home.png" alt="Attendance Icon">
+    </a>
+
+
+<?php endif; ?>
+
+
 <?php if ($designation == 'Evangelist'): ?>
     <div class="icon-button-group">
-        <button class="icon-button seven-day-badge" title="My Task" onclick="window.location.href='viewMyTasks';">
+        <button class="icon-button" title="My Task" onclick="window.location.href='viewMyTasks';">
+            <i class="fas fa-tasks"></i>
             My Task
         </button>
-
-        <button class="icon-button seven-day-badge" title="My Preference" onclick="window.location.href='view7DCan';">
-            My Preference
+        <button class="icon-button" title="My Preference" onclick="window.location.href='view7DCan';">
+            <i class="fas fa-sliders-h"></i>
+            Preference
         </button>
-        <button class="icon-button seven-day-badge" title="My Word sessions" onclick="window.location.href='getWordSessionsApproved';">
-            My Word sessions
+        <button class="icon-button" title="My Word sessions" onclick="window.location.href='getWordSessionsApproved';">
+            <i class="fas fa-book-open"></i>
+            Word
         </button>
-        <button class="icon-button seven-day-badge" title="Approve Word sessions" onclick="window.location.href='viewAssignedWordSessions';">
-            Approve Word sessions
+        <button class="icon-button" title="Approve Word sessions" onclick="window.location.href='viewAssignedWordSessions';">
+            ✅ Approve Word Sessions
         </button>
     </div>
 <?php endif; ?>
@@ -324,7 +369,7 @@ $designation = $dashboardData[0]->designation;
 
 
 <div class="icon-button-group">
-    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator'): ?>
+    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'LocalOrganizer' && $designation !== 'PanelMember'): ?>
 
         <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
             <i class="fas fa-file-alt"></i>

@@ -108,6 +108,8 @@
 </head>
 <body>
 
+<a class="back-link" href="/evngDashboard">← Back </a>
+
 <div class="top-bar">
     <h2>Candidate List by Language</h2>
     <button class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>

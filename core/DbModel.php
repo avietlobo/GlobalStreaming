@@ -122,6 +122,11 @@ abstract class DbModel extends Model
         $stmt->bindParam(':transport_required', $transportStatus);
         $stmt->bindParam(':caring_google_meet_date', $caringistDateTime);
 
+        echo $candidate_mobile;
+
+        echo '<pre>';
+        var_dump($stmt->queryString);
+        echo '</pre>';
 
 
         if ($stmt->execute()) {
@@ -1693,6 +1698,31 @@ GROUP BY
         // Fetch and return the results
         $groups = $statement->fetchAll(\PDO::FETCH_ASSOC);
         return $groups;
+    }
+
+    public static function getAllAppointmentsSR()
+    {
+        $pdo = Application::$app->db->pdo;
+        $stmt = $pdo->prepare("SELECT * FROM appointments where sathvartha_ready_status = 'Ready' ORDER BY appointment_datetime_ist DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function getAllAppointmentsIF()
+    {
+        $pdo = Application::$app->db->pdo;
+        $stmt = $pdo->prepare("SELECT * FROM appointments where fellowship_status = 'In Fellowship' ORDER BY appointment_datetime_ist DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+    public static function getAllAppointments()
+    {
+        $pdo = Application::$app->db->pdo;
+        $stmt = $pdo->prepare("SELECT * FROM appointments ORDER BY appointment_datetime_ist DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public static function getAppointmentsById($id)

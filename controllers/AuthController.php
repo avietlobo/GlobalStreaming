@@ -1270,7 +1270,7 @@ class AuthController extends Controller
 
             ];
 
-             echo  $_POST['candidateMobile'];
+             //echo  $_POST['candidateMobile'];
             $saved = SathvarthaEventModel::saveAppointment(...$data);
 
 
@@ -1328,7 +1328,7 @@ class AuthController extends Controller
             // Get Sathvartha organizer
             $organizersByDesignation = EvangelistModel::findallTypesOfOrganizers();
             $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($mobile);
-
+            echo $mobile;
 
 
             // Get panel member
@@ -1502,6 +1502,191 @@ class AuthController extends Controller
         }
     }
 
+
+    public function editAppointmentLO(Request $request, Response $response)
+    {
+        $id = $_GET['id'] ?? null;
+        $appointments = CandidateModel::getAppointmentsById($id);
+
+
+        if (!$appointments || empty($appointments)) {
+            die("No appointment found.");
+        }
+
+        $appointment = $appointments[0];
+
+        // Get event names and organizers
+        $eventNames = SathvarthaEventModel::getAllEventNames();
+        $eventNames1 = SathvarthaEventModel::getAllEventNames1();
+        $organizersByDesignation = EvangelistModel::findallTypesOfOrganizers();
+        $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($appointment['candidate_mobile']);
+
+        $participantName= Application::$app->session->get('tt3');
+        $evangelist=Application::$app->session->get('tt4');
+        echo '<pre>';
+        var_dump($eventNames1);
+        echo '</pre>';
+
+
+        return $this->render('appointmentFormLO', [
+            'appointment' => $appointment,
+            'participantName' =>$participantName ?? '',
+            'evangelist' =>$evangelist ?? '',
+            'mobile' => $appointment['candidate_mobile'] ?? '',
+            'country' => $appointment['candidate_country'] ?? '',
+            'place' => $appointment['place'] ?? '',
+            'appointment_datetime_ist' => $appointment['appointment_datetime_ist'] ?? '',
+            'appointment_datetime_candidate_zone ' => $appointment['appointment_datetime_candidate_zone'] ?? '',
+            'eventNames' => $eventNames,
+            'eventNames1' => $eventNames1,
+            'faithStatus' => $appointment['faith_status'] ?? '',
+            'googleMeetStatus' => $appointment['google_meet_status'] ?? '',
+            'caringStatus' => $appointment['caring_status'] ?? '',
+            'travelStatus' => $appointment['travel_status'] ?? '',
+            'caringGoogleMeetStatus' => $appointment['caring_google_meet_status'] ?? '',
+            'fellowshipStatus' => $appointment['fellowship_status'] ?? '',
+            'sathvarthaAttendanceStatus' => $appointment['sathvartha_attendance_status'] ?? '',
+            'caringTeamMember' => $appointment['caring_team_member_name'] ?? '',
+            'localOrganizer' => $appointment['local_organizer_name'] ?? '',
+            'panelMember' => $appointment['panel_member_name'] ?? '',
+            'sathvarthaOrganizer' => $appointment['sathvartha_organizer_name'] ?? '',
+            'organizers' => $organizersByDesignation,
+            'highesClassNumberAttended' => $highesClassNumberAttended,
+            'sathvarthaFeedback' => $appointment['sathvartha_feedback'] ?? '',
+            'finalFeedback' => $appointment['final_feedback'] ?? '',
+            'localOrganizerFeedback' => $appointment['local_organizer_feedback'] ?? '',
+            'panelFeedback' => $appointment['panel_feedback'] ?? '',
+            'sathvarthaReadyStatus' => $appointment['sathvartha_ready_status'] ?? '',
+            'evangelistFeedback' => $appointment['evangelist_feedback'] ?? '',
+            'transportRequired' => $appointment['transport_required'] ?? '',
+            'caringGoogleMeetDate' => $appointment['caring_google_meet_date'] ?? ''
+        ]);
+    }
+
+
+    public function editAppointmentCT(Request $request, Response $response)
+    {
+        $id = $_GET['id'] ?? null;
+        $appointments = CandidateModel::getAppointmentsById($id);
+
+
+        if (!$appointments || empty($appointments)) {
+            die("No appointment found.");
+        }
+
+        $appointment = $appointments[0];
+
+        // Get event names and organizers
+        $eventNames = SathvarthaEventModel::getAllEventNames();
+        $eventNames1 = SathvarthaEventModel::getAllEventNames1();
+        $organizersByDesignation = EvangelistModel::findallTypesOfOrganizers();
+        $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($appointment['candidate_mobile']);
+
+        $participantName= Application::$app->session->get('tt3');
+        $evangelist=Application::$app->session->get('tt4');
+        echo '<pre>';
+        var_dump($eventNames1);
+        echo '</pre>';
+
+
+        return $this->render('appointmentFormCT', [
+            'appointment' => $appointment,
+            'participantName' =>$participantName ?? '',
+            'evangelist' =>$evangelist ?? '',
+            'mobile' => $appointment['candidate_mobile'] ?? '',
+            'country' => $appointment['candidate_country'] ?? '',
+            'place' => $appointment['place'] ?? '',
+            'appointment_datetime_ist' => $appointment['appointment_datetime_ist'] ?? '',
+            'appointment_datetime_candidate_zone ' => $appointment['appointment_datetime_candidate_zone'] ?? '',
+            'eventNames' => $eventNames,
+            'eventNames1' => $eventNames1,
+            'faithStatus' => $appointment['faith_status'] ?? '',
+            'googleMeetStatus' => $appointment['google_meet_status'] ?? '',
+            'caringStatus' => $appointment['caring_status'] ?? '',
+            'travelStatus' => $appointment['travel_status'] ?? '',
+            'caringGoogleMeetStatus' => $appointment['caring_google_meet_status'] ?? '',
+            'fellowshipStatus' => $appointment['fellowship_status'] ?? '',
+            'sathvarthaAttendanceStatus' => $appointment['sathvartha_attendance_status'] ?? '',
+            'caringTeamMember' => $appointment['caring_team_member_name'] ?? '',
+            'localOrganizer' => $appointment['local_organizer_name'] ?? '',
+            'panelMember' => $appointment['panel_member_name'] ?? '',
+            'sathvarthaOrganizer' => $appointment['sathvartha_organizer_name'] ?? '',
+            'organizers' => $organizersByDesignation,
+            'highesClassNumberAttended' => $highesClassNumberAttended,
+            'sathvarthaFeedback' => $appointment['sathvartha_feedback'] ?? '',
+            'finalFeedback' => $appointment['final_feedback'] ?? '',
+            'localOrganizerFeedback' => $appointment['local_organizer_feedback'] ?? '',
+            'panelFeedback' => $appointment['panel_feedback'] ?? '',
+            'sathvarthaReadyStatus' => $appointment['sathvartha_ready_status'] ?? '',
+            'evangelistFeedback' => $appointment['evangelist_feedback'] ?? '',
+            'transportRequired' => $appointment['transport_required'] ?? '',
+            'caringGoogleMeetDate' => $appointment['caring_google_meet_date'] ?? ''
+        ]);
+
+
+    }
+
+    public function editAppointmentPM(Request $request, Response $response)
+    {
+        $id = $_GET['id'] ?? null;
+        $appointments = CandidateModel::getAppointmentsById($id);
+
+
+        if (!$appointments || empty($appointments)) {
+            die("No appointment found.");
+        }
+
+        $appointment = $appointments[0];
+
+        // Get event names and organizers
+        $eventNames = SathvarthaEventModel::getAllEventNames();
+        $eventNames1 = SathvarthaEventModel::getAllEventNames1();
+        $organizersByDesignation = EvangelistModel::findallTypesOfOrganizers();
+        $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($appointment['candidate_mobile']);
+
+        $participantName= Application::$app->session->get('tt3');
+        $evangelist=Application::$app->session->get('tt4');
+        echo '<pre>';
+        var_dump($eventNames1);
+        echo '</pre>';
+
+
+        return $this->render('appointmentFormPM', [
+            'appointment' => $appointment,
+            'participantName' =>$participantName ?? '',
+            'evangelist' =>$evangelist ?? '',
+            'mobile' => $appointment['candidate_mobile'] ?? '',
+            'country' => $appointment['candidate_country'] ?? '',
+            'place' => $appointment['place'] ?? '',
+            'appointment_datetime_ist' => $appointment['appointment_datetime_ist'] ?? '',
+            'appointment_datetime_candidate_zone ' => $appointment['appointment_datetime_candidate_zone'] ?? '',
+            'eventNames' => $eventNames,
+            'eventNames1' => $eventNames1,
+            'faithStatus' => $appointment['faith_status'] ?? '',
+            'googleMeetStatus' => $appointment['google_meet_status'] ?? '',
+            'caringStatus' => $appointment['caring_status'] ?? '',
+            'travelStatus' => $appointment['travel_status'] ?? '',
+            'caringGoogleMeetStatus' => $appointment['caring_google_meet_status'] ?? '',
+            'fellowshipStatus' => $appointment['fellowship_status'] ?? '',
+            'sathvarthaAttendanceStatus' => $appointment['sathvartha_attendance_status'] ?? '',
+            'caringTeamMember' => $appointment['caring_team_member_name'] ?? '',
+            'localOrganizer' => $appointment['local_organizer_name'] ?? '',
+            'panelMember' => $appointment['panel_member_name'] ?? '',
+            'sathvarthaOrganizer' => $appointment['sathvartha_organizer_name'] ?? '',
+            'organizers' => $organizersByDesignation,
+            'highesClassNumberAttended' => $highesClassNumberAttended,
+            'sathvarthaFeedback' => $appointment['sathvartha_feedback'] ?? '',
+            'finalFeedback' => $appointment['final_feedback'] ?? '',
+            'localOrganizerFeedback' => $appointment['local_organizer_feedback'] ?? '',
+            'panelFeedback' => $appointment['panel_feedback'] ?? '',
+            'sathvarthaReadyStatus' => $appointment['sathvartha_ready_status'] ?? '',
+            'evangelistFeedback' => $appointment['evangelist_feedback'] ?? '',
+            'transportRequired' => $appointment['transport_required'] ?? '',
+            'caringGoogleMeetDate' => $appointment['caring_google_meet_date'] ?? ''
+        ]);
+
+    }
+
     public function editAppointment(Request $request, Response $response)
     {
         $id = $_GET['id'] ?? null;
@@ -1563,7 +1748,61 @@ class AuthController extends Controller
     }
 
 
-    public function viewAppointment(Request $request, Response $response)
+
+    public function viewAllAppointmentsSR(Request $request, Response $response)
+    {
+        $appointments = CandidateModel::getAllAppointmentsSR();
+        return $this->render('viewAllAppointmentsReadOnly', [
+            'appointments' => $appointments
+        ]);
+    }
+
+    public function viewAllAppointmentsIF(Request $request, Response $response)
+    {
+        $appointments = CandidateModel::getAllAppointmentsIF();
+        return $this->render('viewAllAppointmentsReadOnly', [
+            'appointments' => $appointments
+        ]);
+    }
+
+
+    public function viewAllAppointmentsReadonly(Request $request, Response $response)
+    {
+        $appointments = CandidateModel::getAllAppointments();
+        return $this->render('viewAllAppointmentsReadOnly', [
+            'appointments' => $appointments
+        ]);
+    }
+
+
+    public function viewAllAppointmentsLO(Request $request, Response $response)
+    {
+        $appointments = CandidateModel::getAllAppointments();
+        return $this->render('viewAllAppointmentsLO', [
+            'appointments' => $appointments
+        ]);
+    }
+
+    public function viewAllAppointmentsCT(Request $request, Response $response)
+    {
+        $appointments = CandidateModel::getAllAppointments();
+        return $this->render('viewAllAppointmentsCT', [
+            'appointments' => $appointments
+        ]);
+    }
+
+
+    public function viewAllAppointmentsPM(Request $request, Response $response)
+    {
+        $appointments = CandidateModel::getAllAppointments();
+        return $this->render('viewAllAppointmentsPM', [
+            'appointments' => $appointments
+        ]);
+
+    }
+
+
+        public function viewAppointment(Request $request, Response $response)
     {
         $id = $_GET['id'] ?? null;
         $appointments = CandidateModel::getAppointmentsById($id);

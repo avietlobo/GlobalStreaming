@@ -355,13 +355,17 @@
 <?php
 $showTabs = isset($task->status) && $task->status === 'Positive';
 ?>
+<?php
+$disableOtherTabs = !$alreadyRegistered; // disable if candidate not registered
+?>
+
 <div id="tabsContainer" style="<?= $showTabs ? '' : 'display:none;' ?>; margin-top: 30px;">
     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
         <button class="tab-btn" onclick="openTab('tab1')">Register Candidate since Positive</button>
-        <button class="tab-btn" onclick="openTab1('tab2')">Streaming Classes</button>
-        <button class="tab-btn" onclick="openTab1('tab3')">Word sharing</button>
-        <button class="tab-btn" onclick="openTab('tab4')">Home mission</button>
-        <button class="tab-btn" onclick="openTab('tab5')">Online Sathvartha</button>
+        <button class="tab-btn" onclick="openTab1('tab2')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Streaming Classes</button>
+        <button class="tab-btn" onclick="openTab1('tab3')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Word sharing</button>
+        <button class="tab-btn" onclick="openTab('tab4')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Home mission</button>
+        <button class="tab-btn" onclick="openTab('tab5')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Online Sathvartha</button>
     </div>
 
 
