@@ -1956,7 +1956,7 @@ GROUP BY language;";
 
     public static function bulkReassignDataBankRecords($selectedMobiles, $assignedTo)
     {
-        $stmt = self::prepare("UPDATE telecaller_sm SET assignedTo = :assignedTo WHERE mobile = :mobile");
+        $stmt = self::prepare("UPDATE telecaller_sm SET assignedTo = :assignedTo, status = 'Unassigned' WHERE mobile = :mobile");
 
         foreach ($selectedMobiles as $mobile) {
             $stmt->execute([
@@ -1989,11 +1989,11 @@ GROUP BY language;";
             INSERT IGNORE INTO telecaller_sm (
                 mobile, name, record_date, type, email, source, country,
                 city, referred_by, group_name, fellowship, language,
-                assignedTo
+                assignedTo, status
             ) VALUES (
                 :mobile, :name, :record_date, :type, :email, :source, :country,
                 :city, :referred_by, :group_name, :fellowship, :language,
-                :assignedTo
+                :assignedTo, :status
             )
         ");
 
@@ -2010,7 +2010,8 @@ GROUP BY language;";
                 ':group_name' => $c['group_name'],
                 ':fellowship' => $c['fellowship'],
                 ':language' => $c['language'],
-                ':assignedTo' => $assignedTo
+                ':assignedTo' => $assignedTo,
+                ':status' => 'Unassigned'
             ]);
         }
 
@@ -3312,6 +3313,25 @@ ORDER BY
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
+    }
+
+    public static function getPreference($email)
+    {
+        $table = (new \app\models\EvangelistModel())->tableName();
+        $stmt = self::prepare("select  preference from $table WHERE email = :email");
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetchColumn(); // will return PHONE, SM, ALL, or null
+    }
+
+
+    public static function setPreference($preference,$email)
+    {
+        $table = (new \app\models\EvangelistModel())->tableName();
+        $stmt = self::prepare("UPDATE $table SET preference = :preference WHERE email = :email");
+        $stmt->bindParam(':preference', $preference);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
     }
 
     public static function findallTypesOfOrganizers()

@@ -332,7 +332,7 @@ $designation = $dashboardData[0]->designation;
             <i class="fas fa-tasks"></i>
             My Task
         </button>
-        <button class="icon-button" title="My Preference" onclick="window.location.href='view7DCan';">
+        <button class="icon-button" title="My Preference" onclick="window.location.href='myPref';">
             <i class="fas fa-sliders-h"></i>
             Preference
         </button>

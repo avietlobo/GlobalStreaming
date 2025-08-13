@@ -640,7 +640,7 @@ use DateTime;
 
          $wordModel = new WordSharingApprovalModel();
          $sessions = $wordModel::getSessionsByEvangelist($evangelist);
-
+         $this->setLayout('main1');
          return $this->render('word_sessions', [
              'sessions' => $sessions
          ]);
@@ -677,6 +677,7 @@ use DateTime;
          $evangelist = Application::$app->session->get('nameFinal');
 
          $sessions=WordSessionModel::getWordSessionsAssigned($evangelist);
+         $this->setLayout('main1');
          return $this->render('mywordsessions', [
              'sessions' => $sessions
          ]);

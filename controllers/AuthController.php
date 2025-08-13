@@ -1409,6 +1409,34 @@ class AuthController extends Controller
     }
 
 
+
+    public function myPref(Request $request, Response $response)
+    {
+        $email= Application::$app->session->get('xtr');
+        $currentPreference = EvangelistModel::getPreference($email);
+        if ($request->isPost()) {
+            $preference = $request->getBody()['preference'] ?? null;
+
+            EvangelistModel::setPreference($preference,$email);
+            $currentPreference = EvangelistModel::getPreference($email);
+
+            // Render the preference selection view
+            $this->setLayout('main1');
+            return $this->render('myPref', [
+                'success' => 'Preference updated successfully!',
+                'currentPreference' => $currentPreference
+            ]);
+        }
+        // Render the preference selection view
+        $this->setLayout('main1');
+        return $this->render('myPref', [
+            'success' => '',
+            'currentPreference' => $currentPreference
+        ]);
+
+    }
+
+
     public function viewCandidates(Request $request, Response $response)
     {
         $candidateModel = new CandidateModel();
@@ -1962,7 +1990,7 @@ class AuthController extends Controller
     {
         $assignedTo = Application::$app->session->get('nameFinal'); // Logged-in user
         $tasks = TelecallerSMModel::getMyTasks($assignedTo);
-
+        $this->setLayout('main1');
         return $this->render('myTasksView', [
             'tasks' => $tasks
         ]);
@@ -2113,7 +2141,7 @@ class AuthController extends Controller
 
 Application::$app->session->set('evngDashboardData', $data);
 Application::$app->session->set('evngDashboardData2', $data1);
-//Application::$app->session->set('evngName', $loginForm->username);
+Application::$app->session->set('xtr', $loginForm->username);
 Application::$app->session->set('evngName', $evangelistName);
 Application::$app->session->set('loginForm', $loginForm);
                 $this->setLayout('main1');

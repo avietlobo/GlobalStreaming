@@ -60,6 +60,8 @@ $app-> router->get('/viewAllAppointmentsIF', [AuthController::class, 'viewAllApp
 
 
 
+$app-> router->get('/myPref', [AuthController::class, 'myPref']);
+$app-> router->post('/myPref', [AuthController::class, 'myPref']);
 $app-> router->get('/viewCandidates', [AuthController::class, 'viewCandidates']);
 $app->router->get('/getCandidatesByLanguage', [AuthController::class, 'getCandidatesByLanguage']);
 $app->router->get('/getCandidatesByLangAndCountry', [AuthController::class, 'getCandidatesByLangAndCountry']);

@@ -107,7 +107,7 @@
     </script>
 </head>
 <body>
-
+<a class="back-link" href="/evngDashboard">← Back </a>
 <h2>📖 Word Sharing Sessions Assigned to You</h2>
 
 <div class="table-wrapper">

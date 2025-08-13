@@ -36,7 +36,7 @@
     </style>
 </head>
 <body>
-
+<a class="back-link" href="/evngDashboard">← Back </a>
 <h2>📘 My Word Sessions</h2>
 
 <?php if (!empty($sessions)): ?>

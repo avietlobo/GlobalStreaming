@@ -141,6 +141,8 @@
     <button class="dark-toggle" onclick="toggleDarkMode()">🌙 Toggle Mode</button>
 </div>
 
+<a class="back-link" href="/evngDashboard">← Back </a>
+
 <h2>📋 My Assigned Tasks</h2>
 <?php
 function getCountryCode($countryName) {
