@@ -73,6 +73,10 @@
 <body>
 
 <div class="container">
+    <div class="button-group">
+        <button type="button" class="back-button" onclick="window.location.href='/evngDashboard1'">Back</button>
+    </div>
+
     <h2>📋 Telecallers List</h2>
     <?php if (!empty($_GET['assigned'])): ?>
         <div style="background: #d4edda; color: #155724; padding: 10px; margin-bottom: 20px; border-radius: 5px; text-align: center;">
@@ -398,9 +402,13 @@
         <h3 id="assignModalTitle">Select Telecaller</h3>
         <select id="telecallerSelect" style="padding: 8px; width: 100%; margin-top: 10px;">
             <option value="">-- Select --</option>
-            <option value="Aviet">Aviet</option>
-            <option value="Peter">Peter</option>
-            <option value="Luke">Luke</option>
+            <?php if (!empty($telecallers)): ?>
+                <?php foreach ($telecallers as $tc): ?>
+                    <option value="<?= htmlspecialchars($tc->evngName) ?>">
+                        <?= htmlspecialchars($tc->evngName) ?>
+                    </option>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </select>
         <br><br>
 <!--        <button onclick="confirmAssign()" style="background: #007BFF;">✅ Confirm Assign</button>-->

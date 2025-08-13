@@ -438,6 +438,10 @@ $designation = $dashboardData[0]->designation;
         <button class="icon-button seven-day-badge" title="CSV File upload" onclick="window.location.href='csvFileUpload';">
             CSV 📁
         </button>
+        <button class="icon-button" title="My Preference" onclick="window.location.href='myPref';">
+            <i class="fas fa-sliders-h"></i>
+            Preference
+        </button>
     <?php endif; ?>
 </div>
 

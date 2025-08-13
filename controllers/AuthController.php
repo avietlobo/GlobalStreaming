@@ -2007,6 +2007,7 @@ class AuthController extends Controller
 
         // Step 4: Fetch filtered & paginated records
         $data = DataBankModel::getFilteredSMData($filters, $limit, $offset);
+        $data1 = CandidateModel::findAllEvangelistForSM();
 
         // Step 5: Return to view with additional data
         return $this->render('sm_list', [
@@ -2014,7 +2015,8 @@ class AuthController extends Controller
             'totalRecords' => $data['totalRecords'],
             'filters' => $filters,
             'currentPage' => $page,
-            'limit' => $limit
+            'limit' => $limit,
+            'telecallers'   => $data1 // ✅ passing to view
         ]);
     }
 
@@ -2061,13 +2063,17 @@ class AuthController extends Controller
         // Step 4: Fetch filtered & paginated records
         $data = DataBankModel::getFilteredTelecallerData($filters, $limit, $offset);
 
+        $data1 = CandidateModel::findAllEvangelistForTelecalling();
+
+
         // Step 5: Return to view with additional data
         return $this->render('telecallers_list', [
-            'records' => $data['records'],
-            'totalRecords' => $data['totalRecords'],
-            'filters' => $filters,
-            'currentPage' => $page,
-            'limit' => $limit
+            'records'       => $data['records'],
+            'totalRecords'  => $data['totalRecords'],
+            'filters'       => $filters,
+            'currentPage'   => $page,
+            'limit'         => $limit,
+            'telecallers'   => $data1 // ✅ passing to view
         ]);
     }
 

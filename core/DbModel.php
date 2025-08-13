@@ -3136,6 +3136,22 @@ ORDER BY
 
     }
 
+    public static function findAllEvangelistForSM()
+    {
+        $tableName = (new \app\models\EvangelistModel())->tableName();
+        $statement = self::prepare("SELECT evngName FROM $tableName WHERE preference in ('SM','ALL')");
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_CLASS, EvangelistModel::class);
+    }
+
+    public static function findAllEvangelistForTelecalling()
+    {
+        $tableName = (new \app\models\EvangelistModel())->tableName();
+        $statement = self::prepare("SELECT evngName FROM $tableName WHERE preference in ('PHONE','ALL')");
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_CLASS, EvangelistModel::class);
+    }
+
     public static function findAllCandidatesForEvangelist($where,$name)
     {
         $tableName = (new \app\models\CandidateModel())->tableName();

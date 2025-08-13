@@ -445,6 +445,10 @@ $designation = $dashboardData[0]->designation;
         <button class="icon-button seven-day-badge" title="7D Approved Candidates" onclick="window.location.href='view7DApproved';">
             7D List
         </button>
+        <button class="icon-button" title="My Preference" onclick="window.location.href='myPref';">
+            <i class="fas fa-sliders-h"></i>
+            Preference
+        </button>
     <?php endif; ?>
 </div>
 
