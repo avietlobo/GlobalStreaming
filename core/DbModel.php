@@ -3136,6 +3136,31 @@ ORDER BY
 
     }
 
+    public static function findAllEvangelistForSM1()
+    {
+        $evangelistTable = (new \app\models\EvangelistModel())->tableName();
+        $telecallerTable = "telecaller_sm"; // change if your table name prefixing is different
+
+        $sql = "
+        SELECT e.evngName, 
+               COALESCE(tc.unassigned_count, 0) AS unassigned_count
+        FROM $evangelistTable e
+        LEFT JOIN (
+            SELECT assignedTo, COUNT(*) AS unassigned_count
+            FROM $telecallerTable
+            WHERE status = 'Unassigned'
+            GROUP BY assignedTo
+        ) tc 
+        ON e.evngName = tc.assignedTo
+        WHERE e.preference IN ('SM', 'ALL')
+        ORDER BY e.evngName
+    ";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC); // return as array with count
+    }
+
     public static function findAllEvangelistForSM()
     {
         $tableName = (new \app\models\EvangelistModel())->tableName();
@@ -3143,6 +3168,32 @@ ORDER BY
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_CLASS, EvangelistModel::class);
     }
+
+    public static function findAllEvangelistForTelecalling1()
+    {
+        $evangelistTable = (new \app\models\EvangelistModel())->tableName();
+        $telecallerTable = "telecaller_sm"; // change if your table name prefixing is different
+
+        $sql = "
+        SELECT e.evngName, 
+               COALESCE(tc.unassigned_count, 0) AS unassigned_count
+        FROM $evangelistTable e
+        LEFT JOIN (
+            SELECT assignedTo, COUNT(*) AS unassigned_count
+            FROM $telecallerTable
+            WHERE status = 'Unassigned'
+            GROUP BY assignedTo
+        ) tc 
+        ON e.evngName = tc.assignedTo
+        WHERE e.preference IN ('PHONE', 'ALL')
+        ORDER BY e.evngName
+    ";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC); // return as array with count
+    }
+
 
     public static function findAllEvangelistForTelecalling()
     {
@@ -3317,6 +3368,50 @@ ORDER BY
     {
         $table = (new \app\models\SathvarthaEventModel())->tableName();
         $stmt = self::prepare("SELECT * FROM $table ORDER BY created_at DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+    public static function saveOrgEvent($eventName, $speakerName, $vmixOperator, $keyboardOperator, $monitor, $choirMembers, $foodCoupons)
+    {
+        $table = 'event_extra_details';
+        $sql = "INSERT INTO $table 
+                (event_name, speaker_name, vmix_operator, keyboard_operator, monitor, choir_members, food_coupons, created_at, updated_at)
+            VALUES 
+                (:event_name, :speaker_name, :vmix_operator, :keyboard_operator, :monitor, :choir_members, :food_coupons, NOW(), NOW())
+            ON DUPLICATE KEY UPDATE
+                speaker_name = VALUES(speaker_name),
+                vmix_operator = VALUES(vmix_operator),
+                keyboard_operator = VALUES(keyboard_operator),
+                monitor = VALUES(monitor),
+                choir_members = VALUES(choir_members),
+                food_coupons = VALUES(food_coupons),
+                updated_at = NOW()";
+
+        $stmt = self::prepare($sql);
+
+        try {
+            $stmt->execute([
+                ':event_name'        => $eventName,
+                ':speaker_name'      => $speakerName,
+                ':vmix_operator'     => $vmixOperator,
+                ':keyboard_operator' => $keyboardOperator,
+                ':monitor'           => $monitor,
+                ':choir_members'     => $choirMembers,
+                ':food_coupons'      => $foodCoupons,
+            ]);
+        } catch (\PDOException $e) {
+            die("DB Error: " . $e->getMessage());
+        }
+    }
+
+
+    public static function getOrgEventDetails($event_name)
+    {
+        $table = 'event_extra_details';
+        $stmt = self::prepare("SELECT * FROM $table where event_name = :event_name ORDER BY created_at DESC");
+        $stmt->bindParam(':event_name', $event_name);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 

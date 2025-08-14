@@ -1927,6 +1927,77 @@ class AuthController extends Controller
 
     }
 
+
+
+
+    public function allEvents(Request $request, Response $response)
+    {
+        $existingEvents = SathvarthaEventModel::getAllEvents();
+        return $this->render('all_events', [
+            'events' => $existingEvents
+        ]);
+
+    }
+
+    public function organizeEvent(Request $request, Response $response)
+    {
+        $eventId   = $_GET['id'] ?? null;
+        $eventName = $_GET['event_name'] ?? null;
+
+        if (!$eventId) {
+            Application::$app->session->setFlash('error', 'Invalid event selected.');
+            return $response->redirect('/allEvents');
+        }
+
+        if ($request->isPost()) {
+            //echo 'hello';
+            $body = $request->getBody();
+            $speakerName = $_POST['speaker_name'];
+            //error_log($speakerName);
+            //echo $speakerName;
+
+            //$speakerName      = $body['speaker_name'] ?? null;
+            $vmixOperator     = $body['vmix_operator'] ?? null;
+            //echo $vmixOperator;
+            //error_log($vmixOperator);
+            $keyboardOperator = $body['keyboard_operator'] ?? null;
+            $monitor          = $body['monitor'] ?? null;
+            $choirMembers     = $body['choir_members'] ?? null;
+            $foodCoupons      = $body['food_coupons'] ?? null;
+
+            //echo $speakerName;
+
+            // Save or update
+            SathvarthaEventModel::saveOrgEvent(
+                $eventName,
+                $speakerName,
+                $vmixOperator,
+                $keyboardOperator,
+                $monitor,
+                $choirMembers,
+                $foodCoupons
+            );
+
+            Application::$app->session->setFlash('success', 'Event details saved successfully.');
+
+            // 🔑 Redirect back to GET (PRG pattern)
+            //return $response->redirect('/organizeEvent?id=' . $eventId . '&event_name=' . urlencode($eventName));
+        }
+
+        // On GET, load extra details for this event
+        $extraData = SathvarthaEventModel::getOrgEventDetails($eventName);
+        $extra = $extraData[0] ?? [];
+
+
+
+        return $this->render('organize_event1', [
+            'eventId'   => $eventId,
+            'eventName' => $eventName,
+            'extra'     => $extra ?? []
+        ]);
+    }
+
+
     public function addNewSathEvent(Request $request, Response $response)
     {
         $evangelistModel = new EvangelistModel();
@@ -2007,7 +2078,7 @@ class AuthController extends Controller
 
         // Step 4: Fetch filtered & paginated records
         $data = DataBankModel::getFilteredSMData($filters, $limit, $offset);
-        $data1 = CandidateModel::findAllEvangelistForSM();
+        $data1 = CandidateModel::findAllEvangelistForSM1();
 
         // Step 5: Return to view with additional data
         return $this->render('sm_list', [
@@ -2063,7 +2134,7 @@ class AuthController extends Controller
         // Step 4: Fetch filtered & paginated records
         $data = DataBankModel::getFilteredTelecallerData($filters, $limit, $offset);
 
-        $data1 = CandidateModel::findAllEvangelistForTelecalling();
+        $data1 = CandidateModel::findAllEvangelistForTelecalling1();
 
 
         // Step 5: Return to view with additional data

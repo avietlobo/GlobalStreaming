@@ -400,15 +400,12 @@
 ">
     <div style="background: white; padding: 20px; border-radius: 10px; min-width: 300px; text-align: center;">
         <h3 id="assignModalTitle">Select Telecaller</h3>
-        <select id="telecallerSelect" style="padding: 8px; width: 100%; margin-top: 10px;">
-            <option value="">-- Select --</option>
-            <?php if (!empty($telecallers)): ?>
-                <?php foreach ($telecallers as $tc): ?>
-                    <option value="<?= htmlspecialchars($tc->evngName) ?>">
-                        <?= htmlspecialchars($tc->evngName) ?>
-                    </option>
-                <?php endforeach; ?>
-            <?php endif; ?>
+        <select name="evangelist" id="evangelist">
+            <?php foreach ($telecallers as $telecaller): ?>
+                <option value="<?= htmlspecialchars($telecaller['evngName']) ?>">
+                    <?= htmlspecialchars($telecaller['evngName']) ?> (<?= $telecaller['unassigned_count'] ?>)
+                </option>
+            <?php endforeach; ?>
         </select>
         <br><br>
 <!--        <button onclick="confirmAssign()" style="background: #007BFF;">✅ Confirm Assign</button>-->

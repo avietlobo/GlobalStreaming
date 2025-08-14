@@ -42,6 +42,13 @@ $app-> router->get('/viewAllSMList', [AuthController::class, 'viewAllSMList']);
 $app-> router->get('/viewMyTasks', [AuthController::class, 'viewMyTasks']);
 $app-> router->get('/addNewSathEvent', [AuthController::class, 'addNewSathEvent']);
 $app-> router->post('/addNewSathEvent', [AuthController::class, 'addNewSathEvent']);
+$app-> router->get('/organizeEvent', [AuthController::class, 'organizeEvent']);
+$app-> router->post('/organizeEvent', [AuthController::class, 'organizeEvent']);
+$app-> router->get('/allEvents', [AuthController::class, 'allEvents']);
+
+
+
+
 
 $app-> router->get('/addNewHomeEvent', [AuthController::class, 'addNewHomeEvent']);
 $app-> router->post('/addNewHomeEvent', [AuthController::class, 'addNewHomeEvent']);

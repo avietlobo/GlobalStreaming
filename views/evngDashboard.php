@@ -468,6 +468,9 @@ $designation = $dashboardData[0]->designation;
         <button class="icon-button seven-day-badge" title="7D Approved Candidates" onclick="window.location.href='view7DApproved';">
             7D List
         </button>
+        <a href="#" class="attendance-link" title="Organize Sathvartha Event" onclick="window.location.href='allEvents';">
+            <img src="event1.png" alt="Attendance Icon">
+        </a>
     <?php endif; ?>
 </div>
 
