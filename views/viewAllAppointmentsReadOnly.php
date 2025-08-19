@@ -53,6 +53,11 @@
 </head>
 <body>
 <h1>All Appointments</h1>
+<div class="header">
+    <a class="nav-link" href="#" id="logout-link">
+        <button type="button" class="btn btn-primary">Logout</button>
+    </a>
+</div>
 <div class="container">
     <button type="button" class="back-button" onclick="window.location.href='/evngDashboard1'">
         <i class="fas fa-arrow-left"></i> Back

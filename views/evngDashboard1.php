@@ -421,6 +421,11 @@ $designation = $dashboardData[0]->designation;
         <img src="social-media.png" alt="Attendance Icon">
     </a>
 
+
+    <a href="#" class="attendance-link" title="CSV File upload" onclick="window.location.href='csvFileUpload';">
+        CSV 📁
+    </a>
+
 <?php endif; ?>
 
 

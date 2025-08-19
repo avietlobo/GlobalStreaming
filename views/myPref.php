@@ -34,7 +34,13 @@
 </head>
 <body>
 
-<a class="back-link" href="/evngDashboard">← Back </a>
+
+    <a class="nav-link" href="#" id="logout-link">
+        <button type="button" class="btn btn-primary">Logout</button>
+    </a>
+
+
+<a class="back-link" href="/evngDashboard1">← Back </a>
 <h4>Select Your Evangelization Preference</h4>
 
 <div class="pref-form">

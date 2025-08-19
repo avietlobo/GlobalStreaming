@@ -146,6 +146,12 @@
 </head>
 <body>
 
+<div class="header">
+    <a class="nav-link" href="#" id="logout-link">
+        <button type="button" class="btn btn-primary">Logout</button>
+    </a>
+</div>
+
 <div class="top-bar">
     <h2>Candidates by <?= htmlspecialchars($evangelist) ?> in <?= htmlspecialchars($country) ?> (Language: <?= htmlspecialchars($language) ?>)</h2>
     <button class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>

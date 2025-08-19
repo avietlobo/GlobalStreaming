@@ -129,7 +129,13 @@
 <div class="toggle-theme">
     <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
 </div>
+<div class="header">
+    <a class="nav-link" href="#" id="logout-link">
+        <button type="button" class="btn btn-primary">Logout</button>
+    </a>
+</div>
 
+<a class="back-link" href="javascript:history.back()">← Back to Evangelists</a>
 <h2>Appointment Details</h2>
 
 
@@ -168,7 +174,7 @@
 <?php endif; ?>
 
 
-<a class="back-link" href="javascript:history.back()">← Back to Evangelists</a>
+
 
 <script>
     function toggleDarkMode() {

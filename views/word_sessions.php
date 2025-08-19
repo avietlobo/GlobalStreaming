@@ -107,7 +107,12 @@
     </script>
 </head>
 <body>
-<a class="back-link" href="/evngDashboard">← Back </a>
+<div class="header">
+    <a class="nav-link" href="#" id="logout-link">
+        <button type="button" class="btn btn-primary">Logout</button>
+    </a>
+</div>
+<a class="back-link" href="/evngDashboard1">← Back </a>
 <h2>📖 Word Sharing Sessions Assigned to You</h2>
 
 <div class="table-wrapper">

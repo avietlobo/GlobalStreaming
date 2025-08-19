@@ -392,6 +392,12 @@ $designation = $dashboardData[0]->designation;
         <img src="social-media.png" alt="Attendance Icon">
     </a>
 
+    <a href="#" class="attendance-link" title="CSV File upload" onclick="window.location.href='csvFileUpload';">
+        CSV 📁
+    </a>
+
+
+
 <?php endif; ?>
 
 <?php if ($designation == 'LocalOrganizer'): ?>
@@ -429,19 +435,19 @@ $designation = $dashboardData[0]->designation;
         <button class="icon-button" title="View all Registrations" onclick="window.location.href='/viewAllRegistrations';">
             <i class="fas fa-list"></i>
         </button>
+
+        <button class="icon-button" title="My Preference" onclick="window.location.href='myPref';">
+            <i class="fas fa-sliders-h"></i>
+            Preference
+        </button>
         <button class="icon-button seven-day-badge" title="7D Approval" onclick="window.location.href='view7DApproval';">
             7D ✓
         </button>
         <button class="icon-button seven-day-badge" title="7D Approved Candidates" onclick="window.location.href='view7DApproved';">
             7D List
         </button>
-        <button class="icon-button seven-day-badge" title="CSV File upload" onclick="window.location.href='csvFileUpload';">
-            CSV 📁
-        </button>
-        <button class="icon-button" title="My Preference" onclick="window.location.href='myPref';">
-            <i class="fas fa-sliders-h"></i>
-            Preference
-        </button>
+
+
     <?php endif; ?>
 </div>
 

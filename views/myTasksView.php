@@ -137,11 +137,17 @@
 </head>
 <body>
 
+<div class="header">
+    <a class="nav-link" href="#" id="logout-link">
+        <button type="button" class="btn btn-primary">Logout</button>
+    </a>
+</div>
+
 <div class="toggle-container">
     <button class="dark-toggle" onclick="toggleDarkMode()">🌙 Toggle Mode</button>
 </div>
 
-<a class="back-link" href="/evngDashboard">← Back </a>
+<a class="back-link" href="/evngDashboard1">← Back </a>
 
 <h2>📋 My Assigned Tasks</h2>
 <?php

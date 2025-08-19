@@ -297,7 +297,8 @@
     }
 
     function confirmAssign() {
-        const selectedName = document.getElementById('telecallerSelect').value;
+        //const selectedName = document.getElementById('telecallerSelect').value;
+        const selectedName = document.getElementById('evangelist').value; // ✅ fixed id
         if (!selectedName) {
             alert("Please select a telecaller to assign.");
             return;

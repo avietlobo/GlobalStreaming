@@ -1328,7 +1328,7 @@ class AuthController extends Controller
             // Get Sathvartha organizer
             $organizersByDesignation = EvangelistModel::findallTypesOfOrganizers();
             $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($mobile);
-            echo $mobile;
+            //echo $mobile;
 
 
             // Get panel member
@@ -1551,9 +1551,7 @@ class AuthController extends Controller
 
         $participantName= Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
-        echo '<pre>';
-        var_dump($eventNames1);
-        echo '</pre>';
+
 
 
         return $this->render('appointmentFormLO', [
@@ -1612,9 +1610,6 @@ class AuthController extends Controller
 
         $participantName= Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
-        echo '<pre>';
-        var_dump($eventNames1);
-        echo '</pre>';
 
 
         return $this->render('appointmentFormCT', [
@@ -1674,10 +1669,7 @@ class AuthController extends Controller
 
         $participantName= Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
-        echo '<pre>';
-        var_dump($eventNames1);
-        echo '</pre>';
-
+        $this->setLayout('main1');
 
         return $this->render('appointmentFormPM', [
             'appointment' => $appointment,
@@ -1735,10 +1727,8 @@ class AuthController extends Controller
 
         $participantName= Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
-        echo '<pre>';
-        var_dump($eventNames1);
-        echo '</pre>';
 
+        $this->setLayout('main1');
 
         return $this->render('appointmentForm1', [
             'appointment' => $appointment,
@@ -1780,6 +1770,7 @@ class AuthController extends Controller
     public function viewAllAppointmentsSR(Request $request, Response $response)
     {
         $appointments = CandidateModel::getAllAppointmentsSR();
+        $this->setLayout('main1');
         return $this->render('viewAllAppointmentsReadOnly', [
             'appointments' => $appointments
         ]);
@@ -1788,6 +1779,7 @@ class AuthController extends Controller
     public function viewAllAppointmentsIF(Request $request, Response $response)
     {
         $appointments = CandidateModel::getAllAppointmentsIF();
+        $this->setLayout('main1');
         return $this->render('viewAllAppointmentsReadOnly', [
             'appointments' => $appointments
         ]);
@@ -1797,6 +1789,7 @@ class AuthController extends Controller
     public function viewAllAppointmentsReadonly(Request $request, Response $response)
     {
         $appointments = CandidateModel::getAllAppointments();
+        $this->setLayout('main1');
         return $this->render('viewAllAppointmentsReadOnly', [
             'appointments' => $appointments
         ]);
@@ -1837,7 +1830,7 @@ class AuthController extends Controller
         $participantName=Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
 
-
+        $this->setLayout('main1');
         return $this->render('viewAppointment', [
             'appointments' => $appointments,
             'participantName' => $participantName,

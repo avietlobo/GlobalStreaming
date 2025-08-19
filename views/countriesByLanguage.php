@@ -133,6 +133,12 @@
 </head>
 <body>
 
+<div class="header">
+    <a class="nav-link" href="#" id="logout-link">
+        <button type="button" class="btn btn-primary">Logout</button>
+    </a>
+</div>
+
 <div class="top-bar">
     <h2>Countries for: <?= htmlspecialchars($language) ?></h2>
     <button class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>

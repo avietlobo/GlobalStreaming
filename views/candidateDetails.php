@@ -168,6 +168,14 @@
 </head>
 <body>
 
+<div class="header">
+    <a class="nav-link" href="#" id="logout-link">
+        <button type="button" class="btn btn-primary">Logout</button>
+    </a>
+</div>
+
+<a class="back-link" href="javascript:history.back()">← Back to Evangelists</a>
+
 <div class="top-bar">
     <h2>Participant: <?= htmlspecialchars($participantName ?? '-') ?></h2>
     <button class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>
@@ -286,7 +294,7 @@
     </div>
 
     <br><br>
-    <a class="back-link" href="javascript:history.back()">← Back to Evangelists</a>
+
 </div>
 <script>
     document.querySelectorAll('.clickable-row').forEach(row => {

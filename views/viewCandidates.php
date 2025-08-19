@@ -108,7 +108,13 @@
 </head>
 <body>
 
-<a class="back-link" href="/evngDashboard">← Back </a>
+<div class="header">
+    <a class="nav-link" href="#" id="logout-link">
+        <button type="button" class="btn btn-primary">Logout</button>
+    </a>
+</div>
+
+<a class="back-link" href="/evngDashboard1">← Back </a>
 
 <div class="top-bar">
     <h2>Candidate List by Language</h2>
