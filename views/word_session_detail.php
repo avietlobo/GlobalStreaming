@@ -234,6 +234,10 @@
 <body>
 
 <div class="container">
+
+    <div class="button-group">
+        <button type="button" class="back-button" onclick="window.location.href='/evngDashboard1'">Back</button>
+    </div>
     <div class="header">
         <div class="header-left">
             <h2>✝️ Word Sessions</h2>

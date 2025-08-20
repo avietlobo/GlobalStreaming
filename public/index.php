@@ -222,6 +222,7 @@ $app-> router->post('/saveWordSessionByReassignedEvangelist', [SiteController::c
 
 $app-> router->get('/getApprovals', [SiteController::class, 'getApprovals']);
 $app-> router->get('/getWordSessions', [SiteController::class, 'getWordSessions']);
+$app-> router->post('/updateSession', [SiteController::class, 'updateSession']);
 $app-> router->get('/getWordSessionsOfAssignedEvng', [SiteController::class, 'getWordSessionsOfAssignedEvng']);
 $app->router->get('/wordSessionDetail', [SiteController::class, 'wordSessionDetail']);
 $app-> router->get('/getWordSessionsApproved', [SiteController::class, 'getWordSessionsApproved']);

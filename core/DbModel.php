@@ -3041,18 +3041,38 @@ ORDER BY
         return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSessionModel::class);
     }
 
+    public static function updateSession($date,$status,$evangelist,$remark,$id)
+    {
+        $stmt = self::prepare("
+                UPDATE word_session
+                SET session_date = :date,
+                    status       = :status,
+                    evangelist   = :evangelist,
+                    remark       = :remark,
+                    updated_at   = NOW()
+                WHERE id = :id
+            ");
 
+        $stmt->bindParam(':date', $date);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':evangelist', $evangelist);
+        $stmt->bindParam(':remark', $remark);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+
+        $stmt->execute();
+    }
 
     public static function getWordSessionsByMobile($mobile)
     {
         $stmt = self::prepare("
-        SELECT 
+        SELECT id,
             session_id, 
             session_date, 
             status,
             participant,
             language,
             evangelist,
+            remark,
             CASE session_id
                 WHEN 1 THEN 'Session 1: SALVATION'
                 WHEN 2 THEN 'Session 2: 2ND COMING'

@@ -356,6 +356,7 @@ function getCountryCode($countryName) {
 ?>
 
 <form method="GET" style="margin: 10px 0; display: flex; flex-wrap: wrap; gap: 10px;">
+
     <input type="text" name="name" placeholder="🔍 Search Name" value="<?= htmlspecialchars($_GET['name'] ?? '') ?>" style="padding: 6px; border-radius: 6px; border: 1px solid #ccc;">
 
     <select name="status" style="padding: 6px; border-radius: 6px;">
@@ -407,6 +408,7 @@ $filteredTasks = array_filter($tasks, function ($task) use ($nameFilter, $status
 
 <?php foreach ($filteredTasks as $task): ?>
     <a href="/viewTaskDetails?mobile=<?= urlencode($task['mobile']) ?>" class="task-card">
+        <div class="task-mobile">📱 <?= htmlspecialchars($task['mobile']) ?></div>
         <div class="task-name">👤 <?= htmlspecialchars($task['name']) ?></div>
         <?php
         $code = getCountryCode($task['country']);

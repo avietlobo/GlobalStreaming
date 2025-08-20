@@ -798,7 +798,7 @@ class AuthController extends Controller
         DataBankModel::loadDataBank($rows,$header,$errorFile,$outputFile,$processId);
 
         $allUploads = UploadProcessLogModel::getUploadsByUser($evngName);
-
+        $this->setLayout('main1');
         return $this->render('process_upload', [
             'errorFilePath' => "logs/{$processId}_errors.csv",
             'outputFilePath' => "logs/{$processId}_output.csv",
@@ -818,7 +818,7 @@ class AuthController extends Controller
 
         $evngName = Application::$app->session->get('nameFinal'); // assuming session has uploader's name
         $allUploads = UploadProcessLogModel::getUploadsByUser($evngName);
-
+        $this->setLayout('main1');
         //return $this->render('csvUploadForm');
         return $this->render('csvUploadForm', [
             'allUploads' => $allUploads
@@ -2073,6 +2073,7 @@ class AuthController extends Controller
         $data = DataBankModel::getFilteredSMData($filters, $limit, $offset);
         $data1 = CandidateModel::findAllEvangelistForSM1();
 
+        $this->setLayout('main1');
         // Step 5: Return to view with additional data
         return $this->render('sm_list', [
             'records' => $data['records'],
@@ -2129,7 +2130,7 @@ class AuthController extends Controller
 
         $data1 = CandidateModel::findAllEvangelistForTelecalling1();
 
-
+        $this->setLayout('main1');
         // Step 5: Return to view with additional data
         return $this->render('telecallers_list', [
             'records'       => $data['records'],

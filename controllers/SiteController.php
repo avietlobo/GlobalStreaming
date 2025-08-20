@@ -662,7 +662,7 @@ use DateTime;
          //$wordSessions = WordSessionModel::getWordSessionsByMobile($mobile);// reuse from earlier
          $wordSessions = WordSessionModel::getWordSessionsByEvangelist($mobile,$evangelist);
 
-
+         $this->setLayout('main1');
          return $this->render('word_session_detail', [
              'mobile' => $mobile,
              'language'=> $language,
@@ -700,6 +700,41 @@ use DateTime;
          echo json_encode(['success' => true, 'sessions' => $sessions]);
      }
 
+     public function updateSession(Request $request)
+     {
+         if ($request->isPost()) {
+             $body = $request->getBody();
+
+
+             $id         = $body['sessionId'] ?? null; // this is 26
+             $date       = $body['sessionDate'] ?? null;
+             $status     = $body['status'] ?? null;
+             $remark     = $body['remark'] ?? null;
+             $evangelist = $body['evangelist'] ?? null;
+
+             CandidateModel::updateSession($date,$status,$evangelist,$remark,$id);
+
+             // For debugging: check what came from frontend
+             // return as JSON (not echo)
+             header('Content-Type: application/json');
+             echo json_encode([
+                 'success'    => true,
+                 'sessionId'  => $id,
+                 'sessionDate'=> $date,
+                 'status'     => $status,
+                 'remark'     => $remark,
+                 'evangelist' => $evangelist
+             ]);
+             exit;
+         }
+
+         header('Content-Type: application/json');
+         echo json_encode(['success' => false, 'message' => 'Invalid request']);
+         exit;
+     }
+
+
+
      public function getWordSessions(Request $request)
      {
          $mobile = $_GET['mobile'] ?? '';
@@ -730,14 +765,15 @@ use DateTime;
              $success = CandidateModel::reassignWordSession($mobile,$candidate,$assignedBy,$assignedTo,$status,$remarks,$language);
              if ($success) {
                  echo json_encode(['success' => true]);
+                 exit;  // ✅ stop here
              } else {
-                 echo json_encode([
-                     'success' => false,
-                     'message' => 'Database insert failed'
-                 ]);
+                 echo json_encode(['success' => false, 'message' => 'Database insert failed']);
+                 exit;  // ✅ stop here
              }
          }
+
          echo json_encode(['success' => false, 'message' => 'Invalid request']);
+         exit; // ✅ stop here too
 
      }
 
