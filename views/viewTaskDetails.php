@@ -506,6 +506,7 @@
             <label>Language</label>
             <select name="language" id="editLanguage" required>
                 <option value="English">English</option>
+                <option value="Malayalam">Malayalam</option>
                 <option value="Kannada">Kannada</option>
                 <option value="Konkani-Goan">Konkani-Goan</option>
                 <option value="Konkani-Mangalore">Konkani-Mangalore</option>
@@ -523,10 +524,10 @@
 
 
             <label>Call Date*</label>
-            <input type="date" name="call_date" id="editCallDate">
+            <input type="date" name="call_date" id="editCallDate" required>
 
             <label>Calling Status*</label>
-            <select name="status" id="editStatus">
+            <select name="status" id="editStatus" required>
                 <option value="">Select</option>
                 <option value="Positive">Positive</option>
                 <option value="Negative">Negative</option>
@@ -536,7 +537,7 @@
             </select>
 
             <label>Remark*</label>
-            <textarea name="remark" id="editRemark"></textarea>
+            <textarea name="remark" id="editRemark" required></textarea>
 
             <div class="modal-actions">
                 <button type="button" onclick="closeModal()">Cancel</button>
@@ -817,9 +818,25 @@ $disableOtherTabs = !$alreadyRegistered; // disable if candidate not registered
                 <div class="form-group">
                     <label>🗣️ Language</label>
                   <select name="language" required>
-                        <option value="English">English</option>
-                        <option value="Hindi">Hindi</option>
-                        <option value="Kannada">Kannada</option>
+
+                      <option value="">Select Language</option>
+                      <option value="English">English</option>
+                      <option value="Malayalam">Malayalam</option>
+                      <option value="Kannada">Kannada</option>
+                      <option value="Konkani-Goan">Konkani-Goan</option>
+                      <option value="Konkani-Mangalore">Konkani-Mangalore</option>
+                      <option value="Portuguese">Portuguese</option>
+                      <option value="Hindi">Hindi</option>
+                      <option value="Italian">Italian</option>
+                      <option value="Spanish">Spanish</option>
+                      <option value="Tamil">Tamil</option>
+                      <option value="Tagalog">Tagalog</option>
+                      <option value="Arabic">Arabic</option>
+                      <option value="French">French</option>
+
+
+
+
                     </select>
                 </div>
             </div>
@@ -1431,7 +1448,7 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
         document.getElementById('editCountry').value = "<?= htmlspecialchars($task->country) ?>";
         document.getElementById('editCity').value = "<?= htmlspecialchars($task->city) ?>";
         document.getElementById('editLanguage').value = "<?= htmlspecialchars($task->language) ?>";
-        document.getElementById('editCallDate').value = "<?= htmlspecialchars($task->record_date) ?>"; // Or blank if separate
+        document.getElementById('editCallDate').value = ""; // Or blank if separate
     }
 
     function closeModal() {

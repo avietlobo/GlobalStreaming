@@ -1008,13 +1008,17 @@ class AuthController extends Controller
         $callDate = $_POST['call_date'] ?? '';
         $status = $_POST['status'] ?? '';
         $remark = $_POST['remark'] ?? '';
+        $name     = $_POST['name']     ?? '';
+        $country  = $_POST['country']  ?? '';
+        $city     = $_POST['city']     ?? '';
+        $language = $_POST['language'] ?? '';
 
         if (!$mobile || !$callDate || !$status || !$remark) {
             echo json_encode(['success' => false, 'message' => 'All fields are required.']);
             return;
         }
 
-        $result = TelecallerSMModel::updateStatusTask( $mobile,$callDate,$status, $remark);
+        $result = TelecallerSMModel::updateStatusTask(  $mobile, $name, $country, $city, $language, $callDate, $status, $remark);
         if ($result) {
             echo json_encode(['success' => true]);
         } else {

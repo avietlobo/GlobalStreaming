@@ -940,10 +940,23 @@ abstract class DbModel extends Model
         return $stmt->fetchColumn() > 0;
     }
 
-    public static function updateStatusTask($mobile,$callDate,$status, $remarks)
+    public static function updateStatusTask($mobile, $name, $country, $city, $language, $callDate, $status, $remarks)
     {
         $tableName = 'telecaller_sm';
-        $stmt = self::prepare("UPDATE telecaller_sm SET callDate = :callDate, status = :status, remarks = :remarks WHERE mobile = :mobile");
+        $stmt = self::prepare(" UPDATE telecaller_sm 
+        SET 
+            name = :name,
+            country = :country,
+            city = :city,
+            language = :language,
+            callDate = :callDate,
+            status = :status,
+            remarks = :remarks
+        WHERE mobile = :mobile");
+        $stmt->bindValue(":name", $name);
+        $stmt->bindValue(":country", $country);
+        $stmt->bindValue(":city", $city);
+        $stmt->bindValue(":language", $language);
         $stmt->bindValue(":callDate", $callDate);
         $stmt->bindValue(":status", $status);
         $stmt->bindValue(":remarks", $remarks);
