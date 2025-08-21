@@ -929,6 +929,13 @@ abstract class DbModel extends Model
         return $statement->fetchObject(static::class);
     }
 
+    public static function getLanguage($mobile)
+    {
+        $stmt = self::prepare("SELECT language FROM candidate WHERE mobile = :mobile");
+        $stmt->bindValue(":mobile", $mobile);
+        $stmt->execute();
+        return $stmt->fetchColumn() ?: null; // returns language string or null
+    }
 
 
 

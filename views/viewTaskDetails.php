@@ -927,15 +927,20 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
         <h3>Word sharing to Candidate</h3>
 <!--        <div id="approvalStatus" style="margin-top: 20px;"></div>-->
         <form id="wordSharingForm" method="post" action="/saveWordSharingAssignment">
+<!--            <div class="form-group">-->
+<!--                <label for="language">Select Language</label>-->
+<!--                <select name="language" id="language" required>-->
+<!--                    <option value="">-- Select Language --</option>-->
+<!--                    <option value="Hindi">Hindi</option>-->
+<!--                    <option value="English">English</option>-->
+<!--                    <option value="Kannada">Kannada</option>-->
+<!--                    <!-- Add more if needed -->-->
+<!--                </select>-->
+<!--            </div>-->
+
             <div class="form-group">
-                <label for="language">Select Language</label>
-                <select name="language" id="language" required>
-                    <option value="">-- Select Language --</option>
-                    <option value="Hindi">Hindi</option>
-                    <option value="English">English</option>
-                    <option value="Kannada">Kannada</option>
-                    <!-- Add more if needed -->
-                </select>
+                <label for="language">Language</label>
+                <input type="text" name="language" id="language" value="<?= htmlspecialchars($language) ?>" readonly>
             </div>
 
             <div class="form-group">

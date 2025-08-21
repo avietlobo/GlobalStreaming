@@ -1037,7 +1037,7 @@ class AuthController extends Controller
         }
 
         $alreadyRegistered = CandidateModel::isMobileRegistered($mobile);
-
+        $language =  CandidateModel::getLanguage($mobile);
 
         $task = TelecallerSMModel::findMob(['mobile' => $mobile]);
 
@@ -1049,7 +1049,8 @@ class AuthController extends Controller
         // Render the view and pass the $task
         return $this->render('viewTaskDetails', [
             'task' => $task,
-            'alreadyRegistered' => $alreadyRegistered
+            'alreadyRegistered' => $alreadyRegistered,
+            'language' => $language
         ]);
 
     }
