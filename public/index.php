@@ -200,6 +200,8 @@ $app-> router->get('/evngDashboard1', [AuthController::class, 'evngDashboard1'])
 $app-> router->get('/candidate', [SiteController::class, 'candidate']);
 $app-> router->get('/getAllCan', [SiteController::class, 'getAllCandidate']);
 $app-> router->post('/getClassDetails', [SiteController::class, 'getClassDetailsForCandidate']);
+$app-> router->get('/getClassDetailsTab', [SiteController::class, 'getClassDetailsForCandidateTab']);
+
 $app-> router->post('/getClassDetails7D', [SiteController::class, 'getClassDetailsForCandidate7D']);
 $app-> router->get('/getClassNumber', [SiteController::class, 'getClassNumberDetailsForCandidate']);
 $app-> router->get('/getClassNumber7D', [SiteController::class, 'getClassNumberDetailsForCandidate7D']);

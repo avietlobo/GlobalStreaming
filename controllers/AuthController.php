@@ -1031,13 +1031,18 @@ class AuthController extends Controller
     {
         $mobile = $_GET['mobile'] ?? null;
 
+
         if (!$mobile) {
            echo("Mobile number is missing.");
 
         }
 
         $alreadyRegistered = CandidateModel::isMobileRegistered($mobile);
-        $language =  CandidateModel::getLanguage($mobile);
+        $details = CandidateModel::getLanguageAndCountry($mobile);
+        $language = $details['language'] ?? null;
+
+
+        $country  = $details['country'] ?? null;
 
         $task = TelecallerSMModel::findMob(['mobile' => $mobile]);
 
@@ -1050,7 +1055,9 @@ class AuthController extends Controller
         return $this->render('viewTaskDetails', [
             'task' => $task,
             'alreadyRegistered' => $alreadyRegistered,
-            'language' => $language
+            'language' => $language,
+            'mobile' => $mobile,
+            'country' => $country
         ]);
 
     }

@@ -1046,6 +1046,7 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
             .then(response => {
                 if (response.success) {
                     alert("✅ Reassignment request sent successfully!");
+                    loadApprovalStatus(); // 🔄 Refresh the history immediately
                 } else {
                     alert("❌ Failed: " + response.message);
                 }
@@ -1318,12 +1319,16 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
 
         // 🔵 Streaming Classes Tab
         if (tabId === 'tab2' && !selectedTab.dataset.loaded) {
-            const mobile = encodeURIComponent(candidateMobile);
+            //const mobile = encodeURIComponent(candidateMobile);
+            const mobile = "<?php echo $mobile; ?>"; // 👈 pass PHP variable to JS
+            const language = "<?php echo $language; ?>"; // 👈 pass PHP variable to JS
+            const country = "<?php echo $country; ?>"; // 👈 pass PHP variable to JS
+
             const username = encodeURIComponent("<?= htmlspecialchars($_SESSION['evngName'] ?? '') ?>");
             const candidate = encodeURIComponent("<?= htmlspecialchars($task->name) ?>");
             const index = encodeURIComponent("<?= htmlspecialchars($task->id ?? 0) ?>");
 
-            const url = `/getClassDetails?username=${username}&candidate=${candidate}&mobile=${mobile}`;
+            const url = `/getClassDetailsTab?username=${username}&candidate=${candidate}&mobile=${mobile}&language=${language}&country=${country}`;
 
             fetch(url)
                 .then(response => {

@@ -1201,6 +1201,40 @@ public function getClassNumberDetailsForCandidate()
 
     }
 
+
+
+
+
+    public function getClassDetailsForCandidateTab() {
+
+        $registerModel = new RegisterModel();
+        // Extract parameters from the URL
+        $username = $_GET['username'] ?? null;
+        $candidate = $_GET['candidate'] ?? null;
+        $language = $_GET['language'] ?? null;
+        $country = $_GET['country'] ?? null;
+        $mobile = isset($_GET['mobile']) ? rawurldecode($_GET['mobile']) : null;
+        $index = $_GET['index'] ?? null;
+        Application::$app->session->set('index', $index);
+
+        // Validate and sanitize parameters as needed
+
+
+
+
+        // Example: Fetch details based on $username and $candidate
+        $userDetails = $registerModel->getUserDetailsByUsername($username,$candidate,$mobile);
+//        Application::$app->session->set('userDetails', $userDetails);
+//        echo '<pre>';
+//        var_dump(Application::$app->session->get('userDetails'));
+//        echo '</pre>';
+
+        // Render the view with the user details
+        $this->setLayout('main1');
+        return $this->render('classDetailsForCandidateTabView', ['userDetails' => $userDetails,'mobile' => $mobile, 'candidate' => $candidate, 'username'=> $username,'language'=> $language,'country'=>$country]);
+    }
+
+
     public function getClassDetailsForCandidate() {
 
         $registerModel = new RegisterModel();
