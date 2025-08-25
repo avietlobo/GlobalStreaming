@@ -580,6 +580,14 @@ use DateTime;
 
              $candidateModel->loadData($request->getBody());
              $candidateModel->saveCandidateViaDataDistribution($mobile,$name,$country,$language,$evangelist,$source,$allotedDays,$mediaType,$activeStatus,$workGroup,$userId,$remark);
+
+             $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist' => Application::$app->session->get('nameFinal')], Application::$app->session->get('nameFinal'));
+
+
+             Application::$app->session->set('evngDashboardData', $data);
+             $this->setLayout('main1');
+
+
              return $this->render('evngDashboard3');
          }
      }
