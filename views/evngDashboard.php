@@ -381,6 +381,18 @@ $designation = $dashboardData[0]->designation;
 <?php endif; ?>
 </div>
 
+
+<?php if ($designation == 'SathvarthaOrganizer'): ?>
+
+    <a href="#" class="attendance-link" title="Organize Sathvartha Event" onclick="window.location.href='allEvents';">
+        <img src="event1.png" alt="Attendance Icon">
+    </a>
+
+
+
+<?php endif; ?>
+
+
 <?php if ($designation == 'TaskManager'): ?>
 
 
@@ -474,14 +486,12 @@ $designation = $dashboardData[0]->designation;
         <button class="icon-button seven-day-badge" title="7D Approved Candidates" onclick="window.location.href='view7DApproved';">
             7D List
         </button>
-        <a href="#" class="attendance-link" title="Organize Sathvartha Event" onclick="window.location.href='allEvents';">
-            <img src="event1.png" alt="Attendance Icon">
-        </a>
+
     <?php endif; ?>
 </div>
 
 <div class="icon-button-group search-icons">
-    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'Caretaker' && $designation !== 'Management' && $designation !== 'TaskManager' && $designation !== 'LocalOrganizer' && $designation !== 'PanelMember'): ?>
+    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'Caretaker' && $designation !== 'Management' && $designation !== 'TaskManager' && $designation !== 'LocalOrganizer' && $designation !== 'PanelMember' && $designation !='SathvarthaOrganizer'): ?>
         <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
             <i class="fas fa-file-alt"></i>
         </button>

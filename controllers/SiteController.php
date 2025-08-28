@@ -676,6 +676,7 @@ use DateTime;
              'language'=> $language,
              'participant'=> $participant,
              'wordSessions' => $wordSessions,
+             'evangelist' => $evangelist
          ]);
      }
 
@@ -719,6 +720,7 @@ use DateTime;
              $status     = $body['status'] ?? null;
              $remark     = $body['remark'] ?? null;
              $evangelist = $body['evangelist'] ?? null;
+
 
              CandidateModel::updateSession($date,$status,$evangelist,$remark,$id);
 

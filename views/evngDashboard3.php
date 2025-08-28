@@ -316,6 +316,16 @@ $designation = $dashboardData[0]->designation;
 
 <?php endif; ?>
 
+<?php if ($designation == 'SathvarthaOrganizer'): ?>
+
+    <a href="#" class="attendance-link" title="Organize Sathvartha Event" onclick="window.location.href='allEvents';">
+        <img src="event1.png" alt="Attendance Icon">
+    </a>
+
+
+
+<?php endif; ?>
+
 <?php if ($designation == 'PanelMember'): ?>
 
     <a href="#" class="attendance-link" title="View Appointments" onclick="window.location.href='viewAllAppointments';">
@@ -373,7 +383,7 @@ $designation = $dashboardData[0]->designation;
 
 
 <div class="icon-button-group">
-    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'LocalOrganizer' && $designation !== 'PanelMember'): ?>
+    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'LocalOrganizer' && $designation !== 'PanelMember' && $designation !='SathvarthaOrganizer'): ?>
 
         <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
             <i class="fas fa-file-alt"></i>

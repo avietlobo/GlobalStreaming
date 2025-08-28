@@ -155,14 +155,71 @@
         .close:hover {
             color: #000;
         }
+        .logout-button {
+            background-color: #007bff;  /* softer red */
+            color: white;
+            padding: 6px 14px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            transition: background-color 0.3s, transform 0.2s;
+            width: auto;   /* ✅ fixes large width */
+        }
+
+        .logout-button:hover {
+            background-color: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .logout-button:active {
+            background-color: #96281b;
+            transform: translateY(0);
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;  /* aligns logout to top-right */
+            padding: 0.5rem 1rem;
+        }
+
+        .add-event-button {
+            background-color: #007bff;
+            color: white;
+            padding: 6px 14px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            transition: background-color 0.3s, transform 0.2s;
+            width: auto;   /* ✅ fixes the large width */
+        }
+
+        .add-event-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .add-event-button:active {
+            background-color: #004085;
+            transform: translateY(0);
+        }
+
     </style>
 </head>
 <body>
 
 <div class="header">
-    <a class="nav-link" href="#" id="logout-link">
-        <button type="button" class="btn btn-primary">Logout</button>
-    </a>
+    <button type="button" id="logout-link" class="logout-button">
+        🚪 Logout
+    </button>
 </div>
 
 <div class="container">
@@ -174,7 +231,7 @@
 <h2>➕ Add New Home Mission Event</h2>
 <!-- Modal -->
 <div style="text-align: center; margin: 1rem 0;">
-    <button id="openModalBtn" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+    <button id="openModalBtn" class="add-event-button">
         ➕ Add New Event
     </button>
 </div>

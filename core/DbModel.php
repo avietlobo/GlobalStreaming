@@ -3035,11 +3035,12 @@ ORDER BY
     {
         $stmt = self::prepare("
         SELECT 
-            session_id, 
+            id,session_id, 
             session_date, 
             status,
             participant,
             language,
+            remark,
             CASE session_id
                 WHEN 1 THEN 'Session 1: SALVATION'
                 WHEN 2 THEN 'Session 2: 2ND COMING'
