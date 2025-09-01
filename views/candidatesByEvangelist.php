@@ -17,6 +17,7 @@
 
         body.light-mode {
             --bg-color: #f9f9f9;
+
             --text-color: #111;
             --item-bg: #fff;
             --item-hover: #f0f0f0;
@@ -28,7 +29,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: var(--bg-color);
+            background: #f4f4f5;
             color: var(--text-color);
             transition: all 0.3s ease;
             padding: 20px;

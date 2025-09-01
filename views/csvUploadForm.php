@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f7fafc;
+            background-color: #f4f4f5;
             margin: 0;
             padding: 40px 20px;
             color: #2d3748;
@@ -144,12 +144,37 @@
                 color: #4a5568;
                 content: attr(data-label);
             }
+
+
+        }
+
+        .back-button {
+            background-color: #edf2f7;       /* light gray background */
+            color: #2d3748;                  /* dark text */
+            padding: 10px 22px;
+            border: 1px solid #cbd5e0;       /* subtle border */
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;       /* smooth hover effect */
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .back-button:hover {
+            background-color: #e2e8f0;       /* darker gray on hover */
+            border-color: #a0aec0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .back-button:active {
+            background-color: #cbd5e0;       /* pressed look */
+            transform: scale(0.97);
         }
     </style>
 </head>
 <body>
 <div class="container">
-
     <div class="button-group">
         <button type="button" class="back-button" onclick="window.location.href='/evngDashboard1'">Back</button>
     </div>

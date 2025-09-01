@@ -1240,7 +1240,7 @@ public function getClassNumberDetailsForCandidate()
 //        echo '</pre>';
 
         // Render the view with the user details
-        $this->setLayout('main1');
+        $this->setLayout('mainT');
         return $this->render('classDetailsForCandidateTabView', ['userDetails' => $userDetails,'mobile' => $mobile, 'candidate' => $candidate, 'username'=> $username,'language'=> $language,'country'=>$country]);
     }
 

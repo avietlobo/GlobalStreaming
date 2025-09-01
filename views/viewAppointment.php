@@ -18,8 +18,7 @@
         body {
             font-family: 'Segoe UI', sans-serif;
             padding: 20px;
-            background-color: var(--bg-light);
-            color: var(--text-light);
+            background: #f4f4f5;
             transition: background-color 0.3s, color 0.3s;
         }
 

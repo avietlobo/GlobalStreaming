@@ -29,7 +29,7 @@
             margin: 0;
             padding: 20px;
             font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg-color);
+            background: #f4f4f5;
             color: var(--text-color);
             transition: background-color 0.3s ease, color 0.3s ease;
         }

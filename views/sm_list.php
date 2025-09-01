@@ -12,12 +12,13 @@
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background: #f9f9f9;
+            background: #f4f4f5;
         }
         .container {
             max-width: 100%;
             margin: 40px auto;
             padding: 20px;
+            background: transparent !important; /* override Bootstrap */
         }
         h2 {
             text-align: center;
@@ -68,6 +69,8 @@
             cursor: not-allowed;
             opacity: 0.7;
         }
+
+
     </style>
 </head>
 <body>
@@ -412,7 +415,7 @@
         <!--        <button onclick="confirmAssign()" style="background: #007BFF;">✅ Confirm Assign</button>-->
         <button id="assignConfirmBtn" onclick="confirmAssign()" style="background: #007BFF;">✅ Confirm Assign</button>
         <button onclick="closeAssignModal()" style="background: #6c757d; margin-left: 10px;">❌ Cancel</button>
-    </div> 
+    </div>
 </div>
 
 

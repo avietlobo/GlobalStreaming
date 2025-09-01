@@ -28,10 +28,10 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: var(--bg-color);
             color: var(--text-color);
             transition: all 0.3s ease;
             padding: 20px;
+            background: #f4f4f5;
         }
 
         .top-bar {

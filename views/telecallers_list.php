@@ -12,7 +12,7 @@
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background: #f9f9f9;
+            background: #f4f4f5;
         }
         .container {
             max-width: 100%;

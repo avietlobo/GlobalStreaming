@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f9f9f9;
+            background: #f4f4f5;
             margin: 0;
             padding: 20px;
         }

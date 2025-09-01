@@ -28,7 +28,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: var(--bg-color);
+            background: #f4f4f5;
             color: var(--text-color);
             transition: all 0.3s ease;
             padding: 20px;
