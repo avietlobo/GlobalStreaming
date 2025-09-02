@@ -64,7 +64,8 @@ $app-> router->get('/viewAllAppointmentsReadonly', [AuthController::class, 'view
 $app-> router->get('/viewAllAppointmentsSR', [AuthController::class, 'viewAllAppointmentsSR']);
 $app-> router->get('/viewAllAppointmentsIF', [AuthController::class, 'viewAllAppointmentsIF']);
 
-
+$app-> router->get('/mylangPref', [AuthController::class, 'mylangPref']);
+$app-> router->post('/mylangPref', [AuthController::class, 'mylangPref']);
 
 
 $app-> router->get('/myPref', [AuthController::class, 'myPref']);

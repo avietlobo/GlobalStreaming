@@ -301,6 +301,10 @@ $designation = $dashboardData[0]->designation;
         <button class="icon-button" title="Approve Word sessions" onclick="window.location.href='viewAssignedWordSessions';">
             ✅ Approve Word Sessions
         </button>
+        <button class="icon-button" title="My Preference" onclick="window.location.href='mylangPref';">
+            <i class="fas fa-sliders-h"></i>
+            Word Session Language Preference
+        </button>
     </div>
 <?php endif; ?>
 <!---->

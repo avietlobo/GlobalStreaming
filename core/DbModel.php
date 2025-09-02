@@ -1834,6 +1834,44 @@ GROUP BY
     }
 
 
+    public static function getActiveLanguages(string $email): array
+    {
+        $langTable = 'evangelist_languages';
+        $stmt = self::prepare("SELECT language FROM $langTable WHERE email = :email AND active = 1");
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN) ?: [];
+    }
+
+    public static function softUpsertLanguages(string $email, array $languages): void
+    {
+        $langTable = 'evangelist_languages';
+
+        // 1) Soft-inactivate all current languages for this user
+        $deactivate = self::prepare("UPDATE $langTable SET active = 0 WHERE email = :email");
+        $deactivate->bindParam(':email', $email);
+        $deactivate->execute();
+
+        // 2) Upsert each selected language as active=1
+        if (!empty($languages)) {
+            $upsert = self::prepare("
+            INSERT INTO $langTable (email, language, active)
+            VALUES (:email, :language, 1)
+            ON DUPLICATE KEY UPDATE active = 1
+        ");
+
+            foreach ($languages as $language) {
+                // Optional: trim & basic normalization
+                $language = trim((string)$language);
+                if ($language === '') continue;
+
+                $upsert->bindParam(':email', $email);
+                $upsert->bindParam(':language', $language);
+                $upsert->execute();
+            }
+        }
+    }
+
 
     public static function getCountriesByLanguage($lang)
     {

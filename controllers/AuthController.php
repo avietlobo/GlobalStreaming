@@ -1050,7 +1050,7 @@ class AuthController extends Controller
             echo("No data found for this mobile.");
 
         }
-
+        $this->setLayout('main1');
         // Render the view and pass the $task
         return $this->render('viewTaskDetails', [
             'task' => $task,
@@ -1420,6 +1420,52 @@ class AuthController extends Controller
         ]);
     }
 
+
+
+
+    public function mylangPref(Request $request, Response $response)
+    {
+        $email = Application::$app->session->get('xtr');
+
+        // Fetch currently active languages (can be empty array)
+        $currentLanguages = EvangelistModel::getActiveLanguages($email);
+
+        if ($request->isPost()) {
+            $body = $request->getBody();
+            $languages = $_POST['languages']; // This will be an array
+
+            // Server-side validation: require at least one language
+            if (empty($languages)) {
+                $this->setLayout('main1');
+                return $this->render('mylangPref', [
+                    'success' => '',
+                    'error' => 'Please select at least one language before saving.',
+                    'currentLanguages' => $currentLanguages
+                ]);
+            }
+
+            // Soft update + upsert (no deletes)
+            EvangelistModel::softUpsertLanguages($email, $languages);
+
+            // Re-fetch to reflect latest state
+            $currentLanguages = EvangelistModel::getActiveLanguages($email);
+
+            $this->setLayout('main1');
+            return $this->render('mylangPref', [
+                'success' => 'Language preferences updated successfully!',
+                'error' => '',
+                'currentLanguages' => $currentLanguages
+            ]);
+        }
+
+        // GET: render the view with current languages (may be empty)
+        $this->setLayout('main1');
+        return $this->render('mylangPref', [
+            'success' => '',
+            'error' => '',
+            'currentLanguages' => $currentLanguages
+        ]);
+    }
 
 
     public function myPref(Request $request, Response $response)
