@@ -1046,6 +1046,8 @@ class AuthController extends Controller
 
         $task = TelecallerSMModel::findMob(['mobile' => $mobile]);
 
+        $evangelists = CandidateModel::getLanguageEvangelists($language);
+
         if (!$task) {
             echo("No data found for this mobile.");
 
@@ -1057,7 +1059,8 @@ class AuthController extends Controller
             'alreadyRegistered' => $alreadyRegistered,
             'language' => $language,
             'mobile' => $mobile,
-            'country' => $country
+            'country' => $country,
+            'evangelists' => $evangelists // ✅ Pass here
         ]);
 
     }

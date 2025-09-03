@@ -929,6 +929,19 @@ abstract class DbModel extends Model
         return $statement->fetchObject(static::class);
     }
 
+
+    public static function getLanguageEvangelists($language)
+    {
+        $stmt = self::prepare("SELECT e.evngName
+FROM evangelist e
+INNER JOIN evangelist_languages el 
+    ON e.email = el.email
+WHERE el.language = :language");
+        $stmt->bindValue(":language", $language);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
     public static function getLanguageAndCountry($mobile)
     {
         $stmt = self::prepare("SELECT language, country FROM candidate WHERE mobile = :mobile");

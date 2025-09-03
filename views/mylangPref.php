@@ -30,6 +30,14 @@ $error = $error ?? '';
     </style>
 </head>
 <body>
+<div class="header">
+    <a class="nav-link" href="#" id="logout-link">
+        <button type="button" class="btn btn-primary">Logout</button>
+    </a>
+</div>
+
+<a class="back-link" href="/evngDashboard1">← Back </a>
+
 <div class="box">
 
 
@@ -47,7 +55,17 @@ $error = $error ?? '';
         <label><input type="checkbox" name="languages[]" value="Hindi"> Hindi</label><br>
         <label><input type="checkbox" name="languages[]" value="Spanish"> Spanish</label><br>
         <label><input type="checkbox" name="languages[]" value="French"> French</label><br>
-        <label><input type="checkbox" name="languages[]" value="German"> German</label><br>
+        <label><input type="checkbox" name="languages[]" value="Arabic"> Arabic</label><br>
+        <label><input type="checkbox" name="languages[]" value="Malayalam"> Malayalam</label><br>
+        <label><input type="checkbox" name="languages[]" value="Tagalog"> Tagalog</label><br>
+        <label><input type="checkbox" name="languages[]" value="Italian"> Italian</label><br>
+        <label><input type="checkbox" name="languages[]" value="Tamil"> Tamil</label><br>
+        <label><input type="checkbox" name="languages[]" value="Portuguese"> Portuguese</label><br>
+        <label><input type="checkbox" name="languages[]" value="Kannada"> Kannada</label><br>
+        <label><input type="checkbox" name="languages[]" value="Konkani-Goan"> Konkani-Goan</label><br>
+        <label><input type="checkbox" name="languages[]" value="Konkani-Mangalore"> Konkani-Mangalore</label><br>
+
+
 
         <button type="submit">Save Preferences</button>
     </form>

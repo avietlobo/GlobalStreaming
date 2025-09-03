@@ -953,9 +953,13 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                 <label for="colleague">Select Colleague</label>
                 <select name="colleague" id="colleague">
                     <option value="">-- Select Colleague --</option>
-                    <option value="Alice">Alice</option>
-                    <option value="David">David</option>
-                    <!-- Populate dynamically from DB if needed -->
+                    <?php if (!empty($evangelists)): ?>
+                        <?php foreach ($evangelists as $evangelist): ?>
+                            <option value="<?= htmlspecialchars($evangelist) ?>">
+                                <?= htmlspecialchars($evangelist) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </select>
                 <div class="form-group" id="reassignSection" style="display: none;">
                     <button type="button" class="btn btn-warning" onclick="sendReassignRequest()">🔁 Reassign</button>
