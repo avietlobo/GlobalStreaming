@@ -1,0 +1,610 @@
+Logout button => not present for evangelist login ====> DONE
+
+If no class registered for a candidate then show message that no class requested yet  =>>>>> DONE
+back button on Add new candidate form   =>>>>>> DONE
+back button on class Request form =>>>>> DONE
+after submitting class request it should display on the same page  =>>>>> DONE
+Remove API headers for form submit data for class request =>>>>>>> DONE
+
+Form validations Candidate form *************
+
+Mobile and participant name should be mandatory ***** DONE
+Min length for mobile => DONE
+Mobile number check if already present in DB =>>>>>>>DONE
+Add candidate form should display language as drop down value  =>>>>> DONE
+media type should be web audio and video only => DONE
+Add candidate form should display country as drop down value =>>>> DONE
+Add candidate form should display source as drop down value =>>> DONE
+Add candidate form should display alloted days as drop down value =>>> DONE
+Add candidate form should display media type days as drop down value =>> DONE
+Add candidate form should display active status as drop down value  =>>> DONE
+Evangelist should be autopopulated =>>> It is done but autopopulated as a drop down =>>> DONE
+Evangelist should be autopopulated as text value =>>>> TODO
+Change the logic once clicking on the candidate so it should display only candidates with mobile number and evangelist name query => DONE
+USER ID should autopopulate the email id =>>> DONE
+wgroup column should be autopopulated while opening candidate form =>>>>  DONE
+Country not saving correctly in database =>>> DONE FIXED
+create Evangelist table =>>>>DONE
+Can i rename Fellowship column in evangelist table to gLeaderEmail???????????????????????????????????????? Ask Diogo cheta
+create WGroup table =>>>>>>>>  DONE
+Record date should be populated in database =>>> DONE
+Hide the record date field =>>>> DONE
+create wgroup column in candidate table =>>>>>>  DONE
+Change labels on add new candidate screen =>>>>>>>>>  DONE
+wgroup column should be visible on candidate form =>>>>> DONE
+Postman Add Candidate API not working =>>>>>>DONE
+
+
+Register Evangelist*******************
+
+Registration screen should display =>>>>> DONE
+Registration should work from ui =>>>done
+
+************************
+
+USERID should be autopopulated bb  =>>>>Not needed
+
+**********************************************************
+
+Form validations CanDetails form 
+Participant name should be autopopulated. Currently second one is always populated=> NOT WORKING CORRECTLY =>>>> DONE
+Evangelist name should be autopopulated =>   DONE
+Whatsapp group=> autopopulated  => DONE
+Language should be autopopulated=> DONE
+Hide record date =>> DONE
+Record date should capture when the record was saved in UTC format => DONE
+mobile should be autopopulated => DONE
+Expiry date and time should be hidden  => DONE
+class From => dynamic drop down    =>>>>>>>>>>>>>>>>>>DONE
+Class To => Not needed
+media type => drop down  =>>>> DONE
+status => buttons  =>>> I have made it a drop down => DONE
+class link  => input box =>>> DONE
+class To hide =>>> DONE
+Remark => input box =>>> DONE
+Participant feedback => input box =>>> DONE
+Record date should be hidden. It should automatically populate in DB when the submission is performed =>> 
+Edit option for candidate form =>>>>
+Warning message shown on screen remove=> DONE
+Retain back button on class request form => DONE
+registration not working from front end =>>>>>>>>>>>>>>>>>>>>>>>>>> DONE
+
+<?php echo $form->field($model,'recordDate')  ?>
+
+Edit function to be build for candidate form =>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Add edit button on candidate screen =>>> DONE
+After clicking edit button, show all details in for =>>>> DONE
+Add update and back button =>>>> DONE
+Add functionality to back button =>>> DONE
+Add functionality to update button. It should update record in DB =>>> Done
+It should also display updated candidate record on main screen =>>> Done
+
+
+
+
+
+*********************************
+
+VIDEO of streaming not playing =>>>> TODO
+After login some error message is displayed =>>> Temp fix added =>> DONE
+logout button => action not working  ===>>>> DONE
+logout button => should be present in all views ===>>>> IN PROGRESS
+Make the Evangelist Dashboard screen mobile friendly ===>>>> TBD
+Add language drop down in language drop down in update candidate screen=>>> DONE
+media type also should be a drop down =>>>> DONE
+source also should be a drop down =>>>> DONE
+Active status also should be a drop down =>>>> DONE
+Country also should be a drop down =>>>> DONE
+
+
+******************************************
+
+language counts are not coming as expected. Fix this one =>>>>>TODO
+
+
+Insertion in wgroup table =>>>> Done
+Add some test records for Malcolm group =>>> Done
+Fix register evangelist Form =>>> TODO
+
+
+
+Remove view report for evangelist =>>  Done
+Add edit icon instead of button =>> Done
+Add + icon instead of button for requesting new class =>>> DOne
+Participant name overlaps Edit button  =>>> Done
+Logout button aligned on right side of Class request page =>>> Done
+Bug when we navigate to a candidate with phone number containing special character + symbol =>>>> Done Fixed
+order by Active status column for candidates =>>> Done
+Search option if there are multiple candidates =>>> Done
+
+Participant Name should be editable I think
+logout button on right side alignment for edit candidate =>>> Done
+After adding candidate logout button disappears =>> TBD =>>> issue looks to be of session handling something =>>> Used dirty fix here
+Registration form for evangelist =>>>>> TBD
+Search by box and all statuses should be dynamically arranged on screen based on screen width and size=>>> TBD
+
+Add candidate records along with wgroup column values
+insert all evangelist table records
+insert all wgroup table records
+Insert all candidatedetails records which were not present in candidatedetails initially due to telegram links
+
+Add floating button => Done
+
+Pass classFrom and status =>>> Done
+Display Status and class from value on screen => Done
+Add Edit button floating icon on screen => Done
+Show Edit form on screen with values autopopulated => Done
+Finally do update operation in DB => Done
+web audio/video after update not displayed on screen =>> Done
+remark value showing + symbol =>>> Done
+circular back anf forth issue after updating class and clicking on back it again navigates to edit form=>>> Done
+Fix logout button and back button after editing record => Done
+class 1 should not be displayed =>> Done
+generate new password in case of repeating => Done
+Do we need to update record date when we update class details => ?
+
+Logout button not working after submitting candidate => Done
+
+Web audio or video should be retained in add new class request screen =>>> TBD  => tried but did not work => Done finally
+View report should be visible => TBD
+Remmber to change url in classNumberDetailsForCandidate in line 243 for test or prod =>>>> VERY IMP
+
+Create Global Member Registration Form => Done
+Display photo on same screen after upload =>>> Done
+Create new temporary table after uploading form =>>> Done almost
+Find out how we will store photo =>>> Done
+Storing record in temp table => Done
+Create Approval/Rejection page and display static values =>>> Done
+use data on Approval page from actual database =>>> Done
+approve the record and insert in another table=>>>> Done
+Reject record and update in same table =>>>>Done
+Validation if mobile or email already present => Done
+Add logout button on appRegistration screen => Done
+Add back button on appRegistration screen => Done
+Save designation in temp table and add in form as well => Done
+When I come back from form reg screen logout is not visible =>>> Done
+Referred By should be auto populated based on evangelist login=>>> Done
+updated date should be updated in table =>>> Done
+Add logout button on approval screen =>>> Done
+Add back button on approval screen =>>> Done
+Add workgroup drop down while registering evangelist=>>>TBD
+
+Create button to view submitted registration for evangelist only =>> Done
+Display record in screen => Done
+Approve or reject record and store in DB =>>>Done
+populate w-group table =>  Partially Done as I need to wait for Diogo cheta to dissolve some TC base groups
+populate candidate table with w-group =>>> Done
+populate candidate details for remaining records =>>> Done
+populate evangelist table =>>> Done
+Test few records after migration =>>>> Done
+Testing with Rowena =>>> Done
+Rowena observations
+Change labels on Class Request Screen =>>> Done
+Store code in GitHub =>>> Done
+after saving candidate , the icons disappear =>>>> Done
+Add drop down of wgroup for evangelist registration =>>> Done
+Add success message after registering evangelist successfully =>>>> Done
+Telegram records with Video/Audio should display as Web Audio/ Web Video while requesting for class
+Password reset => DOne
+Change the App password and put it as per email configuration of hostinger support email =>>> Done
+Display the new candidate as per the first record in Active card screen => TBD 
+Give some borders for class table =>>> TBD
+Add upload photo using camera option if possible =>> TBD
+Inactive card issue =>> Done
+create a new login link for 7D => Done *********
+Add validation logic in activeStatus when evangelist tried to update to Completed =>>> TBD
+create a link of 7D sathvarta in evangelist login =>>> Done
+After clicking link =>>> Display all candidates eligible =>>> TBD
+Add new candidate button =>>> TBD
+After click on candidate show all class requests =>>> TBD
+Add new class request button =>>> TBD
+SELECT * FROM `7dcandetails` WHERE LANGUAGE = 'English' and classFrom = '1' and participant = 'Agostinho Boyer' and mediaType = 'Web Video'
+
+
+***************TBD*********************************
+After logging out from /v2 we should fall on v2 itself  for 7d video watch  =>>>>> Done
+once status is set to 7d Sath it cannot be changed again. Add validation =>>>>> Done
+logout button not working after clicking on attendance marking system=>>>> Done
+logout button alignment not correct after clicking on attendance marking system=>>>> Done
+Allow search option to mark attendance =>>> Done 
+Can event leader request for 3D classes and add candidates?  +>>>>>>>Question
+With Diogo to check table relations for online sathvartha table =>>>>>TBD
+Add audio in 7D folder in prod =>>>> Only English pending, tamil 35 missing
+after marking attendance log out button not working =>>> Done
+7D already approved screen also needed for 7D approver =>>>> Done
+after approving 7D candidate show the home page with success message =>>> TBD
+when caretaker logs in he should see only 7D candidate option and nothing else =>>> Done
+after registering a new evangelist we need to show the updated by as evangelist name who registered it =>> Done
+Deployment in test =>> Done
+Remove add candidate button event leader =>>>> Done
+Calendar should accept only current and past dates =>>> Done
+dropdown for caretaker email should show the name of caretaker as well =>>>>> Done
+while marking the attendance add a pop up alert confirmation =>>>>. Done
+add camera icon while adding photo instead of uploading via file =>>> Done
+fix the approved by after registration approval =>>> Done
+
+
+DATA distribution *******************************
+
+
+
+create CV file upload link on page => Done
+After clicking on CSV file upload upload form should be visible with validation to select file => Done
+Add back button on this page => TBD
+create table data_bank with columns as mobile, telecaller,recordDate, name, source => Done. This is the query below
+
+
+CREATE TABLE data_bank (
+    mobile VARCHAR(100) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    record_date DATE NOT NULL,
+    type VARCHAR(100),
+    email VARCHAR(100),
+    source VARCHAR(100),
+    country VARCHAR(100),
+    city VARCHAR(100),
+    referred_by VARCHAR(100),
+    group_name VARCHAR(100),
+    fellowship VARCHAR(100),
+    language VARCHAR(100)
+);
+
+i think we should allow mobile limit to 100 char as we can extend it for facebook urls as well
+Maximum length of a Facebook profile URL (with longest possible username):
+~74 characters
+
+File validations decide => TBD
+error file and out file for all process ids in system =>> TBD
+write a function to upload csv file in DB and also generate error file =>>> Done. It is working with 1000 record
+
+create new designation in table for data_entry=> TBD
+
+
+create new table for process ids = 
+
+CREATE TABLE upload_process_log (
+    process_id VARCHAR(36) PRIMARY KEY,
+    uploadedBy VARCHAR(100) NOT NULL,
+    upload_time DATETIME,
+    status ENUM('Processing', 'Completed', 'Failed'),
+    total_rows INT,
+    inserted_rows INT,
+    skipped_rows INT,
+    error_file VARCHAR(255),
+    output_file VARCHAR(255)
+);
+
+
+Create new role called TaskManager in Evng Registration form => Done
+Create two icons called telecaller assignment and SM assignment after login as TaskManager => Done
+Display Telecaller Tasks in Telcaller assignment screen => Done
+Display SM Tasks in SM assignment screen => Done
+Create DataBank model => Done
+Create My Tasks link in Evangelist login => Done
+Create new role called Tellecaller in Evng Registration form => Done
+
+Add checkboxes on Telecaller tasks screen => Done
+Add checkboxes on SM tasks screen => Done
+Now create table after assignment and name it telecaller_sm => Done
+Assign SM and Assign Telecallers and insert in table => Done
+AssignedTo column is not displayed after assignment =>>> Done
+
+CREATE TABLE telecaller_sm (
+    mobile VARCHAR(100) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    record_date DATE NOT NULL,
+    type VARCHAR(100),
+    email VARCHAR(100),
+    source VARCHAR(100),
+    country VARCHAR(100),
+    city VARCHAR(100),
+    referred_by VARCHAR(100),
+    group_name VARCHAR(100),
+    fellowship VARCHAR(100),
+    language VARCHAR(100),
+    assignedTo VARCHAR(100),
+    status VARCHAR(100),
+    callDate DATE,
+    remarks VARCHAR(100),
+    reassignedTo VARCHAR(100)
+
+
+);
+
+Create assignment and reassignment logic as well => DOne
+Pagination and Filters => Done
+
+
+
+
+CREATE TABLE follow_up_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mobile VARCHAR(100) NOT NULL,
+    follow_up_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(100) NOT NULL,             -- e.g. "No Response", "Interested", "Negative", etc.
+    remarks TEXT,                             -- any notes from the telecaller
+    next_follow_up_date DATE,                 -- if a retry is planned
+    followed_up_by VARCHAR(100),              -- username or ID of the employee
+    
+    FOREIGN KEY (mobile) REFERENCES telecaller_sm(mobile) ON DELETE CASCADE
+);
+
+
+
+CREATE TABLE word_session (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mobile VARCHAR(20) NOT NULL,
+    session_id INT NOT NULL, -- FK to master table
+    session_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('Scheduled', 'Completed', 'Missed', 'Cancelled') DEFAULT 'Scheduled',
+    evangelist VARCHAR(100),
+    participant VARCHAR(100),
+    wgroup VARCHAR(100),
+    language VARCHAR(50),
+    remark TEXT,
+    feedback TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (mobile) REFERENCES candidate(mobile),
+    FOREIGN KEY (session_id) REFERENCES word_session_master(session_id)
+);
+
+
+CREATE TABLE word_session_master (
+    session_id INT PRIMARY KEY, -- 1 to 5
+    session_name VARCHAR(100) NOT NULL,
+    description TEXT
+);
+
+
+INSERT INTO word_session_master (session_id, session_name, description) VALUES
+(1, 'SALVATION', 'Overview of the purpose of Salvation'),
+(2, '2ND COMING', 'Understanding about second coming of Jesus Christ.'),
+(3, 'Appa', 'Learning about God the Father and his coming.'),
+(4, 'Church', 'Related to Church'),
+(5, 'Amma', 'Amma Topic.');
+
+
+What does this mean =>  FOREIGN KEY (mobile) REFERENCES candidate(mobile) ON DELETE CASCADE,
+    FOREIGN KEY (session_id) REFERENCES word_session_master(session_id) ON DELETE SET NULL
+
+
+
+CREATE TABLE word_sharing_approval (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mobile VARCHAR(20) NOT NULL,
+    candidateName VARCHAR(100) NOT NULL,
+    assigned_by VARCHAR(100) NOT NULL,
+    assigned_to VARCHAR(100) NOT NULL,
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    remarks TEXT,
+    language VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    -- ✅ Prevents multiple "Pending" requests to same person for same mobile
+    UNIQUE KEY unique_pending_assignment (mobile, assigned_to, status)
+);
+
+Create Approve Word sharing link in evangelist screen => Done
+Now Evangelist has to approve word sharing request =>> Done
+After approval update in telecaller_sm table reassignedTo column =>> Done
+Create My word sharing link in evangelist screen => Done
+Display candidate cards after clicking word sharing links => Done
+Create My Preference link to set myself as Evangelist, Telecaller or Both => Done
+
+If i get a new candidate and i want to do word sharing that should be possible => TBD
+Create assignment logic for data entry operator =>>> Done
+Create My Preference logic to set myself as Evangelist, Telecaller or Both => Done
+Create new roles like Sathvartha_org, panel member, local_organizer => DONE
+Create Add New Home missionEvent icon for Event leader => Done
+Create Add New Online sathvartha Event icon for Event leader => Done
+create table for sathvartha => Done
+Create form for Event registration =>>> IN PROGRESS
+Create validatons on form and add back button =>>>> IN PROGRESS
+Create form for Home mission registration =>>> Done
+Also we should be able to edit the event =>>> Done
+After approving evangelist in system, email should go to evangelist with user name and password to login in system =>> TBD
+Create Sathvartha Event Management Link for Sathvartha organizer =>> Done
+After clicking on link he should all events as cards =>> Done
+After clicking on any event he should see read only mode =>> TBD
+After creating a new event Brenda chechi who is management user should be able to see all events as View all events link => TBD
+After clicking on event she should be able to update fields such as Sath speaker name, Vmix operator, choir member, keyboard operator, monitor, food coupons (lunch tea, dinner). It should be a text field => TBD
+
+Appointment App link should be visible by event leader => Done
+
+after clicking on appt link it should have four tabs => Candidates, Appointments,Sathvartha Ready, Attendence Fellowship => Done
+Create appointments vie =>Done
+Save appointment => Done
+After saving redirect to existing view => Done
+Edit appointment => Done
+on save form disable fields which event leader is not authorized to fill => Done
+show panel member only his fields for edit => Done
+show caring member only his fields for edit => Done
+show local organizer only his fields for edit => Done
+then create Appointments view => Done
+then create Sathvartha Ready view => Done
+then create Attendence Fellowship view => Done
+
+French mobile > bug > to be fixed => Done
+
+Create candidates view screen => TBD
+
+
+
+
+
+CREATE TABLE sathvartha_events ( 
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event_name VARCHAR(255) NOT NULL UNIQUE,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    main_language VARCHAR(100) NOT NULL,
+    translation_language VARCHAR(100),
+    event_organizer VARCHAR(255),
+    local_organizer VARCHAR(255),
+    event_link VARCHAR(255),
+    notes TEXT,
+    created_by VARCHAR(100) NOT NULL,
+    updated_by VARCHAR(100),
+
+    -- ✅ New Columns
+    total_attended INT DEFAULT 0,
+    positive_count INT DEFAULT 0,
+    attendance_report VARCHAR(255), -- Store uploaded Excel file path or filename
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_start_date ON sathvartha_events(start_date);
+CREATE INDEX idx_main_language ON sathvartha_events(main_language);
+
+
+
+
+CREATE TABLE appointments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    candidate_mobile VARCHAR(255) NOT NULL,
+    event_name VARCHAR(255) NOT NULL,  -- changed from event_id to event_name
+
+    appointment_datetime_ist DATETIME NOT NULL,
+    appointment_datetime_candidate_zone DATETIME NOT NULL,
+
+    candidate_country VARCHAR(100),
+    place VARCHAR(100),
+    class_status VARCHAR(100),
+
+    sathvartha_organizer_name VARCHAR(255),
+    panel_member_name VARCHAR(255),
+    caring_team_member_name VARCHAR(255),
+    local_organizer_name VARCHAR(255),
+
+    google_meet_status VARCHAR(100),
+    faith_status VARCHAR(100),
+    sathvartha_ready_status VARCHAR(100),
+    fellowship_status VARCHAR(100),
+
+    evangelist_feedback TEXT,
+    panel_feedback TEXT,
+    local_organizer_feedback TEXT,
+    final_feedback TEXT,
+    sathvartha_attendance_status VARCHAR(100),
+    sathvartha_feedback TEXT,
+
+    caring_google_meet_status VARCHAR(100),
+    caring_status VARCHAR(100),
+    travel_status VARCHAR(10),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    transport_required VARCHAR(100),
+    caring_google_meet_date DATETIME NOT NULL,
+    event_name_hs VARCHAR(255) NOT NULL,  -- changed from event_id to event_name
+
+    FOREIGN KEY (candidate_mobile) REFERENCES candidate(mobile) ON DELETE CASCADE,
+    FOREIGN KEY (event_name) REFERENCES sathvartha_events(event_name) ON DELETE CASCADE,
+    FOREIGN KEY (sathvartha_organizer_name) REFERENCES evangelist(evngName),
+    FOREIGN KEY (panel_member_name) REFERENCES evangelist(evngName),
+    FOREIGN KEY (caring_team_member_name) REFERENCES evangelist(evngName),
+    FOREIGN KEY (local_organizer_name) REFERENCES evangelist(evngName)
+);
+
+
+DONT FORGET to ADD INDEX on Evangelist table or else the above table will not work
+
+
+ALTER TABLE evangelist ADD INDEX idx_evngName (evngName);
+
+
+CREATE TABLE home_mission_events ( 
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event_name VARCHAR(255) NOT NULL UNIQUE,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    main_language VARCHAR(100) NOT NULL,
+    translation_language VARCHAR(100),
+    event_organizer VARCHAR(255),
+    local_organizer VARCHAR(255),
+    event_link VARCHAR(255),
+    notes TEXT,
+    created_by VARCHAR(100) NOT NULL,
+    updated_by VARCHAR(100),
+
+    -- ✅ New Columns
+    total_attended INT DEFAULT 0,
+    positive_count INT DEFAULT 0,
+    attendance_report VARCHAR(255), -- Store uploaded Excel file path or filename
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+Alter evangelist table set preference column varchar (255)
+
+
+
+
+Show counts in drop down in assignment screen =>> Done
+Develop view for Sathvartha organizer =>>> Done
+
+CREATE TABLE event_extra_details (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event_name VARCHAR(255) NOT NULL UNIQUE,
+
+   speaker_name VARCHAR(255),
+    vmix_operator VARCHAR(255),
+    choir_members TEXT, -- to allow multiple names comma separated
+    keyboard_operator VARCHAR(255),
+    monitor VARCHAR(255),
+    food_coupons TEXT, -- textarea in form
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (event_name) REFERENCES sathvartha_events(event_name) ON DELETE CASCADE
+);
+
+
+
+
+Error comes if we reassign again after reassigned user approves =>> To check
+Add Edit functionality to add remark of word session=> Done
+After reassignment immediately display reassignment history => Done
+We should not be able to change the language in word sharing =>> Done
+when we register new candidate from tab then aftersaving /savecandidate view should immediately show it =>>> Done
+Edit task status should extend to update country language and city as well =>> Done
+Streaming class Bug mob 111 =>>> Done
+Edit remark of session for colleague =>>> Done
+On my Tasks screen when evangelist registers candidate with different country then we need to update telecallers_sm table with new country => TBD 
+
+
+Add organizesathvartha event under SathvarthOrganizer = > Done
+Add feedback to be added by evangelist in appointment form =>>> TBD
+Add assignee drop down > TBD
+whether more class to be streamed =>>> Yes or No
+
+
+CREATE TABLE evangelist_languages (
+    email VARCHAR(255),
+    language VARCHAR(100),
+    active TINYINT(1) DEFAULT 1,
+    PRIMARY KEY (email, language),
+    FOREIGN KEY (email) REFERENCES evangelist(email)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

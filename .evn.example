@@ -1,3 +1,4 @@
 DB_DSN = mysql:host=localhost;port=3306;dbname=u778835997_gow1
 DB_USER = root
 DB_PASSWORD = root
+//Epam@1990 //u778835997_gow2 // new test server
