@@ -3174,6 +3174,8 @@ ORDER BY
                 (:mobile, :candidateName,:assigned_by, :assigned_to, :status,:remarks, :language, :created_at, :updated_at)
             ");
 
+        $now = date('Y-m-d H:i:s'); // <-- define current datetime here
+
         $stmt->bindParam(':mobile', $mobile);
         $stmt->bindParam(':candidateName', $candidate);
         $stmt->bindParam(':assigned_by', $assignedBy);
