@@ -6,6 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        .back-btn {
+            background: #6c757d;    /* Gray background */
+            color: #fff;
+            padding: 0.5em 1em;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+
         body {
             font-family: 'Inter', Arial, sans-serif;
             background: #f4f6f9;
@@ -98,7 +115,7 @@
 <div class="container">
 
     <div class="button-group">
-        <button type="button" class="back-button" onclick="window.location.href='/evngDashboard1'">Back</button>
+        <button type="button" class="btn back-btn" onclick="window.location.href='/getWordSessionsApproved'">← Back</button>
     </div>
     <div class="header">
         <div class="header-left">
@@ -123,8 +140,8 @@
                 <th>Status</th>
                 <th>Participant</th>
                 <th>Language</th>
-                <th>Action</th>
                 <th>Remark</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -149,11 +166,16 @@
                 <label for="sessionName">Select Session</label>
                 <select id="sessionName" name="sessionName" required>
                     <option value="">-- Select Session --</option>
-                    <option value="1">Session 1: SALVATION</option>
-                    <option value="2">Session 2: 2ND COMING</option>
-                    <option value="3">Session 3: Appa</option>
-                    <option value="4">Session 4: Church</option>
-                    <option value="5">Session 5: Amma</option>
+                    <option value="1">Session 1: Salvation, incl plan and 1st coming</option>
+                    <option value="2">Session 2: God the Father</option>
+                    <option value="3">Session 3: Second coming incl Signs of Times</option>
+                    <option value="4">Session 4: He has come, new name</option>
+                    <option value="5">Session 5: Messenger sent by God</option>
+                    <option value="6">Session 6: Righteousness</option>
+                    <option value="7">Session 7: Zion, true Zion</option>
+                    <option value="8">Session 8: Holy Mother</option>
+                    <option value="9">Session 9: Church</option>
+                    <option value="10">Session 10: Good News Retreat</option>
                 </select>
             </div>
 

@@ -1052,6 +1052,20 @@ class AuthController extends Controller
             echo("No data found for this mobile.");
 
         }
+
+$sessionNames = [
+    1 => "Session 1: Salvation, incl plan and 1st coming",
+    2 => "Session 2: God the Father",
+    3 => "Session 3: Second coming incl Signs of Times",
+    4 => "Session 4: He has come, new name",
+    5 => "Session 5: Messenger sent by God",
+    6 => "Session 6: Righteousness",
+    7 => "Session 7: Zion, true Zion",
+    8 => "Session 8: Holy Mother",
+    9 => "Session 9: Church",
+    10 => "Session 10: Good News Retreat"
+];
+
         $this->setLayout('main1');
         // Render the view and pass the $task
         return $this->render('viewTaskDetails', [
@@ -1060,7 +1074,8 @@ class AuthController extends Controller
             'language' => $language,
             'mobile' => $mobile,
             'country' => $country,
-            'evangelists' => $evangelists // ✅ Pass here
+            'evangelists' => $evangelists, // ✅ Pass here
+            'sessionNames' => json_encode($sessionNames) // Pass as JSON string
         ]);
 
     }
@@ -1578,8 +1593,10 @@ class AuthController extends Controller
             return;
         }
 
+        $id1= Application::$app->session->get('idxtx');
+
         // Perform the DB update
-        $updated = CandidateModel::updateChangedAppointmentFields($candidateMobile, $filteredData, true);
+        $updated = CandidateModel::updateChangedAppointmentFields($candidateMobile, $filteredData, true, $id1);
 
         // Send response
         if ($updated) {
@@ -1713,6 +1730,10 @@ class AuthController extends Controller
     public function editAppointmentPM(Request $request, Response $response)
     {
         $id = $_GET['id'] ?? null;
+
+
+
+
         $appointments = CandidateModel::getAppointmentsById($id);
 
 
@@ -1772,7 +1793,7 @@ class AuthController extends Controller
     {
         $id = $_GET['id'] ?? null;
         $appointments = CandidateModel::getAppointmentsById($id);
-
+        Application::$app->session->set('idxtx', $id);
 
         if (!$appointments || empty($appointments)) {
             die("No appointment found.");

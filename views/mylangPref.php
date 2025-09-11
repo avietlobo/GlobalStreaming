@@ -27,16 +27,62 @@ $error = $error ?? '';
         .current { margin-top: 16px; padding: 12px; background: #eef6ff; border-radius: 6px; }
         button { background: #007bff; color: #fff; border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; }
         button:hover { background: #0056b3; }
+        .header-wrapper {
+            display: flex;
+            justify-content: center;  /* Center header content */
+            background: #f8f9fa;
+            padding: 15px 20px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 300px;              /* Fixed width container */
+        }
+
+        .logout-btn, .back-btn {
+            font-size: 0.95em;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            min-width: 100px;
+            transition: background 0.3s ease;
+        }
+
+        .logout-btn {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .logout-btn:hover {
+            background: #0056b3;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: #fff;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+
     </style>
 </head>
 <body>
-<div class="header">
-    <a class="nav-link" href="#" id="logout-link">
-        <button type="button" class="btn btn-primary">Logout</button>
-    </a>
+<div class="header-wrapper">
+    <div class="header-buttons">
+        <button type="button" class="btn back-btn" onclick="window.location.href='/evngDashboard1'">← Back</button>
+        <a class="nav-link" href="#" id="logout-link">
+            <button type="button" class="btn btn-primary">Logout</button>
+        </a>    </div>
 </div>
 
-<a class="back-link" href="/evngDashboard1">← Back </a>
 
 <div class="box">
 

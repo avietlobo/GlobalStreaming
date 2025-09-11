@@ -585,7 +585,7 @@ $disableOtherTabs = !$alreadyRegistered; // disable if candidate not registered
         <button class="tab-btn" onclick="openTab('tab1')">Register Candidate since Positive</button>
         <button class="tab-btn" onclick="openTab1('tab2')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Streaming Classes</button>
         <button class="tab-btn" onclick="openTab1('tab3')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Word sharing</button>
-        <button class="tab-btn" onclick="openTab('tab4')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Home mission</button>
+        <button class="tab-btn" onclick="openTab1('tab4')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Home mission</button>
         <button class="tab-btn" onclick="openTab('tab5')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Online Sathvartha</button>
     </div>
 
@@ -983,11 +983,16 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                     <label for="sessionName">Select Session</label>
                     <select id="sessionName" name="sessionName" required>
                         <option value="">-- Select Session --</option>
-                        <option value="1">Session 1: SALVATION</option>
-                        <option value="2">Session 2: 2ND COMING</option>
-                        <option value="3">Session 3: Appa</option>
-                        <option value="4">Session 4: Church</option>
-                        <option value="5">Session 5: Amma</option>
+                        <option value="1">Session 1: Salvation, incl plan and 1st coming</option>
+                        <option value="2">Session 2: God the Father</option>
+                        <option value="3">Session 3: Second coming incl Signs of Times</option>
+                        <option value="4">Session 4: He has come, new name</option>
+                        <option value="5">Session 5: Messenger sent by God</option>
+                        <option value="6">Session 6: Righteousness</option>
+                        <option value="7">Session 7: Zion, true Zion</option>
+                        <option value="8">Session 8: Holy Mother</option>
+                        <option value="9">Session 9: Church</option>
+                        <option value="10">Session 10: Good News Retreat</option>
                     </select>
 
                     <label for="sessionDate">Select Date & Time</label>
@@ -1221,6 +1226,11 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                     console.error(error);
                 });
         }
+
+
+
+
+
         // ✅ Tab 3 (Word Sharing Sessions)
         if (tabId === 'tab3' && !selectedTab.dataset.loaded) {
 
@@ -1312,6 +1322,23 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
     }
 
 </script>
+<script>
+    const sessionNames = {
+        1: "Salvation, incl plan and 1st coming",
+        2: "God the Father",
+        3: "Second coming incl Signs of Times",
+        4: "He has come, new name",
+        5: "Messenger sent by God",
+        6: "Righteousness",
+        7: "Zion, true Zion",
+        8: "Holy Mother",
+        9: "Church",
+        10: "Good News Retreat"
+    };
+</script>
+
+
+
 
 <script>
     function openTab1(tabId) {
@@ -1320,6 +1347,75 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
 
         const selectedTab = document.getElementById(tabId);
         selectedTab.style.display = 'block';
+
+        if (tabId === 'tab4' && !selectedTab.dataset.loaded) {
+            selectedTab.innerHTML = "<p>🔄 Loading Home Mission details...</p>";
+
+            const mobile = encodeURIComponent(candidateMobile);
+            const url = `/getHomeMission?mobile=${mobile}`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to load Home Mission details");
+                    return response.json();   // 👈 parse JSON, not text
+                })
+                .then(data => {
+                    if (data.success && Array.isArray(data.homeMission)) {
+                        if (data.homeMission.length === 0) {
+                            selectedTab.innerHTML = "<p>📭 No Home Mission details found.</p>";
+                        } else {
+                            let html = `
+                        <h3>🏠 Home Mission Details</h3>
+                        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse; width:100%; text-align:left;">
+                            <thead style="background:#f2f2f2;">
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Date (IST)</th>
+                                    <th>Country</th>
+                                    <th>Place</th>
+                                    <th>Class Status</th>
+                                    <th>Organizer</th>
+                                    <th>Panel Member</th>
+                                    <th>Caring Member</th>
+                                    <th>Faith</th>
+                                    <th>Fellowship</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                            data.homeMission.forEach(item => {
+                                html += `
+                            <tr>
+                                <td>${item.event_name_hs}</td>
+                                <td>${item.appointment_datetime_ist}</td>
+                                <td>${item.candidate_country}</td>
+                                <td>${item.place}</td>
+                                <td>${item.class_status}</td>
+                                <td>${item.sathvartha_organizer_name}</td>
+                                <td>${item.panel_member_name}</td>
+                                <td>${item.caring_team_member_name}</td>
+                                <td>${item.faith_status}</td>
+                                <td>${item.fellowship_status}</td>
+                            </tr>
+                        `;
+                            });
+
+                            html += `</tbody></table>`;
+                            selectedTab.innerHTML = html;
+                        }
+                    } else {
+                        selectedTab.innerHTML = "<p style='color:red;'>❌ Failed to load Home Mission details.</p>";
+                    }
+
+                    selectedTab.dataset.loaded = "true";
+                })
+                .catch(error => {
+                    console.error(error);
+                    selectedTab.innerHTML = "<p style='color:red;'>❌ Error loading Home Mission details.</p>";
+                });
+        }
+
 
         // 🔵 Streaming Classes Tab
         if (tabId === 'tab2' && !selectedTab.dataset.loaded) {
@@ -1351,6 +1447,9 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
 
         // ✅ Tab 3 (Word Sharing Sessions)
         if (tabId === 'tab3' && !selectedTab.dataset.loaded) {
+
+
+
             const sessionContainer = document.getElementById("savedSessions");
             sessionContainer.innerHTML = "<p>🔄 Loading saved sessions...</p>";
 
@@ -1363,6 +1462,7 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                             sessionContainer.innerHTML = "<p>📭 No sessions found.</p>";
                         } else {
                             data.sessions.forEach(session => {
+                                const sessionName = sessionNames[session.session_id] || 'Unknown Session';
                                 const div = document.createElement("div");
                                 div.className = "form-group";div.innerHTML = `
     <div style="
@@ -1375,6 +1475,7 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
     ">
         <p><strong>📖 ID ${session.id}</strong></p>
         <p><strong>📖 Session ${session.session_id}</strong></p>
+           <p><strong>📖 Session Name:</strong> ${sessionName}</p>
         <p><strong>📅 Date:</strong> ${session.session_date}</p>
         <p><strong>📌 Status:</strong> ${session.status}</p>
         <p><strong>📌 Assigned To:</strong> ${session.evangelist}</p>

@@ -1733,6 +1733,15 @@ GROUP BY
         return $groups;
     }
 
+    public static function getHomeMissionDetailForCandidate($mobile)
+    {
+        $pdo = Application::$app->db->pdo;
+        $stmt = $pdo->prepare("SELECT * FROM appointments where candidate_mobile = :mobile");
+        $stmt->bindParam(':mobile', $mobile);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public static function getAllAppointmentsSR()
     {
         $pdo = Application::$app->db->pdo;
@@ -1896,7 +1905,7 @@ GROUP BY
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public static function updateChangedAppointmentFields($candidateMobile, $filteredData,$debug = false)
+    public static function updateChangedAppointmentFields($candidateMobile, $filteredData,$debug = false,$id1)
     {
         $pdo = Application::$app->db->pdo;
 
@@ -1919,9 +1928,16 @@ GROUP BY
 
         // Add candidate mobile for WHERE clause
         $params[] = $candidateMobile;
+        $params[] = $id1;
 
         // Final SQL
-        $sql = "UPDATE appointments SET " . implode(', ', $fieldsToUpdate) . " WHERE candidate_mobile = ?";
+//        $sql = "UPDATE appointments SET " . implode(', ', $fieldsToUpdate) . " WHERE candidate_mobile = ?";
+
+        // Final SQL
+        $sql = "UPDATE appointments 
+            SET " . implode(', ', $fieldsToUpdate) . " 
+            WHERE candidate_mobile = ? AND id = ?";
+
 
         if ($debug) {
             error_log("DEBUG SQL: $sql");
@@ -3093,11 +3109,16 @@ ORDER BY
             language,
             remark,
             CASE session_id
-                WHEN 1 THEN 'Session 1: SALVATION'
-                WHEN 2 THEN 'Session 2: 2ND COMING'
-                WHEN 3 THEN 'Session 3: Appa'
-                WHEN 4 THEN 'Session 4: Church'
-                WHEN 5 THEN 'Session 5: Amma'
+                WHEN 1 THEN 'Session 1: Salvation, incl plan and 1st coming'
+                WHEN 2 THEN 'Session 2: God the Father'
+                WHEN 3 THEN 'Session 3: Second coming incl Signs of Times'
+                WHEN 4 THEN 'Session 4: He has come, new name'
+                WHEN 5 THEN 'Session 5: Messenger sent by God'
+           WHEN 6 THEN 'Session 6: Righteousness'
+           WHEN 7 THEN 'Session 7: Zion, true Zion'
+           WHEN 8 THEN 'Session 8: Holy Mother'
+           WHEN 9 THEN 'Session 9: Church'
+           WHEN 10 THEN 'Session 10: Good News Retreat'
                 ELSE CONCAT('Session ', session_id)
             END AS session_name
         FROM word_session 
