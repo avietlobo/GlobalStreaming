@@ -162,6 +162,12 @@
         <button type="button" class="back-button" onclick="window.location.href='/evngDashboard1'">Back</button>
     </div>
 
+    <?php if (isset($errorMessage) && $errorMessage): ?>
+        <div class="status-box" style="background-color: #fed7d7; border-color: #feb2b2; color: #742a2a;">
+            ❌ <?= htmlspecialchars($errorMessage) ?>
+        </div>
+    <?php endif; ?>
+
     <div class="upload-form">
         <h2>📤 Upload CSV File</h2>
         <form action="/process_upload" method="post" enctype="multipart/form-data">

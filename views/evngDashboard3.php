@@ -229,6 +229,124 @@ use app\models\EvangelistModel;
             align-items: center;
             gap: 8px; /* Adjust spacing between buttons */
         }
+        .hamburger-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hamburger-icon {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: #333;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .hamburger-icon:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-radius: 6px;
+            min-width: 180px;
+            z-index: 100;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: none;
+            font-size: 0.95rem;
+            color: #333;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.15s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 600px) {
+            .dropdown-item {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+        }
+
+        .hamburger-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hamburger-icon {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: #333;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .hamburger-icon:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-radius: 6px;
+            min-width: 180px;
+            z-index: 100;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: none;
+            font-size: 0.95rem;
+            color: #333;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.15s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 600px) {
+            .dropdown-item {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -337,50 +455,88 @@ $designation = $dashboardData[0]->designation;
 
 
 <?php if ($designation == 'Evangelist'): ?>
-    <div class="icon-button-group">
-        <button class="icon-button" title="My Task" onclick="window.location.href='viewMyTasks';">
-            <i class="fas fa-tasks"></i>
-            My Task
+    <div class="hamburger-menu">
+        <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu">
+            <i class="fas fa-bars"></i>
         </button>
-        <button class="icon-button" title="My Preference" onclick="window.location.href='myPref';">
-            <i class="fas fa-sliders-h"></i>
-            Preference
-        </button>
-        <button class="icon-button" title="My Word sessions" onclick="window.location.href='getWordSessionsApproved';">
-            <i class="fas fa-book-open"></i>
-            Word
-        </button>
-        <button class="icon-button" title="Approve Word sessions" onclick="window.location.href='viewAssignedWordSessions';">
-            ✅ Approve Word Sessions
-        </button>
-        <button class="icon-button" title="My Preference" onclick="window.location.href='mylangPref';">
-            <i class="fas fa-sliders-h"></i>
-            Word Session Language Preference
-        </button>
+
+        <div class="dropdown-menu" id="menuDropdown">
+            <button class="dropdown-item" onclick="window.location.href='viewMyTasks';">
+                <i class="fas fa-tasks"></i> My Task
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='myPref';">
+                <i class="fas fa-sliders-h"></i> My Preference
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='getWordSessionsApproved';">
+                <i class="fas fa-book-open"></i> Word Sessions
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';">
+                <i class="fas fa-check-circle"></i> Approve Sessions
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='mylangPref';">
+                <i class="fas fa-language"></i> Language Pref
+            </button>
+        </div>
     </div>
 <?php endif; ?>
 
 <div class="icon-button-group search-icons">
-    <?php if ($designation == 'Evng Coordinator' ): ?>
-        <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
-            <i class="fas fa-file-alt"></i>
-        </button>
-        <button class="icon-button" title="Evangelist Registration" onclick="window.location.href='/evngRegistration';">
-            <i class="fas fa-user-plus"></i>
-        </button>
-        <button class="icon-button" title="View Submitted Registrations" onclick="window.location.href='/viewRegistration';">
-            <i class="fas fa-list"></i>
-        </button>
-        <button class="icon-button" title="View all Registrations" onclick="window.location.href='/viewAllRegistrations';">
-            <i class="fas fa-list"></i>
-        </button>
-        <button class="icon-button seven-day-badge" title="7D Approval" onclick="window.location.href='view7DApproval';">
-            7D ✓
-        </button>
-        <button class="icon-button" title="My Preference" onclick="window.location.href='myPref';">
-            <i class="fas fa-sliders-h"></i>
-            Preference
-        </button>
+    <?php if ($designation == 'Evng Coordinator'): ?>
+        <div class="hamburger-menu">
+            <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="dropdown-menu" id="menuDropdown">
+                <button class="dropdown-item" onclick="window.location.href='/reportManagement';">
+                    <i class="fas fa-file-alt"></i> View Report
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='/evngRegistration';">
+                    <i class="fas fa-user-plus"></i> Evangelist Registration
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='/viewRegistration';">
+                    <i class="fas fa-list"></i> View Submitted Registrations
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='/viewAllRegistrations';">
+                    <i class="fas fa-list"></i> View all Registrations
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='myPref';">
+                    <i class="fas fa-sliders-h"></i> My Preference
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='view7DApproval';">
+                    <i class="fas fa-check-circle"></i> 7D Approval
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='view7DApproved';">
+                    <i class="fas fa-list-alt"></i> 7D Approved Candidates
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='viewMyTasks';">
+                    <i class="fas fa-tasks"></i> My Task
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='getWordSessionsApproved';">
+                    <i class="fas fa-book-open"></i> My Word Sessions
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';">
+                    <i class="fas fa-check-circle"></i> Approve Word Sessions
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='mylangPref';">
+                    <i class="fas fa-language"></i> Word Session Language Preference
+                </button>
+            </div>
+        </div>
     <?php endif; ?>
 </div>
 
@@ -622,6 +778,21 @@ $designation = $dashboardData[0]->designation;
 
         window.location.href = `/getClassDetails?username=${evngName}&candidate=${participantName}&mobile=${encodedMobile}&index=${index}`;
     }
+</script>
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menuDropdown');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Hide dropdown when clicking outside
+    window.addEventListener('click', function(e) {
+        const menu = document.getElementById('menuDropdown');
+        const button = document.querySelector('.hamburger-icon');
+        if (!menu.contains(e.target) && !button.contains(e.target)) {
+            menu.style.display = 'none';
+        }
+    });
 </script>
 </body>
 </html>

@@ -229,6 +229,7 @@ $app-> router->post('/updateSession', [SiteController::class, 'updateSession']);
 $app-> router->get('/getWordSessionsOfAssignedEvng', [SiteController::class, 'getWordSessionsOfAssignedEvng']);
 $app->router->get('/wordSessionDetail', [SiteController::class, 'wordSessionDetail']);
 $app->router->get('/getHomeMission', [SiteController::class, 'getHomeMission']);
+$app->router->get('/getOnlineSathvartha', [SiteController::class, 'getOnlineSathvartha']);
 
 $app-> router->get('/getWordSessionsApproved', [SiteController::class, 'getWordSessionsApproved']);
 $app-> router->get('/viewAssignedWordSessions', [SiteController::class, 'viewAssignedWordSessions']);

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -183,6 +183,7 @@
                 <th>Class Link</th>
                 <th>Status</th>
                 <th>Remark</th>
+                <th>Login attempts</th>
                 <th>Mobile</th>
                 <th>Media Type</th>
             </tr>
@@ -202,6 +203,7 @@
                         data-username="<?= htmlspecialchars($user->participant) ?>"
                         data-password="<?= htmlspecialchars($user->password) ?>"
                         data-remark="<?= htmlspecialchars($user->remark) ?>"
+                        data-login="<?= htmlspecialchars($user->login_attempts) ?>"
                         data-mobile="<?= htmlspecialchars($user->mobile) ?>"
                         data-mediaType="<?= htmlspecialchars($user->mediaType) ?>">
                         <td class="fixed-column"><?= htmlspecialchars($user->classFrom) ?></td>
@@ -215,6 +217,7 @@
                         </td>
                         <td><?= htmlspecialchars($user->status) ?></td>
                         <td><?= htmlspecialchars($user->remark) ?></td>
+                        <td><?= 3 - (int)$user->login_attempts ?></td>
                         <td><?= htmlspecialchars($user->mobile) ?></td>
                         <td><?= htmlspecialchars($user->mediaType) ?></td>
                     </tr>

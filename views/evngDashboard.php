@@ -42,38 +42,101 @@ use app\models\EvangelistModel;
             box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Custom focus outline */
         }
 
-        .icon-button-group {
+        .floating-icon-bar {
             display: flex;
-            gap: 6px; /* less gap between buttons */
-            flex-wrap: wrap;
+            gap: 8px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ffffff;
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+
+        .icon-button-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .icon-toolbar {
+            display: flex;
+            gap: 12px;
+            padding: 8px;
+            justify-content: center;
         }
 
         .icon-button {
+            width: 40px;
+            height: 40px;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            background-color: #4CAF50;
-            color: white;
+            justify-content: center;
+            font-size: 1.3rem;
+            background: none;
+            color: #444;
             border: none;
-            padding: 4px 8px; /* reduced padding for compact size */
-            font-size: 13px; /* smaller text */
-            border-radius: 4px;
+            border-radius: 50%;
             cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-        }
-
-        .icon-button i {
-            font-size: 14px; /* smaller icon */
+            position: relative;
+            transition: background 0.15s ease;
         }
 
         .icon-button:hover {
-            background-color: #45a049;
-            transform: translateY(-1px);
+            background-color: rgba(0, 0, 0, 0.1);
         }
 
         .icon-button:active {
-            transform: translateY(0);
+            background-color: rgba(0, 0, 0, 0.2);
         }
+
+        /* Clean Tooltip on desktop hover */
+        .icon-button[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 5px 8px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            white-space: nowrap;
+            opacity: 1;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .icon-button[data-tooltip]::after {
+            content: '';
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+
+        @media (max-width: 600px) {
+            .icon-toolbar {
+                gap: 8px;
+            }
+
+            .icon-button {
+                width: 36px;
+                height: 36px;
+                font-size: 1.1rem;
+            }
+
+            .icon-button[data-tooltip]::after {
+                display: none;
+            }
+        }
+
 
         body {
             margin: 0;
@@ -271,6 +334,65 @@ use app\models\EvangelistModel;
             background-color: #3e8e41; /* Pressed Effect */
         }
 
+        .hamburger-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hamburger-icon {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: #333;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .hamburger-icon:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-radius: 6px;
+            min-width: 180px;
+            z-index: 100;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: none;
+            font-size: 0.95rem;
+            color: #333;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.15s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 600px) {
+            .dropdown-item {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+        }
+
 
 
     </style>
@@ -285,28 +407,38 @@ $designation = $dashboardData[0]->designation;
 <!--// use this code if you don't want to use icons-->
 
 <?php if ($designation == 'Evangelist'): ?>
-    <div class="icon-button-group">
-        <button class="icon-button" title="My Task" onclick="window.location.href='viewMyTasks';">
-            <i class="fas fa-tasks"></i>
-            My Task
+    <div class="hamburger-menu">
+        <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu">
+            <i class="fas fa-bars"></i>
         </button>
-        <button class="icon-button" title="My Preference" onclick="window.location.href='myPref';">
-            <i class="fas fa-sliders-h"></i>
-            Preference
-        </button>
-        <button class="icon-button" title="My Word sessions" onclick="window.location.href='getWordSessionsApproved';">
-            <i class="fas fa-book-open"></i>
-            Word
-        </button>
-        <button class="icon-button" title="Approve Word sessions" onclick="window.location.href='viewAssignedWordSessions';">
-            ✅ Approve Word Sessions
-        </button>
-        <button class="icon-button" title="My Preference" onclick="window.location.href='mylangPref';">
-            <i class="fas fa-sliders-h"></i>
-            Word Session Language Preference
-        </button>
+
+        <div class="dropdown-menu" id="menuDropdown">
+            <button class="dropdown-item" onclick="window.location.href='viewMyTasks';">
+                <i class="fas fa-tasks"></i> My Task
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='myPref';">
+                <i class="fas fa-sliders-h"></i> My Preference
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='getWordSessionsApproved';">
+                <i class="fas fa-book-open"></i> Word Sessions
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';">
+                <i class="fas fa-check-circle"></i> Approve Sessions
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='mylangPref';">
+                <i class="fas fa-language"></i> Language Pref
+            </button>
+        </div>
     </div>
 <?php endif; ?>
+
+
+
+
 <!---->
 <!---->
 <?php //if ($designation !== 'Evangelist'): ?>
@@ -438,34 +570,61 @@ $designation = $dashboardData[0]->designation;
 
 
 <div class="icon-button-group search-icons">
-    <?php if ($designation == 'Evng Coordinator' ): ?>
-        <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
-            <i class="fas fa-file-alt"></i>
-        </button>
-        <button class="icon-button" title="Evangelist Registration" onclick="window.location.href='/evngRegistration';">
-            <i class="fas fa-user-plus"></i>
-        </button>
-        <button class="icon-button" title="View Submitted Registrations" onclick="window.location.href='/viewRegistration';">
-            <i class="fas fa-list"></i>
-        </button>
-        <button class="icon-button" title="View all Registrations" onclick="window.location.href='/viewAllRegistrations';">
-            <i class="fas fa-list"></i>
-        </button>
+    <?php if ($designation == 'Evng Coordinator'): ?>
+        <div class="hamburger-menu">
+            <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
 
-        <button class="icon-button" title="My Preference" onclick="window.location.href='myPref';">
-            <i class="fas fa-sliders-h"></i>
-            Preference
-        </button>
-        <button class="icon-button seven-day-badge" title="7D Approval" onclick="window.location.href='view7DApproval';">
-            7D ✓
-        </button>
-        <button class="icon-button seven-day-badge" title="7D Approved Candidates" onclick="window.location.href='view7DApproved';">
-            7D List
-        </button>
+            <div class="dropdown-menu" id="menuDropdown">
+                <button class="dropdown-item" onclick="window.location.href='/reportManagement';">
+                    <i class="fas fa-file-alt"></i> View Report
+                </button>
 
+                <button class="dropdown-item" onclick="window.location.href='/evngRegistration';">
+                    <i class="fas fa-user-plus"></i> Evangelist Registration
+                </button>
 
+                <button class="dropdown-item" onclick="window.location.href='/viewRegistration';">
+                    <i class="fas fa-list"></i> View Submitted Registrations
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='/viewAllRegistrations';">
+                    <i class="fas fa-list"></i> View all Registrations
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='myPref';">
+                    <i class="fas fa-sliders-h"></i> My Preference
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='view7DApproval';">
+                    <i class="fas fa-check-circle"></i> 7D Approval
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='view7DApproved';">
+                    <i class="fas fa-list-alt"></i> 7D Approved Candidates
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='viewMyTasks';">
+                    <i class="fas fa-tasks"></i> My Task
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='getWordSessionsApproved';">
+                    <i class="fas fa-book-open"></i> My Word Sessions
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';">
+                    <i class="fas fa-check-circle"></i> Approve Word Sessions
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='mylangPref';">
+                    <i class="fas fa-language"></i> Word Session Language Preference
+                </button>
+            </div>
+        </div>
     <?php endif; ?>
 </div>
+
 
 <div class="icon-button-group search-icons">
     <?php if ($designation == 'Management' ): ?>
@@ -769,6 +928,21 @@ $designation = $dashboardData[0]->designation;
 
         window.location.href = `/getClassDetails?username=${evngName}&candidate=${participantName}&mobile=${encodedMobile}&index=${index}`;
     }
+</script>
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menuDropdown');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Hide dropdown when clicking outside
+    window.addEventListener('click', function(e) {
+        const menu = document.getElementById('menuDropdown');
+        const button = document.querySelector('.hamburger-icon');
+        if (!menu.contains(e.target) && !button.contains(e.target)) {
+            menu.style.display = 'none';
+        }
+    });
 </script>
 </body>
 </html>

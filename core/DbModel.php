@@ -1733,10 +1733,20 @@ GROUP BY
         return $groups;
     }
 
+    public static function getOnlineSathvarthaForCandidate($mobile)
+    {
+        $pdo = Application::$app->db->pdo;
+        $stmt = $pdo->prepare("SELECT * FROM appointments where candidate_mobile = :mobile and event_name is not null");
+        $stmt->bindParam(':mobile', $mobile);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
     public static function getHomeMissionDetailForCandidate($mobile)
     {
         $pdo = Application::$app->db->pdo;
-        $stmt = $pdo->prepare("SELECT * FROM appointments where candidate_mobile = :mobile");
+        $stmt = $pdo->prepare("SELECT * FROM appointments where candidate_mobile = :mobile and event_name_hs is not null");
         $stmt->bindParam(':mobile', $mobile);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -2206,6 +2216,12 @@ GROUP BY language;";
             $params[] = "%" . $filters['status'] . "%";
         }
 
+        if (!empty($filters['mobile'])) {
+            $where[] = "d.mobile LIKE ?";
+            $params[] = "%" . $filters['mobile'] . "%";
+        }
+
+
 
         $whereSql = implode(' AND ', $where);
 
@@ -2282,6 +2298,12 @@ GROUP BY language;";
         if (!empty($filters['status'])) {
             $where[] = "t.status LIKE ?";
             $params[] = "%" . $filters['status'] . "%";
+        }
+
+        // ✅ New: Mobile filter
+        if (!empty($filters['mobile'])) {
+            $where[] = "d.mobile LIKE ?";
+            $params[] = "%" . $filters['mobile'] . "%";
         }
 
 
@@ -2843,6 +2865,16 @@ ORDER BY
             if ($stmt->fetchColumn() > 0) {
                 $skipped++;
                 file_put_contents($errorFile, implode(",", $row) . ",Mobile exists in DB\n", FILE_APPEND);
+                continue;
+            }
+
+            // Check if mobile exists in candidate table
+            $stmt2 = self::prepare("SELECT COUNT(*) FROM candidate WHERE mobile = :mobile");
+            $stmt2->bindValue(':mobile', $mobile);
+            $stmt2->execute();
+            if ($stmt2->fetchColumn() > 0) {
+                $skipped++;
+                file_put_contents($errorFile, implode(",", $row) . ",Mobile exists in candidate table\n", FILE_APPEND);
                 continue;
             }
 

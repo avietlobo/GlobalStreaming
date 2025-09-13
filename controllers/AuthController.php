@@ -748,64 +748,121 @@ class AuthController extends Controller
     }
 
 
+//    public function process_upload(Request $request, Response $response)
+//    {
+//
+//
+//
+//        $fileTmpPath = $_FILES['csv_file']['tmp_name'];
+//        $rows = array_map('str_getcsv', file($fileTmpPath));
+//        $header = array_map('trim', array_shift($rows));
+//        if (!$this->isValidCSVHeader($header)) {
+//            die("Invalid CSV header format.");
+//        }
+//
+//        if ($_FILES['csv_file']['error'] !== UPLOAD_ERR_OK) {
+//            die("Error uploading file.");
+//        }
+//
+//        $fileTmpPath = $_FILES['csv_file']['tmp_name'];
+//        $rows = array_map('str_getcsv', file($fileTmpPath));
+//        $header = array_map('trim', array_shift($rows));
+//
+//        if (!$this->isValidCSVHeader($header)) {
+//            die("Invalid CSV header format.");
+//        }
+//
+//        if (count($rows) < 1) {
+//            die("CSV file cannot have less than 1 row.");
+//        }
+//
+//        if (count($rows) > 1000) {
+//            die("CSV file cannot have more than 1000 rows.");
+//        }
+//
+//        $processId = $this->generateProcessId();
+//        $uploadTime = date('Y-m-d H:i:s');
+//        $status = 'Processing';
+//        $errorFile = "logs/{$processId}_errors.csv";
+//        $outputFile = "logs/{$processId}_output.csv";
+//
+//        if (!is_dir('logs')) {
+//            mkdir('logs', 0777, true);
+//        }
+//
+//        file_put_contents($errorFile, implode(",", $header) . ",error\n");
+//        file_put_contents($outputFile, implode(",", $header) . "\n");
+//
+//        $evngName = Application::$app->session->get('nameFinal');
+//        UploadProcessLogModel::uploadProcessId($processId, $evngName,$uploadTime, $status, $errorFile, $outputFile);
+//        DataBankModel::loadDataBank($rows,$header,$errorFile,$outputFile,$processId);
+//
+//        $allUploads = UploadProcessLogModel::getUploadsByUser($evngName);
+//        $this->setLayout('main1');
+//        return $this->render('process_upload', [
+//            'errorFilePath' => "logs/{$processId}_errors.csv",
+//            'outputFilePath' => "logs/{$processId}_output.csv",
+//            'processId' => $processId,
+//            'allUploads' => $allUploads
+//        ]);
+//    }
+
     public function process_upload(Request $request, Response $response)
     {
+        $errorMessage = null;
 
+        if (!isset($_FILES['csv_file']) || $_FILES['csv_file']['error'] !== UPLOAD_ERR_OK) {
+            $errorMessage = "Error uploading file.";
+        } else {
+            $fileTmpPath = $_FILES['csv_file']['tmp_name'];
+            $rows = array_map('str_getcsv', file($fileTmpPath));
+            $header = array_map('trim', array_shift($rows));
 
+            if (!$this->isValidCSVHeader($header)) {
+                $errorMessage = "Invalid CSV header format.";
+            } elseif (count($rows) < 1) {
+                $errorMessage = "CSV file must have at least 1 data row.";
+            } elseif (count($rows) > 1000) {
+                $errorMessage = "CSV file cannot have more than 1000 rows.";
+            } else {
+                $processId = $this->generateProcessId();
+                $uploadTime = date('Y-m-d H:i:s');
+                $status = 'Processing';
+                $errorFile = "logs/{$processId}_errors.csv";
+                $outputFile = "logs/{$processId}_output.csv";
 
-        $fileTmpPath = $_FILES['csv_file']['tmp_name'];
-        $rows = array_map('str_getcsv', file($fileTmpPath));
-        $header = array_map('trim', array_shift($rows));
-        if (!$this->isValidCSVHeader($header)) {
-            die("Invalid CSV header format.");
+                if (!is_dir('logs')) {
+                    mkdir('logs', 0777, true);
+                }
+
+                file_put_contents($errorFile, implode(",", $header) . ",error\n");
+                file_put_contents($outputFile, implode(",", $header) . "\n");
+
+                $evngName = Application::$app->session->get('nameFinal');
+                UploadProcessLogModel::uploadProcessId($processId, $evngName, $uploadTime, $status, $errorFile, $outputFile);
+                DataBankModel::loadDataBank($rows, $header, $errorFile, $outputFile, $processId);
+
+                $allUploads = UploadProcessLogModel::getUploadsByUser($evngName);
+                $this->setLayout('main1');
+
+                return $this->render('process_upload', [
+                    'errorMessage' => null,
+                    'processId' => $processId,
+                    'errorFilePath' => $errorFile,
+                    'outputFilePath' => $outputFile,
+                    'allUploads' => $allUploads
+                ]);
+            }
         }
 
-        if ($_FILES['csv_file']['error'] !== UPLOAD_ERR_OK) {
-            die("Error uploading file.");
-        }
-
-        $fileTmpPath = $_FILES['csv_file']['tmp_name'];
-        $rows = array_map('str_getcsv', file($fileTmpPath));
-        $header = array_map('trim', array_shift($rows));
-
-        if (!$this->isValidCSVHeader($header)) {
-            die("Invalid CSV header format.");
-        }
-
-        if (count($rows) < 1) {
-            die("CSV file cannot have less than 1 row.");
-        }
-
-        if (count($rows) > 1000) {
-            die("CSV file cannot have more than 1000 rows.");
-        }
-
-        $processId = $this->generateProcessId();
-        $uploadTime = date('Y-m-d H:i:s');
-        $status = 'Processing';
-        $errorFile = "logs/{$processId}_errors.csv";
-        $outputFile = "logs/{$processId}_output.csv";
-
-        if (!is_dir('logs')) {
-            mkdir('logs', 0777, true);
-        }
-
-        file_put_contents($errorFile, implode(",", $header) . ",error\n");
-        file_put_contents($outputFile, implode(",", $header) . "\n");
-
-        $evngName = Application::$app->session->get('nameFinal');
-        UploadProcessLogModel::uploadProcessId($processId, $evngName,$uploadTime, $status, $errorFile, $outputFile);
-        DataBankModel::loadDataBank($rows,$header,$errorFile,$outputFile,$processId);
-
-        $allUploads = UploadProcessLogModel::getUploadsByUser($evngName);
+        // In case of an error, show the form again with the error message
         $this->setLayout('main1');
         return $this->render('process_upload', [
-            'errorFilePath' => "logs/{$processId}_errors.csv",
-            'outputFilePath' => "logs/{$processId}_output.csv",
-            'processId' => $processId,
-            'allUploads' => $allUploads
+            'errorMessage' => $errorMessage,
+            'allUploads' => UploadProcessLogModel::getUploadsByUser(Application::$app->session->get('nameFinal'))
         ]);
     }
+
 
 
 

@@ -655,6 +655,22 @@ use DateTime;
      }
 
 
+     public function getOnlineSathvartha(Request $request)
+     {
+         $mobile = $_GET['mobile'] ?? '';
+
+         $homeMission = CandidateModel::getOnlineSathvarthaForCandidate($mobile);
+// Return JSON response
+         header('Content-Type: application/json');
+         echo json_encode([
+             'success' => true,
+             'homeMission' => $homeMission
+         ]);
+
+     }
+
+
+
      public function getHomeMission(Request $request)
      {
          $mobile = $_GET['mobile'] ?? '';

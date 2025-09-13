@@ -586,7 +586,7 @@ $disableOtherTabs = !$alreadyRegistered; // disable if candidate not registered
         <button class="tab-btn" onclick="openTab1('tab2')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Streaming Classes</button>
         <button class="tab-btn" onclick="openTab1('tab3')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Word sharing</button>
         <button class="tab-btn" onclick="openTab1('tab4')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Home mission</button>
-        <button class="tab-btn" onclick="openTab('tab5')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Online Sathvartha</button>
+        <button class="tab-btn" onclick="openTab1('tab5')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Online Sathvartha</button>
     </div>
 
 
@@ -946,13 +946,13 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
             <div class="form-group">
                 <label>Assignment Type</label><br>
                 <label><input type="radio" name="assignmentType" value="self" checked> I will take the topics</label><br>
-                <label><input type="radio" name="assignmentType" value="colleague"> Assign to a colleague</label>
+                <label><input type="radio" name="assignmentType" value="colleague"> Assign to Evangelist</label>
             </div>
 
             <div class="form-group" id="colleagueSection" style="display: none;">
-                <label for="colleague">Select Colleague</label>
+                <label for="colleague">Select Evangelist</label>
                 <select name="colleague" id="colleague">
-                    <option value="">-- Select Colleague --</option>
+                    <option value="">-- Select Evangelist --</option>
                     <?php if (!empty($evangelists)): ?>
                         <?php foreach ($evangelists as $evangelist): ?>
                             <option value="<?= htmlspecialchars($evangelist) ?>">
@@ -1347,6 +1347,76 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
 
         const selectedTab = document.getElementById(tabId);
         selectedTab.style.display = 'block';
+
+        if (tabId === 'tab5' && !selectedTab.dataset.loaded) {
+            selectedTab.innerHTML = "<p>🔄 Loading Home Mission details...</p>";
+
+            const mobile = encodeURIComponent(candidateMobile);
+            const url = `/getOnlineSathvartha?mobile=${mobile}`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to load Home Mission details");
+                    return response.json();   // 👈 parse JSON, not text
+                })
+                .then(data => {
+                    if (data.success && Array.isArray(data.homeMission)) {
+                        if (data.homeMission.length === 0) {
+                            selectedTab.innerHTML = "<p>📭 No Online Sathvartha details found.</p>";
+                        } else {
+                            let html = `
+                        <h3>🏠 Online Sathvartha Details</h3>
+                        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse; width:100%; text-align:left;">
+                            <thead style="background:#f2f2f2;">
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Date (IST)</th>
+                                    <th>Country</th>
+                                    <th>Place</th>
+                                    <th>Class Status</th>
+                                    <th>Organizer</th>
+                                    <th>Panel Member</th>
+                                    <th>Caring Member</th>
+                                    <th>Faith</th>
+                                    <th>Fellowship</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                            data.homeMission.forEach(item => {
+                                html += `
+                            <tr>
+                                <td>${item.event_name}</td>
+                                <td>${item.appointment_datetime_ist}</td>
+                                <td>${item.candidate_country}</td>
+                                <td>${item.place}</td>
+                                <td>${item.class_status}</td>
+                                <td>${item.sathvartha_organizer_name}</td>
+                                <td>${item.panel_member_name}</td>
+                                <td>${item.caring_team_member_name}</td>
+                                <td>${item.faith_status}</td>
+                                <td>${item.fellowship_status}</td>
+                            </tr>
+                        `;
+                            });
+
+                            html += `</tbody></table>`;
+                            selectedTab.innerHTML = html;
+                        }
+                    } else {
+                        selectedTab.innerHTML = "<p style='color:red;'>❌ Failed to load Home Mission details.</p>";
+                    }
+
+                    selectedTab.dataset.loaded = "true";
+                })
+                .catch(error => {
+                    console.error(error);
+                    selectedTab.innerHTML = "<p style='color:red;'>❌ Error loading Home Mission details.</p>";
+                });
+        }
+
+
 
         if (tabId === 'tab4' && !selectedTab.dataset.loaded) {
             selectedTab.innerHTML = "<p>🔄 Loading Home Mission details...</p>";
