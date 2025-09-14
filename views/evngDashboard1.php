@@ -278,46 +278,46 @@ use app\models\EvangelistModel;
         }
 
         .hamburger-icon {
-            font-size: 1.5rem;
             background: none;
             border: none;
+            font-size: 24px;
             cursor: pointer;
-            padding: 8px;
-            color: #333;
-            border-radius: 4px;
-            transition: background 0.2s ease;
-        }
-
-        .hamburger-icon:hover {
-            background-color: rgba(0,0,0,0.1);
         }
 
         .dropdown-menu {
             display: none;
             position: absolute;
-            right: 0;
             top: 40px;
+            right: 0;
             background-color: #fff;
+            min-width: 220px;
+            max-width: 300px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            border-radius: 6px;
-            min-width: 180px;
-            z-index: 100;
+            border-radius: 4px;
+            padding: 8px 0;
+            z-index: 1000;
+            word-wrap: break-word;
         }
 
         .dropdown-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            padding: 10px 16px;
             width: 100%;
-            padding: 10px;
+            text-align: left;
             border: none;
             background: none;
-            font-size: 0.95rem;
-            color: #333;
             cursor: pointer;
-            text-align: left;
-            transition: background 0.15s ease;
+            white-space: normal; /* Allows text wrap */
+            overflow-wrap: break-word;
         }
+
+        .dropdown-item i {
+            margin-right: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+
 
         .dropdown-item:hover {
             background-color: #f5f5f5;

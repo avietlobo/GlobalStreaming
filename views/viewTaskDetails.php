@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>📄 Task Details</title>
+    <a class="back-link" href="/viewMyTasks">← Back to My Tasks</a>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         :root {
@@ -275,6 +276,7 @@
 <body>
 
 <div class="header">
+
     <h2>📄 Task Details</h2>
     <div class="toggle-switch">
         🌗 Dark Mode
@@ -1490,7 +1492,8 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
         // 🔵 Streaming Classes Tab
         if (tabId === 'tab2' && !selectedTab.dataset.loaded) {
             //const mobile = encodeURIComponent(candidateMobile);
-            const mobile = "<?php echo $mobile; ?>"; // 👈 pass PHP variable to JS
+            //const mobile = "<?php echo $mobile; ?>"; // 👈 pass PHP variable to JS
+            const mobile = encodeURIComponent("<?= htmlspecialchars($mobile) ?>");
             const language = "<?php echo $language; ?>"; // 👈 pass PHP variable to JS
             const country = "<?php echo $country; ?>"; // 👈 pass PHP variable to JS
 

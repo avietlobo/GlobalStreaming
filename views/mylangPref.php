@@ -25,63 +25,70 @@ $error = $error ?? '';
         .success { padding: 10px; background: #e6f4ea; border: 1px solid #c8ebd2; color: #1f7a39; border-radius: 6px; margin-bottom: 12px; }
         .error { padding: 10px; background: #fdecea; border: 1px solid #f3c2c2; color: #8a1f1f; border-radius: 6px; margin-bottom: 12px; }
         .current { margin-top: 16px; padding: 12px; background: #eef6ff; border-radius: 6px; }
-        button { background: #007bff; color: #fff; border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; }
-        button:hover { background: #0056b3; }
-        .header-wrapper {
-            display: flex;
-            justify-content: center;  /* Center header content */
-            background: #f8f9fa;
-            padding: 15px 20px;
-            box-shadow: 0 1px 6px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .header-buttons {
-            display: flex;
-            justify-content: space-between;
-            width: 300px;              /* Fixed width container */
-        }
-
-        .logout-btn, .back-btn {
-            font-size: 0.95em;
-            font-weight: 600;
-            padding: 10px 18px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            min-width: 100px;
-            transition: background 0.3s ease;
-        }
-
-        .logout-btn {
+        button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
             background: #007bff;
             color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s ease;
         }
-
-        .logout-btn:hover {
-            background: #0056b3;
-        }
-
-        .back-btn {
+        button:hover:not(:disabled) { background: #0056b3; }
+        button:disabled {
             background: #6c757d;
-            color: #fff;
+            color: #e2e2e2;
+            cursor: not-allowed;
+            font-style: italic;
         }
 
-        .back-btn:hover {
-            background: #5a6268;
+        .success { color: green; text-align: center; }
+
+        /* Back button */
+        .back-link {
+            display:inline-block;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            text-decoration:none;
+            color:#007bff;
+            font-size: 14px;
+        }
+
+        /* Logout button */
+        .logout-link {
+            display: inline-block;
+            padding: 6px 14px;
+            font-size: 14px;
+            background: #007bff;   /* Red */
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .logout-link:hover { background: #b52a37; }
+
+        /* Top bar layout */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
     </style>
 </head>
 <body>
-<div class="header-wrapper">
-    <div class="header-buttons">
-        <button type="button" class="btn back-btn" onclick="window.location.href='/evngDashboard1'">← Back</button>
-        <a class="nav-link" href="#" id="logout-link">
-            <button type="button" class="btn btn-primary">Logout</button>
-        </a>    </div>
+<div class="top-bar">
+    <div></div> <!-- Empty for spacing -->
+    <a class="logout-link" href="#" id="logout-link">Logout</a>
 </div>
+
+<a class="back-link" href="/evngDashboard1">← Back</a>
+
 
 
 <div class="box">

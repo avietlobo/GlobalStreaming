@@ -1087,7 +1087,7 @@ class AuthController extends Controller
     public function viewTaskDetails(Request $request, Response $response)
     {
         $mobile = $_GET['mobile'] ?? null;
-
+        //echo $mobile;
 
         if (!$mobile) {
            echo("Mobile number is missing.");

@@ -1256,6 +1256,7 @@ public function getClassNumberDetailsForCandidate()
         $language = $_GET['language'] ?? null;
         $country = $_GET['country'] ?? null;
         $mobile = isset($_GET['mobile']) ? rawurldecode($_GET['mobile']) : null;
+        //echo $username;
         $index = $_GET['index'] ?? null;
         Application::$app->session->set('index', $index);
 
@@ -1283,7 +1284,11 @@ public function getClassNumberDetailsForCandidate()
         // Extract parameters from the URL
         $username = $_GET['username'] ?? null;
         $candidate = $_GET['candidate'] ?? null;
-        $mobile = isset($_GET['mobile']) ? rawurldecode($_GET['mobile']) : null;
+        //$mobile = isset($_GET['mobile']) ? rawurldecode($_GET['mobile']) : null;
+        $mobile = $_GET['mobile'] ?? null;
+        $mobile = urldecode($mobile);
+
+
         $index = $_GET['index'] ?? null;
         Application::$app->session->set('index', $index);
 

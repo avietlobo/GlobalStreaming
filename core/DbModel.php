@@ -2840,7 +2840,7 @@ ORDER BY
             } elseif (filter_var($telecallerInput, FILTER_VALIDATE_URL)) {
                 $type = 'SM';
             } else {
-                $type = 'NA'; // fallback if neither
+                $type = 'PHONE'; // fallback if neither
             }
             $email = $assoc['email'];
             $source = $assoc['source'];

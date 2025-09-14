@@ -33,13 +33,46 @@
                 font-size: 0.95em;
             }
         }
+        h2 {
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 30px 0 20px 0;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .logout-link {
+            padding: 8px 16px;
+            font-size: 0.95rem;
+            background: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .logout-link:hover {
+            background: #0056b3;
+        }
+
+
     </style>
 </head>
 <body>
 <div class="header">
-    <a class="nav-link" href="#" id="logout-link">
-        <button type="button" class="btn btn-primary">Logout</button>
-    </a>
+    <a class="logout-link" href="#" id="logout-link">Logout</a>
 </div>
 <a class="back-link" href="/evngDashboard1">← Back </a>
 <h2>📘 My Word Sessions</h2>

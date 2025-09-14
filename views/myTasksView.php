@@ -133,6 +133,25 @@
             position: relative;
             top: -1px;
         }
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 0;
+        }
+        .logout-link {
+            padding: 8px 16px;
+            font-size: 0.95rem;
+            background: var(--accent-color);
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .logout-link:hover {
+            background-color: #1681c2;
+        }
     </style>
 </head>
 <body>
@@ -143,9 +162,9 @@
     </a>
 </div>
 
-<div class="toggle-container">
-    <button class="dark-toggle" onclick="toggleDarkMode()">🌙 Toggle Mode</button>
-</div>
+<!--<div class="toggle-container">-->
+<!--    <button class="dark-toggle" onclick="toggleDarkMode()">🌙 Toggle Mode</button>-->
+<!--</div>-->
 
 <a class="back-link" href="/evngDashboard1">← Back </a>
 

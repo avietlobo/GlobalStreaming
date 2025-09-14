@@ -4,7 +4,17 @@
     <title>My Preference</title>
     <style>
         body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
-        h4 { text-align: center; }
+        h4 {
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 30px 0 20px 0;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
         .pref-form { max-width: 400px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; }
 
         button {
@@ -45,7 +55,7 @@
             display: inline-block;
             padding: 6px 14px;
             font-size: 14px;
-            background: #dc3545;   /* Red */
+            background: #007bff;   /* Red */
             color: #fff;
             border-radius: 5px;
             text-decoration: none;

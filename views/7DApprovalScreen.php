@@ -123,6 +123,15 @@
             box-shadow: none; /* Remove the box-shadow to eliminate the gray line */
         }
 
+        .scroll-hint {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 8px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
     </style>
 </head>
 <body>
@@ -140,6 +149,7 @@
 
 
 <h2>7D Sathvartha Approval List</h2>
+<div class="scroll-hint">👉 Swipe right to see all columns</div>
 
 <div class="table-container">
     <table>
