@@ -579,6 +579,9 @@ use DateTime;
              $remark = $_POST['remark'] ?? '';
 
              $candidateModel->loadData($request->getBody());
+
+             $candidateModel->saveRecordViaApi45($mobile,$country,$language);
+
              $candidateModel->saveCandidateViaDataDistribution($mobile,$name,$country,$language,$evangelist,$source,$allotedDays,$mediaType,$activeStatus,$workGroup,$userId,$remark);
 
              $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist' => Application::$app->session->get('nameFinal')], Application::$app->session->get('nameFinal'));
@@ -689,6 +692,7 @@ use DateTime;
      public function wordSessionDetail(Request $request)
      {
          $mobile = $_GET['mobile'] ?? '';
+//         echo $mobile;
          $language = $_GET['language'] ?? '';
          $participant = $_GET['participant'] ?? '';
 
@@ -701,7 +705,9 @@ use DateTime;
          //$candidate = CandidateModel::getCandidateByMobile($mobile);
          //$wordSessions = WordSessionModel::getWordSessionsByMobile($mobile);// reuse from earlier
          $wordSessions = WordSessionModel::getWordSessionsByEvangelist($mobile,$evangelist);
-
+//                echo '<pre>';
+//                var_dump($wordSessions);
+//                echo '<pre>';
          $this->setLayout('main1');
          return $this->render('word_session_detail', [
              'mobile' => $mobile,

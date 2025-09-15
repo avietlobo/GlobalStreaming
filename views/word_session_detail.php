@@ -254,8 +254,10 @@
     });
 
     function loadWordSessions() {
-        fetch('/getWordSessionsOfAssignedEvng?mobile=<?= $mobile ?>')
-            .then(response => response.json())
+        //fetch('/getWordSessionsOfAssignedEvng?mobile=<?= $mobile ?>')
+        fetch('/getWordSessionsOfAssignedEvng?mobile=<?= urlencode($mobile) ?>')
+
+                .then(response => response.json())
             .then(data => {
                 const tbody = document.querySelector("#wordSessionsTable tbody");
                 const cardContainer = document.getElementById("wordSessionsCards");

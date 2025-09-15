@@ -104,24 +104,20 @@ $error = $error ?? '';
 
     <form method="POST" action="/mylangPref" id="langPrefForm">
         <h4>Select Your Language Preferences</h4>
-        <label><input type="checkbox" name="languages[]" value="English"> English</label><br>
-        <label><input type="checkbox" name="languages[]" value="Hindi"> Hindi</label><br>
-        <label><input type="checkbox" name="languages[]" value="Spanish"> Spanish</label><br>
-        <label><input type="checkbox" name="languages[]" value="French"> French</label><br>
-        <label><input type="checkbox" name="languages[]" value="Arabic"> Arabic</label><br>
-        <label><input type="checkbox" name="languages[]" value="Malayalam"> Malayalam</label><br>
-        <label><input type="checkbox" name="languages[]" value="Tagalog"> Tagalog</label><br>
-        <label><input type="checkbox" name="languages[]" value="Italian"> Italian</label><br>
-        <label><input type="checkbox" name="languages[]" value="Tamil"> Tamil</label><br>
-        <label><input type="checkbox" name="languages[]" value="Portuguese"> Portuguese</label><br>
-        <label><input type="checkbox" name="languages[]" value="Kannada"> Kannada</label><br>
-        <label><input type="checkbox" name="languages[]" value="Konkani-Goan"> Konkani-Goan</label><br>
-        <label><input type="checkbox" name="languages[]" value="Konkani-Mangalore"> Konkani-Mangalore</label><br>
 
-
+        <?php
+        $allLanguages = ["English", "Hindi", "Spanish", "French", "Arabic", "Malayalam", "Tagalog", "Italian", "Tamil", "Portuguese", "Kannada", "Konkani-Goan", "Konkani-Mangalore"];
+        foreach ($allLanguages as $lang): ?>
+            <label>
+                <input type="checkbox" name="languages[]" value="<?= htmlspecialchars($lang) ?>"
+                    <?= in_array($lang, $currentLanguages) ? 'checked' : '' ?>>
+                <?= htmlspecialchars($lang) ?>
+            </label><br>
+        <?php endforeach; ?>
 
         <button type="submit">Save Preferences</button>
     </form>
+
 
     <div class="current" aria-live="polite">
         <?php if (!empty($currentLanguages)): ?>

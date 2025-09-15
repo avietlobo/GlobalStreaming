@@ -1,0 +1,2 @@
+mobile,name,record_date,telecaller,email,source,country,city,referredBy,group_name,fellowship,language,error
+,Hamcrest2,,,test@abc.com,data_scrape,Germany1,Poland,John,UK Malyalees,Canaan,French,Duplicate or empty mobile

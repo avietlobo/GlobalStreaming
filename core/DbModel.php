@@ -810,6 +810,26 @@ abstract class DbModel extends Model
 
     }
 
+    public function saveRecordViaApi45($mobile,$country,$language)
+    {
+
+
+        $tableName = "telecaller_sm";
+        //$utcDateTime = self::getCurrentUTCDateTime();
+        //$statement = self::prepare("UPDATE $tableName SET last_login = :last_login WHERE participant = :participant AND password = :password");
+        $statement = self::prepare("UPDATE $tableName SET country = :country, language = :language WHERE mobile = :mobile");
+
+        $statement->bindValue(":country", $country);
+        $statement->bindValue(":language", $language);
+
+        $statement->bindValue(":mobile", $mobile);
+
+        $statement->execute();
+
+
+    }
+
+
 
 
     public function saveRecordViaApi4($record)
