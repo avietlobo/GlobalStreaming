@@ -79,10 +79,15 @@
 
 <?php if (!empty($sessions)): ?>
     <?php foreach ($sessions as $c): ?>
-        <div class="card" onclick="window.location.href='/wordSessionDetail?mobile=<?= urlencode($c->mobile ) ?>&language=<?= urlencode($c->language ) ?>&participant=<?= urlencode($c->name ) ?>'">
-            <div class="title">📱 <?= htmlspecialchars($c->mobile) ?> - <?= htmlspecialchars($c->name) ?></div>
-            <div class="info">🌍 <?= htmlspecialchars($c->city) ?>, <?= htmlspecialchars($c->country) ?></div>
-            <div class="info">🗣️ Language: <?= htmlspecialchars($c->language) ?></div>
+        <div class="card" onclick="window.location.href='/wordSessionDetail?mobile=<?= urlencode($c->mobile) ?>&language=<?= urlencode($c->language ?? '') ?>&participant=<?= urlencode($c->name ?? $c->participantName ?? 'N/A') ?>'">
+            <div class="title">
+                📱 <?= htmlspecialchars($c->mobile) ?> - <?= htmlspecialchars($c->name ?? $c->participantName ?? 'N/A') ?>
+                <span style="font-size: 0.8em; background: #007bff; color: white; border-radius: 4px; padding: 2px 6px; margin-left: 10px;">
+                    <?= htmlspecialchars($c->source) ?>
+                </span>
+            </div>
+            <div class="info">🌍 <?= htmlspecialchars($c->city ?? 'Unknown') ?>, <?= htmlspecialchars($c->country ?? 'Unknown') ?></div>
+            <div class="info">🗣️ Language: <?= htmlspecialchars($c->language ?? $c->candidateLanguage ?? 'Unknown') ?></div>
             <div class="info">📅 Last Call: <?= htmlspecialchars($c->callDate ?: 'N/A') ?></div>
             <div class="info">📌 Status: <?= htmlspecialchars($c->status ?: 'Unassigned') ?></div>
             <div class="info">📝 Remarks: <?= htmlspecialchars($c->remarks ?: 'None') ?></div>

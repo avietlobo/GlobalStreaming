@@ -723,14 +723,52 @@ use DateTime;
      {
          $evangelist = Application::$app->session->get('nameFinal');
 
-         $sessions=WordSessionModel::getWordSessionsAssigned($evangelist);
+         $sessions  = WordSessionModel::getWordSessionsAssigned($evangelist);
+         $sessions2 = WordSessionModel::getWordSessionsAssignedWithoutCSV($evangelist);
+
+         $distinctMobiles = array_unique(array_map(function($session2) {
+             return $session2->mobile;
+         }, $sessions2));
+
+         $sessions3 = WordSessionModel::getWordSessionsCandidatesWithoutCSV($distinctMobiles);
+
+         // Map sessions by mobile
+         $sessionsMap = [];
+         foreach ($sessions as $session) {
+             $sessionsMap[$session->mobile] = $session;
+         }
+
+         // Merge into a unified array with source sticker
+         $mergedSessions = [];
+         foreach ($sessions3 as $candidate) {
+             if (isset($sessionsMap[$candidate['mobile']])) {
+                 $session = $sessionsMap[$candidate['mobile']];
+                 $session->participantName    = $candidate['participantName'];
+                 $session->candidateCountry   = $candidate['country'];
+                 $session->candidateLanguage  = $candidate['language'];
+                 $session->source             = 'Non CSV';
+                 $mergedSessions[] = $session;
+             } else {
+                 $dummySession = new \stdClass();
+                 $dummySession->mobile             = $candidate['mobile'];
+                 $dummySession->name               = $candidate['participantName'];
+                 $dummySession->city               = 'N/A';
+                 $dummySession->country            = $candidate['country'];
+                 $dummySession->language           = $candidate['language'];
+                 $dummySession->callDate           = null;
+                 $dummySession->status             = null;
+                 $dummySession->remarks            = null;
+                 $dummySession->source             = 'CSV';
+                 $mergedSessions[] = $dummySession;
+             }
+         }
 
          $this->setLayout('main1');
          return $this->render('mywordsessions', [
-             'sessions' => $sessions
+             'sessions' => $mergedSessions
          ]);
-
      }
+
 
 
 

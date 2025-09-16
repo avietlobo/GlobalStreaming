@@ -3124,6 +3124,46 @@ ORDER BY
         return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSharingApprovalModel::class);
     }
 
+
+    public static function getWordSessionsCandidatesWithoutCSV(array $mobileNumbers)
+    {
+        if (empty($mobileNumbers)) {
+            return [];  // Return empty array if no mobiles provided
+        }
+
+        // Create placeholders for prepared statement
+        $placeholders = implode(',', array_fill(0, count($mobileNumbers), '?'));
+
+        $sql = "SELECT mobile, participantName, country, language 
+            FROM candidate 
+            WHERE mobile IN ($placeholders)";
+
+        $stmt = self::prepare($sql);
+
+        // Execute with the mobile numbers as parameters
+        $stmt->execute($mobileNumbers);
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+        public static function getWordSessionsAssignedWithoutCSV($name)
+    {
+
+        $stmt = self::prepare("
+        SELECT mobile, candidateName, language
+        FROM word_sharing_approval
+        WHERE assigned_to = :assigned_to
+        and status = 'Approved'
+
+    ");
+        $stmt->bindParam(':assigned_to', $name);
+        $stmt->execute();
+
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSharingApprovalModel::class);
+    }
+
     public static function getWordSessionsAssigned($name)
     {
 
