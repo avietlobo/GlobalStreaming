@@ -724,6 +724,7 @@ use DateTime;
          $evangelist = Application::$app->session->get('nameFinal');
 
          $sessions=WordSessionModel::getWordSessionsAssigned($evangelist);
+
          $this->setLayout('main1');
          return $this->render('mywordsessions', [
              'sessions' => $sessions
@@ -1305,14 +1306,18 @@ public function getClassNumberDetailsForCandidate()
 
         // Example: Fetch details based on $username and $candidate
         $userDetails = $registerModel->getUserDetailsByUsername($username,$candidate,$mobile);
+        $language= $registerModel->getLanguage($mobile);
+
 //        Application::$app->session->set('userDetails', $userDetails);
 //        echo '<pre>';
 //        var_dump(Application::$app->session->get('userDetails'));
 //        echo '</pre>';
 
+        $evangelists = CandidateModel::getLanguageEvangelists($language);
+
         // Render the view with the user details
         $this->setLayout('main1');
-        return $this->render('classDetailsForCandidate', ['userDetails' => $userDetails]);
+        return $this->render('classDetailsForCandidate', ['userDetails' => $userDetails, 'evangelists' => $evangelists, 'mobile' => $mobile, 'language' => $language, 'candidate' => $candidate]);
     }
 
 

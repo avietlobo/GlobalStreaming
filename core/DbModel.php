@@ -971,6 +971,14 @@ WHERE el.language = :language");
     }
 
 
+    public static function getLanguage($mobile)
+    {
+        $stmt = self::prepare("SELECT language FROM candidate WHERE mobile = :mobile");
+        $stmt->bindValue(":mobile", $mobile);
+        $stmt->execute();
+        return $stmt->fetch(\PDO::FETCH_COLUMN) ?: null;
+    }
+
 
     public static function isMobileRegistered($mobile)
     {
