@@ -747,6 +747,7 @@ $designation = $dashboardData[0]->designation;
                         <input type="hidden" class="source" value="<?php echo htmlspecialchars($candidate->source); ?>">
                         <input type="hidden" class="mediaType" value="<?php echo htmlspecialchars($candidate->mediaType); ?>">
                         <input type="hidden" class="activeStatus" value="<?php echo htmlspecialchars($candidate->activeStatus); ?>">
+                        <input type="hidden" class="remark" value="<?php echo htmlspecialchars($candidate->remark ?? ''); ?>">
 
                     </div>
                     <div class="card-icons">
@@ -838,6 +839,7 @@ $designation = $dashboardData[0]->designation;
         const source = cardElement.querySelector('.source').value;
         const mediaType = cardElement.querySelector('.mediaType').value;
         const activeStatus = cardElement.querySelector('.activeStatus').value;
+        const remark = cardElement.querySelector('.remark').value;
 
         console.log("Country fetched:", country); // Debugging log
 
@@ -856,6 +858,7 @@ $designation = $dashboardData[0]->designation;
                 source: source,
                 mediaType: mediaType,
                 activeStatus: activeStatus,
+                remark: remark,
                 index: index
             })
         })

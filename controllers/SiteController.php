@@ -54,6 +54,7 @@ use DateTime;
      {
          // Fetch data from session or request
          $data = $_SESSION['storedData'] ?? null;
+
          $candidateModel = new CandidateModel();
          //$this->session->set('user1','123');
          //Application::$app->session->set('user1','123');
@@ -746,7 +747,7 @@ use DateTime;
                  $session->participantName    = $candidate['participantName'];
                  $session->candidateCountry   = $candidate['country'];
                  $session->candidateLanguage  = $candidate['language'];
-                 $session->source             = 'Non CSV';
+                 $session->source             = 'CSV';
                  $mergedSessions[] = $session;
              } else {
                  $dummySession = new \stdClass();
@@ -756,9 +757,9 @@ use DateTime;
                  $dummySession->country            = $candidate['country'];
                  $dummySession->language           = $candidate['language'];
                  $dummySession->callDate           = null;
-                 $dummySession->status             = null;
-                 $dummySession->remarks            = null;
-                 $dummySession->source             = 'CSV';
+                 $dummySession->status             = $candidate['activeStatus'];
+                 $dummySession->remark            = $candidate['remark'];
+                 $dummySession->source             = 'Non CSV';
                  $mergedSessions[] = $dummySession;
              }
          }

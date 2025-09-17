@@ -90,7 +90,7 @@
             <div class="info">🗣️ Language: <?= htmlspecialchars($c->language ?? $c->candidateLanguage ?? 'Unknown') ?></div>
             <div class="info">📅 Last Call: <?= htmlspecialchars($c->callDate ?: 'N/A') ?></div>
             <div class="info">📌 Status: <?= htmlspecialchars($c->status ?: 'Unassigned') ?></div>
-            <div class="info">📝 Remarks: <?= htmlspecialchars($c->remarks ?: 'None') ?></div>
+            <div class="info">📝 Remarks: <?= htmlspecialchars($c->remark ?: 'None') ?></div>
         </div>
     <?php endforeach; ?>
 <?php else: ?>

@@ -107,7 +107,7 @@
             display: flex;
             justify-content: flex-end;
             padding: 10px;
-            background-color: #f8f9fa;
+            background-color: #fff;
         }
 
         #logout-link button {
@@ -122,10 +122,12 @@
 </head>
 <body>
 <div class="header">
-    <a class="nav-link" href="#" id="logout-link">
+    <a class="logout-link" href="#" id="logout-link">
         <button type="button" class="btn btn-primary">Logout</button>
     </a>
 </div>
+
+
 
 <?php if (!empty($data1['errors'])): ?>
     <div style="color: red; margin-bottom: 15px;">
@@ -454,6 +456,12 @@
                 </p>
             <?php endif; ?>
         </div>
+
+        <div class="form-group">
+            <label for="remark">Remarks:</label>
+            <textarea id="remark" name="remark" rows="4" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:4px;"><?php echo htmlspecialchars($data['remark'] ?? ''); ?></textarea>
+        </div>
+
 
 
 

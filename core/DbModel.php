@@ -839,7 +839,7 @@ abstract class DbModel extends Model
         $tableName = "candidate";
         //$utcDateTime = self::getCurrentUTCDateTime();
         //$statement = self::prepare("UPDATE $tableName SET last_login = :last_login WHERE participant = :participant AND password = :password");
-        $statement = self::prepare("UPDATE $tableName SET country = :country, language = :language, source = :source, mediaType = :mediaType, activeStatus = :activeStatus WHERE participantName = :participantName AND evangelist = :evangelist AND mobile = :mobile");
+        $statement = self::prepare("UPDATE $tableName SET country = :country, language = :language, source = :source, mediaType = :mediaType, activeStatus = :activeStatus, remark = :remark WHERE participantName = :participantName AND evangelist = :evangelist AND mobile = :mobile");
 
         $statement->bindValue(":country", $record['country']);
         $statement->bindValue(":language", $record['language']);
@@ -850,6 +850,7 @@ abstract class DbModel extends Model
         $statement->bindValue(":participantName", $record['participantName']);
         $statement->bindValue(":evangelist", $record['evangelist']);
         $statement->bindValue(":mobile", $record['mobile']);
+        $statement->bindValue(":remark", $record['remark'] ?? ''); // ✅ Add this
 
         $statement->execute();
 
@@ -3134,7 +3135,7 @@ ORDER BY
         // Create placeholders for prepared statement
         $placeholders = implode(',', array_fill(0, count($mobileNumbers), '?'));
 
-        $sql = "SELECT mobile, participantName, country, language 
+        $sql = "SELECT mobile, participantName, country, language, activeStatus, remark
             FROM candidate 
             WHERE mobile IN ($placeholders)";
 
