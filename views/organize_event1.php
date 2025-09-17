@@ -2,6 +2,8 @@
 use app\core\Application;
 ?>
 
+<a class="back-link" href="/allEvents">← Back </a>
+
 <h2>Organize Event - Extra Details !! <?= urlencode($eventName) ?></h2>
 
 <?php if (Application::$app->session->getFlash('success')): ?>

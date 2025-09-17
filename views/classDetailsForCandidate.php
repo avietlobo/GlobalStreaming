@@ -205,6 +205,184 @@
             }
 
 
+            /* Section heading */
+            #savedSessions h4 {
+                font-size: 1.4rem;
+                margin-bottom: 16px;
+                color: #333;
+                font-weight: bold;
+                border-left: 5px solid #1DA1F2;
+                padding-left: 10px;
+            }
+
+            /* Messages */
+            #savedSessions p {
+                font-size: 0.95rem;
+                margin: 8px 0;
+                color: #555;
+            }
+            #savedSessions p.error {
+                color: #e63946;
+                font-weight: bold;
+            }
+            #savedSessions p.empty {
+                color: #777;
+                font-style: italic;
+            }
+
+            /* Session card */
+            #savedSessions .form-group > div {
+                border: 1px solid #ddd;
+                border-left: 5px solid #1DA1F2;
+                background: #fff;
+                padding: 16px;
+                border-radius: 10px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+                margin-bottom: 16px;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            #savedSessions .form-group > div:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+            }
+
+            /* Card text */
+            #savedSessions .form-group p {
+                margin: 6px 0;
+                font-size: 0.95rem;
+                color: #444;
+            }
+
+            /* Buttons */
+            #savedSessions .tab-btn.edit-btn {
+                display: inline-block;
+                margin-top: 10px;
+                padding: 8px 14px;
+                border: none;
+                border-radius: 6px;
+                font-size: 0.9rem;
+                cursor: pointer;
+                background-color: #1DA1F2;
+                color: #fff;
+                transition: background 0.3s ease;
+            }
+
+            #savedSessions .tab-btn.edit-btn:hover {
+                background-color: #0d8ddb;
+            }
+
+            /* Modal background */
+            .modal {
+                display: none; /* hidden by default */
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background: rgba(0,0,0,0.5); /* semi-transparent black */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Modal content */
+            .modal-content {
+                background: #fff;
+                padding: 24px;
+                border-radius: 10px;
+                width: 100%;
+                max-width: 500px;
+                box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+                animation: fadeIn 0.3s ease;
+            }
+
+            /* Title */
+            .modal-content h3 {
+                margin-top: 0;
+                margin-bottom: 16px;
+                font-size: 1.3rem;
+                color: #333;
+                border-bottom: 2px solid #1DA1F2;
+                padding-bottom: 8px;
+            }
+
+            /* Labels */
+            .modal-content label {
+                display: block;
+                margin: 12px 0 6px;
+                font-weight: bold;
+                color: #444;
+            }
+
+            /* Inputs */
+            .modal-content input,
+            .modal-content select {
+                width: 100%;
+                padding: 10px 12px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                font-size: 0.95rem;
+                margin-bottom: 12px;
+                transition: border-color 0.2s ease;
+            }
+
+            .modal-content input:focus,
+            .modal-content select:focus {
+                border-color: #1DA1F2;
+                outline: none;
+            }
+
+            /* Buttons */
+            .modal-actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+                margin-top: 16px;
+            }
+
+            .modal-actions button {
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;
+                font-size: 0.95rem;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+
+            .modal-actions button[type="button"] {
+                background: #ccc;
+                color: #333;
+            }
+
+            .modal-actions button[type="button"]:hover {
+                background: #b3b3b3;
+            }
+
+            .modal-actions button[type="submit"] {
+                background: #1DA1F2;
+                color: #fff;
+                font-weight: bold;
+            }
+
+            .modal-actions button[type="submit"]:hover {
+                background: #0d8ddb;
+            }
+
+            /* Animation */
+            @keyframes fadeIn {
+                from {opacity: 0; transform: translateY(-20px);}
+                to {opacity: 1; transform: translateY(0);}
+            }
+
+
+
+
+
+
+
 
 
         </style>

@@ -1,3 +1,5 @@
+<a class="back-link" href="/evngDashboard1">← Back </a>
+
 <h2 class="text-center mb-4">📅 All Sathvartha Events</h2>
 
 <div class="events-grid">
