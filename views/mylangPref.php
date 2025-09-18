@@ -78,6 +78,17 @@ $error = $error ?? '';
             justify-content: space-between;
             align-items: center;
         }
+        h2 {
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 30px 0 20px 0;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
 
     </style>
 </head>
@@ -103,7 +114,7 @@ $error = $error ?? '';
     <?php endif; ?>
 
     <form method="POST" action="/mylangPref" id="langPrefForm">
-        <h4>Select Your Language Preferences</h4>
+        <h2>Select Your Language Preferences for Word Sharing</h2>
 
         <?php
         $allLanguages = ["English", "Hindi", "Spanish", "French", "Arabic", "Malayalam", "Tagalog", "Italian", "Tamil", "Portuguese", "Kannada", "Konkani-Goan", "Konkani-Mangalore"];

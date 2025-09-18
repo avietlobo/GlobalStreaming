@@ -159,7 +159,7 @@
         $participant = htmlspecialchars($candidate);
         $mobile = htmlspecialchars($mobile);
         $country = htmlspecialchars($country);
-        $language = htmlspecialchars($evangelistData[$index]->language);
+        $language = htmlspecialchars($language);
         $evangelist = htmlspecialchars($username);
         $recordDate = htmlspecialchars($evangelistData[$index]->recordDate);
         $mediaType = htmlspecialchars($evangelistData[$index]->mediaType);

@@ -278,6 +278,7 @@ use app\models\EvangelistModel;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             font-size: 1.5em;
             transition: background-color 0.3s;
+
         }
 
         .floating-button i {

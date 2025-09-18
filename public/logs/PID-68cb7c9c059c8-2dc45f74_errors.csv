@@ -1,0 +1,2 @@
+mobile,name,record_date,email,source,country,city,referredBy,group_name,fellowship,language,error
+1 (361) 5553,,,test@abc.com,data_scrape,Poland,Poland,John,UK Malyalees,Canaan,English,Mobile exists in DB

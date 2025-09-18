@@ -37,10 +37,14 @@
 
         h2 {
             text-align: center;
-            font-size: 20px;
-            padding: 12px 0;
-            color: var(--accent-color);
-            border-bottom: 1px solid #ddd;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 30px 0 20px 0;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 12px;
+            letter-spacing: 0.5px;
         }
 
         .toggle-container {
@@ -66,22 +70,31 @@
         .task-card {
             display: block;
             background-color: var(--card-bg);
-            border-radius: 12px;
-            margin: 10px 0;
-            padding: 14px 18px;
+            border-radius: 14px;
+            margin: 12px 0;
+            padding: 16px 20px;
             text-decoration: none;
             color: var(--text-color);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            border-left: 5px solid transparent; /* accent stripe */
         }
 
         .task-card:hover {
             background-color: var(--hover-bg);
-            transform: scale(0.99);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Stronger typography hierarchy */
+        .task-mobile {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 4px;
         }
 
         .task-name {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 600;
             margin-bottom: 6px;
             color: var(--accent-color);
@@ -89,7 +102,34 @@
 
         .task-country {
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
         }
+
+        .task-country img {
+            height: 16px;
+            margin-right: 6px;
+            border-radius: 3px;
+        }
+
+        .task-status {
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 8px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            background: rgba(0,0,0,0.05);
+        }
+
+        /* Optional: color-coded left border by status */
+        .task-card[data-status="positive"] { border-left-color: #28a745; }
+        .task-card[data-status="negative"] { border-left-color: #dc3545; }
+        .task-card[data-status="neutral"]  { border-left-color: #6c757d; }
+        .task-card[data-status="no response"] { border-left-color: #fd7e14; }
+        .task-card[data-status="unassigned"]  { border-left-color: #999; }
+
 
         @media (max-width: 600px) {
             .task-card {

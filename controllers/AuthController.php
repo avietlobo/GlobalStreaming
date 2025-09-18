@@ -882,7 +882,15 @@ class AuthController extends Controller
                     $errorMessage = "Invalid file type. Please upload a CSV file.";
                 } else {
                     $rows = array_map('str_getcsv', file($fileTmpPath));
-                    $header = array_map('trim', array_shift($rows));
+
+                   //$header = array_map('trim', array_shift($rows));
+
+                    // Get header row and fix BOM if present
+                    $header = array_shift($rows);
+                    $header = array_map(function($h) {
+                        $h = preg_replace('/^\xEF\xBB\xBF/', '', $h); // strip UTF-8 BOM
+                        return trim($h);
+                    }, $header);
 
                     if (!$this->isValidCSVHeader($header)) {
                         $errorMessage = "Invalid CSV header format.";

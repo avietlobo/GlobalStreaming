@@ -270,6 +270,37 @@
             border: 1px solid #ccc;
         }
 
+        .btn {
+            background: #1e90ff;
+            color: #fff;
+            padding: 0.6em 1.2em;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .cancel-btn {
+            background: #e2e6ea;
+            color: #333;
+        }
+        .cancel-btn:hover {
+            background: #d6dade;
+        }
+
+        .save-btn {
+            background: #28a745;
+        }
+        .save-btn:hover {
+            background: #218838;
+        }
+
+
 
     </style>
 </head>
@@ -278,10 +309,10 @@
 <div class="header">
 
     <h2>📄 Task Details</h2>
-    <div class="toggle-switch">
-        🌗 Dark Mode
-        <input type="checkbox" id="darkToggle" class="toggle-btn">
-    </div>
+<!--    <div class="toggle-switch">-->
+<!--        🌗 Dark Mode-->
+<!--        <input type="checkbox" id="darkToggle" class="toggle-btn">-->
+<!--    </div>-->
 </div>
 
 <!-- Edit Form Modal -->
@@ -936,7 +967,7 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
 <!--                    <option value="Hindi">Hindi</option>-->
 <!--                    <option value="English">English</option>-->
 <!--                    <option value="Kannada">Kannada</option>-->
-<!--                    <!-- Add more if needed -->-->
+<!--                    <!-- Add more if needed -->
 <!--                </select>-->
 <!--            </div>-->
 
@@ -1001,9 +1032,10 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                     <input type="datetime-local" id="sessionDate" name="sessionDate" required>
 
                     <div class="modal-actions">
-                        <button type="button" onclick="closeSessionModal()">Cancel</button>
-                        <button type="submit">Save</button>
+                        <button type="button" class="btn cancel-btn" onclick="closeSessionModal()">✖ Cancel</button>
+                        <button type="submit" class="btn save-btn">💾 Save</button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -1546,13 +1578,14 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
         border-radius: 6px;
         margin-bottom: 10px;
     ">
-        <p><strong>📖 ID ${session.id}</strong></p>
-        <p><strong>📖 Session ${session.session_id}</strong></p>
-           <p><strong>📖 Session Name:</strong> ${sessionName}</p>
-        <p><strong>📅 Date:</strong> ${session.session_date}</p>
-        <p><strong>📌 Status:</strong> ${session.status}</p>
-        <p><strong>📌 Assigned To:</strong> ${session.evangelist}</p>
-        <p><strong>📌 Remark:</strong> ${session.remark}</p>
+        <p><strong>🆔 ID:</strong> ${session.id}</p>
+<p><strong>📖 Session ID:</strong> ${session.session_id}</p>
+<p><strong>👨‍🏫 Session Name:</strong> ${sessionName}</p>
+<p><strong>📅 Date:</strong> ${session.session_date}</p>
+<p><strong>🚩 Status:</strong> ${session.status}</p>
+<p><strong>👤 Assigned To:</strong> ${session.evangelist}</p>
+<p><strong>💬 Remark:</strong> ${session.remark}</p>
+
  <button class="tab-btn edit-btn"
                 onclick="openEditSessionModal(
                     '${session.id}',

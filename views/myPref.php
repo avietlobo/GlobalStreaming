@@ -70,6 +70,18 @@
             justify-content: space-between;
             align-items: center;
         }
+
+        h2 {
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 30px 0 20px 0;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
@@ -81,7 +93,7 @@
 
 <a class="back-link" href="/evngDashboard1">← Back</a>
 
-<h4>Select Your Evangelization Preference</h4>
+<h2>Select Your Evangelization Preference</h2>
 
 <div class="pref-form">
     <?php if (!empty($success ?? null)): ?>

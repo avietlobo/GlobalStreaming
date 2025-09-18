@@ -108,6 +108,19 @@
         .cancel-btn:hover { background: #d6dade; }
         .close-btn { position: absolute; top: 12px; right: 14px; font-size: 1.4em; color: #999; cursor: pointer; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        /* Status badges */
+        .badge.scheduled  { background: #1e90ff; }  /* Blue */
+        .badge.completed  { background: #28a745; }  /* Green */
+        .badge.missed     { background: #dc3545; }  /* Red */
+        .badge.cancelled  { background: #6c757d; }  /* Gray */
+
+        /* Card left border color by status */
+        .card.scheduled  { border-left-color: #1e90ff; }
+        .card.completed  { border-left-color: #28a745; }
+        .card.missed     { border-left-color: #dc3545; }
+        .card.cancelled  { border-left-color: #6c757d; }
+
+
     </style>
 </head>
 <body>
@@ -270,8 +283,13 @@
                 }
 
                 data.sessions.forEach(ws => {
-                    const badgeClass = ws.status.toLowerCase() === 'completed' ? 'completed' : 'scheduled';
-                    const badge = `<span class="badge ${badgeClass}">${ws.status}</span>`;
+                    let badgeClass = 'scheduled'; // default
+                    if (ws.status) {
+                        const statusLower = ws.status.toLowerCase();
+                        if (statusLower === 'completed') badgeClass = 'completed';
+                        else if (statusLower === 'missed') badgeClass = 'missed';
+                        else if (statusLower === 'cancelled') badgeClass = 'cancelled';
+                    }                    const badge = `<span class="badge ${badgeClass}">${ws.status}</span>`;
 
                     // Table row
                     tbody.innerHTML += `

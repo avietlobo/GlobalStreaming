@@ -2851,6 +2851,7 @@ ORDER BY
         foreach ($rows as $index => $row) {
             $row = array_map('trim', $row);
 
+
 //            $row = array_map(function($value) {
 //                return mb_convert_encoding(trim($value), 'UTF-8', 'auto');
 //            }, $row);
