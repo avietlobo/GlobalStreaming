@@ -957,7 +957,7 @@ abstract class DbModel extends Model
 FROM evangelist e
 INNER JOIN evangelist_languages el 
     ON e.email = el.email
-WHERE el.language = :language");
+WHERE el.language = :language and active='1'");
         $stmt->bindValue(":language", $language);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_COLUMN);

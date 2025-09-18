@@ -166,9 +166,12 @@
             color: var(--text-color);
             padding: 20px;
             border-radius: 12px;
-            max-width: 400px;
             width: 90%;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            max-width: 500px;   /* limit width */
+            max-height: 90vh;   /* limit height to 80% of screen */
+            overflow-y: auto;   /* enable scrolling inside */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            scroll-behavior: auto; /* prevent animated restore */
         }
 
         .modal-content input,
@@ -184,9 +187,41 @@
 
         .modal-actions {
             display: flex;
-            justify-content: space-between;
-            gap: 10px;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 16px;
         }
+
+        .modal-actions button {
+            padding: 10px 18px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        /* Cancel Button */
+        .modal-actions .cancel-btn {
+            background: #e2e6ea;
+            color: #333;
+        }
+        .modal-actions .cancel-btn:hover {
+            background: #d6dade;
+            transform: translateY(-1px);
+        }
+
+        /* Save Button */
+        .modal-actions .save-btn {
+            background: #28a745;
+            color: #fff;
+        }
+        .modal-actions .save-btn:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+
 
         .tab-btn {
             background-color: var(--accent-color);
@@ -573,8 +608,8 @@
             <textarea name="remark" id="editRemark" required></textarea>
 
             <div class="modal-actions">
-                <button type="button" onclick="closeModal()">Cancel</button>
-                <button type="submit">Save</button>
+                <button type="button" class="cancel-btn" onclick="closeModal()">❌ Cancel</button>
+                <button type="submit" class="save-btn">💾 Save</button>
             </div>
         </form>
     </div>
@@ -1662,6 +1697,8 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
 <script>
     function openEditForm() {
         document.getElementById('editModal').style.display = 'flex';
+
+
 
         // Populate form from existing data
         document.getElementById('editMobile').value = "<?= htmlspecialchars($task->mobile) ?>";

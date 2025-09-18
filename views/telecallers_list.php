@@ -30,7 +30,33 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
         }
+
+        .pagination {
+            display: flex;
+            flex-wrap: wrap; /* allows wrapping to the next line */
+            justify-content: center; /* center align */
+            gap: 6px; /* spacing between numbers */
+            margin-top: 15px;
+        }
+
+        .pagination a {
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            background: #ccc;
+            display: inline-block;
+            min-width: 32px;
+            text-align: center;
+        }
+
+        .pagination a.active {
+            background: #007BFF;
+        }
+
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -85,8 +111,7 @@
     <?php endif; ?>
     <!-- 🔍 FILTER FORM (GET) -->
     <form method="GET" action="/viewAllTelecallersList">
-        <div class="table-wrapper">
-            <div style="margin-bottom: 20px;">
+
                 <label>🌐 Source:
                     <input type="text" name="filter[source]" value="<?= htmlspecialchars($_GET['filter']['source'] ?? '') ?>">
                 </label>
@@ -117,8 +142,7 @@
                     <input type="text" name="filter[status]" value="<?= htmlspecialchars($_GET['filter']['status'] ?? '') ?>">
                 </label>
                 <button type="submit" style="background-color: #007BFF; color: white;">🔍 Apply Filters</button>
-            </div>
-        </div>
+
     </form>
 <!--    <form action="/bulkAssignTelecaller" method="POST">-->
         <form id="assignForm" action="/bulkAssignTelecaller" method="POST">
@@ -186,42 +210,37 @@
                 <?php endforeach; ?>
                 </tbody>
             </table>
-            <?php
-            $totalPages = ceil(($totalRecords ?? 0) / ($limit ?? 50));
-            $currentPage = $currentPage ?? 1;
-            ?>
+        </div> <!-- ✅ close table-wrapper -->
 
-            <!-- Record Summary -->
-            <div style="margin-top: 10px; color: #333;">
-                Showing <?= count($records) ?> of <?= $totalRecords ?? 0 ?> records
-            </div>
-
-            <!-- Pagination -->
-            <?php if ($totalPages > 1): ?>
-                <div style="margin-top: 15px; text-align: center;">
-                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <a href="?<?= http_build_query(['filter' => $_GET['filter'] ?? [], 'page' => $i]) ?>"
-                           style="padding: 8px 12px; margin: 2px; background: <?= $currentPage == $i ? '#007BFF' : '#ccc' ?>; color: white; border-radius: 5px; text-decoration: none;">
-                            <?= $i ?>
-                        </a>
-                    <?php endfor; ?>
-                </div>
-            <?php endif; ?>
+        </form> <!-- ✅ close form right after wrapper -->
+    <!-- OUTSIDE WRAPPER -->
+    <?php
+    $totalPages = ceil(($totalRecords ?? 0) / ($limit ?? 50));
+    $currentPage = $currentPage ?? 1;
+    ?>
+    <div style="margin-top: 10px; color: #333;">
+        Showing <?= count($records) ?> of <?= $totalRecords ?? 0 ?> records
+    </div>
+    <?php if ($totalPages > 1): ?>
+        <div class="pagination">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?<?= http_build_query(['filter' => $_GET['filter'] ?? [], 'page' => $i]) ?>"
+                   style="padding: 8px 12px; margin: 2px; background: <?= $currentPage == $i ? '#007BFF' : '#ccc' ?>; color: white; border-radius: 5px; text-decoration: none;">
+                    <?= $i ?>
+                </a>
+            <?php endfor; ?>
         </div>
+    <?php endif; ?>
 
-        <br>
-        <div class="text-right">
-            <button type="button" id="assignBtn" onclick="openAssignModal('assign')" disabled>
-                ✅ Bulk Assign Selected
-            </button>
-
-            <button type="button" id="reassignBtn" onclick="openAssignModal('reassign')" style="background-color: orange; margin-left: 10px;" disabled>
-                ♻️ Bulk Reassign Selected
-            </button>
-        </div>
-    </form>
+    <div class="text-right" style="margin-top: 15px;">
+        <button type="button" id="assignBtn" onclick="openAssignModal('assign')" disabled>
+            ✅ Bulk Assign Selected
+        </button>
+        <button type="button" id="reassignBtn" onclick="openAssignModal('reassign')" style="background-color: orange; margin-left: 10px;" disabled>
+            ♻️ Bulk Reassign Selected
+        </button>
+    </div>
 </div>
-
 
 <script>
     document.getElementById('select-all').addEventListener('change', function () {

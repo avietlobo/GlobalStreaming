@@ -230,7 +230,7 @@
     </button>
 </div>
 
-<h2>➕ Add New Sathvartha Event</h2>
+<h2>Add New Sathvartha Event</h2>
 <!-- Modal -->
 <div style="text-align: center; margin: 1rem 0;">
     <button id="openModalBtn" class="add-event-button">

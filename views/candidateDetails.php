@@ -85,6 +85,14 @@
             white-space: nowrap;
         }
 
+        /* Participant details table only */
+        .container > table td {
+            white-space: normal;
+            word-wrap: break-word;
+            overflow-wrap: anywhere;
+            max-width: 250px; /* optional, keeps column width under control */
+        }
+
         td.label {
             font-weight: bold;
             color: var(--label-color);

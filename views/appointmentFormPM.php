@@ -116,7 +116,7 @@
     </style>
 </head>
 <body>
-<a class="back-link" href="javascript:history.back()">← Back </a>
+<a class="back-link" onclick="window.location.href='/viewAllAppointmentsPM'">← Back </a>
 <div class="top-bar">
     <h2>Update Appointment</h2>
     <button class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>
@@ -291,6 +291,7 @@
             <label for="sathvarthaAttendanceStatus">Sathvartha Attendance</label>
             <select id="sathvarthaAttendanceStatus" name="sathvarthaAttendanceStatus" required disabled>
                 <option value="">Select attendance</option>
+                <option value="Attended" <?= ($sathvarthaAttendanceStatus ?? '') === 'Attended' ? 'selected' : '' ?>>Attended</option>
                 <option value="Pending" <?= ($sathvarthaAttendanceStatus ?? '') === 'Pending' ? 'selected' : '' ?>>Pending</option>
                 <option value="Absent" <?= ($sathvarthaAttendanceStatus ?? '') === 'Absent' ? 'selected' : '' ?>>Absent</option>
                 <option value="Not Attended" <?= ($sathvarthaAttendanceStatus ?? '') === 'Not Attended' ? 'selected' : '' ?>>Not Attended</option>

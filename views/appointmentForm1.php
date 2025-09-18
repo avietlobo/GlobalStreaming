@@ -297,6 +297,8 @@
             <label for="sathvarthaAttendanceStatus">Sathvartha Attendance</label>
             <select id="sathvarthaAttendanceStatus" name="sathvarthaAttendanceStatus" required>
                 <option value="">Select attendance</option>
+                <option value="Attended" <?= ($sathvarthaAttendanceStatus ?? '') === 'Attended' ? 'selected' : '' ?>>Attended</option>
+
                 <option value="Pending" <?= ($sathvarthaAttendanceStatus ?? '') === 'Pending' ? 'selected' : '' ?>>Pending</option>
                 <option value="Absent" <?= ($sathvarthaAttendanceStatus ?? '') === 'Absent' ? 'selected' : '' ?>>Absent</option>
                 <option value="Not Attended" <?= ($sathvarthaAttendanceStatus ?? '') === 'Not Attended' ? 'selected' : '' ?>>Not Attended</option>
