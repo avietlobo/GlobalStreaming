@@ -103,7 +103,7 @@
         <button type="button" class="back-button" onclick="window.location.href='/evngDashboard1'">Back</button>
     </div>
 
-    <h2>📋 Telecallers List</h2>
+    <h2>📋 Assign Telecallers</h2>
     <?php if (!empty($_GET['assigned'])): ?>
         <div style="background: #d4edda; color: #155724; padding: 10px; margin-bottom: 20px; border-radius: 5px; text-align: center;">
             ✅ Bulk assignment successful!
