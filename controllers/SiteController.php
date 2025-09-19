@@ -850,6 +850,8 @@ use DateTime;
              $language = $_POST['language'] ?? '';
              $status = 'Pending';
 
+             //echo $remarks;
+
              $success = CandidateModel::reassignWordSession($mobile,$candidate,$assignedBy,$assignedTo,$status,$remarks,$language);
              if ($success) {
                  echo json_encode(['success' => true]);

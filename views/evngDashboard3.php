@@ -540,10 +540,50 @@ $designation = $dashboardData[0]->designation;
     <?php endif; ?>
 </div>
 
+<div class="icon-button-group search-icons">
+    <?php if ($designation == 'Management' ): ?>
+        <div class="hamburger-menu">
+            <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="dropdown-menu" id="menuDropdown">
+                <button class="dropdown-item" onclick="window.location.href='/reportManagement';">
+                    <i class="fas fa-file-alt"></i> View Report
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='/evngRegistration';">
+                    <i class="fas fa-user-plus"></i> Evangelist Registration
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='/viewRegistration';">
+                    <i class="fas fa-list"></i> View Submitted Registrations
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='/viewAllRegistrations';">
+                    <i class="fas fa-list"></i> View All Registrations
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='/appRegistration';">
+                    <i class="fas fa-check-circle"></i> Approval / Rejection
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='view7DApproval';">
+                    <i class="fas fa-check-circle"></i> 7D Approval
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='view7DApproved';">
+                    <i class="fas fa-list-alt"></i> 7D Approved Candidates
+                </button>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
+
 
 
 <div class="icon-button-group">
-    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'LocalOrganizer' && $designation !== 'PanelMember' && $designation !='SathvarthaOrganizer'): ?>
+    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'LocalOrganizer' && $designation !== 'PanelMember' && $designation !='SathvarthaOrganizer' && $designation !== 'Management'): ?>
 
         <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
             <i class="fas fa-file-alt"></i>

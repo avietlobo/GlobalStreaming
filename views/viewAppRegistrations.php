@@ -28,7 +28,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
+        h2 {
             margin-bottom: 20px;
             font-size: 28px;
             color: #333;
@@ -96,6 +96,14 @@
             background-color: #ffffff; /* Optional: set to transparent or the same as the body background */
             box-shadow: none; /* Remove the box-shadow to eliminate the gray line */
         }
+        .scroll-hint {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 8px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -109,7 +117,8 @@
     <button type="button" class="back-button" onclick="window.location.href='/evngDashboard1'">
         <i class="fas fa-arrow-left"></i> Back
     </button>
-    <h1>Global Member Registration</h1>
+    <h2>Global Member Registration</h2>
+    <div class="scroll-hint">👉 Swipe right to see all columns</div>
 
     <!-- Table of members in a scrollable container -->
     <div class="table-container">

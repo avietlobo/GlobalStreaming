@@ -624,28 +624,41 @@ $designation = $dashboardData[0]->designation;
 
 <div class="icon-button-group search-icons">
     <?php if ($designation == 'Management' ): ?>
-        <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
-            <i class="fas fa-file-alt"></i>
-        </button>
-        <button class="icon-button" title="Evangelist Registration" onclick="window.location.href='/evngRegistration';">
-            <i class="fas fa-user-plus"></i>
-        </button>
-        <button class="icon-button" title="View Submitted Registrations" onclick="window.location.href='/viewRegistration';">
-            <i class="fas fa-list"></i>
-        </button>
-        <button class="icon-button" title="View all Registrations" onclick="window.location.href='/viewAllRegistrations';">
-            <i class="fas fa-list"></i>
-        </button>
-        <button class="icon-button" title="Approval/Rejection" onclick="window.location.href='/appRegistration';">
-            <i class="fas fa-check-circle"></i>
-        </button>
-        <button class="icon-button seven-day-badge" title="7D Approval" onclick="window.location.href='view7DApproval';">
-            7D ✓
-        </button>
-        <button class="icon-button seven-day-badge" title="7D Approved Candidates" onclick="window.location.href='view7DApproved';">
-            7D List
-        </button>
+        <div class="hamburger-menu">
+            <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
 
+            <div class="dropdown-menu" id="menuDropdown">
+                <button class="dropdown-item" onclick="window.location.href='/reportManagement';">
+                    <i class="fas fa-file-alt"></i> View Report
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='/evngRegistration';">
+                    <i class="fas fa-user-plus"></i> Evangelist Registration
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='/viewRegistration';">
+                    <i class="fas fa-list"></i> View Submitted Registrations
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='/viewAllRegistrations';">
+                    <i class="fas fa-list"></i> View All Registrations
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='/appRegistration';">
+                    <i class="fas fa-check-circle"></i> Approval / Rejection
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='view7DApproval';">
+                    <i class="fas fa-check-circle"></i> 7D Approval
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='view7DApproved';">
+                    <i class="fas fa-list-alt"></i> 7D Approved Candidates
+                </button>
+            </div>
+        </div>
     <?php endif; ?>
 </div>
 

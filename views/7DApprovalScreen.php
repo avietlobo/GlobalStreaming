@@ -12,8 +12,12 @@
             padding: 20px;
         }
         h2 {
-            text-align: center;
+            margin-bottom: 20px;
+            font-size: 28px;
             color: #333;
+            text-align: center;
+            font-weight: 600;
+            padding: 20px;
         }
         .table-container {
             width: 100%;
@@ -44,7 +48,7 @@
         tbody tr:hover {
             background-color: #f1f1f1;
         }
-        .action-buttons a {
+        .action-buttons .btn {
             text-decoration: none;
             padding: 8px 12px;
             border-radius: 5px;
@@ -52,21 +56,30 @@
             margin: 2px;
             display: inline-block;
             text-align: center;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1.2; /* keeps height consistent */
         }
+
         .approve-btn {
             background-color: #28a745;
             color: white;
         }
+
         .reject-btn {
             background-color: #dc3545;
             color: white;
         }
+
         .approve-btn:hover {
             background-color: #218838;
         }
+
         .reject-btn:hover {
             background-color: #c82333;
         }
+
 
         /* Responsive Design */
         @media screen and (max-width: 768px) {
@@ -115,12 +128,12 @@
             margin-right: 5px;  /* Adjusted margin for a tighter look */
         }
 
+        /* Align logout to the right */
         .header {
             display: flex;
             justify-content: flex-end;
-            padding: 10px 20px;
-            background-color: #ffffff; /* Optional: set to transparent or the same as the body background */
-            box-shadow: none; /* Remove the box-shadow to eliminate the gray line */
+            padding: 10px;
+            background-color: #fff;
         }
 
         .scroll-hint {
@@ -131,12 +144,27 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             user-select: none;
         }
+        /* Align logout to the right */
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            background-color: #f4f4f4;
+        }
+        #logout-link button {
+            margin-left: auto;
+            background-color: #007bff; /* Logout button in red */
+        }
+
+        #logout-link button:hover {
+            background-color: #007bff;
+        }
 
     </style>
 </head>
 <body>
 <div class="header">
-    <a class="nav-link" href="#" id="logout-link">
+    <a class="logout-link" href="#" id="logout-link">
         <button type="button" class="btn btn-primary">Logout</button>
     </a>
 </div>
@@ -156,8 +184,10 @@
         <thead>
         <tr>
             <th>Mobile</th>
-            <th>Record Date</th>
             <th>Participant Name</th>
+            <th>Action</th>
+            <th>Record Date</th>
+
             <th>Country</th>
             <th>Language</th>
             <th>Evangelist</th>
@@ -168,7 +198,7 @@
             <th>User ID</th>
             <th>Remark</th>
             <th>Work Group</th>
-            <th>Action</th>
+
             <th>Approved By</th> <!-- Added this line -->
         </tr>
         </thead>
@@ -177,8 +207,20 @@
             <?php foreach ($models as $candidate): ?>
                 <tr>
                     <td><?= htmlspecialchars($candidate->mobile) ?></td>
-                    <td><?= htmlspecialchars($candidate->recordDate) ?></td>
                     <td><?= htmlspecialchars($candidate->participantName) ?></td>
+                    <td class="action-buttons">
+                        <button type="button" class="btn approve-btn"
+                                onclick='openCaretakerModal(<?= json_encode($candidate) ?>)'>
+                            Approve
+                        </button>
+                        <button type="button" class="btn reject-btn"
+                                onclick="window.location.href='/rejectCandidate?id=<?= $candidate->mobile ?>'">
+                            Reject
+                        </button>
+                    </td>
+
+                    <td><?= htmlspecialchars($candidate->recordDate) ?></td>
+
                     <td><?= htmlspecialchars($candidate->country) ?></td>
                     <td><?= htmlspecialchars($candidate->language) ?></td>
                     <td><?= htmlspecialchars($candidate->evangelist) ?></td>
@@ -189,10 +231,7 @@
                     <td><?= htmlspecialchars($candidate->userid) ?></td>
                     <td><?= htmlspecialchars($candidate->remark) ?></td>
                     <td><?= htmlspecialchars($candidate->wgroup) ?></td>
-                    <td class="action-buttons">
-                        <button type="button" class="approve-btn" onclick='openCaretakerModal(<?= json_encode($candidate) ?>)'>Approve</button>
-                        <a href="/rejectCandidate?id=<?= $candidate->mobile ?>" class="reject-btn">Reject</a>
-                    </td>
+
                     <td><?= htmlspecialchars($candidate->approvedBy ?? '') ?></td> <!-- Added this line -->
                 </tr>
             <?php endforeach; ?>
