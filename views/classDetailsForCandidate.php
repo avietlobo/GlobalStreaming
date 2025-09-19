@@ -508,6 +508,16 @@
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
+
+                <!-- New Remarks Field -->
+                <label for="reassign_remark">Remarks:</label>
+                <textarea name="reassign_remark" id="reassign_remark" rows="3"
+                          placeholder="Enter remarks for reassignment"
+                          style="width:100%; padding:8px; border:1px solid #ccc; border-radius:5px;"></textarea>
+
+
+
+
                 <div class="form-group" id="reassignSection" style="display: none;">
                     <button type="button" class="btn btn-warning" onclick="sendReassignRequest()">🔁 Reassign</button>
                 </div>
@@ -737,11 +747,19 @@
     <script>
         const candidateMobile = "<?= htmlspecialchars($mobile) ?>";
         const candidateName = "<?= htmlspecialchars($participant) ?>";
+
+
+
         function sendReassignRequest() {
             const colleague = document.getElementById("colleague").value;
             const language = document.getElementById("language").value;
+            const remarks = document.getElementById("reassign_remark").value.trim();
             if (!colleague) {
                 alert("Please select a colleague.");
+                return;
+            }
+            if (!remarks) {
+                alert("Please enter remarks before reassigning.");
                 return;
             }
 
@@ -752,6 +770,8 @@
             data.append("assigned_by", "<?= $_SESSION['evngName'] ?? '' ?>");
             data.append("assigned_to", colleague);
             data.append("remarks", "Word sharing reassignment request");
+            data.append("remarks", remarks);
+
 
             fetch("/reassignWordSharing", {
                 method: "POST",

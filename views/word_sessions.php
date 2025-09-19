@@ -192,7 +192,7 @@
     <table>
         <thead>
         <tr>
-            <th>ID</th>
+
             <th>Mobile</th>
             <th>Candidate Name</th>
             <th>Status</th>
@@ -202,6 +202,7 @@
             <th>Language</th>
             <th>Assigned By</th>
             <th>Created At</th>
+            <th>ID</th>
 
         </tr>
         </thead>
@@ -209,7 +210,7 @@
         <?php if (!empty($sessions)): ?>
             <?php foreach ($sessions as $session): ?>
                 <tr>
-                    <td><?= htmlspecialchars($session->id) ?></td>
+
                     <td><?= htmlspecialchars($session->mobile) ?></td>
                     <td><?= htmlspecialchars($session->candidateName) ?></td>
                     <td>
@@ -244,6 +245,7 @@
                     <td><?= htmlspecialchars($session->language) ?></td>
                     <td><?= htmlspecialchars($session->assigned_by) ?></td>
                     <td><?= htmlspecialchars($session->created_at) ?></td>
+                    <td><?= htmlspecialchars($session->id) ?></td>
 
 
                 </tr>
