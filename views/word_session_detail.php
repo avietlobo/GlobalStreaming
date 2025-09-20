@@ -119,6 +119,114 @@
         .card.completed  { border-left-color: #28a745; }
         .card.missed     { border-left-color: #dc3545; }
         .card.cancelled  { border-left-color: #6c757d; }
+        .section-header {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px 0;
+            padding: 10px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .separator {
+            border-top: 2px solid #333;
+            margin: 5px 0 10px 0;
+        }
+
+        .section-detail {
+            font-size: 1rem;
+            margin: 3px 0;
+        }
+
+        /* Back button */
+        .back-link {
+            display:inline-block;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            text-decoration:none;
+            color:#007bff;
+            font-size: 14px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1em;
+        }
+
+        .header-left h2 {
+            margin: 0;
+            font-size: 1.3em;
+            color: #1e90ff;
+            font-weight: 600;
+        }
+
+        .header-left h3 {
+            margin: 2px 0 0 0;
+            font-size: 0.95em;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .participant-badge {
+            background: #eaf3ff;
+            color: #1e90ff;
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        /* Elegant Add Session Button */
+        .header-right .add-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0.35em 0.7em;
+            font-size: 0.85em;
+            font-weight: 500;
+            border-radius: 6px;
+            border: 1px solid #0d6efd;
+            background: #ffffff;
+            color: #0d6efd;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .header-right .add-btn .btn-icon {
+            font-size: 1em;
+        }
+
+        .header-right .add-btn:hover {
+            background: #0d6efd;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        /* Mobile adjustment */
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5em;
+            }
+            .header-right {
+                align-self: stretch;
+            }
+            .header-right .add-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+
 
 
     </style>
@@ -127,17 +235,22 @@
 
 <div class="container">
 
-    <div class="button-group">
-        <button type="button" class="btn back-btn" onclick="window.location.href='/getWordSessionsApproved'">← Back</button>
-    </div>
-    <div class="header">
-        <div class="header-left">
-            <h2>✝️ Word Sessions</h2>
-            <span class="participant-badge">👤 <?= htmlspecialchars($participant) ?></span>
-            <h3>📜 Previous Sessions</h3>
+<!--    <div class="button-group">-->
+<!--        <button type="button" class="btn back-btn" onclick="window.location.href='/getWordSessionsApproved'">← Back</button>-->
+<!--    </div>-->
 
+    <a class="back-link" href="/getWordSessionsApproved">← Back </a>
+
+        <div class="section-header">
+            <div class="section-title">✝️ Word Sessions</div>
+            <div class="separator"></div>
+            <div class="section-detail">👤 Candidate: Hamcrest</div>
+            <div class="section-detail">📜 Previous Sessions</div>
         </div>
-        <button class="btn add-btn" onclick="openSessionModal()">➕ Add Word Session</button>
+    <div class="header-right">
+        <button class="btn add-btn" onclick="openSessionModal()">
+            <span class="btn-icon">➕</span> Add Session
+        </button>
     </div>
 
     <div class="card-container" id="wordSessionsCards">

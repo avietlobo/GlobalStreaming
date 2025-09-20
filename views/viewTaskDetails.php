@@ -651,10 +651,29 @@ $disableOtherTabs = !$alreadyRegistered; // disable if candidate not registered
 <div id="tabsContainer" style="<?= $showTabs ? '' : 'display:none;' ?>; margin-top: 30px;">
     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
         <button class="tab-btn" onclick="openTab('tab1')">Register Candidate since Positive</button>
-        <button class="tab-btn" onclick="openTab1('tab2')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Streaming Classes</button>
-        <button class="tab-btn" onclick="openTab1('tab3')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Word sharing</button>
-        <button class="tab-btn" onclick="openTab1('tab4')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Home mission</button>
-        <button class="tab-btn" onclick="openTab1('tab5')"<?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>Online Sathvartha</button>
+    <button class="tab-btn"
+                onclick="openTab1('tab2')"
+            <?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>
+            <?= $disableOtherTabs ? '🔒 Streaming Classes' : 'Streaming Classes' ?>
+        </button>
+
+        <button class="tab-btn"
+                onclick="openTab1('tab3')"
+            <?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>
+            <?= $disableOtherTabs ? '🔒 Word sharing' : 'Word sharing' ?>
+        </button>
+
+        <button class="tab-btn"
+                onclick="openTab1('tab4')"
+            <?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>
+            <?= $disableOtherTabs ? '🔒 Home mission' : 'Home mission' ?>
+        </button>
+
+        <button class="tab-btn"
+                onclick="openTab1('tab5')"
+            <?= $disableOtherTabs ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : '' ?>>
+            <?= $disableOtherTabs ? '🔒 Online Sathvartha' : 'Online Sathvartha' ?>
+        </button>
     </div>
 
 

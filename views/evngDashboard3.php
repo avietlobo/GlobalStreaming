@@ -478,7 +478,7 @@ $designation = $dashboardData[0]->designation;
             </button>
 
             <button class="dropdown-item" onclick="window.location.href='mylangPref';">
-                <i class="fas fa-language"></i> Language Pref
+                <i class="fas fa-language"></i> Word Session Language Preference
             </button>
         </div>
     </div>

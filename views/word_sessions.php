@@ -173,6 +173,16 @@
             background: #0056b3;
         }
 
+        /* Back button */
+        .back-link {
+            display:inline-block;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            text-decoration:none;
+            color:#007bff;
+            font-size: 14px;
+        }
+
     </style>
 
     <script>
