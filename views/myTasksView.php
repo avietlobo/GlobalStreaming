@@ -440,7 +440,7 @@ function getCountryCode($countryName) {
         <?php endforeach; ?>
     </select>
 
-    <button type="submit" style="padding: 6px 12px; background: var(--accent-color); color: white; border: none; border-radius: 6px;">Filter</button>
+<!--    <button type="submit" style="padding: 6px 12px; background: var(--accent-color); color: white; border: none; border-radius: 6px;">Filter</button>-->
 </form>
 
 <?php

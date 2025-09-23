@@ -134,15 +134,24 @@
                 <label>🗣️ Language:
                     <input type="text" name="filter[language]" value="<?= htmlspecialchars($_GET['filter']['language'] ?? '') ?>">
                 </label>
-                <label>👨‍💼 Assigned To:
-                    <input type="text" name="filter[assignedTo]" value="<?= htmlspecialchars($_GET['filter']['assignedTo'] ?? '') ?>">
-                </label>
+        <label>👨‍💼 Assigned To:
+            <input type="text" id="assignedToFilter" placeholder="Enter name">
+            <label style="margin-left: 10px;">
+                <input type="checkbox" id="assignedToBlankFilter"> 📭 Show Unassigned Only
+            </label>
+        </label>
+        <button type="button" onclick="applyFrontendFilters()" style="background-color: #007BFF; color: white;">🔍 Apply Filters</button>
+<!--        <button type="button" onclick="clearFrontendFilters()" style="background-color: #6c757d; color: white; margin-left: 5px;">❌ Clear All</button>-->
 
                 <label>📌 Status:
                     <input type="text" name="filter[status]" value="<?= htmlspecialchars($_GET['filter']['status'] ?? '') ?>">
                 </label>
                 <button type="submit" style="background-color: #007BFF; color: white;">🔍 Apply Filters</button>
-
+        <!-- ✅ Clear All Filters button -->
+        <a href="/viewAllTelecallersList"
+           style="background-color: #6c757d; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; margin-left: 5px;">
+            ❌ Clear All
+        </a>
     </form>
 <!--    <form action="/bulkAssignTelecaller" method="POST">-->
         <form id="assignForm" action="/bulkAssignTelecaller" method="POST">
@@ -155,8 +164,9 @@
                     <th><input type="checkbox" id="select-all"></th>
                     <th>📱 Mobile</th>
                     <th>👤 Name</th>
+                    <th>📌 Status</th>
                     <th>📅 Record Date</th>
-                    <th>📌 Type</th>
+
                     <th>📧 Email</th>
                     <th>🌐 Source</th>
                     <th>🇮🇳 Country</th>
@@ -167,7 +177,10 @@
                     <th>🗣️ Language</th>
                     <th>👨‍💼 Assigned To</th>
                     <th>📞 Call Date</th>
-                    <th>📌 Status</th>
+                    <th>📌 Type</th>
+
+
+
                 </tr>
                 </thead>
                 <tbody>
@@ -180,7 +193,6 @@
                             <!-- Hidden fields to submit all details -->
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][name]" value="<?= htmlspecialchars($record->name) ?>">
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][record_date]" value="<?= htmlspecialchars($record->record_date) ?>">
-                            <input type="hidden" name="contacts[<?= $record->mobile ?>][type]" value="<?= htmlspecialchars($record->type) ?>">
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][email]" value="<?= htmlspecialchars($record->email) ?>">
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][source]" value="<?= htmlspecialchars($record->source) ?>">
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][country]" value="<?= htmlspecialchars($record->country) ?>">
@@ -189,12 +201,15 @@
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][group_name]" value="<?= htmlspecialchars($record->group_name) ?>">
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][fellowship]" value="<?= htmlspecialchars($record->fellowship) ?>">
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][language]" value="<?= htmlspecialchars($record->language) ?>">
+                            <input type="hidden" name="contacts[<?= $record->mobile ?>][type]" value="<?= htmlspecialchars($record->type) ?>">
 
                         </td>
                         <td><?= htmlspecialchars($record->mobile) ?></td>
                         <td><?= htmlspecialchars($record->name) ?></td>
+                        <td><?= htmlspecialchars($record->status ?? '') ?></td>
+
                         <td><?= htmlspecialchars($record->record_date) ?></td>
-                        <td><?= htmlspecialchars($record->type) ?></td>
+
                         <td><?= htmlspecialchars($record->email) ?></td>
                         <td><?= htmlspecialchars($record->source) ?></td>
                         <td><?= htmlspecialchars($record->country) ?></td>
@@ -205,7 +220,7 @@
                         <td><?= htmlspecialchars($record->language) ?></td>
                         <td><?= htmlspecialchars($record->assignedTo ?? '') ?></td>
                         <td><?= htmlspecialchars($record->callDate ?? '') ?></td>
-                        <td><?= htmlspecialchars($record->status ?? '') ?></td>
+                        <td><?= htmlspecialchars($record->type) ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -454,5 +469,40 @@
         ⏳ Assigning... Please wait
     </div>
 </div>
+<script>
+    function applyFrontendFilters() {
+        const assignedToValue = document.getElementById('assignedToFilter').value.toLowerCase();
+        const showUnassigned = document.getElementById('assignedToBlankFilter').checked;
+
+        const rows = document.querySelectorAll("table tbody tr");
+
+        rows.forEach(row => {
+            const assignedToCell = row.querySelector("td:nth-child(14)"); // 14th column = Assigned To
+            const assignedToText = (assignedToCell.textContent || "").trim().toLowerCase();
+
+            let visible = true;
+
+            if (showUnassigned) {
+                // Only show rows where AssignedTo is blank
+                visible = assignedToText === "";
+            } else if (assignedToValue) {
+                // Filter by entered text
+                visible = assignedToText.includes(assignedToValue);
+            }
+
+            row.style.display = visible ? "" : "none";
+        });
+    }
+
+    function clearFrontendFilters() {
+        document.getElementById('assignedToFilter').value = "";
+        document.getElementById('assignedToBlankFilter').checked = false;
+
+        // Reset all rows
+        const rows = document.querySelectorAll("table tbody tr");
+        rows.forEach(row => row.style.display = "");
+    }
+</script>
+
 </body>
 </html>
