@@ -336,6 +336,71 @@
         }
 
 
+        .required {
+            color: #d9534f;  /* subtle bootstrap red */
+            margin-left: 3px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .required {
+            color: #d9534f;   /* Professional red */
+            margin-left: 3px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .note {
+            font-size: 0.85em;
+            color: #6c757d;   /* Subtle gray */
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Required star */
+        .required {
+            color: #d9534f;   /* Bootstrap-style red */
+            margin-left: 3px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        /* Note under the form */
+        .note {
+            font-size: 0.85em;
+            color: #6c757d;   /* Subtle gray */
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Highlight invalid required fields */
+        input:required:invalid,
+        select:required:invalid,
+        textarea:required:invalid {
+            border: 1px solid #d9534f;
+            background-color: #fff5f5;  /* very light red background */
+            outline: none;
+        }
+
+        /* When user focuses, give a stronger red border */
+        input:required:invalid:focus,
+        select:required:invalid:focus,
+        textarea:required:invalid:focus {
+            border-color: #c9302c;
+            box-shadow: 0 0 4px rgba(217, 83, 79, 0.6);
+        }
+
+        /* When valid, show green border */
+        input:required:valid,
+        select:required:valid,
+        textarea:required:valid {
+            border: 1px solid #28a745;
+            background-color: #f9fffa;  /* soft green background */
+        }
+
+
+
+
 
     </style>
 </head>
@@ -355,16 +420,16 @@
     <div class="modal-content">
         <h3>Edit Task</h3>
         <form id="editForm">
-            <label>Mobile*</label>
+            <label for="editMobile">Mobile <span class="required">*</span></label>
             <input type="text" name="mobile" id="editMobile" readonly>
 
-            <label>Candidate Name</label>
-            <input type="text" name="name" id="editName">
+            <label for="editName">Candidate Name <span class="required">*</span></label>
+            <input type="text" name="name" id="editName" required>
 
 <!--            <label>Country</label>-->
 <!--            <input type="text" name="country" id="editCountry" readonly>-->
 
-            <label>Country</label>
+            <label for="editCountry">Country <span class="required">*</span></label>
             <select name="country" id="editCountry" required>
                 <option value="Afghanistan">Afghanistan</option>
                 <option value="Albania">Albania</option>
@@ -565,13 +630,13 @@
                 <option value="Zambia">Zambia</option>
             </select>
 
-            <label>City</label>
+            <label for="editCity">City <span class="required">*</span></label>
             <input type="text" name="city" id="editCity">
 
 <!--            <label>Language</label>-->
 <!--            <input type="text" name="language" id="editLanguage" readonly>-->
 
-            <label>Language</label>
+            <label for="editLanguage">Language <span class="required">*</span></label>
             <select name="language" id="editLanguage" required>
                 <option value="English">English</option>
                 <option value="Malayalam">Malayalam</option>
@@ -591,10 +656,10 @@
 
 
 
-            <label>Call Date*</label>
+            <label for="editCallDate">Call Date <span class="required">*</span></label>
             <input type="date" name="call_date" id="editCallDate" required>
 
-            <label>Calling Status*</label>
+            <label for="editStatus">Calling Status <span class="required">*</span></label>
             <select name="status" id="editStatus" required>
                 <option value="">Select</option>
                 <option value="Positive">Positive</option>
@@ -604,8 +669,11 @@
                 <option value="Ready for Sathvartha">Ready for Sathvartha</option>
             </select>
 
-            <label>Remark*</label>
+            <label for="editRemark">Remark <span class="required">*</span></label>
             <textarea name="remark" id="editRemark" required></textarea>
+
+            <!-- Footnote -->
+            <p class="note"><span class="required">*</span> Required fields</p>
 
             <div class="modal-actions">
                 <button type="button" class="cancel-btn" onclick="closeModal()">❌ Cancel</button>

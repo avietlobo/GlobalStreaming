@@ -430,14 +430,20 @@ function getCountryCode($countryName) {
     <select name="country" style="padding: 6px; border-radius: 6px;">
         <option value="">All Countries</option>
         <?php
-        $countries = array_unique(array_map(fn($t) => $t['country'], $tasks));
+        $countries = array_unique(array_filter(array_map(fn($t) => trim($t['country']), $tasks)));
         sort($countries);
+
         foreach ($countries as $c):
             ?>
             <option value="<?= htmlspecialchars($c) ?>" <?= ($_GET['country'] ?? '') === $c ? 'selected' : '' ?>>
                 <?= htmlspecialchars($c) ?>
             </option>
         <?php endforeach; ?>
+
+
+
+
+
     </select>
 
 <!--    <button type="submit" style="padding: 6px 12px; background: var(--accent-color); color: white; border: none; border-radius: 6px;">Filter</button>-->
