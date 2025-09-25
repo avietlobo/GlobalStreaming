@@ -8,7 +8,7 @@ return [
     'Malayalam' => 44,
     'Hindi' => 34,
     'Tamil' => 53,
-    'Italian' => 40,
+    'Italian' => 52,
     'Portuguese' => 45,
     'French' => 35,
     'Arabic' => 35,
