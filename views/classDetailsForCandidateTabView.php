@@ -140,13 +140,13 @@
 <body>
 <div class="container">
     <div class="button-container">
-        <a href="#" class="back-arrow" id="backArrow" title="Go Back">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-width="3" stroke="currentColor" fill="none"/></svg>
-            Back
-        </a>
-        <a href="#" id="logout-link">
-            <button>Logout</button>
-        </a>
+<!--        <a href="#" class="back-arrow" id="backArrow" title="Go Back">-->
+<!--            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-width="3" stroke="currentColor" fill="none"/></svg>-->
+<!--            Back-->
+<!--        </a>-->
+<!--        <a href="#" id="logout-link">-->
+<!--            <button>Logout</button>-->
+<!--        </a>-->
     </div>
 
     <div class="card">

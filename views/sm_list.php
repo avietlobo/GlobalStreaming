@@ -456,7 +456,7 @@
         const rows = document.querySelectorAll("table tbody tr");
 
         rows.forEach(row => {
-            const assignedToCell = row.querySelector("td:nth-child(14)"); // 14th column = Assigned To
+            const assignedToCell = row.querySelector("td:nth-child(15)"); // 14th column = Assigned To
             const assignedToText = (assignedToCell.textContent || "").trim().toLowerCase();
 
             let visible = true;

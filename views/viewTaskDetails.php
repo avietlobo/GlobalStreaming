@@ -1770,11 +1770,20 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                 if (data.success) {
                     alert("Updated successfully!");
                     closeModal();
+                    // ✅ Refresh the page after short delay
+                    setTimeout(() => {
+                        location.reload();
+                    }, 800);
 
                     // Show tabs if status is Positive
                     if (status === "Positive") {
                         document.getElementById("tabsContainer").style.display = "block";
                     }
+
+                    // ✅ Refresh the page after short delay
+                    setTimeout(() => {
+                        location.reload();
+                    }, 800);
 
                 } else {
                     alert("Update failed: " + data.message);
