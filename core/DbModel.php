@@ -2235,7 +2235,16 @@ GROUP BY language;";
             $where[] = "d.language LIKE ?";
             $params[] = "%" . $filters['language'] . "%";
         }
-        if (!empty($filters['assignedTo'])) {
+//        if (!empty($filters['assignedTo'])) {
+//            $where[] = "t.assignedTo LIKE ?";
+//            $params[] = "%" . $filters['assignedTo'] . "%";
+//        }
+
+        // ✅ Assigned To filter
+        if (!empty($filters['unassignedOnly'])) {
+            // Show only records where assignedTo is NULL or empty string
+            $where[] = "(t.assignedTo IS NULL OR t.assignedTo = '')";
+        } elseif (!empty($filters['assignedTo'])) {
             $where[] = "t.assignedTo LIKE ?";
             $params[] = "%" . $filters['assignedTo'] . "%";
         }
@@ -2319,10 +2328,21 @@ GROUP BY language;";
             $where[] = "d.language LIKE ?";
             $params[] = "%" . $filters['language'] . "%";
         }
-        if (!empty($filters['assignedTo'])) {
-            $where[] = "t.assignedTo LIKE ?";
-            $params[] = "%" . $filters['assignedTo'] . "%";
-        }
+//        if (!empty($filters['assignedTo'])) {
+//            $where[] = "t.assignedTo LIKE ?";
+//            $params[] = "%" . $filters['assignedTo'] . "%";
+//        }
+
+        // ✅ Assigned To filter
+    if (!empty($filters['unassignedOnly'])) {
+        // Show only records where assignedTo is NULL or empty string
+        $where[] = "(t.assignedTo IS NULL OR t.assignedTo = '')";
+    } elseif (!empty($filters['assignedTo'])) {
+        $where[] = "t.assignedTo LIKE ?";
+        $params[] = "%" . $filters['assignedTo'] . "%";
+    }
+
+
 
         if (!empty($filters['status'])) {
             $where[] = "t.status LIKE ?";

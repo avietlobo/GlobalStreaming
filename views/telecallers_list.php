@@ -134,13 +134,23 @@
                 <label>🗣️ Language:
                     <input type="text" name="filter[language]" value="<?= htmlspecialchars($_GET['filter']['language'] ?? '') ?>">
                 </label>
+<!--        <label>👨‍💼 Assigned To:-->
+<!--            <input type="text" id="assignedToFilter" placeholder="Enter name">-->
+<!--            <label style="margin-left: 10px;">-->
+<!--                <input type="checkbox" id="assignedToBlankFilter"> 📭 Show Unassigned Only-->
+<!--            </label>-->
+<!--        </label>-->
         <label>👨‍💼 Assigned To:
-            <input type="text" id="assignedToFilter" placeholder="Enter name">
-            <label style="margin-left: 10px;">
-                <input type="checkbox" id="assignedToBlankFilter"> 📭 Show Unassigned Only
-            </label>
+            <input type="text" name="filter[assignedTo]"
+                   value="<?= htmlspecialchars($_GET['filter']['assignedTo'] ?? '') ?>"
+                   placeholder="Enter name">
         </label>
-        <button type="button" onclick="applyFrontendFilters()" style="background-color: #007BFF; color: white;">🔍 Apply Filters</button>
+        <label style="margin-left: 10px;">
+            <input type="checkbox" name="filter[unassignedOnly]"
+                   value="1" <?= isset($_GET['filter']['unassignedOnly']) ? 'checked' : '' ?>>
+            📭 Show Unassigned Only
+        </label>
+<!--        <button type="button" onclick="applyFrontendFilters()" style="background-color: #007BFF; color: white;">🔍 Apply Filters</button>-->
 <!--        <button type="button" onclick="clearFrontendFilters()" style="background-color: #6c757d; color: white; margin-left: 5px;">❌ Clear All</button>-->
 
                 <label>📌 Status:
