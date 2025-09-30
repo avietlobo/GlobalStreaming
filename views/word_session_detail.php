@@ -244,7 +244,7 @@
         <div class="section-header">
             <div class="section-title">✝️ Word Sessions</div>
             <div class="separator"></div>
-            <div class="section-detail">👤 Candidate: Hamcrest</div>
+            <div class="section-detail">👤 Candidate: <?= htmlspecialchars($participant) ?></div>
             <div class="section-detail">📜 Previous Sessions</div>
         </div>
     <div class="header-right">

@@ -92,6 +92,11 @@
                 <label>🌐 Source:
                     <input type="text" name="filter[source]" value="<?= htmlspecialchars($_GET['filter']['source'] ?? '') ?>">
                 </label>
+                <label>👤 Name:
+                    <input type="text" name="filter[name]"
+                           value="<?= htmlspecialchars($_GET['filter']['name'] ?? '') ?>">
+                </label>
+
                 <label>📱 Mobile:
                     <input type="text" name="filter[mobile]" value="<?= htmlspecialchars($_GET['filter']['mobile'] ?? '') ?>">
                 </label>

@@ -2231,6 +2231,14 @@ GROUP BY language;";
             $where[] = "d.fellowship LIKE ?";
             $params[] = "%" . $filters['fellowship'] . "%";
         }
+
+        // ✅ Name filter
+        if (!empty($filters['name'])) {
+            $where[] = "d.name LIKE ?";
+            $params[] = "%" . $filters['name'] . "%";
+        }
+
+
         if (!empty($filters['language'])) {
             $where[] = "d.language LIKE ?";
             $params[] = "%" . $filters['language'] . "%";
@@ -2328,6 +2336,14 @@ GROUP BY language;";
             $where[] = "d.language LIKE ?";
             $params[] = "%" . $filters['language'] . "%";
         }
+
+        // ✅ Name filter
+        if (!empty($filters['name'])) {
+            $where[] = "d.name LIKE ?";
+            $params[] = "%" . $filters['name'] . "%";
+        }
+
+
 //        if (!empty($filters['assignedTo'])) {
 //            $where[] = "t.assignedTo LIKE ?";
 //            $params[] = "%" . $filters['assignedTo'] . "%";
@@ -3178,7 +3194,7 @@ ORDER BY
     {
 
         $stmt = self::prepare("
-        SELECT mobile, candidateName, language
+        SELECT mobile, candidateName, language, remarks AS remark
         FROM word_sharing_approval
         WHERE assigned_to = :assigned_to
         and status = 'Approved'
@@ -3195,7 +3211,7 @@ ORDER BY
     {
 
         $stmt = self::prepare("
-        SELECT mobile, name, city, country, language, status, callDate, remarks
+        SELECT mobile, name, city, country, language, status, callDate, remarks AS remark
         FROM telecaller_sm
         WHERE reassignedTo = :name
         ORDER BY callDate DESC

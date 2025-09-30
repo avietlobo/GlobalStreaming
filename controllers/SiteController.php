@@ -696,6 +696,7 @@ use DateTime;
 //         echo $mobile;
          $language = $_GET['language'] ?? '';
          $participant = $_GET['participant'] ?? '';
+         //echo $participant;
 
          if (empty($mobile)) {
              echo "Mobile number missing!";
@@ -720,7 +721,7 @@ use DateTime;
      }
 
 
-     public function getWordSessionsApproved(Request $request)
+     public function getWordSessionsApprovedBKP(Request $request)
      {
          $evangelist = Application::$app->session->get('nameFinal');
 
@@ -760,6 +761,72 @@ use DateTime;
                  $dummySession->status             = $candidate['activeStatus'];
                  $dummySession->remark            = $candidate['remark'];
                  $dummySession->source             = 'Non CSV';
+                 $mergedSessions[] = $dummySession;
+             }
+         }
+
+         $this->setLayout('main1');
+         return $this->render('mywordsessions', [
+             'sessions' => $mergedSessions
+         ]);
+     }
+
+
+
+     public function getWordSessionsApproved(Request $request)
+     {
+         $evangelist = Application::$app->session->get('nameFinal');
+
+         $sessions  = WordSessionModel::getWordSessionsAssigned($evangelist);
+         $sessions2 = WordSessionModel::getWordSessionsAssignedWithoutCSV($evangelist);
+
+         $distinctMobiles = array_unique(array_map(function($session2) {
+             return $session2->mobile;
+         }, $sessions2));
+
+         $sessions3 = WordSessionModel::getWordSessionsCandidatesWithoutCSV($distinctMobiles);
+
+         // Map sessions by mobile
+         $sessionsMap = [];
+         foreach ($sessions as $session) {
+             $sessionsMap[$session->mobile] = $session;
+         }
+
+         // Map word_sharing_approval sessions by mobile
+         $sessions2Map = [];
+         foreach ($sessions2 as $s2) {
+             $sessions2Map[$s2->mobile] = $s2;
+         }
+
+         $mergedSessions = [];
+         foreach ($sessions3 as $candidate) {
+             $mobile = $candidate['mobile'];
+             $candRemark = trim((string)($candidate['remark'] ?? ''));
+             $wsaRemark  = isset($sessions2Map[$mobile]) ? trim((string)($sessions2Map[$mobile]->remark ?? '')) : '';
+             $teleRemark = isset($sessionsMap[$mobile]) ? trim((string)($sessionsMap[$mobile]->remark ?? '')) : '';
+
+             // pick first non-empty
+             $finalRemark = $candRemark !== '' ? $candRemark : ($wsaRemark !== '' ? $wsaRemark : $teleRemark);
+
+             if (isset($sessionsMap[$mobile])) {
+                 $session = $sessionsMap[$mobile];
+                 $session->participantName   = $candidate['participantName'];
+                 $session->candidateCountry  = $candidate['country'];
+                 $session->candidateLanguage = $candidate['language'];
+                 $session->remark            = $finalRemark;
+                 $session->source            = 'CSV';
+                 $mergedSessions[] = $session;
+             } else {
+                 $dummySession = new \stdClass();
+                 $dummySession->mobile   = $mobile;
+                 $dummySession->name     = $candidate['participantName'];
+                 $dummySession->city     = 'N/A';
+                 $dummySession->country  = $candidate['country'];
+                 $dummySession->language = $candidate['language'];
+                 $dummySession->callDate = null;
+                 $dummySession->status   = $candidate['activeStatus'];
+                 $dummySession->remark   = $finalRemark;
+                 $dummySession->source   = isset($sessions2Map[$mobile]) ? 'Non CSV' : 'Non CSV';
                  $mergedSessions[] = $dummySession;
              }
          }
