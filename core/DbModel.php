@@ -3319,7 +3319,7 @@ ORDER BY
             END AS session_name
         FROM word_session 
         WHERE mobile = :mobile 
-        ORDER BY session_date DESC
+        ORDER BY session_id ASC
     ");
 
         $stmt->bindParam(':mobile', $mobile);
