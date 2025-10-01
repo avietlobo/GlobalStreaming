@@ -368,6 +368,12 @@
 
     document.getElementById('sessionScheduleForm').addEventListener('submit', function (e) {
         e.preventDefault();
+
+        const saveBtn = this.querySelector("button[type='submit']");
+        if (saveBtn.disabled) return; // 🚫 already clicked once
+        saveBtn.disabled = true;
+
+
         const formData = new FormData(this);
 
         fetch('/saveWordSessionByReassignedEvangelist', { method: 'POST', body: formData })
@@ -376,7 +382,8 @@
                 if (data.success) { closeSessionModal(); loadWordSessions(); }
                 else { alert(data.message); }
             })
-            .catch(err => alert("Error: " + err));
+            .catch(err => alert("Error: " + err))
+            .finally(() => { saveBtn.disabled = false; }); // ✅ re-enable
     });
 
     function loadWordSessions() {
@@ -454,6 +461,10 @@
 
     document.getElementById("editSessionForm").addEventListener("submit", function(e) {
         e.preventDefault();
+
+        // const saveBtn = this.querySelector("button[type='submit']");
+        // saveBtn.disabled = true;   // 🚫 disable immediately
+
         const data = new URLSearchParams(new FormData(this));
 
         fetch("/updateSession", {

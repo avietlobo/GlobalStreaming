@@ -121,7 +121,6 @@
         <button type="button" class="btn btn-primary">Logout</button>
     </a>
 </div>
-
 <a class="back-link" href="javascript:history.back()">← Back </a>
 <div class="top-bar">
     <h2>Update Appointment</h2>

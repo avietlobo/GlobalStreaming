@@ -866,6 +866,12 @@ use DateTime;
              $remark     = $body['remark'] ?? null;
              $evangelist = $body['evangelist'] ?? null;
 
+             // Clean remark: decode HTML entities and normalize newlines
+             if ($remark !== null) {
+                 $remark = html_entity_decode($remark, ENT_QUOTES | ENT_HTML5);
+                 $remark = str_replace("\r\n", "\n", $remark); // normalize Windows newlines
+             }
+
 
              CandidateModel::updateSession($date,$status,$evangelist,$remark,$id);
 

@@ -59,7 +59,7 @@ abstract class DbModel extends Model
 
 
     public static function saveAppointment(
-        $candidate_mobile, $event_name,
+        $candidate_mobile, $event_name,$event_name1,
         $appointment_datetime_ist, $appointment_datetime_candidate_zone,
         $candidate_country, $place, $class_status,
         $sathvartha_organizer_name, $panel_member_name, $caring_team_member_name, $local_organizer_name,
@@ -71,7 +71,7 @@ abstract class DbModel extends Model
         $tableName = 'appointments';
 
         $stmt = self::prepare("INSERT INTO $tableName (
-        candidate_mobile, event_name,
+        candidate_mobile, event_name,event_name_hs,
         appointment_datetime_ist, appointment_datetime_candidate_zone,
         candidate_country, place, class_status,
         sathvartha_organizer_name, panel_member_name, caring_team_member_name, local_organizer_name,
@@ -80,7 +80,7 @@ abstract class DbModel extends Model
         sathvartha_attendance_status, sathvartha_feedback,
         caring_google_meet_status, caring_status, travel_status,transport_required,caring_google_meet_date
     ) VALUES (
-        :candidate_mobile, :event_name,
+        :candidate_mobile, :event_name, :event_name_hs,
         :appointment_datetime_ist, :appointment_datetime_candidate_zone,
         :candidate_country, :place, :class_status,
         :sathvartha_organizer_name, :panel_member_name, :caring_team_member_name, :local_organizer_name,
@@ -93,6 +93,8 @@ abstract class DbModel extends Model
         // Bind parameters
         $stmt->bindParam(':candidate_mobile', $candidate_mobile);
         $stmt->bindParam(':event_name', $event_name);
+        $stmt->bindParam(':event_name_hs', $event_name1);
+
         $stmt->bindParam(':appointment_datetime_ist', $appointment_datetime_ist);
         $stmt->bindParam(':appointment_datetime_candidate_zone', $appointment_datetime_candidate_zone);
         $stmt->bindParam(':candidate_country', $candidate_country);
@@ -122,7 +124,7 @@ abstract class DbModel extends Model
         $stmt->bindParam(':transport_required', $transportStatus);
         $stmt->bindParam(':caring_google_meet_date', $caringistDateTime);
 
-        echo $candidate_mobile;
+        echo $event_name1;
 
         echo '<pre>';
         var_dump($stmt->queryString);

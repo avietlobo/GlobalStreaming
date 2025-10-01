@@ -1729,7 +1729,7 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                     'Session ${session.session_id}',
                     '${session.session_date}',
                     '${session.status || ""}',
-                    '${session.remark || ""}',
+                   decodeURIComponent('${encodeURIComponent(session.remark || "")}'),
                      '${session.evangelist || ""}'
                 )">✏️ Edit</button>
     </div>
@@ -1888,6 +1888,9 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
         document.getElementById("editSessionId").value = id;
         document.getElementById("editSessionDate").value = dateTime;
         document.getElementById("editSessionStatus").value = status;
+        remark = remark || '';
+        // normalize newlines and decode any stray HTML entity markers if needed
+        remark = remark.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
         document.getElementById("editSessionRemark").value = remark;
         document.getElementById("editSessionEvangelist").value = evangelist;
 

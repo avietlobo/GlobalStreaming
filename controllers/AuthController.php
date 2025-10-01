@@ -1401,6 +1401,7 @@ $sessionNames = [
             $data = [
                 $_POST['candidateMobile'] ?? null,
                 $_POST['event_name'] ?? null,
+                $_POST['event_name1'] ?? null, // <-- Add this
                 $_POST['istDateTimeZ'] ?? null,
                 $_POST['istDateTime'] ?? $_POST['istDateTimeZ'], // fallback if no candidate time provided
                 $_POST['country'] ?? null,
