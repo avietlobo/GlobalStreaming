@@ -136,15 +136,16 @@
 <!--                </label>-->
 <!---->
 <!--                <button type="button" onclick="applyFrontendFilters()" style="background-color: #007BFF; color: white;">🔍 Apply Filters</button>-->
-                <a href="/viewAllSMList"
-                   style="background-color: #6c757d; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; margin-left: 5px;">
-                    ❌ Clear All
-                </a>
+
 
                 <label>📌 Status:
                     <input type="text" name="filter[status]" value="<?= htmlspecialchars($_GET['filter']['status'] ?? '') ?>">
                 </label>
                 <button type="submit" style="background-color: #007BFF; color: white;">🔍 Apply Filters</button>
+                <a href="/viewAllSMList"
+                   style="background-color: #6c757d; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; margin-left: 5px;">
+                    ❌ Clear All
+                </a>
             </div>
         </div>
     </form>
