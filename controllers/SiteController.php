@@ -806,7 +806,8 @@ use DateTime;
              $teleRemark = isset($sessionsMap[$mobile]) ? trim((string)($sessionsMap[$mobile]->remark ?? '')) : '';
 
              // pick first non-empty
-             $finalRemark = $candRemark !== '' ? $candRemark : ($wsaRemark !== '' ? $wsaRemark : $teleRemark);
+             //$finalRemark = $candRemark !== '' ? $candRemark : ($wsaRemark !== '' ? $wsaRemark : $teleRemark);
+             $finalRemark = isset($sessions2Map[$mobile]) ? trim((string)($sessions2Map[$mobile]->remark ?? '')) : '';
 
              if (isset($sessionsMap[$mobile])) {
                  $session = $sessionsMap[$mobile];
@@ -1431,7 +1432,7 @@ public function getClassNumberDetailsForCandidate()
 
         $evangelists = CandidateModel::getLanguageEvangelists($language);
 
-               
+
 
         // Render the view with the user details
         $this->setLayout('main1');
