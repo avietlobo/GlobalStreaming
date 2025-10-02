@@ -223,9 +223,9 @@
         </table>
     </div>
 
-    <div class="add-button-container">
-        <button id="addButton" class="primary">Add</button>
-    </div>
+<!--    <div class="add-button-container">-->
+<!--        <button id="addButton" class="primary">Add</button>-->
+<!--    </div>-->
 
     <script type="text/javascript">
         // Handle row clicks to pass query parameters
