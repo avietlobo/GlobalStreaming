@@ -377,6 +377,177 @@
                 to {opacity: 1; transform: translateY(0);}
             }
 
+            /* Section title */
+            .form-title {
+                font-size: 1.4rem;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 16px;
+                border-left: 5px solid #1DA1F2;
+                padding-left: 10px;
+            }
+
+            /* Card for form */
+            .form-card {
+                background: #fff;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+                margin-bottom: 20px;
+            }
+
+            /* Form groups */
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .form-group label {
+                font-weight: 600;
+                display: block;
+                margin-bottom: 6px;
+                color: #444;
+            }
+
+            /* Inputs */
+            .form-group input[type="text"] {
+                width: 100%;
+                padding: 10px 12px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                background-color: #f9f9f9;
+                transition: border-color 0.2s ease;
+            }
+
+            .form-group input[type="text"]:focus {
+                border-color: #1DA1F2;
+                outline: none;
+            }
+
+            /* Readonly style */
+            input[readonly] {
+                background-color: #e9ecef;
+                color: #6c757d;
+                cursor: not-allowed;
+            }
+
+            /* Radio buttons */
+            .radio-group {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .radio-option {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                cursor: pointer;
+                font-size: 0.95rem;
+                color: #333;
+            }
+
+            .radio-option input[type="radio"] {
+                accent-color: #1DA1F2; /* Modern browsers */
+            }
+
+            /* Actions */
+            .form-actions {
+                margin-top: 20px;
+                text-align: right;
+            }
+            .form-actions button {
+                background-color: #1DA1F2;
+                color: #fff;
+                padding: 10px 18px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 0.95rem;
+                font-weight: 600;
+                border: none;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+            .form-actions button:hover {
+                background-color: #0d8ddb;
+                transform: translateY(-2px);
+            }
+
+
+            /* Card section wrapper */
+            .card-section {
+                background: #fff;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+                margin-bottom: 20px;
+            }
+
+            /* Labels */
+            .card-section label {
+                display: block;
+                font-weight: 600;
+                margin-bottom: 6px;
+                color: #444;
+            }
+
+            /* Select input */
+            .card-section select {
+                width: 100%;
+                padding: 10px 12px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                margin-bottom: 16px;
+                transition: border-color 0.2s ease;
+            }
+
+            .card-section select:focus {
+                border-color: #1DA1F2;
+                outline: none;
+            }
+
+            /* Textarea */
+            .card-section textarea {
+                width: 100%;
+                padding: 10px 12px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                margin-bottom: 16px;
+                resize: vertical;
+                transition: border-color 0.2s ease;
+            }
+
+            .card-section textarea:focus {
+                border-color: #1DA1F2;
+                outline: none;
+            }
+
+            /* Reassign button */
+            .reassign-btn {
+                background-color: #FFC107; /* warning style */
+                color: #fff;
+                padding: 10px 18px;
+                border-radius: 8px;
+                border: none;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 0.95rem;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .reassign-btn:hover {
+                background-color: #e0a800;
+                transform: translateY(-2px);
+            }
+
+            /* Hide sections dynamically */
+            #colleagueSection, #reassignSection {
+                transition: all 0.3s ease;
+            }
+
+
+
 
 
 
@@ -483,47 +654,56 @@
             <button id="addButton" class="primary">Add</button>
         </div>
 
-        <h5>Word sharing to Candidate</h5>
-        <form id="wordSharingForm" method="post" action="/saveWordSharingAssignment">
-            <div class="form-group">
-                <label for="language">Language</label>
-                <input type="text" name="language" id="language" value="<?= htmlspecialchars($language) ?>" readonly>
-            </div>
+        <h5 class="form-title">Word Sharing to Candidate</h5>
 
-            <div class="form-group">
-                <label>Assignment Type</label><br>
-                <label><input type="radio" name="assignmentType" value="self" checked> I will take the topics</label><br>
-                <label><input type="radio" name="assignmentType" value="colleague"> Assign to Evangelist</label>
-            </div>
-
-            <div class="form-group" id="colleagueSection" style="display: none;">
-                <label for="colleague">Select Evangelist</label>
-                <select name="colleague" id="colleague">
-                    <option value="">-- Select Evangelist --</option>
-                    <?php if (!empty($evangelists)): ?>
-                        <?php foreach ($evangelists as $evangelist): ?>
-                            <option value="<?= htmlspecialchars($evangelist) ?>">
-                                <?= htmlspecialchars($evangelist) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </select>
-
-                <!-- New Remarks Field -->
-                <label for="reassign_remark">Remarks:</label>
-                <textarea name="reassign_remark" id="reassign_remark" rows="3"
-                          placeholder="Enter remarks for reassignment"
-                          style="width:100%; padding:8px; border:1px solid #ccc; border-radius:5px;"></textarea>
-
-
-
-
-                <div class="form-group" id="reassignSection" style="display: none;">
-                    <button type="button" class="btn btn-warning" onclick="sendReassignRequest()">🔁 Reassign</button>
+        <div class="card form-card">
+            <form id="wordSharingForm" method="post" action="/saveWordSharingAssignment">
+                <div class="form-group">
+                    <label for="language">Language</label>
+                    <input type="text" name="language" id="language"
+                           value="<?= htmlspecialchars($language) ?>" readonly>
                 </div>
-            </div>
 
-            <div class="form-group" id="addBtnSection">
+                <div class="form-group">
+                    <label class="form-label">Assignment Type</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="assignmentType" value="self" checked>
+                            <span>I will take the topics</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="assignmentType" value="colleague">
+                            <span>Assign to Evangelist</span>
+                        </label>
+                    </div>
+                </div>
+
+
+                <div class="form-group card-section" id="colleagueSection" style="display: none;">
+                    <label for="colleague">Select Evangelist</label>
+                    <select name="colleague" id="colleague">
+                        <option value="">-- Select Evangelist --</option>
+                        <?php if (!empty($evangelists)): ?>
+                            <?php foreach ($evangelists as $evangelist): ?>
+                                <option value="<?= htmlspecialchars($evangelist) ?>">
+                                    <?= htmlspecialchars($evangelist) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+
+                    <!-- Remarks Field -->
+                    <label for="reassign_remark">Remarks</label>
+                    <textarea name="reassign_remark" id="reassign_remark" rows="3"
+                              placeholder="Enter remarks for reassignment"></textarea>
+
+                    <div class="form-actions" id="reassignSection" style="display: none;">
+                        <button type="button" class="reassign-btn" onclick="sendReassignRequest()">🔁 Reassign</button>
+                    </div>
+                </div>
+
+
+                <div class="form-group" id="addBtnSection">
                 <button type="button" class="btn btn-primary" onclick="openSessionModal()">Add</button>
             </div>
 
