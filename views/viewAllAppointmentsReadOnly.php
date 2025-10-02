@@ -317,25 +317,32 @@
 </div>
 
 <script>
-    // ----- Search Filter -----
     const searchInput = document.getElementById('searchInput');
     const table = document.getElementById('appointmentsTable');
-    const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    const allRows = [...table.getElementsByTagName('tbody')[0].getElementsByTagName('tr')];
 
-    searchInput.addEventListener('keyup', function() {
-        const filter = this.value.toLowerCase();
-        for (let row of rows) {
-            row.style.display = [...row.cells].some(cell => cell.textContent.toLowerCase().includes(filter)) ? '' : 'none';
-        }
-        setupPagination(); // refresh pagination
-    });
-
-    // ----- Pagination -----
     const rowsPerPage = 10;
     let currentPage = 1;
 
+    // ----- Search Filter -----
+    searchInput.addEventListener('keyup', function() {
+        const filter = this.value.toLowerCase();
+        allRows.forEach(row => {
+            row.dataset.visible = [...row.cells].some(cell =>
+                cell.textContent.toLowerCase().includes(filter)
+            ) ? "true" : "false";
+        });
+        currentPage = 1;
+        setupPagination();
+    });
+
+    function getVisibleRows() {
+        return allRows.filter(r => r.dataset.visible !== "false");
+    }
+
+    // ----- Pagination -----
     function setupPagination() {
-        const visibleRows = [...rows].filter(r => r.style.display !== 'none');
+        const visibleRows = getVisibleRows();
         const totalPages = Math.ceil(visibleRows.length / rowsPerPage);
         const pagination = document.getElementById('pagination');
         pagination.innerHTML = '';
@@ -354,29 +361,40 @@
     }
 
     function displayPage() {
-        const visibleRows = [...rows].filter(r => r.style.display !== 'none');
+        const visibleRows = getVisibleRows();
+
+        // Hide all
+        allRows.forEach(r => r.style.display = 'none');
+
+        // Show only rows for this page
         visibleRows.forEach((row, index) => {
-            row.style.display = (index >= (currentPage-1)*rowsPerPage && index < currentPage*rowsPerPage) ? '' : 'none';
+            if (index >= (currentPage - 1) * rowsPerPage && index < currentPage * rowsPerPage) {
+                row.style.display = '';
+            }
         });
+
+        // Active page button
         const buttons = document.querySelectorAll('.page-btn');
-        buttons.forEach((btn, i) => btn.classList.toggle('active', i+1===currentPage));
+        buttons.forEach((btn, i) => btn.classList.toggle('active', i + 1 === currentPage));
     }
 
-    // initialize
+    // Mark all as visible initially
+    allRows.forEach(r => r.dataset.visible = "true");
     setupPagination();
 
     // ----- Scroll indicator -----
     const tableCard = document.querySelector('.table-card');
     function updateScrollIndicator() {
-        if(tableCard.scrollLeft + tableCard.clientWidth >= tableCard.scrollWidth - 1) {
+        if (tableCard.scrollLeft + tableCard.clientWidth >= tableCard.scrollWidth - 1) {
             tableCard.classList.add('scrolled');
         } else {
             tableCard.classList.remove('scrolled');
         }
     }
     tableCard.addEventListener('scroll', updateScrollIndicator);
-    updateScrollIndicator(); // initialize
+    updateScrollIndicator();
 </script>
+
 
 </body>
 </html>
