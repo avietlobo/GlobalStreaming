@@ -1407,8 +1407,9 @@ public function getClassNumberDetailsForCandidate()
         $candidate = $_GET['candidate'] ?? null;
         //$mobile = isset($_GET['mobile']) ? rawurldecode($_GET['mobile']) : null;
         $mobile = $_GET['mobile'] ?? null;
-        $mobile = urldecode($mobile);
-
+        $mobile = rawurldecode($mobile);
+        //$mobile = urldecode($mobile);
+        //echo $mobile;
 
         $index = $_GET['index'] ?? null;
         Application::$app->session->set('index', $index);
@@ -1421,6 +1422,7 @@ public function getClassNumberDetailsForCandidate()
         // Example: Fetch details based on $username and $candidate
         $userDetails = $registerModel->getUserDetailsByUsername($username,$candidate,$mobile);
         $language= $registerModel->getLanguage($mobile);
+        //echo $language;
 
 //        Application::$app->session->set('userDetails', $userDetails);
 //        echo '<pre>';
@@ -1428,6 +1430,8 @@ public function getClassNumberDetailsForCandidate()
 //        echo '</pre>';
 
         $evangelists = CandidateModel::getLanguageEvangelists($language);
+
+               
 
         // Render the view with the user details
         $this->setLayout('main1');
