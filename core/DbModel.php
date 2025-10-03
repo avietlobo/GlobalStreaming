@@ -3311,12 +3311,17 @@ ORDER BY
             language,
             evangelist,
             remark,
-            CASE session_id
-                WHEN 1 THEN 'Session 1: SALVATION'
-                WHEN 2 THEN 'Session 2: 2ND COMING'
-                WHEN 3 THEN 'Session 3: Appa'
-                WHEN 4 THEN 'Session 4: Church'
-                WHEN 5 THEN 'Session 5: Amma'
+           CASE session_id
+                WHEN 1 THEN 'Salvation, incl plan and 1st coming'
+                WHEN 2 THEN 'God the Father'
+                WHEN 3 THEN 'Second coming incl Signs of Times'
+                WHEN 4 THEN 'He has come, new name'
+                WHEN 5 THEN 'Messenger sent by God'
+                WHEN 6 THEN 'Righteousness'
+                WHEN 7 THEN 'Zion, true Zion'
+                WHEN 8 THEN 'Holy Mother'
+                WHEN 9 THEN 'Church'
+                WHEN 10 THEN 'Good News Retreat'
                 ELSE CONCAT('Session ', session_id)
             END AS session_name
         FROM word_session 
