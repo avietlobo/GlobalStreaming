@@ -44,14 +44,12 @@
             padding-bottom: 12px;
             letter-spacing: 0.5px;
         }
-
         .header {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             padding: 10px 0;
         }
-
         .logout-link {
             padding: 8px 16px;
             font-size: 0.95rem;
@@ -62,12 +60,24 @@
             cursor: pointer;
             transition: background 0.2s ease;
         }
-
         .logout-link:hover {
             background: #0056b3;
         }
 
-
+        /* 🔍 Filter box styling */
+        .filter-box {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        .filter-box input {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 0.95rem;
+            width: 200px;
+        }
     </style>
 </head>
 <body>
@@ -77,25 +87,63 @@
 <a class="back-link" href="/evngDashboard1">← Back </a>
 <h2>📘 My Word Sessions</h2>
 
+<!-- 🔍 Search Filters -->
+<div class="filter-box">
+    <input type="text" id="searchName" placeholder="Search by Name">
+    <input type="text" id="searchMobile" placeholder="Search by Mobile">
+</div>
+
 <?php if (!empty($sessions)): ?>
-    <?php foreach ($sessions as $c): ?>
-        <div class="card" onclick="window.location.href='/wordSessionDetail?mobile=<?= urlencode($c->mobile) ?>&language=<?= urlencode($c->language ?? '') ?>&participant=<?= urlencode($c->name ?? $c->participantName ?? 'N/A') ?>'">
-            <div class="title">
-                📱 <?= htmlspecialchars($c->mobile) ?> - <?= htmlspecialchars($c->name ?? $c->participantName ?? 'N/A') ?>
-                <span style="font-size: 0.8em; background: #007bff; color: white; border-radius: 4px; padding: 2px 6px; margin-left: 10px;">
+    <div id="cardsContainer">
+        <?php foreach ($sessions as $c): ?>
+            <div class="card"
+                 data-name="<?= strtolower(htmlspecialchars($c->name ?? $c->participantName ?? '')) ?>"
+                 data-mobile="<?= htmlspecialchars($c->mobile) ?>"
+                 onclick="window.location.href='/wordSessionDetail?mobile=<?= urlencode($c->mobile) ?>&language=<?= urlencode($c->language ?? '') ?>&participant=<?= urlencode($c->name ?? $c->participantName ?? 'N/A') ?>'">
+                <div class="title">
+                    📱 <?= htmlspecialchars($c->mobile) ?> - <?= htmlspecialchars($c->name ?? $c->participantName ?? 'N/A') ?>
+                    <span style="font-size: 0.8em; background: #007bff; color: white; border-radius: 4px; padding: 2px 6px; margin-left: 10px;">
                     <?= htmlspecialchars($c->source) ?>
                 </span>
+                </div>
+                <div class="info">🌍 <?= htmlspecialchars($c->city ?? 'Unknown') ?>, <?= htmlspecialchars($c->country ?? 'Unknown') ?></div>
+                <div class="info">🗣️ Language: <?= htmlspecialchars($c->language ?? $c->candidateLanguage ?? 'Unknown') ?></div>
+                <div class="info">📅 Last Call: <?= htmlspecialchars($c->callDate ?: 'N/A') ?></div>
+                <div class="info">📌 Status: <?= htmlspecialchars($c->status ?: 'Unassigned') ?></div>
+                <div class="info">📝 Remarks: <?= htmlspecialchars($c->remark ?: 'None') ?></div>
             </div>
-            <div class="info">🌍 <?= htmlspecialchars($c->city ?? 'Unknown') ?>, <?= htmlspecialchars($c->country ?? 'Unknown') ?></div>
-            <div class="info">🗣️ Language: <?= htmlspecialchars($c->language ?? $c->candidateLanguage ?? 'Unknown') ?></div>
-            <div class="info">📅 Last Call: <?= htmlspecialchars($c->callDate ?: 'N/A') ?></div>
-            <div class="info">📌 Status: <?= htmlspecialchars($c->status ?: 'Unassigned') ?></div>
-            <div class="info">📝 Remarks: <?= htmlspecialchars($c->remark ?: 'None') ?></div>
-        </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
+    </div>
 <?php else: ?>
     <p>No sessions found.</p>
 <?php endif; ?>
 
+<script>
+    const nameInput = document.getElementById('searchName');
+    const mobileInput = document.getElementById('searchMobile');
+    const cards = document.querySelectorAll('.card');
+
+    function filterCards() {
+        const nameVal = nameInput.value.toLowerCase();
+        const mobileVal = mobileInput.value;
+
+        cards.forEach(card => {
+            const cardName = card.dataset.name;
+            const cardMobile = card.dataset.mobile;
+
+            const matchesName = cardName.includes(nameVal);
+            const matchesMobile = cardMobile.includes(mobileVal);
+
+            if ((matchesName || nameVal === "") && (matchesMobile || mobileVal === "")) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    }
+
+    nameInput.addEventListener('input', filterCards);
+    mobileInput.addEventListener('input', filterCards);
+</script>
 </body>
 </html>

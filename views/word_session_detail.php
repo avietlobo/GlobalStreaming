@@ -422,7 +422,7 @@
                          <td>${ws.remark || '-'}</td>
                         <td>
                           <button class="btn" onclick="openEditSessionModal(
-                            '${ws.id}', '${ws.session_date}', '${ws.status || ""}', '${ws.remark || ""}', '<?= htmlspecialchars($evangelist) ?>'
+                            '${ws.id}', '${ws.session_date}', '${ws.status || ""}', decodeURIComponent('${encodeURIComponent(ws.remark || "")}'), '<?= htmlspecialchars($evangelist) ?>'
                           )">✏️ Edit</button>
                         </td>
 
