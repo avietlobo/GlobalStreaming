@@ -302,7 +302,7 @@
                 <option value="Spanish">Spanish</option>
             </select>
 
-                <label>Sathvartha Organizer</label>
+                <label>Home Mission Organizer</label>
                 <select name="event_organizer" required>
                     <option value="">-- Select Organizer --</option>
                     <?php foreach ($sathvarthaOrganizers as $organizer): ?>

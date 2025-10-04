@@ -3581,7 +3581,9 @@ ORDER BY
         translation_language = :translation_language,
         total_attended = :total_attended,
         positive_count = :positive_count,
-          attendance_report = :attendance_report
+          attendance_report = :attendance_report,
+           event_link = :event_link,
+        notes = :notes
         WHERE id = :id
     ");
 
@@ -3595,6 +3597,11 @@ ORDER BY
         $stmt->bindValue(':attendance_report', $attendanceReportPath);
         $stmt->bindValue(':total_attended', $totalAttended, \PDO::PARAM_INT);
         $stmt->bindValue(':positive_count', $positiveCount, \PDO::PARAM_INT);
+
+        // ✅ Newly added fields
+        $stmt->bindValue(':event_link', $data['event_link'] ?? null);
+        $stmt->bindValue(':notes', $data['notes'] ?? null);
+
         $stmt->bindValue(':id', $id);
         return $stmt->execute();
     }

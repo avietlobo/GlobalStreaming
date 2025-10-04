@@ -1313,6 +1313,14 @@ $sessionNames = [
 
         if ($request->isPost()) {
             $data = $request->getBody();
+
+            // Normalize notes line breaks
+            if (isset($data['notes'])) {
+                // Convert \r\n or \r to \n
+                $data['notes'] = str_replace(["\r\n", "\r"], "\n", $data['notes']);
+            }
+
+
             $totalAttended = $_POST['total_attended'] ?? 0;
             $positiveCount = $_POST['positive_count'] ?? 0;
 
