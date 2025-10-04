@@ -142,18 +142,33 @@
             width: 90%;
             max-width: 600px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;  /* ✅ Important for absolute positioning inside */
         }
 
         .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            width: 34px;
+            height: 34px;
+            background: #ddd;   /* ✅ darker gray so always visible */
+            border: 2px solid #ccc;  /* ✅ clear circle outline */
+            border-radius: 50%;
+            color: #333;
+            font-size: 20px;
             font-weight: bold;
+            line-height: 30px;
+            text-align: center;
             cursor: pointer;
+            transition: background 0.3s, transform 0.2s, color 0.3s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
 
         .close:hover {
-            color: #000;
+            background: #e74c3c;   /* bright red */
+            border-color: #c0392b;
+            color: #fff;
+            transform: scale(1.1);
         }
         .logout-button {
             background-color: #007bff;  /* softer red */

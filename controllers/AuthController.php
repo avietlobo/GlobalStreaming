@@ -2108,7 +2108,7 @@ $sessionNames = [
             try {
                 $saved = SathvarthaEventModel::saveHomeMissionEvent($eventData);
                 if ($saved) {
-                    Application::$app->response->redirect('/evngDashboard1');
+                    Application::$app->response->redirect('/addNewHomeEvent');
                 } else {
                     $errorMessage = "❌ Something went wrong. Please try again.";
                 }
@@ -2238,7 +2238,7 @@ $sessionNames = [
             try {
                 $saved = SathvarthaEventModel::saveSathvarthaEvent($eventData);
                 if ($saved) {
-                    Application::$app->response->redirect('/evngDashboard1');
+                    Application::$app->response->redirect('/addNewSathEvent');
                 } else {
                     $errorMessage = "❌ Something went wrong. Please try again.";
                 }
