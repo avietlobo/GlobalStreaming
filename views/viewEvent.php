@@ -23,10 +23,15 @@
 
         .card h2 {
             margin-top: 0;
-            font-size: 24px;
-            color: #333;
+            font-size: 22px;
+            color: #2c3e50;
             text-align: center;
+            background: #eef4fc;
+            padding: 12px;
+            border-radius: 8px;
+            border-bottom: 2px solid #4a90e2;
         }
+
 
         .detail-item {
             margin: 15px 0;
@@ -77,6 +82,19 @@
                 gap: 10px;
             }
         }
+
+        .event-title {
+            background: #f9fafb;
+            border-left: 4px solid #4a90e2;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 500;
+            color: #444;
+            line-height: 1.4;
+            word-break: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+        }
     </style>
 </head>
 <body>
@@ -84,9 +102,13 @@
 <div class="card">
     <h2>📋 Event Details</h2>
 
-    <div class="detail-item">
-        <strong>Event:</strong> <?= htmlspecialchars($event['event_name']) ?>
+    <div class="detail-item event-name">
+        <strong>Event:</strong>
+        <div class="event-title">
+            <?= htmlspecialchars($event['event_name']) ?>
+        </div>
     </div>
+
     <div class="detail-item">
         <strong>Dates:</strong> <?= $event['start_date'] ?> → <?= $event['end_date'] ?>
     </div>

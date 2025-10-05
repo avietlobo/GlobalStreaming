@@ -227,6 +227,58 @@
             transform: translateY(0);
         }
 
+
+        h3 {
+            word-wrap: break-word;          /* ✅ Break long words */
+            overflow-wrap: break-word;      /* ✅ Modern support */
+            white-space: normal;            /* ✅ Allow text wrapping */
+            max-width: 100%;                /* ✅ Prevent overflow beyond card */
+        }
+
+        .event-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 300px;
+            transition: box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden; /* ✅ prevents overlap */
+        }
+
+        .event-card:hover {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .event-card h3 {
+            margin: 0;
+            font-size: 18px;
+            padding-right: 35px; /* ✅ leaves space for edit icon */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .edit-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            background: #f1f1f1;
+            border-radius: 50%;
+            padding: 5px 7px;
+            line-height: 1;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .edit-icon:hover {
+            background-color: #007bff;
+            color: white;
+            transform: scale(1.1);
+        }
+
+
     </style>
 </head>
 <body>
@@ -333,18 +385,9 @@
     <h2 style="margin-top: 40px;">📅 All Events</h2>
     <div style="display: flex; flex-wrap: wrap; gap: 20px;">
         <?php foreach ($existingEvents as $event): ?>
-            <div style="
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-            width: 100%;
-            max-width: 300px;
-            transition: box-shadow 0.2s ease;
-            position: relative;
-        ">
+            <div class="event-card">
                 <a href="/event-details1?id=<?= $event['id'] ?>" style="text-decoration: none; color: inherit;">
-                    <h3 style="margin: 0; font-size: 18px;"><?= htmlspecialchars($event['event_name']) ?></h3>
+                    <h3><?= htmlspecialchars($event['event_name']) ?></h3>
                     <p style="margin: 6px 0; font-size: 14px; color: #555;">
                         🗓 <?= htmlspecialchars($event['start_date']) ?> → <?= htmlspecialchars($event['end_date']) ?><br>
                         🌐 <?= htmlspecialchars($event['main_language']) ?>
@@ -356,13 +399,12 @@
                 </a>
 
                 <!-- ✏️ Edit icon -->
-                <a href="/edit-event1?id=<?= $event['id'] ?>" style="position: absolute; top: 10px; right: 10px; text-decoration: none;">
-                    <span style="font-size: 16px;">✏️</span>
-                </a>
+                <a href="/edit-event1?id=<?= $event['id'] ?>" class="edit-icon">✏️</a>
             </div>
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
+
 
 <script>
     const modal = document.getElementById("eventModal");

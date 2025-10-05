@@ -25,6 +25,14 @@
             text-align: center;
             margin-bottom: 25px;
             color: #2c3e50;
+            font-size: 1.4rem;
+            word-wrap: break-word;         /* ✅ Allows long words to wrap */
+            overflow-wrap: break-word;     /* ✅ Modern browsers */
+            white-space: normal;           /* ✅ Allows wrapping */
+            line-height: 1.4;
+            max-width: 100%;               /* ✅ Prevent overflow from container */
+            padding: 0 10px;               /* ✅ Adds breathing space on sides */
+            word-break: break-word;        /* ✅ Handles very long URLs/names */
         }
 
         label {

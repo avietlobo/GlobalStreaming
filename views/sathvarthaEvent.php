@@ -229,6 +229,22 @@
             padding: 0.5rem 1rem;
         }
 
+        h3 {
+            word-wrap: break-word;          /* ✅ Break long words */
+            overflow-wrap: break-word;      /* ✅ Modern support */
+            white-space: normal;            /* ✅ Allow text wrapping */
+            max-width: 100%;                /* ✅ Prevent overflow beyond card */
+        }
+
+        .event-card h3 {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            max-width: calc(100% - 40px); /* ✅ leaves space for edit icon */
+            display: block;
+            margin-right: 40px; /* ✅ ensures text doesn’t go under icon */
+        }
+
 
     </style>
 </head>
@@ -336,16 +352,16 @@
     <h2 style="margin-top: 40px;">📅 All Events</h2>
     <div style="display: flex; flex-wrap: wrap; gap: 20px;">
         <?php foreach ($existingEvents as $event): ?>
-            <div style="
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-            width: 100%;
-            max-width: 300px;
-            transition: box-shadow 0.2s ease;
-            position: relative;
-        ">
+            <div class="event-card" style="
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 300px;
+    transition: box-shadow 0.2s ease;
+    position: relative;
+">
                 <a href="/event-details?id=<?= $event['id'] ?>" style="text-decoration: none; color: inherit;">
                     <h3 style="margin: 0; font-size: 18px;"><?= htmlspecialchars($event['event_name']) ?></h3>
                     <p style="margin: 6px 0; font-size: 14px; color: #555;">
