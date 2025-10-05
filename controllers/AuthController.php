@@ -1309,6 +1309,7 @@ $sessionNames = [
         $id = $_GET['id'] ?? null;
         $event = SathvarthaEventModel::getEventById($id);
         $evangelistModel = new EvangelistModel();
+        $evangelist = Application::$app->session->get('nameFinal');
 
         $sathvarthaOrganizers = EvangelistModel::findSathvarthaOrganizers();
         $localOrganizers = EvangelistModel::findlocalOrganizers();

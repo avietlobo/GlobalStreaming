@@ -3540,6 +3540,7 @@ ORDER BY
     public static function updateEvent1($id, $data,$totalAttended,$positiveCount,$attendanceReportPath)
     {
         $db = Application::$app->db;
+        $evangelist = Application::$app->session->get('nameFinal');
         // ✅ Get UTC datetime
         $utcNow = new \DateTime('now', new \DateTimeZone('UTC'));
         $utcTime = $utcNow->format('Y-m-d H:i:s');
@@ -3556,7 +3557,8 @@ ORDER BY
         attendance_report = :attendance_report,
         event_link = :event_link,
         notes = :notes,
-            updated_at = :updated_at
+         updated_at = :updated_at,
+        updated_by = :updated_by
         WHERE id = :id
     ");
 
@@ -3575,6 +3577,7 @@ ORDER BY
         $stmt->bindValue(':event_link', $data['event_link'] ?? null);
         $stmt->bindValue(':notes', $data['notes'] ?? null);
         $stmt->bindValue(':updated_at', $utcTime);
+        $stmt->bindValue(':updated_by', $evangelist);
 
         $stmt->bindValue(':id', $id);
         return $stmt->execute();
@@ -3583,6 +3586,7 @@ ORDER BY
     public static function updateEvent($id, $data,$totalAttended,$positiveCount,$attendanceReportPath)
     {
         $db = Application::$app->db;
+        $evangelist = Application::$app->session->get('nameFinal');
         // ✅ Get UTC datetime
         $utcNow = new \DateTime('now', new \DateTimeZone('UTC'));
         $utcTime = $utcNow->format('Y-m-d H:i:s');
@@ -3599,7 +3603,8 @@ ORDER BY
           attendance_report = :attendance_report,
            event_link = :event_link,
         notes = :notes,
-            updated_at = :updated_at
+            updated_at = :updated_at,
+            updated_by = :updated_by
         WHERE id = :id
     ");
 
@@ -3618,6 +3623,7 @@ ORDER BY
         $stmt->bindValue(':event_link', $data['event_link'] ?? null);
         $stmt->bindValue(':notes', $data['notes'] ?? null);
         $stmt->bindValue(':updated_at', $utcTime);
+        $stmt->bindValue(':updated_by', $evangelist);
 
         $stmt->bindValue(':id', $id);
         return $stmt->execute();
