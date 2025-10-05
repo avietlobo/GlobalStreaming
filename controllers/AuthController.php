@@ -2104,6 +2104,7 @@ $sessionNames = [
 
         if ($request->isPost()) {
             $body = $request->getBody();
+            $utcNow = new \DateTime('now', new \DateTimeZone('UTC'));
             $eventData = [
                 'event_name' => $body['event_name'],
                 'start_date' => $body['start_date'],
@@ -2116,8 +2117,8 @@ $sessionNames = [
                 'notes' => $body['notes'],
                 'created_by' => $assignedTo,
                 'updated_by' => $assignedTo,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'created_at' => $utcNow->format('Y-m-d H:i:s'),
+                'updated_at' => $utcNow->format('Y-m-d H:i:s'),
             ];
 
             try {
@@ -2234,6 +2235,7 @@ $sessionNames = [
 
         if ($request->isPost()) {
             $body = $request->getBody();
+            $utcNow = new \DateTime('now', new \DateTimeZone('UTC'));
             $eventData = [
                 'event_name' => $body['event_name'],
                 'start_date' => $body['start_date'],
@@ -2246,8 +2248,8 @@ $sessionNames = [
                 'notes' => $body['notes'],
                 'created_by' => $assignedTo,
                 'updated_by' => $assignedTo,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'created_at' => $utcNow->format('Y-m-d H:i:s'),
+                'updated_at' => $utcNow->format('Y-m-d H:i:s'),
             ];
 
             try {

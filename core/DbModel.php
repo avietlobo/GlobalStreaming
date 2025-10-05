@@ -3540,6 +3540,9 @@ ORDER BY
     public static function updateEvent1($id, $data,$totalAttended,$positiveCount,$attendanceReportPath)
     {
         $db = Application::$app->db;
+        // ✅ Get UTC datetime
+        $utcNow = new \DateTime('now', new \DateTimeZone('UTC'));
+        $utcTime = $utcNow->format('Y-m-d H:i:s');
         $stmt = $db->prepare("UPDATE home_mission_events SET
         event_name = :event_name,
         start_date = :start_date,
@@ -3552,7 +3555,8 @@ ORDER BY
         positive_count = :positive_count,
         attendance_report = :attendance_report,
         event_link = :event_link,
-        notes = :notes
+        notes = :notes,
+            updated_at = :updated_at
         WHERE id = :id
     ");
 
@@ -3570,6 +3574,7 @@ ORDER BY
         // ✅ Newly added fields
         $stmt->bindValue(':event_link', $data['event_link'] ?? null);
         $stmt->bindValue(':notes', $data['notes'] ?? null);
+        $stmt->bindValue(':updated_at', $utcTime);
 
         $stmt->bindValue(':id', $id);
         return $stmt->execute();
@@ -3578,6 +3583,9 @@ ORDER BY
     public static function updateEvent($id, $data,$totalAttended,$positiveCount,$attendanceReportPath)
     {
         $db = Application::$app->db;
+        // ✅ Get UTC datetime
+        $utcNow = new \DateTime('now', new \DateTimeZone('UTC'));
+        $utcTime = $utcNow->format('Y-m-d H:i:s');
         $stmt = $db->prepare("UPDATE sathvartha_events SET
         event_name = :event_name,
         start_date = :start_date,
@@ -3590,7 +3598,8 @@ ORDER BY
         positive_count = :positive_count,
           attendance_report = :attendance_report,
            event_link = :event_link,
-        notes = :notes
+        notes = :notes,
+            updated_at = :updated_at
         WHERE id = :id
     ");
 
@@ -3608,6 +3617,7 @@ ORDER BY
         // ✅ Newly added fields
         $stmt->bindValue(':event_link', $data['event_link'] ?? null);
         $stmt->bindValue(':notes', $data['notes'] ?? null);
+        $stmt->bindValue(':updated_at', $utcTime);
 
         $stmt->bindValue(':id', $id);
         return $stmt->execute();
