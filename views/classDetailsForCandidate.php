@@ -965,6 +965,9 @@
                     if (response.success) {
                         alert("✅ Reassignment request sent successfully!");
                         loadApprovalStatus(); // 🔄 Refresh the history immediately
+                        // ✅ Clear dropdown and remarks after successful reassignment
+                        document.getElementById("colleague").selectedIndex = 0;
+                        document.getElementById("reassign_remark").value = "";
                     } else {
                         alert("❌ Failed: " + response.message);
                     }
