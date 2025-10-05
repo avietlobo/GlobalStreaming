@@ -114,6 +114,23 @@
         select, input {
             margin-bottom: 15px;
         }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccd1d9;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            transition: border 0.3s ease;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            border-color: #2980b9;
+            background-color: #fff;
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -147,9 +164,9 @@
 
         <!-- Sathvartha Organizer Dropdown -->
         <!-- Sathvartha Organizer Dropdown -->
-        <label for="event_organizer">Sathvartha Organizer</label><br>
+        <label for="event_organizer">Home Mission Organizer</label><br>
         <select name="event_organizer" id="event_organizer" required>
-            <option value="">-- Select Sathvartha Organizer --</option>
+            <option value="">-- Select Home Mission Organizer --</option>
             <?php foreach ($sathvarthaOrganizers as $organizer): ?>
                 <?php $name = htmlspecialchars($organizer->evngName); ?>
                 <option value="<?= $name ?>" <?= ($event['event_organizer'] === $organizer->evngName) ? 'selected' : '' ?>>
@@ -195,6 +212,16 @@
             }
             ?>
         </select>
+
+        <label for="event_link">Event Link (Zoom/Google Meet/Youtube)</label>
+        <input type="url" name="event_link" id="event_link"
+               placeholder="https://..."
+               value="<?= htmlspecialchars($event['event_link'] ?? '') ?>">
+
+        <label for="notes">Notes</label>
+        <textarea name="notes" id="notes" rows="4" placeholder="Additional event details..."><?= htmlspecialchars($event['notes'] ?? '') ?></textarea>
+
+
 
         <!-- Total Attended -->
         <label for="total_attended">Total Attended</label>

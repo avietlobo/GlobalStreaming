@@ -91,7 +91,7 @@
         <strong>Dates:</strong> <?= $event['start_date'] ?> → <?= $event['end_date'] ?>
     </div>
     <div class="detail-item">
-        <strong>Sathvartha Organizer:</strong> <?= htmlspecialchars($event['event_organizer']) ?>
+        <strong>Home Mission Organizer:</strong> <?= htmlspecialchars($event['event_organizer']) ?>
     </div>
     <div class="detail-item">
         <strong>Local Organizer:</strong> <?= htmlspecialchars($event['local_organizer']) ?>
