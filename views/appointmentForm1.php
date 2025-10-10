@@ -113,6 +113,38 @@
             background-color: #eee;
             color: #888;
         }
+
+        .container {
+            max-width: 1000px;  /* wider layout for better balance */
+            margin: 30px auto;
+            background-color: var(--container-bg);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow-x: hidden; /* ✅ prevent horizontal overflow */
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* ✅ auto-wrap columns */
+            gap: 20px; /* better spacing */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 0; /* ✅ ensures proper text wrapping */
+        }
+
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            width: 100%; /* ✅ input never exceeds parent width */
+            box-sizing: border-box;
+        }
+
     </style>
 </head>
 <body>
