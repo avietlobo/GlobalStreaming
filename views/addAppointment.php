@@ -142,7 +142,7 @@
     <form action="/saveAppointment" method="POST">
         <div class="form-group">
             <label for="event_name">Event Name</label>
-            <select name="event_name" id="event_name" required>
+            <select name="event_name" id="event_name">
                 <option value="">-- Select Event --</option>
                 <?php foreach ($eventNames as $eventName): ?>
                     <option value="<?= htmlspecialchars($eventName) ?>">
@@ -154,7 +154,7 @@
 
         <div class="form-group">
             <label for="event_name1">Home Mission Name</label>
-            <select name="event_name1" id="event_name1">
+            <select name="event_name1" id="event_name1" required>
                 <option value="">-- Select Event --</option>
                 <?php foreach ($eventNames1 as $eventName): ?>
                     <option value="<?= htmlspecialchars($eventName) ?>">
@@ -197,6 +197,15 @@
             <label for="classFrom">Highest Class Number Attended</label>
             <input type="text" id="classFrom" name="classFrom"
                    value="<?= htmlspecialchars($highesClassNumberAttended ?? 'No class streamed yet') ?>" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="homeMissionAttendance">Home Mission Attendance</label>
+            <select id="homeMissionAttendance" name="homeMissionAttendance" required>
+                <option value="">-- Select Attendance --</option>
+                <option value="Attended">Attended</option>
+                <option value="Not Attended">Not Attended</option>
+            </select>
         </div>
 
 

@@ -113,6 +113,37 @@
             background-color: #eee;
             color: #888;
         }
+
+        .container {
+            max-width: 1000px;  /* wider layout for better balance */
+            margin: 30px auto;
+            background-color: var(--container-bg);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow-x: hidden; /* ✅ prevent horizontal overflow */
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* ✅ auto-wrap columns */
+            gap: 20px; /* better spacing */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 0; /* ✅ ensures proper text wrapping */
+        }
+
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            width: 100%; /* ✅ input never exceeds parent width */
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -182,6 +213,16 @@
             <label for="classFrom">Highest Class Number Attended</label>
             <input type="text" id="classFrom" name="classFrom"
                    value="<?= htmlspecialchars($highesClassNumberAttended ?? 'No class streamed yet') ?>" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="homeMissionAttended">Home Mission Attended</label>
+            <select name="homeMissionAttended" id="homeMissionAttended" required>
+                <option value="">-- Select --</option>
+                <option value="Attended" <?= ($homeMissionAttended ?? '') === 'Attended' ? 'selected' : '' ?>>Attended</option>
+                <option value="Not Attended" <?= ($homeMissionAttended ?? '') === 'Not Attended' ? 'selected' : '' ?>>Not Attended</option>
+                <option value="Pending" <?= ($homeMissionAttended ?? '') === 'Pending' ? 'selected' : '' ?>>Pending</option>
+            </select>
         </div>
 
 

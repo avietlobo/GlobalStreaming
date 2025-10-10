@@ -1414,10 +1414,14 @@ $sessionNames = [
     public function saveAppointment(Request $request, Response $response)
     {
         if ($request->isPost()) {
+            // Helper function to convert empty strings to null
+            $nullIfEmpty = fn($value) => isset($value) && trim($value) !== '' ? $value : null;
+
             $data = [
                 $_POST['candidateMobile'] ?? null,
-                $_POST['event_name'] ?? null,
+                $nullIfEmpty($_POST['event_name'] ?? null),
                 $_POST['event_name1'] ?? null, // <-- Add this
+
                 $_POST['istDateTimeZ'] ?? null,
                 $_POST['istDateTime'] ?? $_POST['istDateTimeZ'], // fallback if no candidate time provided
                 $_POST['country'] ?? null,
@@ -1442,11 +1446,14 @@ $sessionNames = [
                 $_POST['travelStatus'] ?? null,
                 $_POST['transportStatus'] ?? null,
                 $_POST['caringistDateTime'] ?? null,
+                $_POST['homeMissionAttendance'] ?? null, // ✅ New field added here
 
 
 
 
             ];
+
+            error_log('Data to save: ' . print_r($data, true));
 
              //echo  $_POST['candidateMobile'];
             $saved = SathvarthaEventModel::saveAppointment(...$data);
@@ -1722,7 +1729,8 @@ $sessionNames = [
             'travelStatus'                   => 'travel_status',
             'transportRequired'              => 'transport_required',
             'caringistDateTime'              => 'caring_google_meet_date',
-            'event_name1'                  => 'event_name_hs'
+            'event_name1'                  => 'event_name_hs',
+            'homeMissionAttended'     => 'home_mission_attendance'
 
         ];
 
@@ -1786,6 +1794,8 @@ $sessionNames = [
             'evangelist' =>$evangelist ?? '',
             'mobile' => $appointment['candidate_mobile'] ?? '',
             'country' => $appointment['candidate_country'] ?? '',
+            'homeMissionAttended' => $appointment['home_mission_attendance'] ?? '',
+
             'place' => $appointment['place'] ?? '',
             'appointment_datetime_ist' => $appointment['appointment_datetime_ist'] ?? '',
             'appointment_datetime_candidate_zone ' => $appointment['appointment_datetime_candidate_zone'] ?? '',
@@ -1836,7 +1846,7 @@ $sessionNames = [
 
         $participantName= Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
-
+        echo $appointment['home_mission_attendance'];
 
         return $this->render('appointmentFormCT', [
             'appointment' => $appointment,
@@ -1844,6 +1854,8 @@ $sessionNames = [
             'evangelist' =>$evangelist ?? '',
             'mobile' => $appointment['candidate_mobile'] ?? '',
             'country' => $appointment['candidate_country'] ?? '',
+            'homeMissionAttended' => $appointment['home_mission_attendance'] ?? '',
+
             'place' => $appointment['place'] ?? '',
             'appointment_datetime_ist' => $appointment['appointment_datetime_ist'] ?? '',
             'appointment_datetime_candidate_zone ' => $appointment['appointment_datetime_candidate_zone'] ?? '',
@@ -1922,6 +1934,8 @@ $sessionNames = [
             'caringTeamMember' => $appointment['caring_team_member_name'] ?? '',
             'localOrganizer' => $appointment['local_organizer_name'] ?? '',
             'panelMember' => $appointment['panel_member_name'] ?? '',
+            'homeMissionAttended' => $appointment['home_mission_attendance'] ?? '',
+
             'sathvarthaOrganizer' => $appointment['sathvartha_organizer_name'] ?? '',
             'organizers' => $organizersByDesignation,
             'highesClassNumberAttended' => $highesClassNumberAttended,
@@ -1933,6 +1947,7 @@ $sessionNames = [
             'evangelistFeedback' => $appointment['evangelist_feedback'] ?? '',
             'transportRequired' => $appointment['transport_required'] ?? '',
             'caringGoogleMeetDate' => $appointment['caring_google_meet_date'] ?? ''
+
         ]);
 
     }
@@ -1975,6 +1990,7 @@ $sessionNames = [
             'googleMeetStatus' => $appointment['google_meet_status'] ?? '',
             'caringStatus' => $appointment['caring_status'] ?? '',
             'travelStatus' => $appointment['travel_status'] ?? '',
+            'homeMissionAttended' => $appointment['home_mission_attendance'] ?? '',
             'caringGoogleMeetStatus' => $appointment['caring_google_meet_status'] ?? '',
             'fellowshipStatus' => $appointment['fellowship_status'] ?? '',
             'sathvarthaAttendanceStatus' => $appointment['sathvartha_attendance_status'] ?? '',

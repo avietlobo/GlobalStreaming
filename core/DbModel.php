@@ -66,7 +66,7 @@ abstract class DbModel extends Model
         $google_meet_status, $faith_status, $sathvartha_ready_status, $fellowship_status,
         $evangelist_feedback, $panel_feedback, $local_organizer_feedback, $final_feedback,
         $sathvartha_attendance_status, $sathvartha_feedback,
-        $caring_google_meet_status, $caring_status, $travel_status, $transportStatus,$caringistDateTime
+        $caring_google_meet_status, $caring_status, $travel_status, $transportStatus,$caringistDateTime,$homeMissionAttendance
     ) {
         $tableName = 'appointments';
 
@@ -78,7 +78,7 @@ abstract class DbModel extends Model
         google_meet_status, faith_status, sathvartha_ready_status, fellowship_status,
         evangelist_feedback, panel_feedback, local_organizer_feedback, final_feedback,
         sathvartha_attendance_status, sathvartha_feedback,
-        caring_google_meet_status, caring_status, travel_status,transport_required,caring_google_meet_date
+        caring_google_meet_status, caring_status, travel_status,transport_required,caring_google_meet_date,home_mission_attendance
     ) VALUES (
         :candidate_mobile, :event_name, :event_name_hs,
         :appointment_datetime_ist, :appointment_datetime_candidate_zone,
@@ -87,7 +87,7 @@ abstract class DbModel extends Model
         :google_meet_status, :faith_status, :sathvartha_ready_status, :fellowship_status,
         :evangelist_feedback, :panel_feedback, :local_organizer_feedback, :final_feedback,
         :sathvartha_attendance_status, :sathvartha_feedback,
-        :caring_google_meet_status, :caring_status, :travel_status, :transport_required, :caring_google_meet_date
+        :caring_google_meet_status, :caring_status, :travel_status, :transport_required, :caring_google_meet_date, :home_mission_attendance
     )");
 
         // Bind parameters
@@ -123,12 +123,15 @@ abstract class DbModel extends Model
         $stmt->bindParam(':travel_status', $travel_status);
         $stmt->bindParam(':transport_required', $transportStatus);
         $stmt->bindParam(':caring_google_meet_date', $caringistDateTime);
+        $stmt->bindParam(':home_mission_attendance', $homeMissionAttendance);
 
-        echo $event_name1;
 
-        echo '<pre>';
-        var_dump($stmt->queryString);
-        echo '</pre>';
+//
+//        echo $event_name1;
+//
+//        echo '<pre>';
+//        var_dump($stmt->queryString);
+//        echo '</pre>';
 
 
         if ($stmt->execute()) {

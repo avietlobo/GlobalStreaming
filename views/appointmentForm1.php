@@ -221,6 +221,16 @@
                    value="<?= htmlspecialchars($highesClassNumberAttended ?? 'No class streamed yet') ?>" readonly>
         </div>
 
+        <div class="form-group">
+            <label for="homeMissionAttended">Home Mission Attended</label>
+            <select name="homeMissionAttended" id="homeMissionAttended" required>
+                <option value="">-- Select --</option>
+                <option value="Attended" <?= ($homeMissionAttended ?? '') === 'Attended' ? 'selected' : '' ?>>Attended</option>
+                <option value="Not Attended" <?= ($homeMissionAttended ?? '') === 'Not Attended' ? 'selected' : '' ?>>Not Attended</option>
+                <option value="Pending" <?= ($homeMissionAttended ?? '') === 'Pending' ? 'selected' : '' ?>>Pending</option>
+            </select>
+        </div>
+
 
 
         <div class="form-group">
