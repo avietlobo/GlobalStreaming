@@ -402,6 +402,9 @@
 
 
 
+
+
+
     </style>
 </head>
 <body>
@@ -1541,28 +1544,30 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                         } else {
                             let html = `
                         <h3>🏠 Online Sathvartha Details</h3>
-                        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse; width:100%; text-align:left;">
-                            <thead style="background:#f2f2f2;">
-                                <tr>
-                                    <th>Event</th>
-                                    <th>Date (IST)</th>
-                                    <th>Country</th>
-                                    <th>Place</th>
-                                    <th>Class Status</th>
-                                    <th>Organizer</th>
-                                    <th>Panel Member</th>
-                                    <th>Caring Member</th>
-                                    <th>Faith</th>
-                                    <th>Fellowship</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div style="overflow:auto; background:white; padding:10px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); max-height:500px;">
+                            <table border="1" cellpadding="8" cellspacing="0"
+                                   style="border-collapse:collapse; width:100%; text-align:left; word-wrap:break-word; white-space:normal;">
+                                <thead style="background:#f2f2f2;">
+                                    <tr>
+                                        <th style="min-width:150px;">Event</th>
+                                        <th style="min-width:120px;">Date (IST)</th>
+                                        <th style="min-width:100px;">Country</th>
+                                        <th style="min-width:100px;">Place</th>
+                                        <th style="min-width:110px;">Class Status</th>
+                                        <th style="min-width:120px;">Organizer</th>
+                                        <th style="min-width:120px;">Panel Member</th>
+                                        <th style="min-width:120px;">Caring Member</th>
+                                        <th style="min-width:80px;">Faith</th>
+                                        <th style="min-width:100px;">Fellowship</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                     `;
 
                             data.homeMission.forEach(item => {
                                 html += `
                             <tr>
-                                <td>${item.event_name}</td>
+                                <td style="word-break:break-word;">${item.event_name}</td>
                                 <td>${item.appointment_datetime_ist}</td>
                                 <td>${item.candidate_country}</td>
                                 <td>${item.place}</td>
@@ -1576,8 +1581,13 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                         `;
                             });
 
-                            html += `</tbody></table>`;
+                            html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
                             selectedTab.innerHTML = html;
+
                         }
                     } else {
                         selectedTab.innerHTML = "<p style='color:red;'>❌ Failed to load Home Mission details.</p>";
@@ -1611,6 +1621,8 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                         } else {
                             let html = `
                         <h3>🏠 Home Mission Details</h3>
+                    <div style="overflow-x:auto; background:white; padding:10px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+
                         <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse; width:100%; text-align:left;">
                             <thead style="background:#f2f2f2;">
                                 <tr>
@@ -1646,7 +1658,7 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
                         `;
                             });
 
-                            html += `</tbody></table>`;
+                            html += `</tbody></table> </div>`;
                             selectedTab.innerHTML = html;
                         }
                     } else {

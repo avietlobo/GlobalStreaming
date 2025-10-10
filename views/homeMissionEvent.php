@@ -317,10 +317,10 @@
                 </div>
             <?php endif; ?>
                 <label>Start Date *</label>
-                <input type="date" name="start_date" required>
+                <input type="datetime-local" name="start_date" required>
 
                 <label>End Date *</label>
-                <input type="date" name="end_date" required>
+                <input type="datetime-local" name="end_date" required>
 
             <label>Main Language *</label>
             <select name="main_language" required>

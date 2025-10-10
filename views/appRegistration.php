@@ -425,6 +425,10 @@
                 .finally(() => {
                     // Close the confirmation modal
                     modal.style.display = 'none';
+                    // ✅ Refresh the screen after approval
+                    setTimeout(() => {
+                        location.reload();
+                    }, 500);
                 });
         }
 
@@ -495,6 +499,13 @@
 
                     // Enhanced alert to show the error message
                     alert(`An error occurred while rejecting the record: ${error.message}`);
+                })
+                .finally(() => {
+                    // Close the confirmation modal
+                    // ✅ Refresh the screen after approval
+                    setTimeout(() => {
+                        location.reload();
+                    }, 500);
                 });
         }
     }

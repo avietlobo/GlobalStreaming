@@ -152,10 +152,10 @@
         <input name="event_name" value="<?= htmlspecialchars($event['event_name']) ?>" required>
 
         <label>Start Date</label>
-        <input type="date" name="start_date" value="<?= $event['start_date'] ?>" required>
+        <input type="datetime-local" name="start_date" value="<?= $event['start_date'] ?>" required>
 
         <label>End Date</label>
-        <input type="date" name="end_date" value="<?= $event['end_date'] ?>" required>
+        <input type="datetime-local" name="end_date" value="<?= $event['end_date'] ?>" required>
 
 
 
