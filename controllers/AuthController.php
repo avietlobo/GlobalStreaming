@@ -1692,7 +1692,7 @@ $sessionNames = [
         // Validate JSON
         if (json_last_error() !== JSON_ERROR_NONE) {
             $response->setStatusCode(400);
-            echo 'Invalid JSON data.';
+            echo '❌ Invalid JSON data.';
             return;
         }
 
@@ -1700,7 +1700,7 @@ $sessionNames = [
         $candidateMobile = $postData['candidateMobile'] ?? null;
         if (!$candidateMobile) {
             $response->setStatusCode(400);
-            echo 'Candidate mobile is required.';
+            echo '❌ Candidate mobile is required.';
             return;
         }
 
@@ -1745,22 +1745,28 @@ $sessionNames = [
         // If no fields are being updated
         if (empty($filteredData)) {
             $response->setStatusCode(400);
-            echo 'No valid fields provided for update.';
+            echo '❌ No valid fields provided for update.';
             return;
         }
 
         $id1= Application::$app->session->get('idxtx');
+        echo '<pre>';
+        var_dump($id1);
+        echo '</pre>';
 
         // Perform the DB update
         $updated = CandidateModel::updateChangedAppointmentFields($candidateMobile, $filteredData, true, $id1);
 
         // Send response
         if ($updated) {
-            header('Location: /viewAppointment?id=16');
-            exit;
+
+        echo '<pre>';
+        var_dump('hello');
+        echo '</pre>';
+
+            echo "✅ Update executed successfully.<br>";
         } else {
-            $response->setStatusCode(500);
-            echo 'No changes made or update failed.';
+            echo "⚠️ No rows updated (possibly wrong candidate_mobile or id).<br>";
         }
     }
 
@@ -1768,6 +1774,7 @@ $sessionNames = [
     public function editAppointmentLO(Request $request, Response $response)
     {
         $id = $_GET['id'] ?? null;
+        Application::$app->session->set('idxtx', $id);
         $appointments = CandidateModel::getAppointmentsById($id);
 
 
@@ -1829,8 +1836,9 @@ $sessionNames = [
     public function editAppointmentCT(Request $request, Response $response)
     {
         $id = $_GET['id'] ?? null;
+        Application::$app->session->set('idxtx', $id);
         $appointments = CandidateModel::getAppointmentsById($id);
-
+        //echo $id;
 
         if (!$appointments || empty($appointments)) {
             die("No appointment found.");
@@ -1846,7 +1854,10 @@ $sessionNames = [
 
         $participantName= Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
-        echo $appointment['home_mission_attendance'];
+        //echo $appointment['home_mission_attendance'];
+        //echo $appointment;
+
+
 
         return $this->render('appointmentFormCT', [
             'appointment' => $appointment,
@@ -1890,12 +1901,16 @@ $sessionNames = [
     public function editAppointmentPM(Request $request, Response $response)
     {
         $id = $_GET['id'] ?? null;
+        Application::$app->session->set('idxtx', $id);
 
 
 
 
         $appointments = CandidateModel::getAppointmentsById($id);
 
+//        echo '<pre>';
+//        var_dump($appointments);
+//        echo '</pre>';
 
         if (!$appointments || empty($appointments)) {
             die("No appointment found.");

@@ -1957,6 +1957,10 @@ GROUP BY
         $fieldsToUpdate = [];
         $params = [];
 
+//        echo '<pre>';
+//        var_dump('Jio');
+//        echo '</pre>';
+
         foreach ($filteredData as $column => $value) {
             $fieldsToUpdate[] = "$column = ?";
             $params[] = $value;
@@ -1974,6 +1978,8 @@ GROUP BY
         $params[] = $candidateMobile;
         $params[] = $id1;
 
+//        var_dump($id1);
+
         // Final SQL
 //        $sql = "UPDATE appointments SET " . implode(', ', $fieldsToUpdate) . " WHERE candidate_mobile = ?";
 
@@ -1983,12 +1989,21 @@ GROUP BY
             WHERE candidate_mobile = ? AND id = ?";
 
 
+//        echo '<pre>';
+//        var_dump($sql);
+//        echo '</pre>';
+
+
+
         if ($debug) {
             error_log("DEBUG SQL: $sql");
             error_log("DEBUG PARAMS: " . print_r($params, true));
         }
 
+
+
         $stmt = self::prepare($sql);
+
 
         return $stmt->execute($params);
     }
