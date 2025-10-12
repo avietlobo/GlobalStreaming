@@ -443,6 +443,11 @@ $designation = $dashboardData[0]->designation;
             <button class="dropdown-item" onclick="window.location.href='mylangPref';">
                 <i class="fas fa-language"></i> Word Session Language Preference
             </button>
+
+            <button class="dropdown-item" onclick="window.location.href='mycountryPref';">
+                <i class="fas fa-globe-americas"></i> Word Session Country Preference
+            </button>
+
         </div>
     </div>
 <?php endif; ?>

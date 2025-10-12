@@ -1899,6 +1899,41 @@ GROUP BY
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public static function softUpsertCountries(string $email, array $countries): void
+    {
+        $table = 'evangelist_countries';
+
+        // Deactivate all current countries for this evangelist
+        $deactivate = self::prepare("UPDATE $table SET active = 0 WHERE email = :email");
+        $deactivate->bindParam(':email', $email);
+        $deactivate->execute();
+
+        // Upsert selected countries
+        if (!empty($countries)) {
+            $upsert = self::prepare("
+            INSERT INTO $table (email, country, active)
+            VALUES (:email, :country, 1)
+            ON DUPLICATE KEY UPDATE active = 1
+        ");
+            foreach ($countries as $country) {
+                $country = trim((string)$country);
+                if ($country === '') continue;
+                $upsert->bindParam(':email', $email);
+                $upsert->bindParam(':country', $country);
+                $upsert->execute();
+            }
+        }
+    }
+
+    public static function getActiveCountries(string $email): array
+    {
+        $table = 'evangelist_countries';
+        $stmt = self::prepare("SELECT country FROM $table WHERE email = :email AND active = 1");
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN) ?: [];
+    }
+
 
     public static function getActiveLanguages(string $email): array
     {

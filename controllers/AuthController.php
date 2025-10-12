@@ -1594,6 +1594,51 @@ $sessionNames = [
     }
 
 
+    public function mycountryPref(Request $request, Response $response)
+    {
+        $email = Application::$app->session->get('xtr');
+
+        // Fetch currently active countries (can be empty array)
+        $currentCountries = EvangelistModel::getActiveCountries($email);
+
+        if ($request->isPost()) {
+            $body = $request->getBody();
+            $countries = $_POST['countries'] ?? []; // This will be an array
+
+            // Server-side validation
+            if (empty($countries)) {
+                $this->setLayout('main1');
+                return $this->render('mycountryPref', [
+                    'success' => '',
+                    'error' => 'Please select at least one country before saving.',
+                    'currentCountries' => $currentCountries
+                ]);
+            }
+
+            // Soft update + upsert (no deletes)
+            EvangelistModel::softUpsertCountries($email, $countries);
+
+            // Refresh data
+            $currentCountries = EvangelistModel::getActiveCountries($email);
+
+            $this->setLayout('main1');
+            return $this->render('mycountryPref', [
+                'success' => 'Country preferences updated successfully!',
+                'error' => '',
+                'currentCountries' => $currentCountries
+            ]);
+        }
+
+        // GET request
+        $this->setLayout('main1');
+        return $this->render('mycountryPref', [
+            'success' => '',
+            'error' => '',
+            'currentCountries' => $currentCountries
+        ]);
+    }
+
+
 
 
     public function mylangPref(Request $request, Response $response)
