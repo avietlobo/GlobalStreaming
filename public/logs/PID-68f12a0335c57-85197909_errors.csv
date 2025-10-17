@@ -1,0 +1,3 @@
+mobile,name,record_date,email,source,country,city,referredBy,group_name,fellowship,language,error
+788829781,Marvin,,test1999@gmail.com,Facebook,Russia,Moscow,Maria,GTC-Thevara,Eden,English,Mobile exists in DB
+https://www.facebook.com/DonaldTrump,Donald,,test1999@gmail.com,Facebook,Russia,Moscow,Maria,GTC-Thevara,Eden,English,Mobile exists in DB

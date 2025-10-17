@@ -5,95 +5,317 @@
     <title>Telecallers DataBank</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        /* Global Reset */
         * {
             box-sizing: border-box;
         }
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 0;
-            background: #f4f4f5;
+            background: #f5f7fa;
+            color: #333;
         }
+
         .container {
-            max-width: 100%;
+            max-width: 1400px;
             margin: 40px auto;
-            padding: 20px;
+            padding: 25px;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
+
         h2 {
             text-align: center;
-            color: #333;
-            margin-bottom: 30px;
+            color: #1e293b;
+            font-size: 26px;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
         }
+
+        /* Back button */
+        .button-group {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .button-group button {
+            background: linear-gradient(135deg, #007bff, #0056d2);
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s ease;
+        }
+        .button-group button:hover {
+            opacity: 0.85;
+        }
+
+        /* Success Alert */
+        .alert {
+            background: #e9f7ef;
+            color: #1b5e20;
+            padding: 12px 15px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        /* Filter Form */
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.05);
+        }
+
+        form label {
+            display: flex;
+            flex-direction: column;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        form input[type="text"] {
+            padding: 8px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: #fff;
+            font-size: 14px;
+            width: 180px;
+            transition: 0.2s ease;
+        }
+
+        form input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        form button,
+        form a {
+            padding: 9px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s ease;
+        }
+
+        form button {
+            background: #007bff;
+            color: #fff;
+        }
+
+        form button:hover {
+            background: #0056d2;
+        }
+
+        form a {
+            background: #6c757d;
+            color: #fff;
+        }
+
+        form a:hover {
+            background: #5a6268;
+        }
+
+        /* Table */
         .table-wrapper {
             overflow-x: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
         }
-
-        .pagination {
-            display: flex;
-            flex-wrap: wrap; /* allows wrapping to the next line */
-            justify-content: center; /* center align */
-            gap: 6px; /* spacing between numbers */
-            margin-top: 15px;
-        }
-
-        .pagination a {
-            padding: 8px 12px;
-            border-radius: 5px;
-            text-decoration: none;
-            color: white;
-            background: #ccc;
-            display: inline-block;
-            min-width: 32px;
-            text-align: center;
-        }
-
-        .pagination a.active {
-            background: #007BFF;
-        }
-
 
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 1200px;
             font-size: 14px;
-            min-width: 1200px; /* Ensures scroll on mobile */
         }
+
         thead {
-            background: #007BFF;
+            background: #007bff;
             color: white;
         }
+
         th, td {
-            padding: 12px 15px;
+            padding: 12px 14px;
             text-align: left;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e2e8f0;
             white-space: nowrap;
         }
+
         tbody tr:hover {
-            background: #f1f7ff;
+            background: #f1f5ff;
+            transition: 0.2s;
         }
-        button {
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+
+        th:first-child, td:first-child {
+            text-align: center;
         }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        .pagination a {
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            background: #e2e8f0;
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+        .pagination a.active {
+            background: #007bff;
+            color: #fff;
+        }
+
+        /* Action Buttons */
         .text-right {
             text-align: right;
+            margin-top: 20px;
+        }
+
+        button#assignBtn,
+        button#reassignBtn {
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-weight: 500;
+            cursor: pointer;
+            color: #fff;
+            transition: 0.3s ease;
+        }
+
+        #assignBtn {
+            background: linear-gradient(135deg, #28a745, #218838);
+        }
+
+        #assignBtn:hover {
+            opacity: 0.9;
+        }
+
+        #reassignBtn {
+            background: linear-gradient(135deg, #fd7e14, #e36414);
+            margin-left: 8px;
+        }
+
+        #reassignBtn:hover {
+            opacity: 0.9;
         }
 
         button:disabled {
-            background-color: #cccccc !important;
-            color: #666666;
+            background: #cbd5e1 !important;
+            color: #64748b;
             cursor: not-allowed;
-            opacity: 0.7;
         }
+
+        /* Modal */
+        #assignModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #assignModal .modal-content {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            min-width: 320px;
+            box-shadow: 0 6px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        #assignModal h3 {
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        #assignModal select {
+            width: 80%;
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        #assignModal button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        #assignConfirmBtn {
+            background: #007bff;
+            color: #fff;
+        }
+
+        #assignConfirmBtn:hover {
+            background: #0056d2;
+        }
+
+        #assignModal button:last-child {
+            background: #6c757d;
+            color: #fff;
+            margin-left: 10px;
+        }
+
+        /* Spinner */
+        #spinner-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 600;
+            color: #007bff;
+        }
+
+        /* Mobile tweaks */
+        @media (max-width: 768px) {
+            form label {
+                width: 100%;
+            }
+            form input[type="text"] {
+                width: 100%;
+            }
+            table {
+                font-size: 13px;
+            }
+        }
+
+
     </style>
 </head>
 <body>

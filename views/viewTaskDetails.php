@@ -709,6 +709,9 @@
         <div class="detail-row">
             <strong>📞 Status:</strong> <?= htmlspecialchars(!empty($task->status) ? $task->status : 'Unassigned') ?>
         </div>
+        <div class="detail-row">
+            <strong>📲 Call Date:</strong> <?= htmlspecialchars(!empty($task->callDate) ? $task->callDate : 'Pending') ?>
+        </div>
     </div>
 </div>
 

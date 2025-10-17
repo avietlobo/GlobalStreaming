@@ -50,6 +50,21 @@
             font-size: 14px;
         }
 
+        .note-box {
+            background-color: #e8f1ff;
+            border-left: 5px solid #007bff;
+            border-radius: 8px;
+            padding: 15px 18px;
+            margin: 15px auto;
+            max-width: 650px;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #1a365d;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+
+
         /* Logout button */
         .logout-link {
             display: inline-block;
@@ -94,6 +109,10 @@
 <a class="back-link" href="/evngDashboard1">← Back</a>
 
 <h2>Select Your Evangelization Preference</h2>
+
+<div class="note-box">
+    <strong>Note:</strong> Please update your evangelization preference so that the Task Manager can assign you contacts or social media links based on your selected preference. Keeping this updated ensures you receive the right type of outreach tasks.
+</div>
 
 <div class="pref-form">
     <?php if (!empty($success ?? null)): ?>

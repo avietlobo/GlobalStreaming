@@ -5,72 +5,244 @@
     <title>Telecallers DataBank</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
+
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f9fafb, #eef2ff);
             margin: 0;
-            padding: 0;
-            background: #f4f4f5;
+            color: #1e293b;
         }
+
         .container {
-            max-width: 100%;
+            max-width: 96%;
             margin: 40px auto;
-            padding: 20px;
-            background: transparent !important; /* override Bootstrap */
         }
+
         h2 {
             text-align: center;
-            color: #333;
-            margin-bottom: 30px;
+            color: #1e293b;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            letter-spacing: 0.3px;
         }
-        .table-wrapper {
-            overflow-x: auto;
-            background: #fff;
-            padding: 20px;
+
+        /* Buttons */
+        button, a.button {
+            display: inline-block;
+            padding: 9px 18px;
+            border: none;
             border-radius: 8px;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.25s ease;
         }
+        button:hover, a.button:hover { transform: translateY(-1px); opacity: 0.9; }
+        button:disabled {
+            background-color: #d1d5db;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+
+        .btn-primary { background-color: #2563eb; color: #fff; }
+        .btn-secondary { background-color: #6b7280; color: #fff; }
+        .btn-success { background-color: #22c55e; color: #fff; }
+        .btn-warning { background-color: #f59e0b; color: #fff; }
+
+        /* Back button */
+        .button-group {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .back-button {
+            background-color: #475569;
+            color: white;
+        }
+
+        /* Filter Section */
+        form {
+            background: #fff;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .filters label {
+            display: flex;
+            flex-direction: column;
+            font-size: 13px;
+            color: #475569;
+            min-width: 160px;
+        }
+
+        .filters input[type="text"],
+        .filters select {
+            padding: 8px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #f9fafb;
+            transition: 0.2s;
+        }
+
+        .filters input:focus, .filters select:focus {
+            border-color: #3b82f6;
+            background: #fff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+
+        /* Table Wrapper */
+        .table-wrapper {
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
-            min-width: 1200px; /* Ensures scroll on mobile */
+            font-size: 13px;
+            min-width: 1200px;
         }
+
         thead {
-            background: #007BFF;
-            color: white;
+            background: #2563eb;
+            color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
+
         th, td {
-            padding: 12px 15px;
+            padding: 10px 12px;
+            border-bottom: 1px solid #e2e8f0;
             text-align: left;
-            border-bottom: 1px solid #e0e0e0;
             white-space: nowrap;
         }
+
         tbody tr:hover {
-            background: #f1f7ff;
+            background: #f1f5f9;
         }
-        button {
-            padding: 10px 20px;
-            background-color: #28a745;
+
+        /* Success Message */
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Pagination */
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            display: inline-block;
+            margin: 3px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
             color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            background: #94a3b8;
+            font-size: 13px;
+            transition: all 0.25s;
         }
+        .pagination a.active {
+            background: #2563eb;
+            font-weight: 600;
+        }
+        .pagination a:hover {
+            background: #1d4ed8;
+        }
+
         .text-right {
             text-align: right;
+            margin-top: 25px;
         }
 
-        button:disabled {
-            background-color: #cccccc !important;
-            color: #666666;
-            cursor: not-allowed;
-            opacity: 0.7;
+        /* Modal */
+        #assignModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
 
+        #assignModal .modal-content {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            width: 340px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease;
+        }
 
+        #assignModal h3 {
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        #assignModal select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 20px;
+            background: #f9fafb;
+        }
+
+        /* Spinner Overlay */
+        #spinner-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            font-size: 22px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filters label { min-width: 100%; }
+        }
     </style>
 </head>
 <body>

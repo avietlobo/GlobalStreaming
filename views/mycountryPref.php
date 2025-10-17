@@ -75,7 +75,7 @@ $error = $error ?? '';
     <?php endif; ?>
 
     <form method="POST" action="/mycountryPref" id="countryPrefForm">
-        <h2>Select Your Country Preferences for Word Sharing</h2>
+        <h2>Select Your Country Preferences for Evangelization</h2>
 
         <?php
         $allCountries = [
