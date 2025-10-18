@@ -116,6 +116,18 @@ $error = $error ?? '';
     <form method="POST" action="/mylangPref" id="langPrefForm">
         <h2>Select Your Language Preferences for Word Sharing</h2>
 
+        <div class="current" aria-live="polite">
+            <?php if (!empty($currentLanguages)): ?>
+                <strong>Your current language preferences:</strong>
+                <div style="margin-top:6px;"><?= htmlspecialchars(implode(", ", $currentLanguages)) ?></div>
+            <?php else: ?>
+                <strong>You haven't selected any languages yet.</strong>
+                <div style="margin-top:6px;color:#555;">Please select one or more languages above and click <em>Save Preferences</em>.</div>
+            <?php endif; ?>
+        </div>
+
+        <br>
+
         <?php
         $allLanguages = ["English", "Hindi", "Spanish", "French", "Arabic", "Malayalam", "Tagalog", "Italian", "Tamil", "Portuguese", "Kannada", "Konkani-Goan", "Konkani-Mangalore"];
         foreach ($allLanguages as $lang): ?>
@@ -130,15 +142,7 @@ $error = $error ?? '';
     </form>
 
 
-    <div class="current" aria-live="polite">
-        <?php if (!empty($currentLanguages)): ?>
-            <strong>Your current language preferences:</strong>
-            <div style="margin-top:6px;"><?= htmlspecialchars(implode(", ", $currentLanguages)) ?></div>
-        <?php else: ?>
-            <strong>You haven't selected any languages yet.</strong>
-            <div style="margin-top:6px;color:#555;">Please select one or more languages above and click <em>Save Preferences</em>.</div>
-        <?php endif; ?>
-    </div>
+
 </div>
 
 <script>

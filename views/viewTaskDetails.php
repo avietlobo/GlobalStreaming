@@ -1734,8 +1734,10 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
         border-radius: 6px;
         margin-bottom: 10px;
     ">
-        <p><strong>🆔 ID:</strong> ${session.id}</p>
-<p><strong>📖 Session ID:</strong> ${session.session_id}</p>
+     <!--      <p><strong>🆔 ID:</strong> ${session.id}</p> -->
+
+ <input type="hidden" value="${session.id}">
+<p><strong>📖 Session:</strong> ${session.session_id}</p>
 <p><strong>👨‍🏫 Session Name:</strong> ${sessionName}</p>
 <p><strong>📅 Date:</strong> ${session.session_date}</p>
 <p><strong>🚩 Status:</strong> ${session.status}</p>

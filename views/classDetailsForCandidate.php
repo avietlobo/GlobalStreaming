@@ -612,7 +612,7 @@
                 <tbody>
                 <?php if (empty($userDetails)): ?>
                     <tr>
-                        <td colspan="7" class="no-records">
+                        <td colspan="8" class="no-records">
                             Evangelist has not requested any classes yet.
                         </td>
                     </tr>
@@ -1009,8 +1009,9 @@
                                     border-radius: 6px;
                                     margin-bottom: 10px;
                                 ">
-                                    <p><strong>🆔 ID:</strong> ${session.id}</p>
-<p><strong>📖 Session ID:</strong> ${session.session_id}</p>
+                               <!--      <p><strong>🆔 ID:</strong> ${session.id}</p> -->
+ <input type="hidden" value="${session.id}">
+<p><strong>📖 Session:</strong> ${session.session_id}</p>
 <p><strong>👨‍🏫 Session Name:</strong> ${sessionName}</p>
 <p><strong>📅 Date:</strong> ${session.session_date}</p>
 <p><strong>🚩 Status:</strong> ${session.status}</p>
@@ -1131,13 +1132,13 @@
             fetch(`/getApprovals?mobile=${encodeURIComponent(candidateMobile)}`)
                 .then(res => res.json())
                 .then(data => {
-                    let html = "<h4>📝 Reassignment History</h4><div style='display: flex; flex-direction: column; gap: 12px;'>";
+                    let html = "<h4>📖 Reassignment History</h4><div style='display: flex; flex-direction: column; gap: 12px;'>";
                     const statusDiv = document.getElementById("approvalStatus");
                     if (data.success && Array.isArray(data.approvals)) {
                         if (data.approvals.length === 0) {
                             statusDiv.innerHTML = "<p style='color: gray;'>No previous reassignments.</p>";
                         } else {
-                            let html = "<h4>📝 Reassignment History</h4>";
+                            let html = "<h4>📖 Reassignment History</h4>";
                             data.approvals.forEach(item => {
                                 const color = item.status === 'Approved' ? 'green' :
                                     item.status === 'Rejected' ? 'red' : 'orange';

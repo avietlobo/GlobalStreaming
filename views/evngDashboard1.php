@@ -479,7 +479,7 @@ $designation = $dashboardData[0]->designation;
 
 <?php if ($designation == 'PanelMember'): ?>
 
-    <a href="#" class="attendance-link" title="View Appointments" onclick="window.location.href='viewAllAppointments';">
+    <a href="#" class="attendance-link" title="View Appointments" onclick="window.location.href='viewAllAppointmentsPM';">
         <img src="home.png" alt="Attendance Icon">
     </a>
 

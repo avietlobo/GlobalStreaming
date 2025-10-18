@@ -77,6 +77,17 @@ $error = $error ?? '';
     <form method="POST" action="/mycountryPref" id="countryPrefForm">
         <h2>Select Your Country Preferences for Evangelization</h2>
 
+        <div class="current" aria-live="polite">
+            <?php if (!empty($currentCountries)): ?>
+                <strong>Your current country preferences:</strong>
+                <div style="margin-top:6px;"><?= htmlspecialchars(implode(", ", $currentCountries)) ?></div>
+            <?php else: ?>
+                <strong>You haven't selected any countries yet.</strong>
+                <div style="margin-top:6px;color:#555;">Please select one or more countries above and click <em>Save Preferences</em>.</div>
+            <?php endif; ?>
+        </div>
+        <br>
+
         <?php
         $allCountries = [
             "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia",
@@ -117,15 +128,7 @@ $error = $error ?? '';
         <button type="submit">Save Preferences</button>
     </form>
 
-    <div class="current" aria-live="polite">
-        <?php if (!empty($currentCountries)): ?>
-            <strong>Your current country preferences:</strong>
-            <div style="margin-top:6px;"><?= htmlspecialchars(implode(", ", $currentCountries)) ?></div>
-        <?php else: ?>
-            <strong>You haven't selected any countries yet.</strong>
-            <div style="margin-top:6px;color:#555;">Please select one or more countries above and click <em>Save Preferences</em>.</div>
-        <?php endif; ?>
-    </div>
+
 </div>
 
 <script>

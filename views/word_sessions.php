@@ -183,6 +183,10 @@
             font-size: 14px;
         }
 
+        th:last-child, td:last-child {
+            display: none;
+        }
+
     </style>
 
     <script>
