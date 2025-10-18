@@ -1447,8 +1447,7 @@ $sessionNames = [
                 $_POST['transportStatus'] ?? null,
                 $_POST['caringistDateTime'] ?? null,
                 $_POST['homeMissionAttendance'] ?? null, // ✅ New field added here
-
-
+                $_POST['homeMissionVidAttendance'] ?? null, // ✅ New field added here
 
 
             ];
@@ -1775,7 +1774,8 @@ $sessionNames = [
             'transportRequired'              => 'transport_required',
             'caringistDateTime'              => 'caring_google_meet_date',
             'event_name1'                  => 'event_name_hs',
-            'homeMissionAttended'     => 'home_mission_attendance'
+            'homeMissionAttended'     => 'home_mission_attendance',
+            'homeMissionVidAttendance'     => 'home_mission_vid_attendance'
 
         ];
 
@@ -1847,7 +1847,7 @@ $sessionNames = [
             'mobile' => $appointment['candidate_mobile'] ?? '',
             'country' => $appointment['candidate_country'] ?? '',
             'homeMissionAttended' => $appointment['home_mission_attendance'] ?? '',
-
+            'homeMissionVidAttendance' => $appointment['home_mission_vid_attendance'] ?? '',
             'place' => $appointment['place'] ?? '',
             'appointment_datetime_ist' => $appointment['appointment_datetime_ist'] ?? '',
             'appointment_datetime_candidate_zone ' => $appointment['appointment_datetime_candidate_zone'] ?? '',
@@ -1911,7 +1911,7 @@ $sessionNames = [
             'mobile' => $appointment['candidate_mobile'] ?? '',
             'country' => $appointment['candidate_country'] ?? '',
             'homeMissionAttended' => $appointment['home_mission_attendance'] ?? '',
-
+            'homeMissionVidAttendance' => $appointment['home_mission_vid_attendance'] ?? '',
             'place' => $appointment['place'] ?? '',
             'appointment_datetime_ist' => $appointment['appointment_datetime_ist'] ?? '',
             'appointment_datetime_candidate_zone ' => $appointment['appointment_datetime_candidate_zone'] ?? '',
@@ -1995,7 +1995,7 @@ $sessionNames = [
             'localOrganizer' => $appointment['local_organizer_name'] ?? '',
             'panelMember' => $appointment['panel_member_name'] ?? '',
             'homeMissionAttended' => $appointment['home_mission_attendance'] ?? '',
-
+            'homeMissionVidAttendance' => $appointment['home_mission_vid_attendance'] ?? '',
             'sathvarthaOrganizer' => $appointment['sathvartha_organizer_name'] ?? '',
             'organizers' => $organizersByDesignation,
             'highesClassNumberAttended' => $highesClassNumberAttended,
@@ -2051,6 +2051,7 @@ $sessionNames = [
             'caringStatus' => $appointment['caring_status'] ?? '',
             'travelStatus' => $appointment['travel_status'] ?? '',
             'homeMissionAttended' => $appointment['home_mission_attendance'] ?? '',
+            'homeMissionVidAttendance' => $appointment['home_mission_vid_attendance'] ?? '',
             'caringGoogleMeetStatus' => $appointment['caring_google_meet_status'] ?? '',
             'fellowshipStatus' => $appointment['fellowship_status'] ?? '',
             'sathvarthaAttendanceStatus' => $appointment['sathvartha_attendance_status'] ?? '',

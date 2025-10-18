@@ -231,6 +231,15 @@
             </select>
         </div>
 
+        <div class="form-group">
+            <label for="homeMissionVidAttendance">Home Mission Video Watched</label>
+            <select name="homeMissionVidAttendance" id="homeMissionVidAttendance" required>
+                <option value="">-- Select --</option>
+                <option value="Watched" <?= ($homeMissionVidAttendance ?? '') === 'Watched' ? 'selected' : '' ?>>Watched</option>
+                <option value="Not Watched" <?= ($homeMissionVidAttendance?? '') === 'Not Watched' ? 'selected' : '' ?>>Not Watched</option>
+            </select>
+        </div>
+
 
 
         <div class="form-group">

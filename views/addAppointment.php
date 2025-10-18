@@ -154,7 +154,7 @@
 
         <div class="form-group">
             <label for="event_name1">Home Mission Name</label>
-            <select name="event_name1" id="event_name1" required>
+            <select name="event_name1" id="event_name1">
                 <option value="">-- Select Event --</option>
                 <?php foreach ($eventNames1 as $eventName): ?>
                     <option value="<?= htmlspecialchars($eventName) ?>">
@@ -205,6 +205,15 @@
                 <option value="">-- Select Attendance --</option>
                 <option value="Attended">Attended</option>
                 <option value="Not Attended">Not Attended</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="homeMissionVidAttendance">Home Mission Video Watched</label>
+            <select id="homeMissionVidAttendance" name="homeMissionVidAttendance" required>
+                <option value="">-- Select Attendance --</option>
+                <option value="Watched">Watched</option>
+                <option value="Not Watched">Not Watched</option>
             </select>
         </div>
 
