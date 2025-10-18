@@ -104,21 +104,98 @@
                 font-size: 16px;
             }
         }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .logout-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .logout-button:active {
+            transform: scale(0.98);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 10px 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #0056b3;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 25px;
+            padding: 10px 0;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--highlight);
+            text-align: center;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 20px;
+            background: none;
+            border: none;
+            color: var(--highlight);
+            transition: transform 0.2s ease, color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-50%) scale(1.1);
+            color: #00ccff;
+        }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <a class="nav-link" href="#" id="logout-link">
-        <button type="button" class="btn btn-primary">Logout</button>
-    </a>
+    <button type="button" id="logout-link" class="logout-button" onclick="window.location.href='/logout'">
+        Logout
+    </button>
 </div>
 
 <a class="back-link" href="/evngDashboard1">← Back </a>
 
 <div class="top-bar">
-    <h2>Candidate List by Language</h2>
     <button class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>
+    <h2 class="page-title">Candidate List by Language</h2>
 </div>
 
 <ul class="lang-list">

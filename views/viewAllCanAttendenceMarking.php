@@ -266,7 +266,7 @@
     </div>
 </nav>
 
-<div class="container">
+<div style="padding: 15px 20px;">
     <button type="button" class="back-button" onclick="window.location.href='/evngDashboard1'">
         <i class="fas fa-arrow-left"></i> Back
     </button>
