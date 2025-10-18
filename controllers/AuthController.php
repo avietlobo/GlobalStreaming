@@ -2078,7 +2078,8 @@ $sessionNames = [
         $appointments = CandidateModel::getAllAppointmentsSR();
         $this->setLayout('main1');
         return $this->render('viewAllAppointmentsReadOnly', [
-            'appointments' => $appointments
+            'appointments' => $appointments,
+            'pageTitle' => 'Sathvartha Ready Appointments'
         ]);
     }
 
@@ -2087,7 +2088,8 @@ $sessionNames = [
         $appointments = CandidateModel::getAllAppointmentsIF();
         $this->setLayout('main1');
         return $this->render('viewAllAppointmentsReadOnly', [
-            'appointments' => $appointments
+            'appointments' => $appointments,
+            'pageTitle' => 'In Fellowship Appointments'
         ]);
     }
 
@@ -2097,7 +2099,8 @@ $sessionNames = [
         $appointments = CandidateModel::getAllAppointments();
         $this->setLayout('main1');
         return $this->render('viewAllAppointmentsReadOnly', [
-            'appointments' => $appointments
+            'appointments' => $appointments,
+            'pageTitle' => 'All Appointments'
         ]);
     }
 

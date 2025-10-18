@@ -213,7 +213,7 @@
 <body>
 
 <header>
-    <h1>All Appointments</h1>
+    <h1><?= htmlspecialchars($pageTitle) ?></h1>
 
     <div class="header-actions">
         <button class="btn btn-primary" onclick="window.location.href='/login'">Logout</button>
