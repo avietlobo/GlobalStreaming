@@ -941,6 +941,17 @@ class AuthController extends Controller
 
 
 
+        public function evngAllCntr(Request $request, Response $response)
+        {
+            // Fetch all evangelists with their active countries
+            $evangelists = EvangelistModel::getAllWithCountries();
+
+            $this->setLayout('main2');
+            return $this->render('evngAllCntr', [
+                'evangelists' => $evangelists
+            ]);
+        }
+
 
 
     public function csvFileUpload(Request $request, Response $response)

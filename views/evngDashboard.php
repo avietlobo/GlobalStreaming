@@ -547,6 +547,11 @@ $designation = $dashboardData[0]->designation;
         CSV 📁
     </a>
 
+    <a href="#" class="attendance-link" title="Evangelist Allocated Countries" onclick="window.location.href='/evngAllCntr';">
+        🌍
+    </a>
+
+
 
 
 <?php endif; ?>

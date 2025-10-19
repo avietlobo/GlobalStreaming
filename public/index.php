@@ -112,6 +112,9 @@ $app-> router->get('/searchAttendancePage', [AuthController::class, 'searchAtten
 
 $app-> router->get('/csvFileUpload', [AuthController::class, 'csvFileUpload']);
 $app-> router->post('/process_upload', [AuthController::class, 'process_upload']);
+$app-> router->get('/evngAllCntr', [AuthController::class, 'evngAllCntr']);
+
+
 
 
 

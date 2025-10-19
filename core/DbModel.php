@@ -3062,6 +3062,33 @@ ORDER BY
 
     }
 
+    public static function getAllWithCountries()
+    {
+        $query = "
+        SELECT e.evngName, e.email, 
+               GROUP_CONCAT(c.country ORDER BY c.country SEPARATOR ', ') AS countries
+        FROM evangelist e
+        LEFT JOIN evangelist_countries c 
+            ON e.email = c.email AND c.active = 1
+        GROUP BY e.email, e.evngName
+        ORDER BY e.evngName ASC
+    ";
+
+        $statement = self::prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        // Handle evangelists with no active countries
+        foreach ($result as &$row) {
+            if (empty($row['countries'])) {
+                $row['countries'] = 'No country allocated yet';
+            }
+        }
+
+        return $result;
+    }
+
+
 
     public static function getUploadsByUser($evngName)
     {
