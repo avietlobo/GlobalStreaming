@@ -1850,7 +1850,7 @@ $sessionNames = [
         $evangelist=Application::$app->session->get('tt4');
 
 
-
+        $this->setLayout('main2');
         return $this->render('appointmentFormLO', [
             'appointment' => $appointment,
             'participantName' =>$participantName ?? '',
@@ -1914,7 +1914,7 @@ $sessionNames = [
         //echo $appointment;
 
 
-
+        $this->setLayout('main2');
         return $this->render('appointmentFormCT', [
             'appointment' => $appointment,
             'participantName' =>$participantName ?? '',
@@ -1982,7 +1982,7 @@ $sessionNames = [
 
         $participantName= Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
-        $this->setLayout('main1');
+        $this->setLayout('main2');
 
         return $this->render('appointmentFormPM', [
             'appointment' => $appointment,
@@ -2044,7 +2044,7 @@ $sessionNames = [
         $participantName= Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
 
-        $this->setLayout('main1');
+        $this->setLayout('main2');
 
         return $this->render('appointmentForm1', [
             'appointment' => $appointment,
@@ -2088,7 +2088,7 @@ $sessionNames = [
     public function viewAllAppointmentsSR(Request $request, Response $response)
     {
         $appointments = CandidateModel::getAllAppointmentsSR();
-        $this->setLayout('main1');
+        $this->setLayout('main2');
         return $this->render('viewAllAppointmentsReadOnly', [
             'appointments' => $appointments,
             'pageTitle' => 'Sathvartha Ready Appointments'
@@ -2120,6 +2120,7 @@ $sessionNames = [
     public function viewAllAppointmentsLO(Request $request, Response $response)
     {
         $appointments = CandidateModel::getAllAppointments();
+        $this->setLayout('main2');
         return $this->render('viewAllAppointmentsLO', [
             'appointments' => $appointments
         ]);
@@ -2128,6 +2129,7 @@ $sessionNames = [
     public function viewAllAppointmentsCT(Request $request, Response $response)
     {
         $appointments = CandidateModel::getAllAppointments();
+        $this->setLayout('main2');
         return $this->render('viewAllAppointmentsCT', [
             'appointments' => $appointments
         ]);
@@ -2137,6 +2139,7 @@ $sessionNames = [
     public function viewAllAppointmentsPM(Request $request, Response $response)
     {
         $appointments = CandidateModel::getAllAppointments();
+        $this->setLayout('main2');
         return $this->render('viewAllAppointmentsPM', [
             'appointments' => $appointments
         ]);
@@ -2151,7 +2154,7 @@ $sessionNames = [
         $participantName=Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
 
-        $this->setLayout('main1');
+        $this->setLayout('main2');
         return $this->render('viewAppointment', [
             'appointments' => $appointments,
             'participantName' => $participantName,
@@ -2230,7 +2233,7 @@ $sessionNames = [
             }
         }
 
-        $this->setLayout('main1');
+        $this->setLayout('main2');
         return $this->render('homeMissionEvent', [
             'tasks' => $tasks,
             'sathvarthaOrganizers' => $sathvarthaOrganizers,
@@ -2361,7 +2364,7 @@ $sessionNames = [
             }
         }
 
-        $this->setLayout('main1');
+        $this->setLayout('main2');
         return $this->render('sathvarthaEvent', [
             'tasks' => $tasks,
             'sathvarthaOrganizers' => $sathvarthaOrganizers,
