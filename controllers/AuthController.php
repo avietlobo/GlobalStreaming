@@ -1245,7 +1245,7 @@ $sessionNames = [
             Application::$app->response->redirect('/addNewSathEvent');
             return;
         }
-
+        $this->setLayout('main2');
         return $this->render('viewEvent', ['event' => $event]);
     }
 
@@ -2251,6 +2251,7 @@ $sessionNames = [
     public function allEvents(Request $request, Response $response)
     {
         $existingEvents = SathvarthaEventModel::getAllEvents();
+        $this->setLayout('main2');
         return $this->render('all_events', [
             'events' => $existingEvents
         ]);

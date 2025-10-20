@@ -1431,12 +1431,12 @@ public function getClassNumberDetailsForCandidate()
 //        echo '</pre>';
 
         $evangelists = CandidateModel::getLanguageEvangelists($language);
-
+        $appointments = CandidateModel::getAppointmentsByParticipant($mobile); // 👈 Add this line
 
 
         // Render the view with the user details
         $this->setLayout('main1');
-        return $this->render('classDetailsForCandidate', ['userDetails' => $userDetails, 'evangelists' => $evangelists, 'mobile' => $mobile, 'language' => $language, 'candidate' => $candidate]);
+        return $this->render('classDetailsForCandidate', ['userDetails' => $userDetails, 'evangelists' => $evangelists, 'mobile' => $mobile, 'language' => $language, 'candidate' => $candidate,  'appointments' => $appointments]);
     }
 
 
