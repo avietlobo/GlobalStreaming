@@ -1,3 +1,8 @@
+<?php
+
+use app\core\Application;
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -267,6 +272,7 @@
                 <th>Participant</th>
                 <th>Language</th>
                 <th>Remark</th>
+                <th>Evangelist</th>
                 <th>Action</th>
             </tr>
             </thead>
@@ -387,59 +393,74 @@
     });
 
     function loadWordSessions() {
-        //fetch('/getWordSessionsOfAssignedEvng?mobile=<?= $mobile ?>')
-        fetch('/getWordSessionsOfAssignedEvng?mobile=<?= urlencode($mobile) ?>')
-
-                .then(response => response.json())
+        const currentEvangelist = '<?= addslashes(Application::$app->session->get("nameFinal")) ?>';
+        // Include evangelist in the fetch request
+        fetch(`/getWordSessionsOfAssignedEvng?mobile=<?= urlencode($mobile) ?>&evangelist=<?= urlencode($evangelist) ?>`)
+            .then(response => response.json())
             .then(data => {
                 const tbody = document.querySelector("#wordSessionsTable tbody");
                 const cardContainer = document.getElementById("wordSessionsCards");
-                tbody.innerHTML = ""; cardContainer.innerHTML = "";
+                tbody.innerHTML = "";
+                cardContainer.innerHTML = "";
 
                 if (!data.success || !data.sessions.length) {
-                    tbody.innerHTML = `<tr><td colspan="6" style="padding:10px; text-align:center;">No sessions found yet.</td></tr>`;
+                    const noDataMsg = `<tr><td colspan="6" style="padding:10px; text-align:center;">No sessions found yet.</td></tr>`;
+                    tbody.innerHTML = noDataMsg;
                     cardContainer.innerHTML = `<p style="text-align:center;color:#666;">No sessions found yet.</p>`;
                     return;
                 }
 
                 data.sessions.forEach(ws => {
-                    let badgeClass = 'scheduled'; // default
+                    console.log("Session:", ws);
+
+                    // Assign badge color
+                    let badgeClass = 'scheduled';
                     if (ws.status) {
                         const statusLower = ws.status.toLowerCase();
                         if (statusLower === 'completed') badgeClass = 'completed';
                         else if (statusLower === 'missed') badgeClass = 'missed';
                         else if (statusLower === 'cancelled') badgeClass = 'cancelled';
-                    }                    const badge = `<span class="badge ${badgeClass}">${ws.status}</span>`;
+                    }
+                    const badge = `<span class="badge ${badgeClass}">${ws.status}</span>`;
+// ✅ Check if this session belongs to the current evangelist
+                    const isEditable = ws.evangelist && ws.evangelist.trim() === currentEvangelist.trim();
 
-                    // Table row
+                    // ✅ Define edit/lock button
+                    const editButton = isEditable
+                        ? `<button class="btn" onclick="openEditSessionModal(
+                            '${ws.id}',
+                            '${ws.session_date}',
+                            '${ws.status || ""}',
+                            decodeURIComponent('${encodeURIComponent(ws.remark || "")}'),
+                            '${currentEvangelist}'
+                        )">✏️ Edit</button>`
+                        : `<button class="btn" disabled style="opacity:0.6;cursor:not-allowed;">🔒 Locked</button>`;
+
+
+                    // Table view
                     tbody.innerHTML += `
-                    <tr>
-                        <td>${ws.session_name}</td>
-                        <td>📅 ${ws.session_date}</td>
-                        <td>${badge}</td>
-                        <td>${ws.participant || '-'}</td>
-                        <td>${ws.language || '-'}</td>
-                         <td>${ws.remark || '-'}</td>
-                        <td>
-                          <button class="btn" onclick="openEditSessionModal(
-                            '${ws.id}', '${ws.session_date}', '${ws.status || ""}', decodeURIComponent('${encodeURIComponent(ws.remark || "")}'), '<?= htmlspecialchars($evangelist) ?>'
-                          )">✏️ Edit</button>
-                        </td>
-
-                    </tr>`;
+                <tr>
+                    <td>${ws.session_name}</td>
+                    <td>📅 ${ws.session_date}</td>
+                    <td>${badge}</td>
+                    <td>${ws.participant || '-'}</td>
+                    <td>${ws.language || '-'}</td>
+                    <td>${ws.remark || '-'}</td>
+                    <td>${ws.evangelist || '-'}</td>
+                    <td>${editButton}</td>
+                </tr>`;
 
                     // Card view
                     cardContainer.innerHTML += `
-                    <div class="card ${badgeClass}">
-                        <h4>${ws.session_name} ${badge}</h4>
-                        <p>📅 ${ws.session_date}</p>
-                        <p><strong>Participant:</strong> ${ws.participant || '-'}</p>
-                        <p><strong>Language:</strong> ${ws.language || '-'}</p>
-                          <p><strong>Remark:</strong> ${ws.remark ? ws.remark : '-'}</p>
-                        <button class="btn" onclick="openEditSessionModal(
-                          '${ws.id}', '${ws.session_date}', '${ws.status || ""}', '${ws.remark || ""}', '<?= htmlspecialchars($evangelist) ?>'
-                        )">✏️ Edit</button>
-                    </div>`;
+                <div class="card ${badgeClass}">
+                    <h4>${ws.session_name} ${badge}</h4>
+                    <p>📅 ${ws.session_date}</p>
+                    <p><strong>Participant:</strong> ${ws.participant || '-'}</p>
+                    <p><strong>Language:</strong> ${ws.language || '-'}</p>
+                    <p><strong>Remark:</strong> ${ws.remark ? ws.remark : '-'}</p>
+                    <p><strong>Evangelist:</strong> ${ws.evangelist ? ws.evangelist : '-'}</p>
+                    ${editButton}
+                </div>`;
                 });
             })
             .catch(() => {
@@ -449,7 +470,6 @@
                     `<p style="text-align:center;color:#666;">Error loading sessions.</p>`;
             });
     }
-
     function openEditSessionModal(id, dateTime, status, remark, evangelist) {
         document.getElementById("editSessionId").value = id;
         document.getElementById("editSessionDate").value = dateTime;

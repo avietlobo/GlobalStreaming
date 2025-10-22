@@ -1569,6 +1569,7 @@ $sessionNames = [
         Application::$app->session->set('tt2', $country);
         Application::$app->session->set('tt3', $participantName);
         Application::$app->session->set('tt4', $evangelist);
+        
 
 
         $details = CandidateModel::getEvangelistDetails($lang, $country, $participantName,$evangelist);

@@ -3308,6 +3308,23 @@ ORDER BY
     }
 
 
+    public static function getWordSessionsByEvangelist1($mobile)
+    {
+        $stmt = self::prepare("
+        SELECT mobile, session_id,session_date,evangelist,participant,wgroup,language,remark,feedback
+        FROM word_session
+        WHERE mobile = :mobile
+    
+    ");
+
+        $stmt->bindParam(':mobile', $mobile);
+        $stmt->execute();
+
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSessionModel::class);
+
+    }
+
     public static function getWordSessionsByEvangelist($mobile,$evangelist)
     {
         $stmt = self::prepare("
@@ -3323,6 +3340,42 @@ ORDER BY
 
         return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSessionModel::class);
 
+    }
+
+    public static function getWordSessionsByMobileAndAssignedTo1($mobile)
+    {
+        $stmt = self::prepare("
+        SELECT 
+            id,session_id, 
+            session_date, 
+            status,
+            participant,
+            language,
+            remark,
+            evangelist,
+            CASE session_id
+                WHEN 1 THEN 'Session 1: Salvation, incl plan and 1st coming'
+                WHEN 2 THEN 'Session 2: God the Father'
+                WHEN 3 THEN 'Session 3: Second coming incl Signs of Times'
+                WHEN 4 THEN 'Session 4: He has come, new name'
+                WHEN 5 THEN 'Session 5: Messenger sent by God'
+           WHEN 6 THEN 'Session 6: Righteousness'
+           WHEN 7 THEN 'Session 7: Zion, true Zion'
+           WHEN 8 THEN 'Session 8: Holy Mother'
+           WHEN 9 THEN 'Session 9: Church'
+           WHEN 10 THEN 'Session 10: Good News Retreat'
+                ELSE CONCAT('Session ', session_id)
+            END AS session_name
+        FROM word_session 
+        WHERE mobile = :mobile 
+        ORDER BY session_date DESC
+    ");
+
+        $stmt->bindParam(':mobile', $mobile);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSessionModel::class);
     }
 
     public static function getWordSessionsByMobileAndAssignedTo($mobile,$assignedTo)

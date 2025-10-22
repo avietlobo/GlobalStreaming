@@ -706,10 +706,9 @@ use DateTime;
 
          //$candidate = CandidateModel::getCandidateByMobile($mobile);
          //$wordSessions = WordSessionModel::getWordSessionsByMobile($mobile);// reuse from earlier
-         $wordSessions = WordSessionModel::getWordSessionsByEvangelist($mobile,$evangelist);
-//                echo '<pre>';
-//                var_dump($wordSessions);
-//                echo '<pre>';
+         //$wordSessions = WordSessionModel::getWordSessionsByEvangelist($mobile,$evangelist);
+         $wordSessions = WordSessionModel::getWordSessionsByEvangelist1($mobile);
+
          $this->setLayout('main1');
          return $this->render('word_session_detail', [
              'mobile' => $mobile,
@@ -850,7 +849,8 @@ use DateTime;
          }
          $evangelist = Application::$app->session->get('nameFinal');
          //echo $evangelist;
-         $sessions = CandidateModel::getWordSessionsByMobileAndAssignedTo($mobile,$evangelist);
+         //$sessions = CandidateModel::getWordSessionsByMobileAndAssignedTo($mobile,$evangelist);
+         $sessions = CandidateModel::getWordSessionsByMobileAndAssignedTo1($mobile);
 
          echo json_encode(['success' => true, 'sessions' => $sessions]);
      }
