@@ -172,6 +172,52 @@
                 padding: 15px;
             }
         }
+
+        .header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .dashboard-btn {
+            background: transparent;
+            border: 2px solid #007bff;
+            color: #007bff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-btn:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -180,9 +226,12 @@
     <a class="nav-link" href="#" id="logout-link">
         <button type="button" class="btn btn-primary">Logout</button>
     </a>
+    <a href="/viewCandidates" class="dashboard-btn">Go to Dashboard</a>
+
 </div>
 
 <a class="back-link" href="javascript:history.back()">← Back to Evangelists</a>
+
 
 <div class="top-bar">
     <h2>Participant: <?= htmlspecialchars($participantName ?? '-') ?></h2>
