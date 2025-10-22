@@ -241,8 +241,15 @@
 
         <div class="form-group">
             <label for="evangelistFeedback">Evangelist Feedback</label>
-            <textarea id="evangelistFeedback" name="evangelistFeedback" placeholder="Enter feedback" rows="3"></textarea>
+            <textarea
+                    id="evangelistFeedback"
+                    name="evangelistFeedback"
+                    placeholder="Enter feedback"
+                    rows="3"
+                    readonly
+                    style="background-color: #f9f9f9; color: #555; cursor: not-allowed;"><?= htmlspecialchars($remark ?? '') ?></textarea>
         </div>
+
 
         <!-- Panel Member Dropdown -->
         <div class="form-group">

@@ -1525,8 +1525,11 @@ $sessionNames = [
             $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($mobile);
             //echo $mobile;
 
+            $remark = CandidateModel::getCandidateRemarkByMobile($mobile); // <-- Add this method to your model
 
-            // Get panel member
+
+
+        // Get panel member
 
             // Get local organizer
 
@@ -1541,7 +1544,8 @@ $sessionNames = [
             'eventNames' => $eventNames,
             'eventNames1' => $eventNames1,
             'organizers' => $organizersByDesignation,  // key point
-            'highesClassNumberAttended' => $highesClassNumberAttended // 👈 Pass it here
+            'highesClassNumberAttended' => $highesClassNumberAttended, // 👈 Pass it here
+            'remark' => $remark
         ]);
         }
 

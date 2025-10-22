@@ -3157,6 +3157,15 @@ ORDER BY
         return $candidates;
     }
 
+    public static function getCandidateRemarkByMobile($mobile)
+    {
+        $tableName = 'candidate';
+        $statement = self::prepare("SELECT remark FROM $tableName WHERE mobile = :mobile LIMIT 1");
+        $statement->bindValue(':mobile', $mobile);
+        $statement->execute(); // ✅ Execute the query
+        return $statement->fetchColumn();
+    }
+
 
     public static function getCandidateByMobile($mobile)
     {
