@@ -284,7 +284,8 @@
             <thead>
             <tr>
                 <th>Candidate Mobile</th>
-                <th>Event Name</th>
+                <th>Sathvartha Event Name</th>
+                <th>Home Mission Event Name</th>
                 <th>Appointment IST</th>
                 <th>Appointment Candidate Zone</th>
                 <th>Country</th>
@@ -309,6 +310,7 @@
                 <th>Travel Status</th>
                 <th>Created At</th>
                 <th>Updated At</th>
+
             </tr>
             </thead>
             <tbody>
@@ -317,6 +319,7 @@
                     <tr class="clickable-row" data-id="<?= $appointment['id'] ?>">
                         <td><?= htmlspecialchars($appointment['candidate_mobile']) ?></td>
                         <td><?= htmlspecialchars($appointment['event_name']) ?></td>
+                        <td><?= htmlspecialchars($appointment['event_name_hs']) ?></td>
                         <td><?= htmlspecialchars($appointment['appointment_datetime_ist']) ?></td>
                         <td><?= htmlspecialchars($appointment['appointment_datetime_candidate_zone']) ?></td>
                         <td><?= htmlspecialchars($appointment['candidate_country']) ?></td>
@@ -341,6 +344,7 @@
                         <td><?= htmlspecialchars($appointment['travel_status']) ?></td>
                         <td><?= htmlspecialchars($appointment['created_at']) ?></td>
                         <td><?= htmlspecialchars($appointment['updated_at']) ?></td>
+
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
