@@ -1852,11 +1852,10 @@ $sessionNames = [
         $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($appointment['candidate_mobile']);
 
         //$participantName= Application::$app->session->get('tt3');
-        $participantName = CandidateModel::getCandidateNameByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
-        //echo $participantName;
+        $candidateDetails = CandidateModel::getCandidateNameByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
 
-
-        $evangelist=Application::$app->session->get('tt4');
+        $participantName = $candidateDetails['participantName'] ?? '';
+        $evangelist = $candidateDetails['evangelist'] ?? '';
 
 
         $this->setLayout('main2');
@@ -1918,9 +1917,10 @@ $sessionNames = [
         $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($appointment['candidate_mobile']);
 
         //$participantName= Application::$app->session->get('tt3');
-        $participantName = CandidateModel::getCandidateNameByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
+        $candidateDetails = CandidateModel::getCandidateNameByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
 
-        $evangelist=Application::$app->session->get('tt4');
+        $participantName = $candidateDetails['participantName'] ?? '';
+        $evangelist = $candidateDetails['evangelist'] ?? '';
         //echo $appointment['home_mission_attendance'];
         //echo $appointment;
 
@@ -1992,9 +1992,10 @@ $sessionNames = [
         $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($appointment['candidate_mobile']);
 
         //$participantName= Application::$app->session->get('tt3');
-        $participantName = CandidateModel::getCandidateNameByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
+        $candidateDetails = CandidateModel::getCandidateNameByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
 
-        $evangelist=Application::$app->session->get('tt4');
+        $participantName = $candidateDetails['participantName'] ?? '';
+        $evangelist = $candidateDetails['evangelist'] ?? '';
         $this->setLayout('main2');
 
         return $this->render('appointmentFormPM', [
@@ -2055,9 +2056,10 @@ $sessionNames = [
         $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($appointment['candidate_mobile']);
 
         //$participantName= Application::$app->session->get('tt3');
-        $participantName = CandidateModel::getCandidateNameByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
+        $candidateDetails = CandidateModel::getCandidateNameByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
 
-        $evangelist=Application::$app->session->get('tt4');
+        $participantName = $candidateDetails['participantName'] ?? '';
+        $evangelist = $candidateDetails['evangelist'] ?? '';
 
         $this->setLayout('main2');
 

@@ -3161,10 +3161,10 @@ ORDER BY
     public static function getCandidateNameByMobile($mobile)
     {
         $tableName = 'candidate';
-        $statement = self::prepare("SELECT participantName FROM $tableName WHERE mobile = :mobile LIMIT 1");
+        $statement = self::prepare("SELECT participantName, evangelist FROM $tableName WHERE mobile = :mobile LIMIT 1");
         $statement->bindValue(':mobile', $mobile);
         $statement->execute(); // ✅ Execute the query
-        return $statement->fetchColumn();
+        return $statement->fetch(\PDO::FETCH_ASSOC); // returns both fields as an associative array
     }
 
 
