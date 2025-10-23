@@ -1804,11 +1804,27 @@ GROUP BY
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public static function getAllAppointmentsPMMM()
+    {
+        $pdo = Application::$app->db->pdo;
+
+        $stmt = $pdo->prepare("
+        SELECT *
+        FROM appointments
+        ORDER BY 
+            (DATE(appointment_datetime_ist) < CURDATE()) ASC, 
+            appointment_datetime_ist ASC
+    ");
+
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
 
     public static function getAllAppointments()
     {
         $pdo = Application::$app->db->pdo;
-        $stmt = $pdo->prepare("SELECT * FROM appointments ORDER BY appointment_datetime_ist DESC");
+        $stmt = $pdo->prepare("SELECT * FROM appointments ORDER BY appointment_datetime_ist ASC");
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }

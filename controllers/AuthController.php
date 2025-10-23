@@ -2168,7 +2168,7 @@ $sessionNames = [
 
     public function viewAllAppointmentsPM(Request $request, Response $response)
     {
-        $appointments = CandidateModel::getAllAppointments();
+        $appointments = CandidateModel::getAllAppointmentsPMMM();
         $this->setLayout('main2');
         return $this->render('viewAllAppointmentsPM', [
             'appointments' => $appointments
