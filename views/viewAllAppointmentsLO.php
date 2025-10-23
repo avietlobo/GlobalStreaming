@@ -138,7 +138,7 @@
         <tr>
             <th>ID</th>
             <th>Candidate Mobile</th>
-            <th>Event Name</th>
+            <th>Sathavartha Event</th>
             <th>Appointment (IST)</th>
             <th>Appointment (Candidate Zone)</th>
             <th>Country</th>
@@ -165,7 +165,7 @@
             <th>Updated At</th>
             <th>Transport Required</th>
             <th>Caring Google Meet Date</th>
-            <th>Event Name HS</th>
+            <th>Home Mission Event</th>
             <th>Action</th>
         </tr>
         </thead>

@@ -161,8 +161,24 @@
             <?php endif; ?>
 
             <?php foreach ($appointment as $field => $value): ?>
+                <?php
+                // Default label formatting
+                $label = ucwords(str_replace('_', ' ', $field));
+
+                // Label mapping
+                $labelMap = [
+                    'Home Mission Vid Attendance' => 'Home Mission Video Attendance',
+                    'Event Name' => 'Sathavartha Event',
+                    'Event Name Hs' => 'Home Mission Event'
+                ];
+
+                // Apply renaming if match found
+                if (isset($labelMap[$label])) {
+                    $label = $labelMap[$label];
+                }
+                ?>
                 <div>
-                    <span class="field-label"><?= htmlspecialchars(ucwords(str_replace('_', ' ', $field))) ?>:</span>
+                    <span class="field-label"><?= htmlspecialchars($label) ?>:</span>
                     <span>
             <?php
             if (strtolower($field) === 'evangelist_feedback') {
@@ -174,6 +190,8 @@
         </span>
                 </div>
             <?php endforeach; ?>
+
+
 
         </div>
     <?php endforeach; ?>
