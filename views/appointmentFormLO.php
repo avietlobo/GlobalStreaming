@@ -435,37 +435,103 @@
 </div>
 
 <script>
-    document.getElementById('updateBtn').addEventListener('click', async () => {
-        const form = document.getElementById('appointmentForm');
-        const formData = new FormData(form);
+    const updateBtn = document.getElementById('updateBtn');
+    const form = document.getElementById('appointmentForm');
 
-        // Convert FormData to a plain object
+    // ✅ Create spinner and message elements dynamically
+    const spinner = document.createElement('div');
+    spinner.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        ">
+            <div style="
+                border: 6px solid #f3f3f3;
+                border-top: 6px solid var(--highlight);
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                animation: spin 1s linear infinite;
+            "></div>
+        </div>
+    `;
+    spinner.style.display = 'none';
+    document.body.appendChild(spinner);
+
+    const messageBox = document.createElement('div');
+    messageBox.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--container-bg);
+        color: var(--highlight);
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        font-weight: bold;
+        display: none;
+        z-index: 10000;
+    `;
+    document.body.appendChild(messageBox);
+
+    // ✅ Spinner animation keyframes
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    updateBtn.addEventListener('click', async () => {
+        const formData = new FormData(form);
         const formObj = {};
-        formData.forEach((value, key) => {
-            formObj[key] = value;
-        });
+        formData.forEach((value, key) => formObj[key] = value);
 
         try {
+            spinner.style.display = 'flex';
+            updateBtn.disabled = true;
+
             const response = await fetch('/updateAppointment', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formObj)
             });
 
             const result = await response.text();
 
+            spinner.style.display = 'none';
+            updateBtn.disabled = false;
+
             if (response.ok) {
-                alert('Appointment updated successfully!');
+                showMessage('✅ Appointment updated successfully!');
+                setTimeout(() => {
+                    window.location.href = '/viewAllAppointmentsLO';
+                }, 2000);
             } else {
-                alert('Error updating appointment: ' + result);
+                showMessage('❌ Error: ' + result);
             }
         } catch (error) {
-            alert('Error updating appointment.');
+            spinner.style.display = 'none';
+            updateBtn.disabled = false;
+            showMessage('⚠️ Network error. Try again.');
             console.error(error);
         }
     });
+
+    // ✅ Helper function for showing success/error message
+    function showMessage(text) {
+        messageBox.textContent = text;
+        messageBox.style.display = 'block';
+        setTimeout(() => messageBox.style.display = 'none', 3000);
+    }
 </script>
 
 

@@ -434,8 +434,23 @@
 
 </div>
 
+<!-- Spinner + Success Message -->
+<div id="spinner" style="display:none; position:fixed; top:50%; left:50%;
+transform:translate(-50%, -50%); background:rgba(0,0,0,0.7); color:white;
+padding:15px 25px; border-radius:10px; font-size:16px; z-index:9999;">
+    Updating appointment...
+</div>
+
+<div id="successMessage" style="display:none; position:fixed; top:50%; left:50%;
+transform:translate(-50%, -50%); background:#4CAF50; color:white;
+padding:15px 25px; border-radius:10px; font-size:16px; z-index:9999;">
+    ✅ Appointment updated successfully!
+</div>
+
 <script>
     document.getElementById('updateBtn').addEventListener('click', async () => {
+        const spinner = document.getElementById('spinner');
+        const successMessage = document.getElementById('successMessage');
         const form = document.getElementById('appointmentForm');
         const formData = new FormData(form);
 
@@ -444,6 +459,8 @@
         formData.forEach((value, key) => {
             formObj[key] = value;
         });
+
+        spinner.style.display = 'block'; // Show spinner
 
         try {
             const response = await fetch('/updateAppointment', {
@@ -455,13 +472,20 @@
             });
 
             const result = await response.text();
+            spinner.style.display = 'none'; // Hide spinner
 
             if (response.ok) {
-                alert('Appointment updated successfully!');
+                successMessage.style.display = 'block'; // Show success message
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                    // ✅ Redirect to viewAllAppointmentsPM
+                    window.location.href = '/viewAllAppointmentsPM';
+                }, 1500);
             } else {
                 alert('Error updating appointment: ' + result);
             }
         } catch (error) {
+            spinner.style.display = 'none';
             alert('Error updating appointment.');
             console.error(error);
         }
