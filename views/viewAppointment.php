@@ -163,9 +163,18 @@
             <?php foreach ($appointment as $field => $value): ?>
                 <div>
                     <span class="field-label"><?= htmlspecialchars(ucwords(str_replace('_', ' ', $field))) ?>:</span>
-                    <span><?= htmlspecialchars($value) ?></span>
+                    <span>
+            <?php
+            if (strtolower($field) === 'evangelist_feedback') {
+                echo htmlspecialchars($remark ?? '');
+            } else {
+                echo htmlspecialchars($value ?? '');
+            }
+            ?>
+        </span>
                 </div>
             <?php endforeach; ?>
+
         </div>
     <?php endforeach; ?>
 <?php else: ?>

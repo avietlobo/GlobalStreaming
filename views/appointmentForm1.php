@@ -268,7 +268,7 @@
 
         <div class="form-group">
             <label for="evangelistFeedback">Evangelist Feedback</label>
-            <textarea id="evangelistFeedback" name="evangelistFeedback" placeholder="Enter feedback" rows="3" readonly><?= htmlspecialchars($appointment['evangelist_feedback'] ?? '') ?></textarea>
+            <textarea id="evangelistFeedback" name="evangelistFeedback" placeholder="Enter feedback" rows="3" readonly><?= htmlspecialchars($evangelistFeedback ?? '') ?></textarea>
         </div>
 
         <!-- Panel Member Dropdown -->

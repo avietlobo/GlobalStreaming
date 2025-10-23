@@ -1582,6 +1582,9 @@ $sessionNames = [
         $mobile = $details[0]['mobile'];
         //this->mobile=$mobile;
         $appointments = CandidateModel::getAppointmentsByParticipant($mobile); // 👈 Add this line
+        $remark = CandidateModel::getCandidateRemarkByMobile($mobile); // <-- Add this method to your model
+
+
 
         $this->setLayout('main1');
         return $this->render('candidateDetails', [
@@ -1590,7 +1593,8 @@ $sessionNames = [
             'participantName' => $participantName,
             'evangelist' => $details,
             'mobile' => $mobile,
-            'appointments' => $appointments // 👈 Pass to view
+            'appointments' => $appointments, // 👈 Pass to view
+            'remark' => $remark
         ]);
     }
 
@@ -1856,6 +1860,8 @@ $sessionNames = [
 
         $participantName = $candidateDetails['participantName'] ?? '';
         $evangelist = $candidateDetails['evangelist'] ?? '';
+        $remark = CandidateModel::getCandidateRemarkByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
+
 
 
         $this->setLayout('main2');
@@ -1890,7 +1896,7 @@ $sessionNames = [
             'localOrganizerFeedback' => $appointment['local_organizer_feedback'] ?? '',
             'panelFeedback' => $appointment['panel_feedback'] ?? '',
             'sathvarthaReadyStatus' => $appointment['sathvartha_ready_status'] ?? '',
-            'evangelistFeedback' => $appointment['evangelist_feedback'] ?? '',
+            'evangelistFeedback' => $remark,
             'transportRequired' => $appointment['transport_required'] ?? '',
             'caringGoogleMeetDate' => $appointment['caring_google_meet_date'] ?? ''
         ]);
@@ -1921,6 +1927,8 @@ $sessionNames = [
 
         $participantName = $candidateDetails['participantName'] ?? '';
         $evangelist = $candidateDetails['evangelist'] ?? '';
+        $remark = CandidateModel::getCandidateRemarkByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
+
         //echo $appointment['home_mission_attendance'];
         //echo $appointment;
 
@@ -1957,7 +1965,7 @@ $sessionNames = [
             'localOrganizerFeedback' => $appointment['local_organizer_feedback'] ?? '',
             'panelFeedback' => $appointment['panel_feedback'] ?? '',
             'sathvarthaReadyStatus' => $appointment['sathvartha_ready_status'] ?? '',
-            'evangelistFeedback' => $appointment['evangelist_feedback'] ?? '',
+            'evangelistFeedback' => $remark,
             'transportRequired' => $appointment['transport_required'] ?? '',
             'caringGoogleMeetDate' => $appointment['caring_google_meet_date'] ?? ''
         ]);
@@ -1996,6 +2004,8 @@ $sessionNames = [
 
         $participantName = $candidateDetails['participantName'] ?? '';
         $evangelist = $candidateDetails['evangelist'] ?? '';
+        $remark = CandidateModel::getCandidateRemarkByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
+
         $this->setLayout('main2');
 
         return $this->render('appointmentFormPM', [
@@ -2029,7 +2039,7 @@ $sessionNames = [
             'localOrganizerFeedback' => $appointment['local_organizer_feedback'] ?? '',
             'panelFeedback' => $appointment['panel_feedback'] ?? '',
             'sathvarthaReadyStatus' => $appointment['sathvartha_ready_status'] ?? '',
-            'evangelistFeedback' => $appointment['evangelist_feedback'] ?? '',
+            'evangelistFeedback' => $remark,
             'transportRequired' => $appointment['transport_required'] ?? '',
             'caringGoogleMeetDate' => $appointment['caring_google_meet_date'] ?? ''
 
@@ -2060,6 +2070,8 @@ $sessionNames = [
 
         $participantName = $candidateDetails['participantName'] ?? '';
         $evangelist = $candidateDetails['evangelist'] ?? '';
+        $remark = CandidateModel::getCandidateRemarkByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
+
 
         $this->setLayout('main2');
 
@@ -2094,11 +2106,12 @@ $sessionNames = [
             'localOrganizerFeedback' => $appointment['local_organizer_feedback'] ?? '',
             'panelFeedback' => $appointment['panel_feedback'] ?? '',
             'sathvarthaReadyStatus' => $appointment['sathvartha_ready_status'] ?? '',
-            'evangelistFeedback' => $appointment['evangelist_feedback'] ?? '',
+            'evangelistFeedback' => $remark,
             'transportRequired' => $appointment['transport_required'] ?? '',
             'caringGoogleMeetDate' => $appointment['caring_google_meet_date'] ?? ''
         ]);
     }
+
 
 
 
@@ -2170,12 +2183,16 @@ $sessionNames = [
         $appointments = CandidateModel::getAppointmentsById($id);
         $participantName=Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
+        $appointment = $appointments[0];
+        $remark = CandidateModel::getCandidateRemarkByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
+
 
         $this->setLayout('main2');
         return $this->render('viewAppointment', [
             'appointments' => $appointments,
             'participantName' => $participantName,
-            'evangelist' => $evangelist
+            'evangelist' => $evangelist,
+            'remark' => $remark
         ]);
     }
 
