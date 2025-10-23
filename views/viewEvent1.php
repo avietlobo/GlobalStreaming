@@ -124,9 +124,17 @@
     <div class="detail-item">
         <strong>Translation Language:</strong> <?= htmlspecialchars($event['translation_language']) ?>
     </div>
+    <?php
+    $notes = $event['notes'] ?? '';
+    $notes = htmlspecialchars_decode($notes, ENT_QUOTES);
+    $notes = str_replace(["&#13;", "&#10;", "&#13;&#10;"], "\n", $notes);
+    $notes = nl2br(htmlspecialchars($notes));
+    ?>
     <div class="detail-item">
-        <strong>Notes:</strong> <?= htmlspecialchars($event['notes']) ?>
+        <strong>Notes:</strong>
+        <div class="event-title"><?= $notes ?></div>
     </div>
+
     <div class="detail-item">
         <strong>Created By:</strong> <?= htmlspecialchars($event['created_by']) ?>
     </div>

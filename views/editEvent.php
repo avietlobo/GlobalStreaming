@@ -228,7 +228,12 @@
                value="<?= htmlspecialchars($event['event_link'] ?? '') ?>">
 
         <label for="notes">Notes</label>
-        <textarea name="notes" id="notes" rows="4" placeholder="Additional event details..."><?= htmlspecialchars($event['notes'] ?? '') ?></textarea>
+        <?php
+        $notes = $event['notes'] ?? '';
+        // Convert encoded line breaks back to real newlines
+        $notes = str_replace(["&#13;", "&#10;", "&#13;&#10;"], "\n", htmlspecialchars_decode($notes, ENT_QUOTES));
+        ?>
+        <textarea name="notes" id="notes" rows="4" placeholder="Additional event details..."><?= htmlspecialchars($notes) ?></textarea>
 
 
         <!-- Total Attended -->
