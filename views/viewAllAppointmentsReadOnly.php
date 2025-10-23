@@ -204,6 +204,92 @@
             background: #f1f1f1;
         }
 
+        .table-card {
+            overflow-x: auto;
+            overflow-y: hidden;
+            background-color: var(--table-bg);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            position: relative;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            white-space: nowrap;
+        }
+
+        /* Keep the table header sticky horizontally and vertically */
+        .table-card table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1400px;
+            font-size: 13px;
+            table-layout: auto;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            background-color: var(--table-header-bg);
+            color: var(--table-header-text);
+            z-index: 5;
+            text-transform: uppercase;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Smooth horizontal scroll */
+        .table-card::-webkit-scrollbar {
+            height: 10px;
+        }
+        .table-card::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+        .table-card::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Faded shadow at the edges while scrolling horizontally */
+        .table-card::before,
+        .table-card::after {
+            content: '';
+            position: sticky;
+            top: 0;
+            width: 30px;
+            height: 100%;
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        .table-card::before {
+            left: 0;
+            background: linear-gradient(to right, rgba(245,245,247,1), rgba(245,245,247,0));
+        }
+
+        .table-card::after {
+            right: 0;
+            background: linear-gradient(to left, rgba(245,245,247,1), rgba(245,245,247,0));
+        }
+
+        /* Mobile view improvements */
+        @media (max-width: 1024px) {
+            .table-card {
+                padding: 10px;
+            }
+            th, td {
+                padding: 8px;
+                font-size: 12px;
+            }
+        }
+
+
 
 
 
