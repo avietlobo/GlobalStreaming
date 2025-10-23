@@ -26,7 +26,7 @@
                 <p><strong>Positive Count:</strong> <?= (int)$event['positive_count'] ?></p>
 
                 <?php if (!empty($event['notes'])): ?>
-                    <p><em>📝 <?= htmlspecialchars($event['notes']) ?></em></p>
+                    <p><em><strong>Notes:</strong> <?= htmlspecialchars($event['notes']) ?></em></p>
                 <?php endif; ?>
 
                 <!-- Click Here Button -->
@@ -101,5 +101,15 @@
         word-wrap: break-word;
         overflow-wrap: break-word;
         white-space: normal;
+    }
+
+    .event-card p em {
+        display: block;
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
+        line-height: 1.4;
+        color: #444;
     }
 </style>
