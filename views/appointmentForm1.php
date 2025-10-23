@@ -465,6 +465,8 @@
 
             if (response.ok) {
                 alert('Appointment updated successfully!');
+                const id = <?= json_encode($appointment['id'] ?? '') ?>;
+                window.location.href = `/viewAppointment?id=${id}`;
             } else {
                 alert('Error updating appointment: ' + result);
             }
