@@ -5,59 +5,131 @@
     <title>All Appointments</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        :root {
+            --bg-color: #111;
+            --text-color: #fff;
+            --table-border: #333;
+            --th-bg: #222;
+            --th-text: #0f0;
+            --even-row: #1a1a1a;
+            --btn-bg: #0f0;
+            --btn-text: #000;
+        }
+
+        body.light-mode {
+            --bg-color: #f5f5f5;
+            --text-color: #000;
+            --table-border: #ccc;
+            --th-bg: #e0e0e0;
+            --th-text: #007b00;
+            --even-row: #f9f9f9;
+            --btn-bg: #007b00;
+            --btn-text: #fff;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background-color: #111;
-            color: #fff;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
         }
+
         h1 {
             text-align: center;
             color: #00ff00;
         }
+
+        .light-mode h1 {
+            color: #007b00;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.85;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
             font-size: 14px;
         }
+
         th, td {
             padding: 8px;
-            border: 1px solid #333;
+            border: 1px solid var(--table-border);
             text-align: left;
         }
+
         th {
-            background-color: #222;
-            color: #0f0;
+            background-color: var(--th-bg);
+            color: var(--th-text);
             position: sticky;
             top: 0;
         }
+
         tr:nth-child(even) {
-            background-color: #1a1a1a;
+            background-color: var(--even-row);
         }
+
         .btn-edit {
             padding: 5px 10px;
-            background-color: #0f0;
-            color: #000;
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
             text-decoration: none;
             border-radius: 4px;
             font-weight: bold;
         }
+
         .btn-edit:hover {
-            background-color: #0c0;
+            opacity: 0.8;
         }
+
         .table-container {
             overflow-x: auto;
+        }
+
+        .back-button {
+            margin-bottom: 10px;
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
+<button class="theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+
 <h1>All Appointments</h1>
+
 <div class="container">
     <button type="button" class="back-button" onclick="window.location.href='/evngDashboard1'">
-        <i class="fas fa-arrow-left"></i> Back
+        ← Back
     </button>
 </div>
+
 <div class="table-container">
     <table>
         <thead>
@@ -142,5 +214,24 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    // Load saved theme
+    document.addEventListener("DOMContentLoaded", () => {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "light") {
+            document.body.classList.add("light-mode");
+            document.querySelector(".theme-toggle").textContent = "☀️ Light";
+        }
+    });
+
+    // Toggle theme
+    function toggleTheme() {
+        document.body.classList.toggle("light-mode");
+        const isLight = document.body.classList.contains("light-mode");
+        document.querySelector(".theme-toggle").textContent = isLight ? "☀️ Light" : "🌙 Dark";
+        localStorage.setItem("theme", isLight ? "light" : "dark");
+    }
+</script>
 </body>
 </html>

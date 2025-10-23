@@ -5,59 +5,133 @@
     <title>All Appointments</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        :root {
+            --bg-color: #111;
+            --text-color: #fff;
+            --table-border: #333;
+            --th-bg: #222;
+            --th-text: #0f0;
+            --accent: #0f0;
+            --row-even: #1a1a1a;
+            --btn-bg: #0f0;
+            --btn-text: #000;
+        }
+
+        body.light-mode {
+            --bg-color: #f9f9f9;
+            --text-color: #000;
+            --table-border: #ccc;
+            --th-bg: #e6ffe6;
+            --th-text: #007700;
+            --accent: #007700;
+            --row-even: #f0f0f0;
+            --btn-bg: #007700;
+            --btn-text: #fff;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background-color: #111;
-            color: #fff;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
         }
+
         h1 {
             text-align: center;
-            color: #00ff00;
+            color: var(--accent);
         }
+
+        .toggle-container {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        .toggle-btn {
+            background-color: var(--accent);
+            color: var(--btn-text);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background-color: #0c0;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
             font-size: 14px;
         }
+
         th, td {
             padding: 8px;
-            border: 1px solid #333;
+            border: 1px solid var(--table-border);
             text-align: left;
         }
+
         th {
-            background-color: #222;
-            color: #0f0;
+            background-color: var(--th-bg);
+            color: var(--th-text);
             position: sticky;
             top: 0;
         }
+
         tr:nth-child(even) {
-            background-color: #1a1a1a;
+            background-color: var(--row-even);
         }
+
         .btn-edit {
             padding: 5px 10px;
-            background-color: #0f0;
-            color: #000;
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
             text-decoration: none;
             border-radius: 4px;
             font-weight: bold;
+            transition: background-color 0.3s;
         }
+
         .btn-edit:hover {
             background-color: #0c0;
         }
+
         .table-container {
             overflow-x: auto;
+        }
+
+        .back-button {
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            border: none;
+            border-radius: 4px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background-color: #0c0;
         }
     </style>
 </head>
 <body>
+<div class="toggle-container">
+    <button class="toggle-btn" id="themeToggle">🌙 Dark Mode</button>
+</div>
+
 <h1>All Appointments</h1>
+
 <div class="container">
     <button type="button" class="back-button" onclick="window.location.href='/evngDashboard1'">
-        <i class="fas fa-arrow-left"></i> Back
+        ⬅ Back
     </button>
 </div>
+
 <div class="table-container">
     <table>
         <thead>
@@ -142,5 +216,27 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    const toggleBtn = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme === 'light') {
+        document.body.classList.add('light-mode');
+        toggleBtn.textContent = '🌞 Light Mode';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        let theme = 'dark';
+        if (document.body.classList.contains('light-mode')) {
+            theme = 'light';
+            toggleBtn.textContent = '🌞 Light Mode';
+        } else {
+            toggleBtn.textContent = '🌙 Dark Mode';
+        }
+        localStorage.setItem('theme', theme);
+    });
+</script>
 </body>
 </html>
