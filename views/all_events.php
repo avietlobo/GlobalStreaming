@@ -92,4 +92,14 @@
     .btn-click:hover {
         background: #1a5ec9;
     }
+
+    .event-card h3 {
+        margin-top: 0;
+        margin-bottom: 12px;
+        color: #2b7cff;
+        font-size: 20px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+    }
 </style>
