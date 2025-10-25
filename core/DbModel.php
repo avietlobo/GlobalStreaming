@@ -69,6 +69,7 @@ abstract class DbModel extends Model
         $caring_google_meet_status, $caring_status, $travel_status, $transportStatus,$caringistDateTime,$homeMissionAttendance,$homeMissionVidAttendance
     ) {
         $tableName = 'appointments';
+        $evangelist = Application::$app->session->get('nameFinal');
 
         $stmt = self::prepare("INSERT INTO $tableName (
         candidate_mobile, event_name,event_name_hs,
@@ -78,7 +79,7 @@ abstract class DbModel extends Model
         google_meet_status, faith_status, sathvartha_ready_status, fellowship_status,
         evangelist_feedback, panel_feedback, local_organizer_feedback, final_feedback,
         sathvartha_attendance_status, sathvartha_feedback,
-        caring_google_meet_status, caring_status, travel_status,transport_required,caring_google_meet_date,home_mission_attendance,home_mission_vid_attendance
+        caring_google_meet_status, caring_status, travel_status,transport_required,caring_google_meet_date,home_mission_attendance,home_mission_vid_attendance,created_by
     ) VALUES (
         :candidate_mobile, :event_name, :event_name_hs,
         :appointment_datetime_ist, :appointment_datetime_candidate_zone,
@@ -87,7 +88,7 @@ abstract class DbModel extends Model
         :google_meet_status, :faith_status, :sathvartha_ready_status, :fellowship_status,
         :evangelist_feedback, :panel_feedback, :local_organizer_feedback, :final_feedback,
         :sathvartha_attendance_status, :sathvartha_feedback,
-        :caring_google_meet_status, :caring_status, :travel_status, :transport_required, :caring_google_meet_date, :home_mission_attendance,:home_mission_vid_attendance
+        :caring_google_meet_status, :caring_status, :travel_status, :transport_required, :caring_google_meet_date, :home_mission_attendance,:home_mission_vid_attendance,:created_by
     )");
 
         // Bind parameters
@@ -125,6 +126,7 @@ abstract class DbModel extends Model
         $stmt->bindParam(':caring_google_meet_date', $caringistDateTime);
         $stmt->bindParam(':home_mission_attendance', $homeMissionAttendance);
         $stmt->bindParam(':home_mission_vid_attendance', $homeMissionVidAttendance);
+        $stmt->bindParam(':created_by', $evangelist);
 
 
 
