@@ -1809,11 +1809,51 @@ GROUP BY
         $pdo = Application::$app->db->pdo;
 
         $stmt = $pdo->prepare("
-        SELECT *
-        FROM appointments
+        SELECT 
+            a.*, 
+            c.remark AS candidate_remark
+        FROM appointments a
+        LEFT JOIN candidate c 
+            ON a.candidate_mobile = c.mobile
         ORDER BY 
-            (DATE(appointment_datetime_ist) < CURDATE()) ASC, 
-            appointment_datetime_ist ASC
+            (DATE(a.appointment_datetime_ist) < CURDATE()) ASC, 
+            a.appointment_datetime_ist ASC
+    ");
+
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function getAllAppointmentsCTT()
+    {
+        $pdo = Application::$app->db->pdo;
+
+        $stmt = $pdo->prepare("
+        SELECT 
+            a.*, 
+            c.remark AS candidate_remark
+        FROM appointments a
+        LEFT JOIN candidate c 
+            ON a.candidate_mobile = c.mobile
+        ORDER BY a.appointment_datetime_ist ASC
+    ");
+
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function getAllAppointmentsLOO()
+    {
+        $pdo = Application::$app->db->pdo;
+
+        $stmt = $pdo->prepare("
+        SELECT 
+            a.*, 
+            c.remark AS candidate_remark
+        FROM appointments a
+        LEFT JOIN candidate c 
+            ON a.candidate_mobile = c.mobile
+        ORDER BY a.appointment_datetime_ist ASC
     ");
 
         $stmt->execute();

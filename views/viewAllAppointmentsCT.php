@@ -267,7 +267,8 @@
                         <td><?= htmlspecialchars($appointment['faith_status']) ?></td>
                         <td><?= htmlspecialchars($appointment['sathvartha_ready_status']) ?></td>
                         <td><?= htmlspecialchars($appointment['fellowship_status']) ?></td>
-                        <td><?= htmlspecialchars($appointment['evangelist_feedback']) ?></td>
+                        <td><?= htmlspecialchars($appointment['candidate_remark'] ?? $appointment['evangelist_feedback'] ?? '') ?></td>
+
                         <td><?= htmlspecialchars($appointment['panel_feedback']) ?></td>
                         <td><?= htmlspecialchars($appointment['local_organizer_feedback']) ?></td>
                         <td><?= htmlspecialchars($appointment['final_feedback']) ?></td>

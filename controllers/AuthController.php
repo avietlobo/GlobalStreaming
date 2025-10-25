@@ -2149,7 +2149,7 @@ $sessionNames = [
 
     public function viewAllAppointmentsLO(Request $request, Response $response)
     {
-        $appointments = CandidateModel::getAllAppointments();
+        $appointments = CandidateModel::getAllAppointmentsLOO();
         $this->setLayout('main2');
         return $this->render('viewAllAppointmentsLO', [
             'appointments' => $appointments
@@ -2158,7 +2158,7 @@ $sessionNames = [
 
     public function viewAllAppointmentsCT(Request $request, Response $response)
     {
-        $appointments = CandidateModel::getAllAppointments();
+        $appointments = CandidateModel::getAllAppointmentsCTT();
         $this->setLayout('main2');
         return $this->render('viewAllAppointmentsCT', [
             'appointments' => $appointments
