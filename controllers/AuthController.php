@@ -1467,6 +1467,11 @@ $sessionNames = [
 
              //echo  $_POST['candidateMobile'];
             $saved = SathvarthaEventModel::saveAppointment(...$data);
+            $language = CandidateModel::getCandidateLanguageByMobile($_POST['candidateMobile']);
+
+
+
+
 
 
             if ($saved) {
@@ -1478,10 +1483,10 @@ $sessionNames = [
                 error_log("Evangelist: " . $this->evangelist);
 
                 // ✅ Redirect with query params to /getCandidateDetails
-                $redirectUrl = "/getCandidateDetails?lang=" . urlencode(Application::$app->session->get('tt1')) .
-                    "&country=" . urlencode(Application::$app->session->get('tt2')) .
-                    "&participantName=" . urlencode(Application::$app->session->get('tt3')) .
-                    "&evangelist=" . urlencode(Application::$app->session->get('tt4'));
+                $redirectUrl = "/getCandidateDetails?lang=" . urlencode($language) .
+                    "&country=" . urlencode($_POST['country']) .
+                    "&participantName=" . urlencode($_POST['candidateName']) .
+                    "&evangelist=" . urlencode($_POST['evangelistName']);
 
                 $response->redirect($redirectUrl);
 
@@ -1577,6 +1582,9 @@ $sessionNames = [
 
 
         $details = CandidateModel::getEvangelistDetails($lang, $country, $participantName,$evangelist);
+//        echo '<pre>';
+//        var_dump($details);
+//        echo '</pre>';
 
 
         $mobile = $details[0]['mobile'];

@@ -3315,6 +3315,15 @@ ORDER BY
         return $statement->fetch(\PDO::FETCH_ASSOC); // returns both fields as an associative array
     }
 
+    public static function getCandidateLanguageByMobile($mobile)
+    {
+        $tableName = 'candidate';
+        $statement = self::prepare("SELECT language FROM $tableName WHERE mobile = :mobile LIMIT 1");
+        $statement->bindValue(':mobile', $mobile);
+        $statement->execute(); // ✅ Execute the query
+        return $statement->fetchColumn();
+    }
+
 
     public static function getCandidateRemarkByMobile($mobile)
     {
