@@ -325,6 +325,8 @@
             <tr>
                 <th>ID</th>
                 <th>Candidate Mobile</th>
+                <th>Participant Name</th>
+                <th>Language</th>
                 <th>Sathavartha Event</th>
                 <th>Appointment (IST)</th>
                 <th>Appointment (Candidate Zone)</th>
@@ -353,7 +355,6 @@
                 <th>Transport Required</th>
                 <th>Caring Google Meet Date</th>
                 <th>Home Mission Event</th>
-                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -362,6 +363,8 @@
                     <tr>
                         <td><?= htmlspecialchars($appointment['id']) ?></td>
                         <td><?= htmlspecialchars($appointment['candidate_mobile']) ?></td>
+                        <td><?= htmlspecialchars($appointment['candidate_participantName']) ?></td>
+                        <td><?= htmlspecialchars($appointment['candidate_language']) ?></td>
                         <td><?= htmlspecialchars($appointment['event_name']) ?></td>
                         <td><?= htmlspecialchars($appointment['appointment_datetime_ist']) ?></td>
                         <td><?= htmlspecialchars($appointment['appointment_datetime_candidate_zone']) ?></td>
@@ -376,8 +379,7 @@
                         <td><?= htmlspecialchars($appointment['faith_status']) ?></td>
                         <td><?= htmlspecialchars($appointment['sathvartha_ready_status']) ?></td>
                         <td><?= htmlspecialchars($appointment['fellowship_status']) ?></td>
-                        <td><?= htmlspecialchars($appointment['evangelist_feedback']) ?></td>
-                        <td><?= htmlspecialchars($appointment['panel_feedback']) ?></td>
+                        <td><?= htmlspecialchars($appointment['candidate_remark'] ?? $appointment['evangelist_feedback'] ?? '') ?></td>                        <td><?= htmlspecialchars($appointment['panel_feedback']) ?></td>
                         <td><?= htmlspecialchars($appointment['local_organizer_feedback']) ?></td>
                         <td><?= htmlspecialchars($appointment['final_feedback']) ?></td>
                         <td><?= htmlspecialchars($appointment['sathvartha_attendance_status']) ?></td>

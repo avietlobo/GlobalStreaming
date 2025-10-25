@@ -1791,18 +1791,50 @@ GROUP BY
     public static function getAllAppointmentsSR()
     {
         $pdo = Application::$app->db->pdo;
-        $stmt = $pdo->prepare("SELECT * FROM appointments where sathvartha_ready_status = 'Ready' ORDER BY appointment_datetime_ist DESC");
+
+        $stmt = $pdo->prepare("
+        SELECT 
+            a.*, 
+            c.remark AS candidate_remark,
+            c.participantName AS candidate_participantName,
+            c.language AS candidate_language
+        FROM appointments a
+        LEFT JOIN candidate c 
+            ON a.candidate_mobile = c.mobile
+        WHERE a.sathvartha_ready_status = 'Ready'
+        ORDER BY a.appointment_datetime_ist DESC
+    ");
+
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+
     public static function getAllAppointmentsIF()
     {
         $pdo = Application::$app->db->pdo;
-        $stmt = $pdo->prepare("SELECT * FROM appointments where fellowship_status = 'In Fellowship' ORDER BY appointment_datetime_ist DESC");
+
+        $stmt = $pdo->prepare("
+        SELECT 
+            a.*, 
+            c.remark AS candidate_remark,
+            c.participantName AS candidate_participantName,
+            c.language AS candidate_language
+        FROM appointments a
+        LEFT JOIN candidate c 
+            ON a.candidate_mobile = c.mobile
+        WHERE a.fellowship_status = 'In Fellowship'
+        ORDER BY 
+            (DATE(a.appointment_datetime_ist) < CURDATE()) ASC,
+            a.appointment_datetime_ist ASC
+    ");
+
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+
+
 
     public static function getAllAppointmentsPMMM()
     {
@@ -1811,7 +1843,9 @@ GROUP BY
         $stmt = $pdo->prepare("
         SELECT 
             a.*, 
-            c.remark AS candidate_remark
+            c.remark AS candidate_remark,
+            c.participantName AS candidate_participantName,
+            c.language AS candidate_language
         FROM appointments a
         LEFT JOIN candidate c 
             ON a.candidate_mobile = c.mobile
@@ -1824,6 +1858,7 @@ GROUP BY
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+
     public static function getAllAppointmentsCTT()
     {
         $pdo = Application::$app->db->pdo;
@@ -1831,7 +1866,9 @@ GROUP BY
         $stmt = $pdo->prepare("
         SELECT 
             a.*, 
-            c.remark AS candidate_remark
+            c.remark AS candidate_remark,
+            c.participantName AS candidate_participantName,
+            c.language AS candidate_language
         FROM appointments a
         LEFT JOIN candidate c 
             ON a.candidate_mobile = c.mobile
@@ -1849,7 +1886,9 @@ GROUP BY
         $stmt = $pdo->prepare("
         SELECT 
             a.*, 
-            c.remark AS candidate_remark
+            c.remark AS candidate_remark,
+            c.participantName AS candidate_participantName,
+            c.language AS candidate_language
         FROM appointments a
         LEFT JOIN candidate c 
             ON a.candidate_mobile = c.mobile
@@ -1864,10 +1903,23 @@ GROUP BY
     public static function getAllAppointments()
     {
         $pdo = Application::$app->db->pdo;
-        $stmt = $pdo->prepare("SELECT * FROM appointments ORDER BY appointment_datetime_ist ASC");
+
+        $stmt = $pdo->prepare("
+        SELECT 
+            a.*, 
+            c.remark AS candidate_remark,
+            c.participantName AS candidate_participantName,
+            c.language AS candidate_language
+        FROM appointments a
+        LEFT JOIN candidate c 
+            ON a.candidate_mobile = c.mobile
+        ORDER BY a.appointment_datetime_ist ASC
+    ");
+
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
 
     public static function getAppointmentsById($id)
     {

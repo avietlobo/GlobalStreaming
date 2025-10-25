@@ -134,7 +134,7 @@
     </a>
 </div>
 
-<a class="back-link" href="javascript:history.back()">← Back to Evangelists</a>
+<a class="back-link" href="javascript:history.back()">← Back</a>
 <h2>Appointment Details</h2>
 
 

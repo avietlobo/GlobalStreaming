@@ -214,11 +214,14 @@
         <table id="appointmentsTable">
             <thead>
             <tr>
-                <th>ID</th>
+                <th>Action</th>
                 <th>Candidate Mobile</th>
-                <th>Sathavartha Event</th>
+                <th>Participant Name</th>
+                <th>Language</th>
+                <th>Home Mission Event</th>
                 <th>Appointment (IST)</th>
                 <th>Appointment (Candidate Zone)</th>
+                <th>Sathavartha Event</th>
                 <th>Country</th>
                 <th>Place</th>
                 <th>Class Status</th>
@@ -235,6 +238,8 @@
                 <th>Local Organizer Feedback</th>
                 <th>Final Feedback</th>
                 <th>Sathvartha Attendance Status</th>
+                <th>Home Mission Attendance Status</th>
+                <th>Home Mission Video Watched Status</th>
                 <th>Sathvartha Feedback</th>
                 <th>Caring Google Meet Status</th>
                 <th>Caring Status</th>
@@ -243,19 +248,24 @@
                 <th>Updated At</th>
                 <th>Transport Required</th>
                 <th>Caring Google Meet Date</th>
-                <th>Home Mission Event</th>
-                <th>Action</th>
+
+                <th>ID</th>
             </tr>
             </thead>
             <tbody>
             <?php if (!empty($appointments)): ?>
                 <?php foreach ($appointments as $appointment): ?>
                     <tr>
-                        <td><?= htmlspecialchars($appointment['id']) ?></td>
+                        <td>
+                            <a href="/editAppointmentCT?id=<?= urlencode($appointment['id']) ?>" class="btn btn-primary" style="padding:4px 10px;font-size:12px;">Edit</a>
+                        </td>
                         <td><?= htmlspecialchars($appointment['candidate_mobile']) ?></td>
-                        <td><?= htmlspecialchars($appointment['event_name']) ?></td>
+                        <td><?= htmlspecialchars($appointment['candidate_participantName']) ?></td>
+                        <td><?= htmlspecialchars($appointment['candidate_language']) ?></td>
+                        <td><?= htmlspecialchars($appointment['event_name_hs']) ?></td>
                         <td><?= htmlspecialchars($appointment['appointment_datetime_ist']) ?></td>
                         <td><?= htmlspecialchars($appointment['appointment_datetime_candidate_zone']) ?></td>
+                        <td><?= htmlspecialchars($appointment['event_name']) ?></td>
                         <td><?= htmlspecialchars($appointment['candidate_country']) ?></td>
                         <td><?= htmlspecialchars($appointment['place']) ?></td>
                         <td><?= htmlspecialchars($appointment['class_status']) ?></td>
@@ -273,6 +283,8 @@
                         <td><?= htmlspecialchars($appointment['local_organizer_feedback']) ?></td>
                         <td><?= htmlspecialchars($appointment['final_feedback']) ?></td>
                         <td><?= htmlspecialchars($appointment['sathvartha_attendance_status']) ?></td>
+                        <td><?= htmlspecialchars($appointment['home_mission_attendance']) ?></td>
+                        <td><?= htmlspecialchars($appointment['home_mission_vid_attendance']) ?></td>
                         <td><?= htmlspecialchars($appointment['sathvartha_feedback']) ?></td>
                         <td><?= htmlspecialchars($appointment['caring_google_meet_status']) ?></td>
                         <td><?= htmlspecialchars($appointment['caring_status']) ?></td>
@@ -281,10 +293,9 @@
                         <td><?= htmlspecialchars($appointment['updated_at']) ?></td>
                         <td><?= htmlspecialchars($appointment['transport_required']) ?></td>
                         <td><?= htmlspecialchars($appointment['caring_google_meet_date']) ?></td>
-                        <td><?= htmlspecialchars($appointment['event_name_hs']) ?></td>
-                        <td>
-                            <a href="/editAppointmentCT?id=<?= urlencode($appointment['id']) ?>" class="btn btn-primary" style="padding:4px 10px;font-size:12px;">Edit</a>
-                        </td>
+
+
+                        <td><?= htmlspecialchars($appointment['id']) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
