@@ -1657,6 +1657,49 @@ $sessionNames = [
         ]);
     }
 
+    public function evangelistRatings(Request $request, Response $response)
+    {
+        // Fetch all evangelists with their active languages and existing ratings
+        $evangelistRatings = EvangelistModel::getAllEvangelistLanguages();
+
+        if ($request->isPost()) {
+            $body = $request->getBody();
+            $ratings = $_POST['ratings'] ?? [];
+
+            if (empty($ratings)) {
+                $this->setLayout('main1');
+                return $this->render('evangelistRatings', [
+                    'success' => '',
+                    'error' => 'Please select at least one rating before saving.',
+                    'evangelistRatings' => $evangelistRatings
+                ]);
+            }
+
+            // Update each rating
+            EvangelistModel::updateEvangelistRatings($ratings);
+
+            // Re-fetch updated data
+            $evangelistRatings = EvangelistModel::getAllEvangelistLanguages();
+
+            $this->setLayout('main2');
+            return $this->render('evangelistRatings', [
+                'success' => 'Ratings updated successfully!',
+                'error' => '',
+                'evangelistRatings' => $evangelistRatings
+            ]);
+        }
+
+        // GET request → show data
+        $this->setLayout('main1');
+        return $this->render('evangelistRatings', [
+            'success' => '',
+            'error' => '',
+            'evangelistRatings' => $evangelistRatings
+        ]);
+    }
+
+
+
 
 
 

@@ -67,6 +67,9 @@ $app-> router->get('/viewAllAppointmentsIF', [AuthController::class, 'viewAllApp
 $app-> router->get('/mylangPref', [AuthController::class, 'mylangPref']);
 $app-> router->post('/mylangPref', [AuthController::class, 'mylangPref']);
 
+$app->router->get('/evangelistRatings', [AuthController::class, 'evangelistRatings']);
+$app->router->post('/evangelistRatings', [AuthController::class, 'evangelistRatings']);
+
 $app->router->get('/mycountryPref', [AuthController::class, 'mycountryPref']);
 $app->router->post('/mycountryPref', [AuthController::class, 'mycountryPref']);
 

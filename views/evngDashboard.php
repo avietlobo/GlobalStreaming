@@ -669,6 +669,10 @@ $designation = $dashboardData[0]->designation;
                 <button class="dropdown-item" onclick="window.location.href='view7DApproved';">
                     <i class="fas fa-list-alt"></i> 7D Approved Candidates
                 </button>
+
+                <button class="dropdown-item" onclick="window.location.href='evangelistRatings';">
+                    <i class="fas fa-list-alt"></i> Give Rating
+                </button>
             </div>
         </div>
     <?php endif; ?>

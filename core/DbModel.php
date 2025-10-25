@@ -2046,6 +2046,44 @@ GROUP BY
         return $stmt->fetchAll(\PDO::FETCH_COLUMN) ?: [];
     }
 
+    public static function getAllEvangelistLanguages(): array
+    {
+        $pdo = Application::$app->db->pdo;
+        $stmt = $pdo->prepare("
+        SELECT e.evngName, e.email, el.language, el.rating
+        FROM evangelist e
+        LEFT JOIN evangelist_languages el ON e.email = el.email
+        WHERE el.active = 1
+        ORDER BY e.evngName, el.language
+    ");
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function updateEvangelistRatings(array $ratings): void
+    {
+        $pdo = Application::$app->db->pdo;
+        $stmt = $pdo->prepare("
+        UPDATE evangelist_languages
+        SET rating = :rating
+        WHERE email = :email AND language = :language
+    ");
+
+        foreach ($ratings as $key => $value) {
+            // $key format => email|language
+            list($email, $language) = explode('|', $key);
+            $rating = (int)$value;
+
+            if ($rating >= 1 && $rating <= 5) {
+                $stmt->execute([
+                    ':rating' => $rating,
+                    ':email' => $email,
+                    ':language' => $language
+                ]);
+            }
+        }
+    }
+
 
     public static function getActiveLanguages(string $email): array
     {
