@@ -429,7 +429,7 @@ $designation = $dashboardData[0]->designation;
             </button>
 
             <button class="dropdown-item" onclick="window.location.href='myPref';">
-                <i class="fas fa-sliders-h"></i> My Preference
+                <i class="fas fa-sliders-h"></i> Evangelization Preference
             </button>
 
             <button class="dropdown-item" onclick="window.location.href='getWordSessionsApproved';">
@@ -594,7 +594,7 @@ $designation = $dashboardData[0]->designation;
                 </button>
 
                 <button class="dropdown-item" onclick="window.location.href='myPref';">
-                    <i class="fas fa-sliders-h"></i> My Preference
+                    <i class="fas fa-sliders-h"></i> Evangelization Preference
                 </button>
 
                 <button class="dropdown-item" onclick="window.location.href='view7DApproval';">
