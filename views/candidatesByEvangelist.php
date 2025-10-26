@@ -189,6 +189,15 @@
             color: #fff;
         }
 
+        .back-link {
+            display: inline-block;
+            margin: 10px 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
     </style>
 </head>
 <body>
@@ -199,6 +208,8 @@
     </a>
     <a href="/viewCandidates" class="dashboard-btn">Go to Dashboard</a>
 </div>
+
+<a class="back-link" href="/evngDashboard1">← Back </a>
 
 <div class="top-bar">
     <h2>Candidates by <?= htmlspecialchars($evangelist) ?> in <?= htmlspecialchars($country) ?> (Language: <?= htmlspecialchars($language) ?>)</h2>

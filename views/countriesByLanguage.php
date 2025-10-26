@@ -38,7 +38,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .left-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         h2 {
@@ -54,6 +60,37 @@
             background: none;
             border: none;
             color: var(--highlight);
+        }
+
+        .logout-btn {
+            background: var(--item-bg);
+            color: var(--highlight);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-left: 8px;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--item-hover);
+        }
+
+        .back-link {
+            display: inline-block;
+            text-decoration: none;
+            color: var(--highlight);
+            font-size: 14px;
+            font-weight: 500;
+            background-color: var(--item-bg);
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: var(--item-hover);
         }
 
         .container {
@@ -97,23 +134,6 @@
             margin-left: 10px;
         }
 
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 30px;
-            text-decoration: none;
-            color: var(--highlight);
-            font-weight: 500;
-            padding: 10px 16px;
-            border-radius: 8px;
-            background-color: var(--item-bg);
-            transition: background 0.3s;
-        }
-
-        .back-link:hover {
-            background-color: var(--item-hover);
-        }
-
         @media (max-width: 600px) {
             h2 {
                 font-size: 20px;
@@ -125,23 +145,32 @@
             }
 
             .back-link {
-                font-size: 14px;
-                padding: 10px;
+                font-size: 13px;
+                padding: 8px 10px;
+            }
+
+            .logout-btn {
+                padding: 6px 10px;
+                font-size: 13px;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <a class="nav-link" href="#" id="logout-link">
-        <button type="button" class="btn btn-primary">Logout</button>
-    </a>
-</div>
-
 <div class="top-bar">
+    <div class="left-controls">
+        <a class="back-link" href="/evngDashboard1">← Back</a>
+    </div>
+
     <h2>Countries for: <?= htmlspecialchars($language) ?></h2>
-    <button class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>
+
+    <div class="right-controls">
+        <button class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>
+        <a href="#" id="logout-link">
+            <button type="button" class="logout-btn">Logout</button>
+        </a>
+    </div>
 </div>
 
 <div class="container">
