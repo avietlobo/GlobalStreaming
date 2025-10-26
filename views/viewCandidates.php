@@ -195,7 +195,7 @@
 
 <div class="top-bar">
     <button class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>
-    <h2 class="page-title">Candidate List by Language</h2>
+    <h2 class="page-title">Language Dashboard</h2>
 </div>
 
 <ul class="lang-list">
