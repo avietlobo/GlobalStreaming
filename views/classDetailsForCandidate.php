@@ -1171,97 +1171,183 @@
         }
 
     </script>
-        <!-- 🌟 Integrated Add Appointment + Appointments Table -->
-        <hr style="margin: 40px 0; border: none; border-top: 2px solid #007BFF;">
+        <!-- 🌟 Appointments Section -->
+        <div class="card-section" style="margin-top: 40px;">
+            <h2 class="section-title">📅 Appointments</h2>
 
-        <h2 style="text-align:center; color:#007BFF;">Appointments</h2>
+            <?php
+            // Generate query params for Add Appointment
+            $queryParams = http_build_query([
+                'participantName' => $participant ?? '',
+                'mobile' => $mobile ?? '',
+                'evangelist' => $evangelist ?? '',
+                'country' => $country ?? ''
+            ]);
+            ?>
 
-        <?php
-        // Generate query params for Add Appointment
-        $queryParams = http_build_query([
-            'participantName' => $participant ?? '',
-            'mobile' => $mobile ?? '',
-            'evangelist' => $evangelist ?? '',
-            'country' => $country ?? ''
-        ]);
-        ?>
+            <div class="button-container" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <p style="color: #555; font-weight: 500;">Manage candidate appointments below:</p>
+                <a href="/addAppointmentE?<?= $queryParams ?>" class="btn-compact">
+                    ➕ Add Appointment
+                </a>
+            </div>
 
-        <a href="/addAppointmentE?<?= $queryParams ?>" class="add-appointment-btn"
-           style="display:inline-block; margin:20px 0; text-decoration:none; background-color:#007BFF; color:white; padding:10px 20px; border-radius:8px; font-weight:bold;">
-            ➕ Add Appointment
-        </a>
-
-        <div class="scroll-wrapper" style="overflow-x:auto; margin-top:20px;">
-            <table style="width:100%; border-collapse:collapse; min-width:1500px;">
-                <thead>
-                <tr style="background-color:#007BFF; color:white;">
-                    <th>Candidate Mobile</th>
-                    <th>Event Name</th>
-                    <th>Appointment IST</th>
-                    <th>Appointment Candidate Zone</th>
-                    <th>Country</th>
-                    <th>Place</th>
-                    <th>Class Status</th>
-                    <th>Sathvartha Organizer</th>
-                    <th>Panel Member</th>
-                    <th>Caring Team Member</th>
-                    <th>Local Organizer</th>
-                    <th>Google Meet Status</th>
-                    <th>Faith Status</th>
-                    <th>Sathvartha Ready Status</th>
-                    <th>Fellowship Status</th>
-                    <th>Evangelist Feedback</th>
-                    <th>Panel Feedback</th>
-                    <th>Local Organizer Feedback</th>
-                    <th>Final Feedback</th>
-                    <th>Sathvartha Attendance</th>
-                    <th>Sathvartha Feedback</th>
-                    <th>Caring Google Meet Status</th>
-                    <th>Caring Status</th>
-                    <th>Travel Status</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php if (!empty($appointments)): ?>
-                    <?php foreach ($appointments as $appointment): ?>
-                        <tr class="clickable-row" data-id="<?= $appointment['id'] ?>"
-                            style="background-color:#f9f9f9; border-bottom:1px solid #ddd;">
-                            <td><?= htmlspecialchars($appointment['candidate_mobile']) ?></td>
-                            <td><?= htmlspecialchars($appointment['event_name']) ?></td>
-                            <td><?= htmlspecialchars($appointment['appointment_datetime_ist']) ?></td>
-                            <td><?= htmlspecialchars($appointment['appointment_datetime_candidate_zone']) ?></td>
-                            <td><?= htmlspecialchars($appointment['candidate_country']) ?></td>
-                            <td><?= htmlspecialchars($appointment['place']) ?></td>
-                            <td><?= htmlspecialchars($appointment['class_status']) ?></td>
-                            <td><?= htmlspecialchars($appointment['sathvartha_organizer_name']) ?></td>
-                            <td><?= htmlspecialchars($appointment['panel_member_name']) ?></td>
-                            <td><?= htmlspecialchars($appointment['caring_team_member_name']) ?></td>
-                            <td><?= htmlspecialchars($appointment['local_organizer_name']) ?></td>
-                            <td><?= htmlspecialchars($appointment['google_meet_status']) ?></td>
-                            <td><?= htmlspecialchars($appointment['faith_status']) ?></td>
-                            <td><?= htmlspecialchars($appointment['sathvartha_ready_status']) ?></td>
-                            <td><?= htmlspecialchars($appointment['fellowship_status']) ?></td>
-                            <td><?= htmlspecialchars($remark) ?></td>
-                            <td><?= htmlspecialchars($appointment['panel_feedback']) ?></td>
-                            <td><?= htmlspecialchars($appointment['local_organizer_feedback']) ?></td>
-                            <td><?= htmlspecialchars($appointment['final_feedback']) ?></td>
-                            <td><?= htmlspecialchars($appointment['sathvartha_attendance_status']) ?></td>
-                            <td><?= htmlspecialchars($appointment['sathvartha_feedback']) ?></td>
-                            <td><?= htmlspecialchars($appointment['caring_google_meet_status']) ?></td>
-                            <td><?= htmlspecialchars($appointment['caring_status']) ?></td>
-                            <td><?= htmlspecialchars($appointment['travel_status']) ?></td>
-                            <td><?= htmlspecialchars($appointment['created_at']) ?></td>
-                            <td><?= htmlspecialchars($appointment['updated_at']) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr><td colspan="26" style="text-align:center; padding:20px;">No appointments found.</td></tr>
-                <?php endif; ?>
-                </tbody>
-            </table>
+            <div class="table-wrapper" style="overflow-x:auto; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                <table style="width:100%; border-collapse:collapse; min-width:1500px;">
+                    <thead>
+                    <tr>
+                        <th>Candidate Mobile</th>
+                        <th>Event Name</th>
+                        <th>Appointment IST</th>
+                        <th>Appointment (Candidate Zone)</th>
+                        <th>Country</th>
+                        <th>Place</th>
+                        <th>Class Status</th>
+                        <th>Sathvartha Organizer</th>
+                        <th>Panel Member</th>
+                        <th>Caring Team Member</th>
+                        <th>Local Organizer</th>
+                        <th>Google Meet Status</th>
+                        <th>Faith Status</th>
+                        <th>Sathvartha Ready</th>
+                        <th>Fellowship Status</th>
+                        <th>Evangelist Feedback</th>
+                        <th>Panel Feedback</th>
+                        <th>Local Organizer Feedback</th>
+                        <th>Final Feedback</th>
+                        <th>Sathvartha Attendance</th>
+                        <th>Sathvartha Feedback</th>
+                        <th>Caring Meet Status</th>
+                        <th>Caring Status</th>
+                        <th>Travel Status</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php if (!empty($appointments)): ?>
+                        <?php foreach ($appointments as $appointment): ?>
+                            <tr class="clickable-row" data-id="<?= $appointment['id'] ?>">
+                                <td><?= htmlspecialchars($appointment['candidate_mobile']) ?></td>
+                                <td><?= htmlspecialchars($appointment['event_name']) ?></td>
+                                <td><?= htmlspecialchars($appointment['appointment_datetime_ist']) ?></td>
+                                <td><?= htmlspecialchars($appointment['appointment_datetime_candidate_zone']) ?></td>
+                                <td><?= htmlspecialchars($appointment['candidate_country']) ?></td>
+                                <td><?= htmlspecialchars($appointment['place']) ?></td>
+                                <td><?= htmlspecialchars($appointment['class_status']) ?></td>
+                                <td><?= htmlspecialchars($appointment['sathvartha_organizer_name']) ?></td>
+                                <td><?= htmlspecialchars($appointment['panel_member_name']) ?></td>
+                                <td><?= htmlspecialchars($appointment['caring_team_member_name']) ?></td>
+                                <td><?= htmlspecialchars($appointment['local_organizer_name']) ?></td>
+                                <td><?= htmlspecialchars($appointment['google_meet_status']) ?></td>
+                                <td><?= htmlspecialchars($appointment['faith_status']) ?></td>
+                                <td><?= htmlspecialchars($appointment['sathvartha_ready_status']) ?></td>
+                                <td><?= htmlspecialchars($appointment['fellowship_status']) ?></td>
+                                <td><?= htmlspecialchars($remark) ?></td>
+                                <td><?= htmlspecialchars($appointment['panel_feedback']) ?></td>
+                                <td><?= htmlspecialchars($appointment['local_organizer_feedback']) ?></td>
+                                <td><?= htmlspecialchars($appointment['final_feedback']) ?></td>
+                                <td><?= htmlspecialchars($appointment['sathvartha_attendance_status']) ?></td>
+                                <td><?= htmlspecialchars($appointment['sathvartha_feedback']) ?></td>
+                                <td><?= htmlspecialchars($appointment['caring_google_meet_status']) ?></td>
+                                <td><?= htmlspecialchars($appointment['caring_status']) ?></td>
+                                <td><?= htmlspecialchars($appointment['travel_status']) ?></td>
+                                <td><?= htmlspecialchars($appointment['created_at']) ?></td>
+                                <td><?= htmlspecialchars($appointment['updated_at']) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr><td colspan="26" class="no-records">No appointments found.</td></tr>
+                    <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+        <style>
+            .section-title {
+                text-align: center;
+                color: #007BFF;
+                font-size: 1.6rem;
+                font-weight: 600;
+                margin-bottom: 20px;
+                border-bottom: 3px solid #1DA1F2;
+                display: inline-block;
+                padding-bottom: 6px;
+            }
+
+            .primary-btn {
+                background-color: #1DA1F2;
+                color: #fff;
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+            .primary-btn:hover {
+                background-color: #0d8ddb;
+                transform: translateY(-2px);
+            }
+
+            table th {
+                background-color: #007BFF;
+                color: #fff;
+                text-align: left;
+                padding: 10px;
+                font-size: 0.9rem;
+                white-space: nowrap;
+            }
+
+            table td {
+                background-color: #f9f9f9;
+                padding: 8px 10px;
+                border-bottom: 1px solid #ddd;
+                font-size: 0.9rem;
+                color: #333;
+            }
+
+            tr:nth-child(even) td {
+                background-color: #f2f8ff;
+            }
+
+            tr:hover td {
+                background-color: #e8f2ff;
+            }
+
+            .clickable-row {
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+
+            .no-records {
+                text-align: center;
+                padding: 20px;
+                color: #777;
+                font-style: italic;
+            }
+            .btn-compact {
+                background-color: #007BFF;
+                color: #fff;
+                padding: 4px 10px;
+                border-radius: 5px;
+                font-size: 13px;
+                font-weight: 500;
+                text-decoration: none;
+                transition: all 0.2s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+                line-height: 1.2;
+            }
+
+            .btn-compact:hover {
+                background-color: #0d8ddb;
+                transform: translateY(-1px);
+            }
+
+        </style>
 
         <script>
             document.querySelectorAll('.clickable-row').forEach(row => {
@@ -1271,6 +1357,7 @@
                 });
             });
         </script>
+
 
 
 
