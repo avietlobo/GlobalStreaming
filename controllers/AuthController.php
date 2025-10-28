@@ -1422,6 +1422,83 @@ $sessionNames = [
     }
 
 
+    public function saveAppointmentE(Request $request, Response $response)
+    {
+        if ($request->isPost()) {
+            // Helper function to convert empty strings to null
+            $nullIfEmpty = fn($value) => isset($value) && trim($value) !== '' ? $value : null;
+
+            $data = [
+                $_POST['candidateMobile'] ?? null,
+                $nullIfEmpty($_POST['event_name'] ?? null),
+                $_POST['event_name1'] ?? null, // <-- Add this
+
+                $_POST['istDateTimeZ'] ?? null,
+                $_POST['istDateTime'] ?? $_POST['istDateTimeZ'], // fallback if no candidate time provided
+                $_POST['country'] ?? null,
+                $_POST['place'] ?? null,
+                $_POST['classFrom'] ?? null,
+                $_POST['sathvartha_organizer'] ?? null,
+                $_POST['panel_member'] ?? null,
+                $_POST['caring_team_member'] ?? null,
+                $_POST['local_organizer'] ?? null,
+                $_POST['googleMeetStatus'] ?? null,
+                $_POST['faithStatus'] ?? null,
+                $_POST['sathvarthaReadyStatus'] ?? null,
+                $_POST['fellowshipStatus'] ?? null,
+                $_POST['evangelistFeedback'] ?? null,
+                $_POST['panelFeedback'] ?? null,
+                $_POST['localOrganizerFeedback'] ?? null,
+                $_POST['finalFeedback'] ?? null,
+                $_POST['sathvarthaAttendance'] ?? null,
+                $_POST['sathvarthaFeedback'] ?? null,
+                $_POST['googleMeetCaringTeam'] ?? null,
+                $_POST['caringStatus'] ?? null,
+                $_POST['travelStatus'] ?? null,
+                $_POST['transportStatus'] ?? null,
+                $_POST['caringistDateTime'] ?? null,
+                $_POST['homeMissionAttendance'] ?? null, // ✅ New field added here
+                $_POST['homeMissionVidAttendance'] ?? null, // ✅ New field added here
+
+
+            ];
+
+            error_log('Data to save: ' . print_r($data, true));
+
+            //echo  $_POST['candidateMobile'];
+            $saved = SathvarthaEventModel::saveAppointment(...$data);
+            $language = CandidateModel::getCandidateLanguageByMobile($_POST['candidateMobile']);
+
+
+
+
+
+
+            if ($saved) {
+
+
+                error_log("Language: " . $this->language);
+                error_log("Country: " . $this->country);
+                error_log("Participant: " . $this->participantName);
+                error_log("Evangelist: " . $this->evangelist);
+
+                // ✅ Redirect with query params to /getCandidateDetails
+                $redirectUrl = "/getCandidateDetailsE?lang=" . urlencode($language) .
+                    "&country=" . urlencode($_POST['country']) .
+                    "&participantName=" . urlencode($_POST['candidateName']) .
+                    "&evangelist=" . urlencode($_POST['evangelistName']);
+
+                $response->redirect($redirectUrl);
+
+            } else {
+
+                // ✅ Perform the redirect
+
+                echo json_encode(["success" => false, "message" => "Failed to save appointment"]);
+            }
+        }
+    }
+
     public function saveAppointment(Request $request, Response $response)
     {
         if ($request->isPost()) {
@@ -1500,6 +1577,62 @@ $sessionNames = [
     }
 
 
+
+    public function addAppointmentE(Request $request, Response $response)
+    {
+        $this->setLayout('main1');
+
+
+        $participantName = $_GET['participantName'] ?? '';
+        $recordDate = $_GET['recordDate'] ?? '';
+        $mobile = $_GET['mobile'] ?? '';
+        $evangelist = $_GET['evangelist'] ?? '';
+        $country = $_GET['country'] ?? '';
+        $source = $_GET['source'] ?? '';
+        $allotedDays = $_GET['allotedDays'] ?? '';
+        $mediaType = $_GET['mediaType'] ?? '';
+        $activeStatus = $_GET['activeStatus'] ?? '';
+        $userid = $_GET['userid'] ?? '';
+        $remark = $_GET['remark'] ?? '';
+        $wgroup = $_GET['wgroup'] ?? '';
+
+        // Get Event IDS
+        $eventNames = SathvarthaEventModel::getAllEventNames();
+
+        $eventNames1 = SathvarthaEventModel::getAllEventNames1();
+
+        // Get max class Status
+
+        // Get Sathvartha organizer
+        $organizersByDesignation = EvangelistModel::findallTypesOfOrganizers();
+        $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($mobile);
+        //echo $mobile;
+
+        $remark = CandidateModel::getCandidateRemarkByMobile($mobile); // <-- Add this method to your model
+
+
+
+        // Get panel member
+
+        // Get local organizer
+
+        // Get caring Team member
+
+        // Pass them to view
+        return $this->render('addAppointmentE', [
+            'participantName' => $participantName,
+            'mobile' => $mobile,
+            'evangelist' => $evangelist,
+            'country' => $country,
+            'eventNames' => $eventNames,
+            'eventNames1' => $eventNames1,
+            'organizers' => $organizersByDesignation,  // key point
+            'highesClassNumberAttended' => $highesClassNumberAttended, // 👈 Pass it here
+            'remark' => $remark
+        ]);
+    }
+
+
     public function addAppointment(Request $request, Response $response)
     {
         $this->setLayout('main1');
@@ -1560,6 +1693,46 @@ $sessionNames = [
 //        ]);
 
 
+
+    public function getCandidateDetailsE(Request $request, Response $response)
+    {
+        $lang = $_GET['lang'] ?? '';
+        $country = $_GET['country'] ?? '';
+        $participantName = $_GET['participantName'] ?? '';
+        $evangelist = $_GET['evangelist'] ?? '';
+
+
+        Application::$app->session->set('tt1', $lang);
+        Application::$app->session->set('tt2', $country);
+        Application::$app->session->set('tt3', $participantName);
+        Application::$app->session->set('tt4', $evangelist);
+
+
+
+        $details = CandidateModel::getEvangelistDetails($lang, $country, $participantName,$evangelist);
+//        echo '<pre>';
+//        var_dump($details);
+//        echo '</pre>';
+
+
+        $mobile = $details[0]['mobile'];
+        //this->mobile=$mobile;
+        $appointments = CandidateModel::getAppointmentsByParticipant($mobile); // 👈 Add this line
+        $remark = CandidateModel::getCandidateRemarkByMobile($mobile); // <-- Add this method to your model
+
+
+
+        $this->setLayout('main1');
+        return $this->render('candidateDetailsE', [
+            'language' => $lang,
+            'country' => $country,
+            'participantName' => $participantName,
+            'evangelist' => $details,
+            'mobile' => $mobile,
+            'appointments' => $appointments, // 👈 Pass to view
+            'remark' => $remark
+        ]);
+    }
 
 
 

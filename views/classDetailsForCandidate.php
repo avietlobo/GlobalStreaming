@@ -1186,7 +1186,7 @@
         ]);
         ?>
 
-        <a href="/addAppointment?<?= $queryParams ?>" class="add-appointment-btn"
+        <a href="/addAppointmentE?<?= $queryParams ?>" class="add-appointment-btn"
            style="display:inline-block; margin:20px 0; text-decoration:none; background-color:#007BFF; color:white; padding:10px 20px; border-radius:8px; font-weight:bold;">
             ➕ Add Appointment
         </a>

@@ -82,8 +82,11 @@ $app->router->get('/getCandidatesByLanguage', [AuthController::class, 'getCandid
 $app->router->get('/getCandidatesByLangAndCountry', [AuthController::class, 'getCandidatesByLangAndCountry']);
 $app->router->get('/getCandidatesByEvangelist', [AuthController::class, 'getCandidatesByEvangelist']);
 $app->router->get('/getCandidateDetails', [AuthController::class, 'getCandidateDetails']);
+$app->router->get('/getCandidateDetailsE', [AuthController::class, 'getCandidateDetailsE']);
 $app->router->get('/addAppointment', [AuthController::class, 'addAppointment']);
+$app->router->get('/addAppointmentE', [AuthController::class, 'addAppointmentE']);
 $app->router->post('/saveAppointment', [AuthController::class, 'saveAppointment']);
+$app->router->post('/saveAppointmentE', [AuthController::class, 'saveAppointmentE']);
 $app->router->get('/editAppointment', [AuthController::class, 'editAppointment']);
 $app->router->get('/editAppointmentPM', [AuthController::class, 'editAppointmentPM']);
 $app->router->get('/editAppointmentCT', [AuthController::class, 'editAppointmentCT']);
