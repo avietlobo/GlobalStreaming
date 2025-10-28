@@ -737,7 +737,7 @@ class AuthController extends Controller
 
     function isValidCSVHeader($header): bool
     {
-        $expected = ['mobile','name','record_date','email','source','country','city','referredBy','group_name','fellowship','language'];
+        $expected = ['mobile','name','record_date','email','source','country','city','referredBy','referredByContactNo','group_name','fellowship','language'];
         return $header === $expected;
     }
 

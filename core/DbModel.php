@@ -3082,7 +3082,7 @@ ORDER BY
 
 
 
-    public static function loadDataBank($rows,$header,$errorFile,$outputFile,$processId)
+    public static function  loadDataBank($rows,$header,$errorFile,$outputFile,$processId)
     {
 
         $mobileSet = [];
@@ -3123,6 +3123,7 @@ ORDER BY
             $country = $assoc['country'];
             $city = $assoc['city'];
             $referredBy = $assoc['referredBy'];
+            $referredByContactNo = $assoc['referredByContactNo'];
             $group_name = $assoc['group_name'];
             $fellowship = $assoc['fellowship'];
             $language = $assoc['language'];
@@ -3157,10 +3158,10 @@ ORDER BY
             try {
                 $statement = self::prepare("INSERT INTO data_bank (
     mobile, name, record_date, type, email, source, country, city, 
-    referred_by, group_name, fellowship, language
+    referred_by, group_name, fellowship, language,referred_by_contact_no
 ) VALUES (
     :mobile, :name, :record_date, :type, :email, :source, :country, :city,
-    :referred_by, :group_name, :fellowship, :language
+    :referred_by, :group_name, :fellowship, :language,:referred_by_contact_no
 )");
 
             $statement->bindValue(':mobile', $mobile);
@@ -3175,6 +3176,7 @@ ORDER BY
             $statement->bindValue(':group_name', $group_name);
             $statement->bindValue(':fellowship', $fellowship);
             $statement->bindValue(':language', $language);
+            $statement->bindValue(':referred_by_contact_no', $referredByContactNo);
             $success = $statement->execute();
 
                 $inserted++;

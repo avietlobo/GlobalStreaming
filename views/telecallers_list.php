@@ -410,6 +410,7 @@
                     <th>🇮🇳 Country</th>
                     <th>🏙️ City</th>
                     <th>👥 Referred By</th>
+                    <th>👥 Referred By Contact</th>
                     <th>👪 Group Name</th>
                     <th>⛪ Fellowship</th>
                     <th>🗣️ Language</th>
@@ -436,6 +437,8 @@
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][country]" value="<?= htmlspecialchars($record->country) ?>">
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][city]" value="<?= htmlspecialchars($record->city) ?>">
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][referred_by]" value="<?= htmlspecialchars($record->referred_by) ?>">
+                            <input type="hidden" name="contacts[<?= $record->mobile ?>][referred_by_contact_no]" value="<?= htmlspecialchars($record->referred_by_contact_no) ?>">
+
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][group_name]" value="<?= htmlspecialchars($record->group_name) ?>">
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][fellowship]" value="<?= htmlspecialchars($record->fellowship) ?>">
                             <input type="hidden" name="contacts[<?= $record->mobile ?>][language]" value="<?= htmlspecialchars($record->language) ?>">
@@ -453,6 +456,7 @@
                         <td><?= htmlspecialchars($record->country) ?></td>
                         <td><?= htmlspecialchars($record->city) ?></td>
                         <td><?= htmlspecialchars($record->referred_by) ?></td>
+                        <td><?= htmlspecialchars($record->referred_by_contact_no) ?></td>
                         <td><?= htmlspecialchars($record->group_name) ?></td>
                         <td><?= htmlspecialchars($record->fellowship) ?></td>
                         <td><?= htmlspecialchars($record->language) ?></td>

@@ -1,0 +1,4 @@
+mobile,name,record_date,email,source,country,city,referredBy,referredByContactNo,group_name,fellowship,language,error
+1 (361)7774,വിൻസി ജോർജ്,,test@abc.com,data_scrape,Poland,Poland,John,,UK Malyalees,Canaan,English,DB insert error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'referred_by_contact_no' in 'field list'
+1 (361)8874,Yosvanys Enrique Suarez  Álvarez,,test@abc.com,data_scrape,Poland,Poland,John,,UK Malyalees,Canaan,English,DB insert error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'referred_by_contact_no' in 'field list'
+74748383874,Jimmy,,test@abc.com,data_scrape,Poland,Poland,John,66747849,UK Malyalees,Canaan,English,DB insert error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'referred_by_contact_no' in 'field list'
