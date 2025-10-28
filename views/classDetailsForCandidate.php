@@ -1180,7 +1180,7 @@
             $queryParams = http_build_query([
                 'participantName' => $participant ?? '',
                 'mobile' => $mobile ?? '',
-                'evangelist' => $evangelist ?? '',
+                'evangelist1' => $evangelist1 ?? '',
                 'country' => $country ?? ''
             ]);
             ?>

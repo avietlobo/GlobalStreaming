@@ -1432,12 +1432,14 @@ public function getClassNumberDetailsForCandidate()
 
         $evangelists = CandidateModel::getLanguageEvangelists($language);
         $appointments = CandidateModel::getAppointmentsByParticipant($mobile); // 👈 Add this line
-        $remark = CandidateModel::getCandidateRemarkByMobile($mobile); // <-- Add this method to your model
+        $remark = CandidateModel::getCandidateRemarkByMobile($mobile);
+        // <-- Add this method to your model
 
+        $evangelist1 = CandidateModel::getCandidateEvangelistByMobile($mobile);
 
         // Render the view with the user details
         $this->setLayout('main1');
-        return $this->render('classDetailsForCandidate', ['userDetails' => $userDetails, 'evangelists' => $evangelists, 'mobile' => $mobile, 'language' => $language, 'candidate' => $candidate,  'appointments' => $appointments, 'remark' => $remark]);
+        return $this->render('classDetailsForCandidate', ['userDetails' => $userDetails, 'evangelists' => $evangelists, 'mobile' => $mobile, 'language' => $language, 'candidate' => $candidate,  'appointments' => $appointments, 'remark' => $remark,'evangelist1' => $evangelist1]);
     }
 
 

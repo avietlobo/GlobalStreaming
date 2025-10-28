@@ -1477,10 +1477,10 @@ $sessionNames = [
             if ($saved) {
 
 
-                error_log("Language: " . $this->language);
-                error_log("Country: " . $this->country);
-                error_log("Participant: " . $this->participantName);
-                error_log("Evangelist: " . $this->evangelist);
+                error_log("Language: " . $language);
+                error_log("Country: " . $_POST['country']);
+                error_log("Participant: " . $_POST['candidateName']);
+                error_log("Evangelist: " . $_POST['evangelistName']);
 
                 // ✅ Redirect with query params to /getCandidateDetails
                 $redirectUrl = "/getCandidateDetailsE?lang=" . urlencode($language) .
@@ -1609,7 +1609,7 @@ $sessionNames = [
         //echo $mobile;
 
         $remark = CandidateModel::getCandidateRemarkByMobile($mobile); // <-- Add this method to your model
-
+        $evangelist1 = CandidateModel::getCandidateEvangelistByMobile($mobile);
 
 
         // Get panel member
@@ -1622,7 +1622,7 @@ $sessionNames = [
         return $this->render('addAppointmentE', [
             'participantName' => $participantName,
             'mobile' => $mobile,
-            'evangelist' => $evangelist,
+            'evangelist1' => $evangelist1,
             'country' => $country,
             'eventNames' => $eventNames,
             'eventNames1' => $eventNames1,
@@ -1706,6 +1706,10 @@ $sessionNames = [
         Application::$app->session->set('tt2', $country);
         Application::$app->session->set('tt3', $participantName);
         Application::$app->session->set('tt4', $evangelist);
+//        echo "Lang: [$lang]<br>";
+//        echo "Country: [$country]<br>";
+//        echo "Participant: [$participantName]<br>";
+//        echo "Evangelist: [$evangelist]<br>";
 
 
 
