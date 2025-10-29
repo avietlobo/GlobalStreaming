@@ -1859,7 +1859,7 @@ $sessionNames = [
             $ratings = $_POST['ratings'] ?? [];
 
             if (empty($ratings)) {
-                $this->setLayout('main1');
+                $this->setLayout('main4');
                 return $this->render('evangelistRatings', [
                     'success' => '',
                     'error' => 'Please select at least one rating before saving.',
@@ -1873,7 +1873,7 @@ $sessionNames = [
             // Re-fetch updated data
             $evangelistRatings = EvangelistModel::getAllEvangelistLanguages();
 
-            $this->setLayout('main2');
+            $this->setLayout('main4');
             return $this->render('evangelistRatings', [
                 'success' => 'Ratings updated successfully!',
                 'error' => '',
@@ -1882,7 +1882,7 @@ $sessionNames = [
         }
 
         // GET request → show data
-        $this->setLayout('main1');
+        $this->setLayout('main4');
         return $this->render('evangelistRatings', [
             'success' => '',
             'error' => '',
