@@ -1353,7 +1353,7 @@
             document.querySelectorAll('.clickable-row').forEach(row => {
                 row.addEventListener('click', () => {
                     const id = row.getAttribute('data-id');
-                    window.location.href = `/viewAppointment?id=${id}`;
+                    window.location.href = `/viewAppointmentE?id=${id}`;
                 });
             });
         </script>

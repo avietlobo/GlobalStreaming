@@ -3337,6 +3337,15 @@ ORDER BY
         return $statement->fetchColumn();
     }
 
+    public static function getCandidateRemarkByMobile1($mobile)
+    {
+        $tableName = 'candidate';
+        $statement = self::prepare("SELECT remark, participantName FROM $tableName WHERE mobile = :mobile LIMIT 1");
+        $statement->bindValue(':mobile', $mobile);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC); // ✅ Return both fields as an associative array
+    }
+
 
     public static function getCandidateRemarkByMobile($mobile)
     {

@@ -56,6 +56,7 @@ $app-> router->post('/addNewHomeEvent', [AuthController::class, 'addNewHomeEvent
 $app-> router->get('/viewAppointmentsTabs', [AuthController::class, 'viewAppointmentsTabs']);
 $app-> router->get('/viewAppointments', [AuthController::class, 'viewAppointments']);
 $app-> router->get('/viewAppointment', [AuthController::class, 'viewAppointment']);
+$app-> router->get('/viewAppointmentE', [AuthController::class, 'viewAppointmentE']);
 
 $app-> router->get('/viewAllAppointmentsPM', [AuthController::class, 'viewAllAppointmentsPM']);
 $app-> router->get('/viewAllAppointmentsCT', [AuthController::class, 'viewAllAppointmentsCT']);
@@ -88,11 +89,12 @@ $app->router->get('/addAppointmentE', [AuthController::class, 'addAppointmentE']
 $app->router->post('/saveAppointment', [AuthController::class, 'saveAppointment']);
 $app->router->post('/saveAppointmentE', [AuthController::class, 'saveAppointmentE']);
 $app->router->get('/editAppointment', [AuthController::class, 'editAppointment']);
+$app->router->get('/editAppointmentE', [AuthController::class, 'editAppointmentE']);
 $app->router->get('/editAppointmentPM', [AuthController::class, 'editAppointmentPM']);
 $app->router->get('/editAppointmentCT', [AuthController::class, 'editAppointmentCT']);
 $app->router->get('/editAppointmentLO', [AuthController::class, 'editAppointmentLO']);
 $app->router->post('/updateAppointment', [AuthController::class, 'updateAppointment']);
-
+$app->router->post('/updateAppointmentE', [AuthController::class, 'updateAppointmentE']);
 
 
 $app-> router->get('/event-details', [AuthController::class, 'viewEvent']);

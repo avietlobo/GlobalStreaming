@@ -1482,11 +1482,18 @@ $sessionNames = [
                 error_log("Participant: " . $_POST['candidateName']);
                 error_log("Evangelist: " . $_POST['evangelistName']);
 
-                // ✅ Redirect with query params to /getCandidateDetails
-                $redirectUrl = "/getCandidateDetailsE?lang=" . urlencode($language) .
-                    "&country=" . urlencode($_POST['country']) .
-                    "&participantName=" . urlencode($_POST['candidateName']) .
-                    "&evangelist=" . urlencode($_POST['evangelistName']);
+//                // ✅ Redirect with query params to /getCandidateDetails
+//                $redirectUrl = "/getCandidateDetailsE?lang=" . urlencode($language) .
+//                    "&country=" . urlencode($_POST['country']) .
+//                    "&participantName=" . urlencode($_POST['candidateName']) .
+//                    "&evangelist=" . urlencode($_POST['evangelistName']);
+
+                // ✅ Redirect with query params to /getClassDetails
+                $redirectUrl = "/getClassDetails?username=" . urlencode(Application::$app->session->get('nameFinal')) .
+                    "&candidate=" . urlencode($_POST['candidateName']) .
+                    "&mobile=" . urlencode($_POST['candidateMobile']) .
+                    "&index=" . urlencode(Application::$app->session->get('index'));
+
 
                 $response->redirect($redirectUrl);
 
@@ -1975,6 +1982,96 @@ $sessionNames = [
     }
 
 
+
+
+    public function updateAppointmentE(Request $request, Response $response)
+    {
+        // Read raw JSON from fetch()
+        $rawInput = file_get_contents('php://input');
+        $postData = json_decode($rawInput, true);
+
+        // Validate JSON
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $response->setStatusCode(400);
+            echo '❌ Invalid JSON data.';
+            return;
+        }
+
+        // Extract candidate mobile number
+        $candidateMobile = $postData['candidateMobile'] ?? null;
+        if (!$candidateMobile) {
+            $response->setStatusCode(400);
+            echo '❌ Candidate mobile is required.';
+            return;
+        }
+
+        // Map incoming form keys to DB columns
+        $fieldMap = [
+            'event_name'                     => 'event_name',
+            'istDateTime'                    => 'appointment_datetime_ist',
+            'appointment_datetime_candidate_zone' => 'appointment_datetime_candidate_zone',
+            'place'                          => 'place',
+            'sathvartha_organizer'           => 'sathvartha_organizer_name',
+            'panel_member'                   => 'panel_member_name',
+            'caring_team_member'             => 'caring_team_member_name',
+            'local_organizer'                 => 'local_organizer_name',
+            'googleMeetStatus'               => 'google_meet_status',
+            'faithStatus'                    => 'faith_status',
+            'sathvarthaReadyStatus'          => 'sathvartha_ready_status',
+            'fellowshipStatus'               => 'fellowship_status',
+            'evangelistFeedback'             => 'evangelist_feedback',
+            'panelFeedback'                  => 'panel_feedback',
+            'localOrganizerFeedback'         => 'local_organizer_feedback',
+            'finalFeedback'                  => 'final_feedback',
+            'sathvarthaAttendanceStatus'     => 'sathvartha_attendance_status',
+            'sathvarthaFeedback'             => 'sathvartha_feedback',
+            'googleMeetCaringTeam'           => 'caring_google_meet_status',
+            'caringStatus'                   => 'caring_status',
+            'travelStatus'                   => 'travel_status',
+            'transportRequired'              => 'transport_required',
+            'caringistDateTime'              => 'caring_google_meet_date',
+            'event_name1'                  => 'event_name_hs',
+            'homeMissionAttended'     => 'home_mission_attendance',
+            'homeMissionVidAttendance'     => 'home_mission_vid_attendance'
+
+        ];
+
+        // Filter only the allowed fields with mapped DB column names
+        $filteredData = [];
+        foreach ($fieldMap as $formKey => $dbColumn) {
+            if (isset($postData[$formKey])) {
+                $filteredData[$dbColumn] = $postData[$formKey];
+            }
+        }
+
+        // If no fields are being updated
+        if (empty($filteredData)) {
+            $response->setStatusCode(400);
+            echo '❌ No valid fields provided for update.';
+            return;
+        }
+
+        $id1= Application::$app->session->get('idxtx');
+        echo '<pre>';
+        var_dump($id1);
+        echo '</pre>';
+
+        // Perform the DB update
+        $updated = CandidateModel::updateChangedAppointmentFields($candidateMobile, $filteredData, true, $id1);
+
+        // Send response
+        if ($updated) {
+
+            echo '<pre>';
+            var_dump('hello');
+            echo '</pre>';
+
+            echo "✅ Update executed successfully.<br>";
+        } else {
+            echo "⚠️ No rows updated (possibly wrong candidate_mobile or id).<br>";
+        }
+    }
+
     public function updateAppointment(Request $request, Response $response)
     {
         // Read raw JSON from fetch()
@@ -2275,6 +2372,74 @@ $sessionNames = [
 
     }
 
+
+
+    public function editAppointmentE(Request $request, Response $response)
+    {
+        $id = $_GET['id'] ?? null;
+        $appointments = CandidateModel::getAppointmentsById($id);
+        Application::$app->session->set('idxtx', $id);
+
+        if (!$appointments || empty($appointments)) {
+            die("No appointment found.");
+        }
+
+        $appointment = $appointments[0];
+
+        // Get event names and organizers
+        $eventNames = SathvarthaEventModel::getAllEventNames();
+        $eventNames1 = SathvarthaEventModel::getAllEventNames1();
+        $organizersByDesignation = EvangelistModel::findallTypesOfOrganizers();
+        $highesClassNumberAttended = RegisterModel::getMaxClassFromForCandidate($appointment['candidate_mobile']);
+
+        //$participantName= Application::$app->session->get('tt3');
+        $candidateDetails = CandidateModel::getCandidateNameByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
+
+        $participantName = $candidateDetails['participantName'] ?? '';
+        $evangelist = $candidateDetails['evangelist'] ?? '';
+        $remark = CandidateModel::getCandidateRemarkByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
+
+
+        $this->setLayout('main2');
+
+        return $this->render('appointmentForm1E', [
+            'appointment' => $appointment,
+            'participantName' =>$participantName ?? '',
+            'evangelist' =>$evangelist ?? '',
+            'mobile' => $appointment['candidate_mobile'] ?? '',
+            'country' => $appointment['candidate_country'] ?? '',
+            'place' => $appointment['place'] ?? '',
+            'appointment_datetime_ist' => $appointment['appointment_datetime_ist'] ?? '',
+            'appointment_datetime_candidate_zone ' => $appointment['appointment_datetime_candidate_zone'] ?? '',
+            'eventNames' => $eventNames,
+            'eventNames1' => $eventNames1,
+            'faithStatus' => $appointment['faith_status'] ?? '',
+            'googleMeetStatus' => $appointment['google_meet_status'] ?? '',
+            'caringStatus' => $appointment['caring_status'] ?? '',
+            'travelStatus' => $appointment['travel_status'] ?? '',
+            'homeMissionAttended' => $appointment['home_mission_attendance'] ?? '',
+            'homeMissionVidAttendance' => $appointment['home_mission_vid_attendance'] ?? '',
+            'caringGoogleMeetStatus' => $appointment['caring_google_meet_status'] ?? '',
+            'fellowshipStatus' => $appointment['fellowship_status'] ?? '',
+            'sathvarthaAttendanceStatus' => $appointment['sathvartha_attendance_status'] ?? '',
+            'caringTeamMember' => $appointment['caring_team_member_name'] ?? '',
+            'localOrganizer' => $appointment['local_organizer_name'] ?? '',
+            'panelMember' => $appointment['panel_member_name'] ?? '',
+            'sathvarthaOrganizer' => $appointment['sathvartha_organizer_name'] ?? '',
+            'organizers' => $organizersByDesignation,
+            'highesClassNumberAttended' => $highesClassNumberAttended,
+            'sathvarthaFeedback' => $appointment['sathvartha_feedback'] ?? '',
+            'finalFeedback' => $appointment['final_feedback'] ?? '',
+            'localOrganizerFeedback' => $appointment['local_organizer_feedback'] ?? '',
+            'panelFeedback' => $appointment['panel_feedback'] ?? '',
+            'sathvarthaReadyStatus' => $appointment['sathvartha_ready_status'] ?? '',
+            'evangelistFeedback' => $remark,
+            'transportRequired' => $appointment['transport_required'] ?? '',
+            'caringGoogleMeetDate' => $appointment['caring_google_meet_date'] ?? ''
+        ]);
+    }
+
+
     public function editAppointment(Request $request, Response $response)
     {
         $id = $_GET['id'] ?? null;
@@ -2402,6 +2567,29 @@ $sessionNames = [
             'appointments' => $appointments
         ]);
 
+    }
+
+
+
+    public function viewAppointmentE(Request $request, Response $response)
+    {
+        $id = $_GET['id'] ?? null;
+        $appointments = CandidateModel::getAppointmentsById($id);
+        $participantName=Application::$app->session->get('tt3');
+        $evangelist=Application::$app->session->get('tt4');
+        $appointment = $appointments[0];
+        $candidateData = CandidateModel::getCandidateRemarkByMobile1($appointment['candidate_mobile']); // <-- Add this method to your model
+        $remark = $candidateData['remark'] ?? '';
+        $participantName = $candidateData['participantName'] ?? '';
+
+        $this->setLayout('main2');
+        return $this->render('viewAppointmentE', [
+            'appointments' => $appointments,
+            'participantName' => $participantName,
+            'evangelist' => $evangelist,
+            'remark' => $remark,
+            'mobile' => $appointment['candidate_mobile']
+        ]);
     }
 
 
