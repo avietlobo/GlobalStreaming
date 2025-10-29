@@ -160,7 +160,7 @@
 
 <div class="top-bar">
     <div class="left-controls">
-        <a class="back-link" href="/evngDashboard1">← Back</a>
+        <a class="back-link" href="/viewCandidates">← Back</a>
     </div>
 
     <h2>Countries for: <?= htmlspecialchars($language) ?></h2>

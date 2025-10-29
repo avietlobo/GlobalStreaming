@@ -2600,7 +2600,13 @@ $sessionNames = [
         $participantName=Application::$app->session->get('tt3');
         $evangelist=Application::$app->session->get('tt4');
         $appointment = $appointments[0];
-        $remark = CandidateModel::getCandidateRemarkByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
+        //$remark = CandidateModel::getCandidateRemarkByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
+
+        $candidateData = CandidateModel::getCandidateRemarkByMobile2($appointment['candidate_mobile']); // <-- Add this method to your model
+        $remark = $candidateData['remark'] ?? '';
+        $participantName = $candidateData['participantName'] ?? '';
+        $language = $candidateData['language'] ?? '';
+        $country = $candidateData['country'] ?? '';
 
 
         $this->setLayout('main2');
@@ -2608,7 +2614,9 @@ $sessionNames = [
             'appointments' => $appointments,
             'participantName' => $participantName,
             'evangelist' => $evangelist,
-            'remark' => $remark
+            'remark' => $remark,
+            'language' => $language,
+            'country' => $country
         ]);
     }
 

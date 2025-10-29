@@ -229,8 +229,20 @@
     <a href="/viewCandidates" class="dashboard-btn">Go to Dashboard</a>
 
 </div>
+<?php
+// safely extract evangelist name
+$evangelistName = '';
+if (is_array($evangelist) && isset($evangelist[0]['evangelist'])) {
+    $evangelistName = $evangelist[0]['evangelist'];
+}
 
-<a class="back-link" href="javascript:history.back()">← Back</a>
+// ensure all are strings
+$langStr = is_array($language) ? '' : $language;
+$countryStr = is_array($country) ? '' : $country;
+?>
+
+
+<a class="back-link" href="/getCandidatesByEvangelist?lang=<?= urlencode($langStr) ?>&country=<?= urlencode($countryStr) ?>&evangelist=<?= urlencode($evangelistName) ?>">← Back</a>
 
 
 <div class="top-bar">

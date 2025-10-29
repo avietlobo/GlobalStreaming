@@ -209,7 +209,10 @@
     <a href="/viewCandidates" class="dashboard-btn">Go to Dashboard</a>
 </div>
 
-<a class="back-link" href="/evngDashboard1">← Back </a>
+<a class="back-link" href="/getCandidatesByLangAndCountry?lang=<?= urlencode($language) ?>&country=<?= htmlspecialchars($country) ?>">← Back </a>
+
+
+
 
 <div class="top-bar">
     <h2>Candidates by <?= htmlspecialchars($evangelist) ?> in <?= htmlspecialchars($country) ?> (Language: <?= htmlspecialchars($language) ?>)</h2>
@@ -237,7 +240,8 @@
         <p class="no-data">No candidates found.</p>
     <?php endif; ?>
 
-    <a class="back-link" href="javascript:history.back()">← Back to Evangelists</a>
+    <a class="back-link" href="/getCandidatesByLangAndCountry?lang=<?= urlencode($language) ?>&country=<?= htmlspecialchars($country) ?>">← Back to Evangelists</a>
+
 </div>
 
 <script>

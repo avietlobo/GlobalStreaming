@@ -133,8 +133,7 @@
         <button type="button" class="btn btn-primary">Logout</button>
     </a>
 </div>
-
-<a class="back-link" href="javascript:history.back()">← Back</a>
+<a class="back-link" href="getCandidateDetails?lang=<?= urlencode($language) ?>&country=<?= htmlspecialchars($country) ?>&participantName=<?= urlencode($participantName) ?>&evangelist=<?= urlencode($evangelist) ?>">← Back</a>
 <h2>Appointment Details</h2>
 
 

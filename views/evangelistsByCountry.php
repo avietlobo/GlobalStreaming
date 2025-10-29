@@ -195,7 +195,7 @@
     <a href="/viewCandidates" class="dashboard-btn">Go to Dashboard</a>
 </div>
 
-<a class="back-link" href="/evngDashboard1">← Back </a>
+<a class="back-link" href="/getCandidatesByLanguage?lang=<?= urlencode($language) ?>">← Back </a>
 
 <div class="top-bar">
     <h2>Evangelists in <?= htmlspecialchars($country) ?> for <?= htmlspecialchars($language) ?></h2>

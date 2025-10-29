@@ -598,7 +598,7 @@
         <div class="table-wrapper">
             <table>
                 <thead>
-                <tr>
+                <tr class="clickable-related-row">
                     <th class="fixed-column-header">Class No</th>
                     <th>Record Date</th>
                     <th>Class Link</th>
@@ -618,7 +618,7 @@
                     </tr>
                 <?php else: ?>
                     <?php foreach ($userDetails as $user): ?>
-                        <tr class="clickable-row"
+                        <tr class="clickable-related-row"
                             data-classfrom="<?= htmlspecialchars($user->classFrom) ?>"
                             data-status="<?= htmlspecialchars($user->status) ?>"
                             data-username="<?= htmlspecialchars($user->participant) ?>"
@@ -771,7 +771,7 @@
 
         <script type="text/javascript">
             // Handle row clicks to pass query parameters
-            document.querySelectorAll('.clickable-row').forEach(row => {
+            document.querySelectorAll('.clickable-related-row').forEach(row => {
                 row.addEventListener('click', function () {
                     const classFrom = this.getAttribute('data-classfrom');
                     const status = this.getAttribute('data-status');
@@ -1172,7 +1172,7 @@
 
     </script>
         <!-- 🌟 Appointments Section -->
-        <div class="card-section" style="margin-top: 40px;">
+        <div id="appointmentsSection" class="card-section" style="margin-top: 40px;">
             <h2 class="section-title">📅 Appointments</h2>
 
             <?php
@@ -1350,7 +1350,7 @@
         </style>
 
         <script>
-            document.querySelectorAll('.clickable-row').forEach(row => {
+            document.querySelectorAll('#appointmentsSection .clickable-row').forEach(row => {
                 row.addEventListener('click', () => {
                     const id = row.getAttribute('data-id');
                     window.location.href = `/viewAppointmentE?id=${id}`;
