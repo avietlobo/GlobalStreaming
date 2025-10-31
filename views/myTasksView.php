@@ -424,7 +424,7 @@ function getCountryCode($countryName) {
         <option value="Negative" <?= ($_GET['status'] ?? '') === 'Negative' ? 'selected' : '' ?>>Negative</option>
         <option value="Neutral" <?= ($_GET['status'] ?? '') === 'Neutral' ? 'selected' : '' ?>>Neutral</option>
         <option value="No Response" <?= ($_GET['status'] ?? '') === 'No Response' ? 'selected' : '' ?>>No Response</option>
-        <option value="Unassigned" <?= ($_GET['status'] ?? '') === 'Unassigned' ? 'selected' : '' ?>>Unassigned</option>
+        <option value="Assigned" <?= ($_GET['status'] ?? '') === 'Assigned' ? 'selected' : '' ?>>Assigned</option>
     </select>
 
     <select name="country" style="padding: 6px; border-radius: 6px;">

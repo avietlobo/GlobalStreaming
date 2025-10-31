@@ -2287,7 +2287,7 @@ GROUP BY language;";
 
     public static function bulkReassignDataBankRecords($selectedMobiles, $assignedTo)
     {
-        $stmt = self::prepare("UPDATE telecaller_sm SET assignedTo = :assignedTo, status = 'Unassigned' WHERE mobile = :mobile");
+        $stmt = self::prepare("UPDATE telecaller_sm SET assignedTo = :assignedTo, status = 'Assigned' WHERE mobile = :mobile");
 
         foreach ($selectedMobiles as $mobile) {
             $stmt->execute([
@@ -2342,7 +2342,7 @@ GROUP BY language;";
                 ':fellowship' => $c['fellowship'],
                 ':language' => $c['language'],
                 ':assignedTo' => $assignedTo,
-                ':status' => 'Unassigned'
+                ':status' => 'Assigned'
             ]);
         }
 
