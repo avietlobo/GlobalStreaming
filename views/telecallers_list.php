@@ -683,8 +683,13 @@
         <h3 id="assignModalTitle">Select Telecaller</h3>
         <select name="evangelist" id="evangelist">
             <?php foreach ($telecallers as $telecaller): ?>
+<!--                <option value="--><?php //= htmlspecialchars($telecaller['evngName']) ?><!--">-->
+<!--                    --><?php //= htmlspecialchars($telecaller['evngName']) ?><!-- (--><?php //= $telecaller['unassigned_count'] ?><!--)-->
+<!--                </option>-->
                 <option value="<?= htmlspecialchars($telecaller['evngName']) ?>">
-                    <?= htmlspecialchars($telecaller['evngName']) ?> (<?= $telecaller['unassigned_count'] ?>)
+                    <?= htmlspecialchars($telecaller['evngName']) ?>
+                    <?= !empty($telecaller['languages']) ? ' (' . htmlspecialchars($telecaller['languages']) . ')' : '' ?>
+                    (<?= $telecaller['unassigned_count'] ?>)
                 </option>
             <?php endforeach; ?>
         </select>

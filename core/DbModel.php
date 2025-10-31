@@ -3745,6 +3745,36 @@ ORDER BY
 
     }
 
+    public static function findAllEvangelistForSM2()
+    {
+        $evangelistTable = (new \app\models\EvangelistModel())->tableName();
+        $telecallerTable = "telecaller_sm";
+        $langTable = "evangelist_languages";
+
+        $sql = "
+        SELECT 
+            e.evngName,
+            COALESCE(tc.unassigned_count, 0) AS unassigned_count,
+            COALESCE(GROUP_CONCAT(DISTINCT el.language ORDER BY el.language SEPARATOR ', '), '') AS languages
+        FROM $evangelistTable e
+        LEFT JOIN (
+            SELECT assignedTo, COUNT(*) AS unassigned_count
+            FROM $telecallerTable
+            WHERE status = 'Unassigned'
+            GROUP BY assignedTo
+        ) tc ON e.evngName = tc.assignedTo
+        LEFT JOIN $langTable el ON e.email = el.email AND el.active = 1
+        WHERE e.preference IN ('SM', 'ALL')
+        GROUP BY e.evngName, tc.unassigned_count
+        ORDER BY e.evngName
+    ";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
     public static function findAllEvangelistForSM1()
     {
         $evangelistTable = (new \app\models\EvangelistModel())->tableName();
@@ -3777,6 +3807,37 @@ ORDER BY
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_CLASS, EvangelistModel::class);
     }
+
+
+    public static function findAllEvangelistForTelecalling2()
+    {
+        $evangelistTable = (new \app\models\EvangelistModel())->tableName();
+        $telecallerTable = "telecaller_sm";
+        $langTable = "evangelist_languages";
+
+        $sql = "
+        SELECT 
+            e.evngName,
+            COALESCE(tc.unassigned_count, 0) AS unassigned_count,
+            COALESCE(GROUP_CONCAT(DISTINCT el.language ORDER BY el.language SEPARATOR ', '), '') AS languages
+        FROM $evangelistTable e
+        LEFT JOIN (
+            SELECT assignedTo, COUNT(*) AS unassigned_count
+            FROM $telecallerTable
+            WHERE status = 'Unassigned'
+            GROUP BY assignedTo
+        ) tc ON e.evngName = tc.assignedTo
+        LEFT JOIN $langTable el ON e.email = el.email AND el.active = 1
+        WHERE e.preference IN ('PHONE', 'ALL')
+        GROUP BY e.evngName, tc.unassigned_count
+        ORDER BY e.evngName
+    ";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
 
     public static function findAllEvangelistForTelecalling1()
     {

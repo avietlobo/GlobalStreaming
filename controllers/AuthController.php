@@ -2856,7 +2856,7 @@ $sessionNames = [
 
         // Step 4: Fetch filtered & paginated records
         $data = DataBankModel::getFilteredSMData($filters, $limit, $offset);
-        $data1 = CandidateModel::findAllEvangelistForSM1();
+        $data1 = CandidateModel::findAllEvangelistForSM2();
 
         $this->setLayout('main1');
         // Step 5: Return to view with additional data
@@ -2913,7 +2913,8 @@ $sessionNames = [
         // Step 4: Fetch filtered & paginated records
         $data = DataBankModel::getFilteredTelecallerData($filters, $limit, $offset);
 
-        $data1 = CandidateModel::findAllEvangelistForTelecalling1();
+        //$data1 = CandidateModel::findAllEvangelistForTelecalling1();
+        $data1 = CandidateModel::findAllEvangelistForTelecalling2();
 
         $this->setLayout('main1');
         // Step 5: Return to view with additional data
