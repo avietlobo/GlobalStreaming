@@ -4,7 +4,7 @@ use app\core\Application;
 
 <a class="back-link" href="/allEvents">← Back </a>
 
-<h2>Sathvartha Event Details - <?= urlencode($eventName) ?></h2>
+<h2>Sathvartha Event Details - <?= htmlspecialchars($eventName) ?></h2>
 
 <?php if (Application::$app->session->getFlash('success')): ?>
     <div style="color: green; margin-bottom: 10px;">
