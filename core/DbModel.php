@@ -3718,7 +3718,8 @@ ORDER BY
 
     public static function saveWordSession($mobile,$session_id,$sessionDate, $status,$evangelist,$participant,$wgroup,$language,$remark,$feedback)
     {
-
+        date_default_timezone_set('Asia/Kolkata');
+        $now = date('Y-m-d H:i:s');
             $stmt = self::prepare("
                 INSERT INTO word_session 
                 (mobile, session_id, session_date, status, evangelist, participant, wgroup, language, remark, feedback, created_at, updated_at)
