@@ -1841,6 +1841,7 @@ GROUP BY
     public static function getAllAppointmentsPMMM()
     {
         $pdo = Application::$app->db->pdo;
+        $evangelist = Application::$app->session->get('nameFinal');
 
         $stmt = $pdo->prepare("
         SELECT 
@@ -1851,11 +1852,12 @@ GROUP BY
         FROM appointments a
         LEFT JOIN candidate c 
             ON a.candidate_mobile = c.mobile
+          WHERE a.panel_member_name = :evangelist
         ORDER BY 
             (DATE(a.appointment_datetime_ist) < CURDATE()) ASC, 
             a.appointment_datetime_ist ASC
     ");
-
+        $stmt->bindParam(':evangelist', $evangelist);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
@@ -1864,7 +1866,7 @@ GROUP BY
     public static function getAllAppointmentsCTT()
     {
         $pdo = Application::$app->db->pdo;
-
+        $evangelist = Application::$app->session->get('nameFinal');
         $stmt = $pdo->prepare("
         SELECT 
             a.*, 
@@ -1874,9 +1876,11 @@ GROUP BY
         FROM appointments a
         LEFT JOIN candidate c 
             ON a.candidate_mobile = c.mobile
+          WHERE a.caring_team_member_name = :evangelist
         ORDER BY a.appointment_datetime_ist ASC
     ");
 
+        $stmt->bindParam(':evangelist', $evangelist);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
@@ -1884,6 +1888,7 @@ GROUP BY
     public static function getAllAppointmentsLOO()
     {
         $pdo = Application::$app->db->pdo;
+        $evangelist = Application::$app->session->get('nameFinal');
 
         $stmt = $pdo->prepare("
         SELECT 
@@ -1894,9 +1899,11 @@ GROUP BY
         FROM appointments a
         LEFT JOIN candidate c 
             ON a.candidate_mobile = c.mobile
+        WHERE a.local_organizer_name = :evangelist
         ORDER BY a.appointment_datetime_ist ASC
     ");
 
+        $stmt->bindParam(':evangelist', $evangelist);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
