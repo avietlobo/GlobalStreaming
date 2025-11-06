@@ -1257,8 +1257,11 @@
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr><td colspan="26" class="no-records">No appointments found.</td></tr>
-                    <?php endif; ?>
+                    </tbody></table></div> <!-- close table and wrapper early -->
+            <p class="no-records" style="text-align:center; padding: 20px; color:#777; font-style:italic;">
+                📭 No appointments found.
+            </p>
+        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
