@@ -3638,7 +3638,7 @@ ORDER BY
                     status       = :status,
                     evangelist   = :evangelist,
                     remark       = :remark,
-                    updated_at   = NOW()
+                  updated_at   = CONVERT_TZ(NOW(), @@session.time_zone, '+05:30')
                 WHERE id = :id
             ");
 
