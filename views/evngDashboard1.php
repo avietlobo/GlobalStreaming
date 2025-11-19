@@ -682,7 +682,7 @@ $designation = $dashboardData[0]->designation;
 
 
 <div class="icon-button-group">
-    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'Caretaker' && $designation !== 'Management'  && $designation !== 'TaskManager' && $designation !== 'LocalOrganizer' && $designation !== 'PanelMember' && $designation !='SathvarthaOrganizer'): ?>
+    <?php if ($designation !== 'Evangelist' && $designation !== 'Event Leader' && $designation !== 'Evng Coordinator' && $designation !== 'Caretaker' && $designation !== 'Management'  && $designation !== 'TaskManager' && $designation !== 'LocalOrganizer' && $designation !== 'PanelMember' && $designation !='SathvarthaOrganizer' && $designation !='Group Leader'): ?>
         <button class="icon-button" title="View Report" onclick="window.location.href='/reportManagement';">
             <i class="fas fa-file-alt"></i>
         </button>
@@ -703,6 +703,43 @@ $designation = $dashboardData[0]->designation;
         </button>
     <?php endif; ?>
 </div>
+
+<?php if ($designation == 'Group Leader'): ?>
+    <div class="hamburger-menu">
+        <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="dropdown-menu" id="menuDropdown">
+            <button class="dropdown-item" onclick="window.location.href='viewMyTasks';">
+                <i class="fas fa-tasks"></i> My Task
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='myPref';">
+                <i class="fas fa-sliders-h"></i> Evangelization Preference
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='getWordSessionsApproved';">
+                <i class="fas fa-book-open"></i> Word Sessions
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';">
+                <i class="fas fa-check-circle"></i> Approve Sessions
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='mylangPref';">
+                <i class="fas fa-language"></i> Word Session Language Preference
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='mycountryPref';">
+                <i class="fas fa-globe-americas"></i> Word Session Country Preference
+            </button>
+
+
+
+        </div>
+    </div>
+<?php endif; ?>
 <div class="container">
 <!--    <h2>Evangelist Dashboard</h2>-->
 <!--    <i>As for you, always be sober, endure suffering, do the work of an evangelist, carry out your ministry fully. (2 Timothy 4:5)</i>-->
