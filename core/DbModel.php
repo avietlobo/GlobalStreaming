@@ -3768,7 +3768,7 @@ ORDER BY
         LEFT JOIN (
             SELECT assignedTo, COUNT(*) AS unassigned_count
             FROM $telecallerTable
-            WHERE status = 'Unassigned'
+            WHERE status = 'Assigned'
             GROUP BY assignedTo
         ) tc ON e.evngName = tc.assignedTo
         LEFT JOIN $langTable el ON e.email = el.email AND el.active = 1
@@ -3832,7 +3832,7 @@ ORDER BY
         LEFT JOIN (
             SELECT assignedTo, COUNT(*) AS unassigned_count
             FROM $telecallerTable
-            WHERE status = 'Unassigned'
+            WHERE status = 'Assigned'
             GROUP BY assignedTo
         ) tc ON e.evngName = tc.assignedTo
         LEFT JOIN $langTable el ON e.email = el.email AND el.active = 1
