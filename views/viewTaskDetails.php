@@ -659,7 +659,7 @@
 
 
 
-            <label for="editCallDate">Call Date <span class="required">*</span></label>
+            <label for="editCallDate">Call or Message Date <span class="required">*</span></label>
             <input type="date" name="call_date" id="editCallDate" required>
 
             <label for="editStatus">Calling Status <span class="required">*</span></label>
