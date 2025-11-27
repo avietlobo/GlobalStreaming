@@ -96,6 +96,21 @@
             box-sizing: border-box;
         }
 
+        /* Highlight all editable fields EXCEPT caringistDateTime */
+        .form-group input:not([readonly]):not([disabled]):not(#caringistDateTime),
+        .form-group select:not([disabled]),
+        .form-group textarea:not([readonly]):not([disabled]) {
+            background-color: #eaffea !important;
+            border-color: #00cc00 !important;
+        }
+
+        /* Remove highlight from caretaker meet date */
+        #caringistDateTime {
+            background-color: var(--input-bg) !important;
+            border-color: var(--input-border) !important;
+        }
+
+
         .full-width {
             grid-column: 1 / -1;
         }
@@ -231,7 +246,7 @@
         <!-- Sathvartha Organizer Dropdown -->
         <div class="form-group">
             <label for="sathvartha_organizer">Sathvartha Organizer</label>
-            <select name="sathvartha_organizer" id="sathvartha_organizer">
+            <select name="sathvartha_organizer" id="sathvartha_organizer" disabled>
                 <option value="">-- Select Sathvartha Organizer --</option>
                 <?php foreach ($organizers['SathvarthaOrganizer'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
@@ -246,7 +261,7 @@
                     name="evangelistFeedback"
                     placeholder="Enter feedback"
                     rows="3"
-                    readonly
+                    readonly disabled
                     style="background-color: #f9f9f9; color: #555; cursor: not-allowed;"><?= htmlspecialchars($remark ?? '') ?></textarea>
         </div>
 
@@ -254,7 +269,7 @@
         <!-- Panel Member Dropdown -->
         <div class="form-group">
             <label for="panel_member">Panel Member</label>
-            <select name="panel_member" id="panel_member">
+            <select name="panel_member" id="panel_member" disabled>
                 <option value="">-- Select Panel Member --</option>
                 <?php foreach ($organizers['PanelMember'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
@@ -264,7 +279,7 @@
 
         <div class="form-group">
             <label for="googleMeetStatus">Google Meet Status</label>
-            <select id="googleMeetStatus" name="googleMeetStatus">
+            <select id="googleMeetStatus" name="googleMeetStatus" disabled>
                 <option value="">Select status</option>
                 <option value="Not Conducted">Not Conducted</option>
                 <option value="Conducted">Conducted</option>
@@ -274,7 +289,7 @@
 
         <div class="form-group">
             <label for="faithStatus">Faith Status</label>
-            <select id="faithStatus" name="faithStatus">
+            <select id="faithStatus" name="faithStatus" disabled>
                 <option value="">Select status</option>
                 <option value="In Faith">In Faith</option>
                 <option value="Not In Faith">Not In Faith</option>
@@ -284,13 +299,13 @@
 
         <div class="form-group">
             <label for="panelFeedback">Panel Feedback</label>
-            <textarea id="panelFeedback" name="panelFeedback" placeholder="Enter panel feedback" rows="3"></textarea>
+            <textarea id="panelFeedback" name="panelFeedback" placeholder="Enter panel feedback" rows="3" disabled></textarea>
         </div>
 
         <!-- Local Organizer Dropdown -->
         <div class="form-group">
             <label for="local_organizer">Local Organizer</label>
-            <select name="local_organizer" id="local_organizer">
+            <select name="local_organizer" id="local_organizer" disabled>
                 <option value="">-- Select Local Organizer --</option>
                 <?php foreach ($organizers['LocalOrganizer'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
@@ -300,12 +315,12 @@
 
         <div class="form-group">
             <label for="localOrganizerFeedback">Local Organizer Feedback</label>
-            <textarea id="localOrganizerFeedback" name="localOrganizerFeedback" placeholder="Enter feedback" rows="3"></textarea>
+            <textarea id="localOrganizerFeedback" name="localOrganizerFeedback" placeholder="Enter feedback" rows="3" disabled></textarea>
         </div>
 
         <div class="form-group">
             <label for="sathvarthaReadyStatus">Sathvartha Ready Status</label>
-            <select id="sathvarthaReadyStatus" name="sathvarthaReadyStatus">
+            <select id="sathvarthaReadyStatus" name="sathvarthaReadyStatus" disabled>
                 <option value="">Select status</option>
                 <option value="Not Checked">Not Checked</option>
                 <option value="Ready">Ready</option>
@@ -316,12 +331,12 @@
 
         <div class="form-group">
             <label for="finalFeedback">Final Feedback</label>
-            <textarea id="finalFeedback" name="finalFeedback" placeholder="Enter final feedback" rows="3"></textarea>
+            <textarea id="finalFeedback" name="finalFeedback" placeholder="Enter final feedback" rows="3" disabled></textarea>
         </div>
 
         <div class="form-group">
             <label for="sathvarthaAttendance">Sathvartha Attendance</label>
-            <select id="sathvarthaAttendance" name="sathvarthaAttendance">
+            <select id="sathvarthaAttendance" name="sathvarthaAttendance" disabled>
                 <option value="">Select attendance</option>
                 <option value="Pending">Pending</option>
                 <option value="Absent">Attended</option>
@@ -332,12 +347,12 @@
 
         <div class="form-group">
             <label for="sathvarthaFeedback">Sathvartha Feedback</label>
-            <textarea id="sathvarthaFeedback" name="sathvarthaFeedback" placeholder="Enter sathvartha feedback" rows="3"></textarea>
+            <textarea id="sathvarthaFeedback" name="sathvarthaFeedback" placeholder="Enter sathvartha feedback" rows="3" readonly disabled></textarea>
         </div>
 
         <div class="form-group">
             <label for="fellowshipStatus">Fellowship Status</label>
-            <select id="fellowshipStatus" name="fellowshipStatus">
+            <select id="fellowshipStatus" name="fellowshipStatus" disabled>
                 <option value="">Select status</option>
                 <option value="Not In Fellowship">Not In Fellowship</option>
                 <option value="In Fellowship">In Fellowship</option>
@@ -347,7 +362,7 @@
         <!-- Caretaker Dropdown -->
         <div class="form-group">
             <label for="caring_team_member">Caring Team Member</label>
-            <select name="caring_team_member" id="caring_team_member">
+            <select name="caring_team_member" id="caring_team_member" disabled>
                 <option value="">-- Select Caring Team Member --</option>
                 <?php foreach ($organizers['Caretaker'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
@@ -357,7 +372,7 @@
 
         <div class="form-group">
             <label for="googleMeetCaringTeam">Google Meet by Caring Team</label>
-            <select id="googleMeetCaringTeam" name="googleMeetCaringTeam" >
+            <select id="googleMeetCaringTeam" name="googleMeetCaringTeam" disabled>
                 <option value="">Select status</option>
                 <option value="Conducted">Conducted</option>
                 <option value="Not Conducted">Not Conducted</option>
@@ -365,7 +380,7 @@
 
         <div class="form-group">
             <label for="caringStatus">Caring Status</label>
-            <select id="caringStatus" name="caringStatus" >
+            <select id="caringStatus" name="caringStatus" disabled>
                 <option value="">Select status</option>
                 <option value="Good">Good</option>
                 <option value="Average">Average</option>
@@ -375,7 +390,7 @@
 
         <div class="form-group">
             <label for="travelStatus">Travelled to Zion</label>
-            <select id="travelStatus" name="travelStatus" >
+            <select id="travelStatus" name="travelStatus" disabled >
                 <option value="">Select status</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
@@ -384,7 +399,7 @@
 
         <div class="form-group">
             <label for="transportStatus">Transport required</label>
-            <select id="transportStatus" name="transportStatus" >
+            <select id="transportStatus" name="transportStatus" disabled>
                 <option value="">Select status</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>

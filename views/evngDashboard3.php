@@ -470,7 +470,7 @@ $designation = $dashboardData[0]->designation;
             </button>
 
             <button class="dropdown-item" onclick="window.location.href='getWordSessionsApproved';">
-                <i class="fas fa-book-open"></i> Word Sessions
+                <i class="fas fa-book-open"></i> Assigned Word Sessions
             </button>
 
             <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';">
@@ -530,7 +530,7 @@ $designation = $dashboardData[0]->designation;
                 </button>
 
                 <button class="dropdown-item" onclick="window.location.href='getWordSessionsApproved';">
-                    <i class="fas fa-book-open"></i> My Word Sessions
+                    <i class="fas fa-book-open"></i> Assigned Word Sessions
                 </button>
 
                 <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';">
@@ -627,7 +627,7 @@ $designation = $dashboardData[0]->designation;
             </button>
 
             <button class="dropdown-item" onclick="window.location.href='getWordSessionsApproved';">
-                <i class="fas fa-book-open"></i> Word Sessions
+                <i class="fas fa-book-open"></i> Assigned Word Sessions
             </button>
 
             <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';">

@@ -145,6 +145,25 @@
             box-sizing: border-box;
         }
 
+        /* ---------- NEW: highlight editable fields ---------- */
+        /* Highlight all editable inputs/selects/textareas except those that are readonly/disabled,
+           and explicitly exclude the caretaker's meet date (#caringistDateTime). */
+        .form-group input:not([readonly]):not([disabled]):not(#caringistDateTime),
+        .form-group select:not([disabled]):not(#caringistDateTime),
+        .form-group textarea:not([readonly]):not([disabled]):not(#caringistDateTime) {
+            background-color: #eaffea !important;  /* light green */
+            border-color: #00cc00 !important;      /* green border */
+        }
+
+        /* Ensure caringistDateTime keeps original look (no highlight) */
+        #caringistDateTime {
+            background-color: var(--input-bg) !important;
+            border-color: var(--input-border) !important;
+            color: var(--text-color) !important;
+        }
+        /* ---------------------------------------------------- */
+
+
     </style>
 </head>
 <body>
@@ -255,7 +274,7 @@
         <!-- Sathvartha Organizer Dropdown -->
         <div class="form-group">
             <label for="sathvartha_organizer">Sathvartha Organizer</label>
-            <select name="sathvartha_organizer" id="sathvartha_organizer" required>
+            <select name="sathvartha_organizer" id="sathvartha_organizer" disabled>
                 <option value="">-- Select Sathvartha Organizer --</option>
                 <?php foreach ($organizers['SathvarthaOrganizer'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"
@@ -268,13 +287,13 @@
 
         <div class="form-group">
             <label for="evangelistFeedback">Evangelist Feedback</label>
-            <textarea id="evangelistFeedback" name="evangelistFeedback" placeholder="Enter feedback" rows="3" readonly><?= htmlspecialchars($evangelistFeedback ?? '') ?></textarea>
+            <textarea id="evangelistFeedback" name="evangelistFeedback" placeholder="Enter feedback" rows="3" readonly disabled><?= htmlspecialchars($evangelistFeedback ?? '') ?></textarea>
         </div>
 
         <!-- Panel Member Dropdown -->
         <div class="form-group">
             <label for="panel_member">Panel Member</label>
-            <select name="panel_member" id="panel_member" required>
+            <select name="panel_member" id="panel_member" disabled>
                 <option value="">-- Select Panel Member --</option>
                 <?php foreach ($organizers['PanelMember'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>" <?= ($panelMember ?? '') === $name ? 'selected' : '' ?>>
@@ -286,7 +305,7 @@
 
         <div class="form-group">
             <label for="googleMeetStatus">Google Meet Status</label>
-            <select id="googleMeetStatus" name="googleMeetStatus" required>
+            <select id="googleMeetStatus" name="googleMeetStatus" disabled>
                 <option value="">Select status</option>
                 <option value="Not Conducted" <?= ($googleMeetStatus ?? '') === 'Not Conducted' ? 'selected' : '' ?>>Not Conducted</option>
                 <option value="Conducted" <?= ($googleMeetStatus ?? '') === 'Conducted' ? 'selected' : '' ?>>Conducted</option>
@@ -296,7 +315,7 @@
 
         <div class="form-group">
             <label for="faithStatus">Faith Status</label>
-            <select id="faithStatus" name="faithStatus" required>
+            <select id="faithStatus" name="faithStatus" disabled>
                 <option value="">Select status</option>
                 <option value="In Faith" <?= $faithStatus === 'In Faith' ? 'selected' : '' ?>>In Faith</option>
                 <option value="Not In Faith" <?= $faithStatus === 'Not In Faith' ? 'selected' : '' ?>>Not In Faith</option>
@@ -306,13 +325,13 @@
 
         <div class="form-group">
             <label for="panelFeedback">Panel Feedback</label>
-            <textarea id="panelFeedback" name="panelFeedback" placeholder="Enter panel feedback" rows="3"><?= htmlspecialchars($appointment['panel_feedback'] ?? '') ?></textarea>
+            <textarea id="panelFeedback" name="panelFeedback" placeholder="Enter panel feedback" rows="3" readonly disabled><?= htmlspecialchars($appointment['panel_feedback'] ?? '') ?></textarea>
         </div>
 
         <!-- Local Organizer Dropdown -->
         <div class="form-group">
             <label for="local_organizer">Local Organizer</label>
-            <select name="local_organizer" id="local_organizer" required>
+            <select name="local_organizer" id="local_organizer" disabled>
                 <option value="">-- Select Local Organizer --</option>
                 <?php foreach ($organizers['LocalOrganizer'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"
@@ -325,12 +344,12 @@
 
         <div class="form-group">
             <label for="localOrganizerFeedback">Local Organizer Feedback</label>
-            <textarea id="localOrganizerFeedback" name="localOrganizerFeedback" placeholder="Enter feedback" rows="3"><?= htmlspecialchars($appointment['local_organizer_feedback'] ?? '') ?></textarea>
+            <textarea id="localOrganizerFeedback" name="localOrganizerFeedback" placeholder="Enter feedback" rows="3" readonly disabled><?= htmlspecialchars($appointment['local_organizer_feedback'] ?? '') ?></textarea>
         </div>
 
         <div class="form-group">
             <label for="sathvarthaReadyStatus">Sathvartha Ready Status</label>
-            <select id="sathvarthaReadyStatus" name="sathvarthaReadyStatus" required>
+            <select id="sathvarthaReadyStatus" name="sathvarthaReadyStatus" disabled>
                 <option value="">Select status</option>
                 <option value="Not Checked" <?= ($sathvarthaReadyStatus === 'Not Checked') ? 'selected' : '' ?>>Not Checked</option>
                 <option value="Ready" <?= ($sathvarthaReadyStatus === 'Ready') ? 'selected' : '' ?>>Ready</option>
@@ -340,12 +359,12 @@
         </div>
         <div class="form-group">
             <label for="finalFeedback">Final Feedback</label>
-            <textarea id="finalFeedback" name="finalFeedback" placeholder="Enter final feedback" rows="3"><?= htmlspecialchars($appointment['final_feedback'] ?? '') ?></textarea>
+            <textarea id="finalFeedback" name="finalFeedback" placeholder="Enter final feedback" rows="3" readonly disabled><?= htmlspecialchars($appointment['final_feedback'] ?? '') ?></textarea>
         </div>
 
         <div class="form-group">
             <label for="sathvarthaAttendanceStatus">Sathvartha Attendance</label>
-            <select id="sathvarthaAttendanceStatus" name="sathvarthaAttendanceStatus" required>
+            <select id="sathvarthaAttendanceStatus" name="sathvarthaAttendanceStatus" disabled>
                 <option value="">Select attendance</option>
                 <option value="Attended" <?= ($sathvarthaAttendanceStatus ?? '') === 'Attended' ? 'selected' : '' ?>>Attended</option>
 
@@ -359,13 +378,13 @@
 
         <div class="form-group">
             <label for="sathvarthaFeedback">Sathvartha Feedback</label>
-            <textarea id="sathvarthaFeedback" name="sathvarthaFeedback" placeholder="Enter sathvartha feedback" rows="3"><?= htmlspecialchars($sathvarthaFeedback ?? '') ?></textarea>
+            <textarea id="sathvarthaFeedback" name="sathvarthaFeedback" placeholder="Enter sathvartha feedback" rows="3" readonly disabled><?= htmlspecialchars($sathvarthaFeedback ?? '') ?></textarea>
         </div>
 
 
         <div class="form-group">
             <label for="fellowshipStatus">Fellowship Status</label>
-            <select id="fellowshipStatus" name="fellowshipStatus" required>
+            <select id="fellowshipStatus" name="fellowshipStatus" disabled>
                 <option value="">Select status</option>
                 <option value="Not In Fellowship" <?= ($fellowshipStatus ?? '') === 'Not In Fellowship' ? 'selected' : '' ?>>Not In Fellowship</option>
                 <option value="In Fellowship" <?= ($fellowshipStatus ?? '') === 'In Fellowship' ? 'selected' : '' ?>>In Fellowship</option>
@@ -377,7 +396,7 @@
         <!-- Caretaker Dropdown -->
         <div class="form-group">
             <label for="caring_team_member">Caring Team Member</label>
-            <select name="caring_team_member" id="caring_team_member" required>
+            <select name="caring_team_member" id="caring_team_member" disabled>
                 <option value="">-- Select Caring Team Member --</option>
                 <?php foreach ($organizers['Caretaker'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>" <?= ($caringTeamMember === $name) ? 'selected' : '' ?>>
@@ -391,7 +410,7 @@
 
         <div class="form-group">
             <label for="googleMeetCaringTeam">Google Meet by Caring Team</label>
-            <select id="googleMeetCaringTeam" name="googleMeetCaringTeam" required>
+            <select id="googleMeetCaringTeam" name="googleMeetCaringTeam" disabled>
                 <option value="">Select status</option>
                 <option value="Conducted" <?= ($caringGoogleMeetStatus ?? '') === 'Conducted' ? 'selected' : '' ?>>Conducted</option>
                 <option value="Not Conducted" <?= ($caringGoogleMeetStatus ?? '') === 'Not Conducted' ? 'selected' : '' ?>>Not Conducted</option>
@@ -399,7 +418,7 @@
 
         <div class="form-group">
             <label for="caringStatus">Caring Status</label>
-            <select name="caringStatus" id="caringStatus" required>
+            <select name="caringStatus" id="caringStatus" disabled>
                 <option value="">-- Select Caring Team Member --</option>
                 <option value="Good" <?= ($caringStatus ?? '') === 'Good' ? 'selected' : '' ?>>Good</option>
                 <option value="Average" <?= ($caringStatus ?? '') === 'Average' ? 'selected' : '' ?>>Average</option>
@@ -409,7 +428,7 @@
 
         <div class="form-group">
             <label for="travelStatus">Travelled to Zion</label>
-            <select id="travelStatus" name="travelStatus" required>
+            <select id="travelStatus" name="travelStatus" disabled>
                 <option value="">Select status</option>
                 <option value="Yes" <?= ($travelStatus ?? '') === 'Yes' ? 'selected' : '' ?>>Yes</option>
                 <option value="No" <?= ($travelStatus ?? '') === 'No' ? 'selected' : '' ?>>No</option>
@@ -418,7 +437,7 @@
 
         <div class="form-group">
             <label for="transportRequired">Transport Required</label>
-            <select id="transportRequired" name="transportRequired" required>
+            <select id="transportRequired" name="transportRequired" disabled>
                 <option value="">Select status</option>
                 <option value="Yes" <?= ($transportRequired ?? '') === 'Yes' ? 'selected' : '' ?>>Yes</option>
                 <option value="No" <?= ($transportRequired ?? '') === 'No' ? 'selected' : '' ?>>No</option>
@@ -427,7 +446,7 @@
 
         <div class="form-group">
             <label for="caringistDateTime">Appointment Date & Time (IST)</label>
-            <input type="datetime-local" id="caringistDateTime" name="caringistDateTime" value="<?= htmlspecialchars($appointment['caring_google_meet_date'] ?? '') ?>" required>
+            <input type="datetime-local" id="caringistDateTime" name="caringistDateTime" value="<?= htmlspecialchars($appointment['caring_google_meet_date'] ?? '') ?>" disabled>
         </div>
 
 

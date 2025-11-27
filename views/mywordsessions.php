@@ -85,7 +85,7 @@
     <a class="logout-link" href="#" id="logout-link">Logout</a>
 </div>
 <a class="back-link" href="/evngDashboard1">← Back </a>
-<h2>📘 My Word Sessions</h2>
+<h2>📘 My Assigned Word Sessions</h2>
 
 <!-- 🔍 Search Filters -->
 <div class="filter-box">
