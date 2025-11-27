@@ -25,146 +25,165 @@
             --button-bg: #007bff;
             --button-text: #fff;
         }
+
         body {
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             font-family: 'Segoe UI', sans-serif;
             background: #f4f4f5;
             color: var(--text-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: 0.3s;
         }
+
+        /* --- Top Bar --- */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         h2 {
             flex-grow: 1;
             text-align: center;
             color: var(--highlight);
             margin: 0;
+            font-size: 1.4rem;
         }
         .theme-toggle {
             cursor: pointer;
-            font-size: 20px;
-            background: none;
+            font-size: 22px;
             border: none;
+            background: none;
             color: var(--highlight);
         }
+
+        /* --- Container --- */
         .container {
-            max-width: 800px;
-            margin: 30px auto;
+            max-width: 100%;
             background-color: var(--container-bg);
-            padding: 25px;
+            padding: 20px;
             border-radius: 10px;
+            overflow-x: hidden;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
+
         form {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: 1fr 1fr;  /* two even columns */
+            gap: 18px;
+            width: 100%;
+            box-sizing: border-box;          /* important */
         }
+
+        @media (max-width: 600px) {
+            form {
+                grid-template-columns: 1fr;  /* mobile: single column */
+            }
+        }
+
+
+        /* --- Labels & Inputs --- */
         .form-group {
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
         .form-group label {
-            font-weight: bold;
-            margin-bottom: 5px;
+            font-weight: 600;
+            margin-bottom: 6px;
             color: var(--highlight);
         }
         .form-group input,
         .form-group select,
         .form-group textarea {
-            padding: 8px;
+            padding: 10px;
+            border-radius: 6px;
             border: 1px solid var(--input-border);
-            border-radius: 4px;
-            background-color: var(--input-bg);
+            background: var(--input-bg);
             color: var(--text-color);
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.95rem;
         }
+        textarea {
+            resize: vertical;
+        }
+
+        input[readonly] {
+            background: #2c2c2c;
+            color: #aaa;
+        }
+        body.light-mode input[readonly] {
+            background: #eee;
+            color: #777;
+        }
+
+        /* Highlight editable fields except caringistDateTime */
+        .form-group input:not([readonly]):not([disabled]):not(#caringistDateTime),
+        .form-group select:not([disabled]):not(#caringistDateTime),
+        .form-group textarea:not([readonly]):not([disabled]):not(#caringistDateTime) {
+            background: #eaffea !important;
+            border-color: #00cc00 !important;
+        }
+
+        #caringistDateTime {
+            background: var(--input-bg) !important;
+            border-color: var(--input-border) !important;
+            color: var(--text-color) !important;
+        }
+
+        /* --- Submit Button --- */
         .full-width {
             grid-column: 1 / -1;
         }
         .submit-btn {
-            padding: 12px 20px;
-            background-color: var(--button-bg);
-            color: var(--button-text);
+            width: 100%;
+            padding: 14px;
             border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            border-radius: 8px;
+            background: var(--button-bg);
+            color: var(--button-text);
             font-weight: bold;
-            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
         }
         .submit-btn:hover {
             filter: brightness(1.1);
         }
+
+        /* --- Back & Logout Buttons --- */
+        .back-link {
+            display: inline-block;
+            margin-bottom: 15px;
+            text-decoration: none;
+            font-size: 14px;
+            color: #007bff;
+        }
+
+        /* --- Mobile Fixes --- */
         @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            h2 {
+                font-size: 1.2rem;
+            }
+            .top-bar {
+                justify-content: center;
+                text-align: center;
+            }
             form {
                 grid-template-columns: 1fr;
             }
+            .submit-btn {
+                font-size: 1.1rem;
+            }
         }
-        input[readonly] {
-            background-color: #2c2c2c;
-            color: #aaa;
-            cursor: not-allowed;
-        }
-        body.light-mode input[readonly] {
-            background-color: #eee;
-            color: #888;
-        }
-
-        .container {
-            max-width: 1000px;  /* wider layout for better balance */
-            margin: 30px auto;
-            background-color: var(--container-bg);
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            overflow-x: hidden; /* ✅ prevent horizontal overflow */
-        }
-
-        form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* ✅ auto-wrap columns */
-            gap: 20px; /* better spacing */
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            min-width: 0; /* ✅ ensures proper text wrapping */
-        }
-
-        .form-group select,
-        .form-group input,
-        .form-group textarea {
-            width: 100%; /* ✅ input never exceeds parent width */
-            box-sizing: border-box;
-        }
-
-        /* ---------- NEW: highlight editable fields ---------- */
-        /* Highlight all editable inputs/selects/textareas except those that are readonly/disabled,
-           and explicitly exclude the caretaker's meet date (#caringistDateTime). */
-        .form-group input:not([readonly]):not([disabled]):not(#caringistDateTime),
-        .form-group select:not([disabled]):not(#caringistDateTime),
-        .form-group textarea:not([readonly]):not([disabled]):not(#caringistDateTime) {
-            background-color: #eaffea !important;  /* light green */
-            border-color: #00cc00 !important;      /* green border */
-        }
-
-        /* Ensure caringistDateTime keeps original look (no highlight) */
-        #caringistDateTime {
-            background-color: var(--input-bg) !important;
-            border-color: var(--input-border) !important;
-            color: var(--text-color) !important;
-        }
-        /* ---------------------------------------------------- */
-
-
     </style>
+
 </head>
 <body>
 <div class="header">
