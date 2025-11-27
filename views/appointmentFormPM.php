@@ -155,7 +155,7 @@
 <div class="container">
     <form id="appointmentForm">
         <div class="form-group">
-            <label for="event_name">Event Name</label>
+            <label for="event_name">Sathvartha Name</label>
             <select name="event_name" id="event_name" required disabled>
                 <option value="">-- Select Event --</option>
                 <?php foreach ($eventNames as $event): ?>
