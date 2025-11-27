@@ -1197,7 +1197,7 @@
                     <thead>
                     <tr>
                         <th>Candidate Mobile</th>
-                        <th>Event Name</th>
+                        <th>Sathvartha Name</th>
                         <th>Appointment IST</th>
                         <th>Appointment (Candidate Zone)</th>
                         <th>Country</th>
@@ -1222,6 +1222,7 @@
                         <th>Travel Status</th>
                         <th>Created</th>
                         <th>Updated</th>
+                        <th>Home Mission Name</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -1254,6 +1255,8 @@
                                 <td><?= htmlspecialchars($appointment['travel_status']) ?></td>
                                 <td><?= htmlspecialchars($appointment['created_at']) ?></td>
                                 <td><?= htmlspecialchars($appointment['updated_at']) ?></td>
+                                <td><?= htmlspecialchars($appointment['event_name_hs']) ?></td>
+
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
