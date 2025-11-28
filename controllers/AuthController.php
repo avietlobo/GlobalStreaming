@@ -1277,7 +1277,7 @@ $sessionNames = [
             $positiveCount = $_POST['positive_count'] ?? 0;
 
             // ✅ Handle file upload
-            $uploadDir = Application::$ROOT_DIR . '/public/uploads/hsReports/';
+            $uploadDir = Application::$ROOT_DIR . '/public/uploads/homeMissionReports/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
@@ -1293,7 +1293,7 @@ $sessionNames = [
                     $targetPath = $uploadDir . $filename;
 
                     if (move_uploaded_file($attendanceFile['tmp_name'], $targetPath)) {
-                        $uploadedPath = '/uploads/hsReports/' . $filename;
+                        $uploadedPath = '/uploads/homeMissionReports/' . $filename;
                     }
                 }
             }
@@ -1344,7 +1344,7 @@ $sessionNames = [
             $positiveCount = $_POST['positive_count'] ?? 0;
 
             // ✅ Handle file upload
-            $uploadDir = Application::$ROOT_DIR . '/public/uploads/zoomReports/';
+            $uploadDir = Application::$ROOT_DIR . '/public/uploads/sathvarthaReports/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
@@ -1360,7 +1360,7 @@ $sessionNames = [
                     $targetPath = $uploadDir . $filename;
 
                     if (move_uploaded_file($attendanceFile['tmp_name'], $targetPath)) {
-                        $uploadedPath = '/uploads/zoomReports/' . $filename;
+                        $uploadedPath = '/uploads/sathvarthaReports/' . $filename;
                     }
                 }
             }
