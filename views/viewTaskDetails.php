@@ -662,7 +662,7 @@
             <label for="editCallDate">Call or Message Date <span class="required">*</span></label>
             <input type="date" name="call_date" id="editCallDate" required>
 
-            <label for="editStatus">Calling Status <span class="required">*</span></label>
+            <label for="editStatus">Calling or Message Status <span class="required">*</span></label>
             <select name="status" id="editStatus" required>
                 <option value="">Select</option>
                 <option value="Positive">Positive</option>
