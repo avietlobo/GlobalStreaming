@@ -506,7 +506,7 @@ padding:15px 25px; border-radius:10px; font-size:16px; z-index:9999;">
         toggleBtn.style.pointerEvents = "none";  // click disabled
         toggleBtn.style.opacity = "0.4";         // visually disabled
         toggleBtn.title = "Theme is locked to Light Mode";
-        toggleBtn.textContent = "🌞";            // show light icon always
+        toggleBtn.textContent = "";            // show light icon always
     }
 </script>
 
