@@ -125,9 +125,7 @@
 </head>
 <body>
 
-<div class="toggle-theme">
-    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
-</div>
+
 <div class="header">
     <a class="nav-link" href="#" id="logout-link">
         <button type="button" class="btn btn-primary">Logout</button>
@@ -202,18 +200,22 @@
 
 
 <script>
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-    }
+    // ALWAYS force light mode
+    document.body.classList.add('light-mode');
 
-    // Auto-load stored theme
-    window.onload = function () {
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-        }
-    };
+    // Remove any previously saved theme
+    localStorage.removeItem('theme');
+
+    // Disable toggle button completely
+    const toggleBtn = document.getElementById('themeToggle');
+    if (toggleBtn) {
+        toggleBtn.style.pointerEvents = "none";  // click disabled
+        toggleBtn.style.opacity = "0.4";         // visually disabled
+        toggleBtn.title = "Theme is locked to Light Mode";
+        toggleBtn.textContent = "🌞";            // show light icon always
+    }
 </script>
+
 
 </body>
 </html>
