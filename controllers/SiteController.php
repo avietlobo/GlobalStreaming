@@ -814,7 +814,7 @@ use DateTime;
                  $session->candidateCountry  = $candidate['country'];
                  $session->candidateLanguage = $candidate['language'];
                  $session->remark            = $finalRemark;
-                 $session->source            = 'CSV';
+                 $session->source            = 'Uploaded';
                  $mergedSessions[] = $session;
              } else {
                  $dummySession = new \stdClass();
@@ -826,7 +826,7 @@ use DateTime;
                  $dummySession->callDate = null;
                  $dummySession->status   = $candidate['activeStatus'];
                  $dummySession->remark   = $finalRemark;
-                 $dummySession->source   = isset($sessions2Map[$mobile]) ? 'Non CSV' : 'Non CSV';
+                 $dummySession->source   = isset($sessions2Map[$mobile]) ? 'Personal' : 'Personal';
                  $mergedSessions[] = $dummySession;
              }
          }
