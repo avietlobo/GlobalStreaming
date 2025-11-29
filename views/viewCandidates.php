@@ -214,24 +214,22 @@
 <a class="back-link" href="/evngDashboard">← Back </a>
 
 <script>
+    // ALWAYS force light mode
+    document.body.classList.add('light-mode');
+
+    // Remove any previously saved theme
+    localStorage.removeItem('theme');
+
+    // Disable toggle button completely
     const toggleBtn = document.getElementById('themeToggle');
-    const body = document.body;
-
-    // Set theme on load
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-        body.classList.add('light-mode');
-        toggleBtn.textContent = '🌞';
+    if (toggleBtn) {
+        toggleBtn.style.pointerEvents = "none";  // click disabled
+        toggleBtn.style.opacity = "0.4";         // visually disabled
+        toggleBtn.title = "Theme is locked to Light Mode";
+        toggleBtn.textContent = "🌞";            // show light icon always
     }
-
-    // Toggle theme on click
-    toggleBtn.addEventListener('click', () => {
-        body.classList.toggle('light-mode');
-        const isLight = body.classList.contains('light-mode');
-        toggleBtn.textContent = isLight ? '🌞' : '🌙';
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    });
 </script>
+
 
 </body>
 </html>

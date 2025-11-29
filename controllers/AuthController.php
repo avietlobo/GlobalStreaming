@@ -2139,10 +2139,12 @@ $sessionNames = [
             return;
         }
 
-        $id1= Application::$app->session->get('idxtx');
-        echo '<pre>';
-        var_dump($id1);
-        echo '</pre>';
+        //$id1= Application::$app->session->get('idxtx');
+        // prefer id from payload
+        $id1 = $postData['id'] ?? Application::$app->session->get('idxtx');
+
+        // Get ID from query parameter
+        //$id1 = $_GET['id'] ?? null;
 
         // Perform the DB update
         $updated = CandidateModel::updateChangedAppointmentFields($candidateMobile, $filteredData, true, $id1);
@@ -2446,6 +2448,9 @@ $sessionNames = [
         $appointments = CandidateModel::getAppointmentsById($id);
         Application::$app->session->set('idxtx', $id);
 
+
+
+
         if (!$appointments || empty($appointments)) {
             die("No appointment found.");
         }
@@ -2464,7 +2469,6 @@ $sessionNames = [
         $participantName = $candidateDetails['participantName'] ?? '';
         $evangelist = $candidateDetails['evangelist'] ?? '';
         $remark = CandidateModel::getCandidateRemarkByMobile($appointment['candidate_mobile']); // <-- Add this method to your model
-
 
         $this->setLayout('main2');
 
@@ -2501,7 +2505,8 @@ $sessionNames = [
             'sathvarthaReadyStatus' => $appointment['sathvartha_ready_status'] ?? '',
             'evangelistFeedback' => $remark,
             'transportRequired' => $appointment['transport_required'] ?? '',
-            'caringGoogleMeetDate' => $appointment['caring_google_meet_date'] ?? ''
+            'caringGoogleMeetDate' => $appointment['caring_google_meet_date'] ?? '',
+            'id'=>$id
         ]);
     }
 
