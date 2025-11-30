@@ -390,6 +390,18 @@ use app\models\EvangelistModel;
             }
         }
 
+        .badge-count {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: red;
+            color: white;
+            font-size: 12px;
+            padding: 2px 7px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
 
 
     </style>
@@ -414,6 +426,7 @@ use app\models\EvangelistModel;
 // Retrieve the session data
 $dashboardData = Application::$app->session->get('evngDashboardData2');
 $designation = $dashboardData[0]->designation;
+$upcomingCount = Application::$app->session->get('upcomingWordSessionCount') ?? 0;
 
 ?>
 
@@ -446,6 +459,14 @@ $designation = $dashboardData[0]->designation;
 
             <button class="dropdown-item" onclick="window.location.href='mycountryPref';">
                 <i class="fas fa-globe-americas"></i> Word Session Country Preference
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='upcomingWordSessions';" style="position:relative;">
+                <i class="fas fa-calendar-alt"></i> All Upcoming Word Sessions
+
+                <?php if ($upcomingCount > 0): ?>
+                    <span class="badge-count"><?= $upcomingCount ?></span>
+                <?php endif; ?>
             </button>
 
         </div>

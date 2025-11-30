@@ -772,6 +772,34 @@ use DateTime;
 
 
 
+     public function upcomingWordSessions(Request $request)
+     {
+         // get evangelist from session (same pattern you used before)
+         $evangelist = Application::$app->session->get('nameFinal');
+
+         if (empty($evangelist)) {
+             // if not found, either redirect or return a JSON error
+             if (!empty($_GET['ajax'])) {
+                 echo json_encode(['success' => false, 'message' => 'Evangelist not found in session']);
+                 return;
+             }
+             Application::$app->response->redirect('/login'); // or whichever route makes sense
+             return;
+         }
+
+         // get upcoming sessions and count from model
+         $sessions = WordSessionModel::getUpcomingWordSessionsForEvangelist($evangelist);
+         $this->setLayout('main2');
+
+         // Otherwise render view in your MVC style and pass variables to view
+         return $this->render('upcomingWordSessions', [
+             'sessions' => $sessions
+         ]);
+
+     }
+
+
+
      public function getWordSessionsApproved(Request $request)
      {
          $evangelist = Application::$app->session->get('nameFinal');

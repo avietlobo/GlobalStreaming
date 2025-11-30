@@ -24,6 +24,7 @@ use app\models\SathvarthaEventModel;
 use app\models\TelecallerSMModel;
 use app\models\UploadProcessLogModel;
 use app\models\VideoWatchHistoryModel;
+use app\models\WordSessionModel;
 use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -2994,7 +2995,10 @@ $sessionNames = [
 
                 $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist'=> $evangelistName],$evangelistName);
                 $data1 = EvangelistModel::findworkGroupForEvangelist(['evangelist'=> $evangelistName],$evangelistName);
-
+                // 1. Get upcoming session count
+                $upcomingCount = WordSessionModel::getUpcomingCountForEvangelist($evangelistName);
+                // 2. Store count in session so the dashboard can read it
+                Application::$app->session->set('upcomingWordSessionCount', $upcomingCount);
 
 //                error_log("evngDashboardData: " . print_r($data1, true));
 //                error_log("evngDashboardData: " . print_r($data, true));

@@ -380,6 +380,18 @@ use app\models\EvangelistModel;
             text-align: center;
         }
 
+        .badge-count {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: red;
+            color: white;
+            font-size: 12px;
+            padding: 2px 7px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
 
         /* Responsive tweaks */
         @media (max-width: 600px) {
@@ -399,10 +411,15 @@ use app\models\EvangelistModel;
 $dashboardData = Application::$app->session->get('evngDashboardData2');
 $designation = $dashboardData[0]->designation;
 
+$upcomingCount = Application::$app->session->get('upcomingWordSessionCount') ?? 0;
+
+
 ?>
 <!--// use this code if you don't want to use icons-->
 
 <?php if ($designation == 'Evangelist'): ?>
+
+
     <div class="hamburger-menu">
         <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu">
             <i class="fas fa-bars"></i>
@@ -431,6 +448,14 @@ $designation = $dashboardData[0]->designation;
 
             <button class="dropdown-item" onclick="window.location.href='mycountryPref';">
                 <i class="fas fa-globe-americas"></i> Word Session Country Preference
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='upcomingWordSessions';" style="position:relative;">
+                <i class="fas fa-calendar-alt"></i> All Upcoming Word Sessions
+
+                <?php if ($upcomingCount > 0): ?>
+                    <span class="badge-count"><?= $upcomingCount ?></span>
+                <?php endif; ?>
             </button>
 
 

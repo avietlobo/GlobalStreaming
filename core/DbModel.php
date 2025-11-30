@@ -3594,6 +3594,79 @@ ORDER BY
         return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSessionModel::class);
     }
 
+    public static function getUpcomingCountForEvangelist($evangelist)
+    {
+        $stmt = self::prepare("
+        SELECT COUNT(*) AS cnt
+        FROM word_session
+        WHERE evangelist = :evangelist
+          AND status = 'Scheduled'
+          AND session_date > :now
+    ");
+
+        $now = date('Y-m-d H:i:s');  // current date + time
+        $stmt->bindParam(':evangelist', $evangelist);
+        $stmt->bindParam(':now', $now);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return (int)($row['cnt'] ?? 0);
+    }
+
+
+    public static function getUpcomingWordSessionsForEvangelist($evangelist)
+    {
+        // Show all sessions (past + future) for this evangelist
+        // Scheduled on top, then Completed/Cancelled/Missed/others below
+        $stmt = self::prepare("
+        SELECT 
+            id,
+            mobile,
+            session_id,
+            session_date,
+            status,
+            participant,
+            language,
+            remark,
+            evangelist,
+            wgroup,
+            feedback,
+            created_at,
+            updated_at,
+            CASE session_id
+                WHEN 1 THEN 'Session 1: Salvation, incl plan and 1st coming'
+                WHEN 2 THEN 'Session 2: God the Father'
+                WHEN 3 THEN 'Session 3: Second coming incl Signs of Times'
+                WHEN 4 THEN 'Session 4: He has come, new name'
+                WHEN 5 THEN 'Session 5: Messenger sent by God'
+                WHEN 6 THEN 'Session 6: Righteousness'
+                WHEN 7 THEN 'Session 7: Zion, true Zion'
+                WHEN 8 THEN 'Session 8: Holy Mother'
+                WHEN 9 THEN 'Session 9: Church'
+                WHEN 10 THEN 'Session 10: Good News Retreat'
+                ELSE CONCAT('Session ', session_id)
+            END AS session_name
+        FROM word_session
+        WHERE evangelist = :evangelist
+        ORDER BY
+            -- 1 = Scheduled (top), 2 = everything else (Completed/Cancelled/Missed/other)
+            CASE 
+                WHEN LOWER(COALESCE(status, '')) = 'scheduled' THEN 1
+                ELSE 2
+            END,
+            session_date ASC,
+            id ASC
+    ");
+
+        $stmt->bindParam(':evangelist', $evangelist);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSessionModel::class);
+    }
+
+
+
     public static function getWordSessionsByMobileAndAssignedTo($mobile,$assignedTo)
     {
         $stmt = self::prepare("
