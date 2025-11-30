@@ -447,7 +447,7 @@
             </select>
 
                 <label>Sathvartha Organizer</label>
-                <select name="event_organizer" required>
+                <select name="event_organizer" >
                     <option value="">-- Select Organizer --</option>
                     <?php foreach ($sathvarthaOrganizers as $organizer): ?>
                         <option value="<?= htmlspecialchars($organizer->evngName) ?>"><?= htmlspecialchars($organizer->evngName) ?></option>
@@ -455,7 +455,7 @@
                 </select>
 
                 <label>Local Organizer</label>
-                <select name="local_organizer" required>
+                <select name="local_organizer" >
                     <option value="">-- Select Local Organizer --</option>
                     <?php foreach ($localOrganizers as $organizer): ?>
                         <option value="<?= htmlspecialchars($organizer->evngName) ?>"><?= htmlspecialchars($organizer->evngName) ?></option>

@@ -161,7 +161,7 @@
 
         <!-- Local Organizer Dropdown -->
         <label for="local_organizer">Local Organizer</label><br>
-        <select name="local_organizer" id="local_organizer" required>
+        <select name="local_organizer" id="local_organizer">
             <option value="">-- Select Local Organizer --</option>
             <?php foreach ($localOrganizers as $organizer): ?>
                 <?php $name = htmlspecialchars($organizer->evngName); ?>
@@ -174,7 +174,7 @@
         <!-- Sathvartha Organizer Dropdown -->
         <!-- Sathvartha Organizer Dropdown -->
         <label for="event_organizer">Sathvartha Organizer</label><br>
-        <select name="event_organizer" id="event_organizer" required>
+        <select name="event_organizer" id="event_organizer">
             <option value="">-- Select Sathvartha Organizer --</option>
             <?php foreach ($sathvarthaOrganizers as $organizer): ?>
                 <?php $name = htmlspecialchars($organizer->evngName); ?>
