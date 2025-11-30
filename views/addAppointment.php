@@ -220,18 +220,18 @@
 
         <div class="form-group">
             <label for="istDateTimeZ">Appointment Date & Time (IST)</label>
-            <input type="datetime-local" id="istDateTimeZ" name="istDateTimeZ" required>
+            <input type="datetime-local" id="istDateTimeZ" name="istDateTimeZ" >
         </div>
 
         <div class="form-group">
             <label for="istDateTime">Appointment Date & Time for Candidate zone</label>
-            <input type="datetime-local" id="istDateTime" name="istDateTime" required>
+            <input type="datetime-local" id="istDateTime" name="istDateTime" >
         </div>
 
         <!-- Sathvartha Organizer Dropdown -->
         <div class="form-group">
             <label for="sathvartha_organizer">Sathvartha Organizer</label>
-            <select name="sathvartha_organizer" id="sathvartha_organizer" required>
+            <select name="sathvartha_organizer" id="sathvartha_organizer" >
                 <option value="">-- Select Sathvartha Organizer --</option>
                 <?php foreach ($organizers['SathvarthaOrganizer'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
@@ -254,7 +254,7 @@
         <!-- Panel Member Dropdown -->
         <div class="form-group">
             <label for="panel_member">Panel Member</label>
-            <select name="panel_member" id="panel_member" required>
+            <select name="panel_member" id="panel_member" >
                 <option value="">-- Select Panel Member --</option>
                 <?php foreach ($organizers['PanelMember'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
@@ -290,7 +290,7 @@
         <!-- Local Organizer Dropdown -->
         <div class="form-group">
             <label for="local_organizer">Local Organizer</label>
-            <select name="local_organizer" id="local_organizer" required>
+            <select name="local_organizer" id="local_organizer">
                 <option value="">-- Select Local Organizer --</option>
                 <?php foreach ($organizers['LocalOrganizer'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
@@ -347,7 +347,7 @@
         <!-- Caretaker Dropdown -->
         <div class="form-group">
             <label for="caring_team_member">Caring Team Member</label>
-            <select name="caring_team_member" id="caring_team_member" required>
+            <select name="caring_team_member" id="caring_team_member">
                 <option value="">-- Select Caring Team Member --</option>
                 <?php foreach ($organizers['Caretaker'] ?? [] as $name): ?>
                     <option value="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($name) ?></option>
