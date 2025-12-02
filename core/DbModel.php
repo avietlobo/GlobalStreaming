@@ -3965,7 +3965,7 @@ ORDER BY
         $statement = self::prepare("
     SELECT * 
     FROM $tableName 
-    WHERE evangelist = '$name' 
+    WHERE evangelist = '$name'
     ORDER BY 
         CASE activeStatus
             WHEN 'Completed' THEN 1
@@ -4374,7 +4374,7 @@ ORDER BY
         //$sql = implode(" AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
         //$sql = "SELECT * FROM candidate WHERE evangelist = '$name'";
 
-        $statement = self::prepare("SELECT * FROM $tableName WHERE evngName = '$name'");
+        $statement = self::prepare("SELECT * FROM $tableName WHERE evngName = '$name' ");
 //        error_log("evngDashboardData: " . print_r($statement, true));
 //        foreach ($where as $key => $item)
 //        {

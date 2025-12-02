@@ -2988,13 +2988,18 @@ $sessionNames = [
             }
 
             if ($loginForm->loginEvangelist()) {
+                //echo $loginForm->username;
                 $evangelistName= Application::$app->session->get('nameFinal');
 //                $id = Application::$app->session->get('user');
                 //$data = CandidateModel::findAllCandidatesForEvangelist(['evangelist'=> $loginForm->username],$loginForm->username);
                 //$data1 = EvangelistModel::findworkGroupForEvangelist(['evangelist'=> $loginForm->username],$loginForm->username);
 
                 $data = CandidateModel::findAllCandidatesForEvangelist(['evangelist'=> $evangelistName],$evangelistName);
+
+
+                //$data1 = EvangelistModel::findworkGroupForEvangelist(['evangelist'=> $evangelistName],$evangelistName,);
                 $data1 = EvangelistModel::findworkGroupForEvangelist(['evangelist'=> $evangelistName],$evangelistName);
+
                 // 1. Get upcoming session count
                 $upcomingCount = WordSessionModel::getUpcomingCountForEvangelist($evangelistName);
                 // 2. Store count in session so the dashboard can read it
