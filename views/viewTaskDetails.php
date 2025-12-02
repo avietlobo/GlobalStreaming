@@ -428,6 +428,9 @@
 
             <label for="editName">Candidate Name <span class="required">*</span></label>
             <input type="text" name="name" id="editName" required>
+            <p class="note" style="margin-top:-5px;margin-bottom:10px;">
+                If the candidate name is not known yet, please enter <strong>Unknown</strong> or a meaningful temporary name.
+            </p>
 
 <!--            <label>Country</label>-->
 <!--            <input type="text" name="country" id="editCountry" readonly>-->
@@ -689,8 +692,12 @@
 <div style="display: flex; justify-content: center;">
     <div class="card">
         <div class="detail-row">
-            <strong>📱 Mobile:</strong> <?= htmlspecialchars($task->mobile) ?>
+            <strong>📱 Mobile:</strong>
+            <a href="tel:<?= htmlspecialchars($task->mobile) ?>" style="color: var(--link-color); text-decoration: none;">
+                <?= htmlspecialchars($task->mobile) ?>
+            </a>
         </div>
+
         <div class="detail-row">
             <strong>👤 Name:</strong> <?= htmlspecialchars($task->name) ?>
         </div>
