@@ -408,7 +408,7 @@ use app\models\EvangelistModel;
             overflow: visible;
         }
 
-        /* numeric badge (optional) on the icon */
+        /* numeric badge on icon: keep it on top */
         .hamburger-icon .badge-count-icon {
             position: absolute;
             top: -6px;
@@ -420,19 +420,21 @@ use app\models\EvangelistModel;
             border-radius: 999px;
             font-weight: 700;
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            z-index: 4; /* ensure badge is above dot */
         }
 
-        /* small pulse dot (preferred visual) */
+        /* static small red dot (no animation) */
         .hamburger-icon .notif-dot {
             position: absolute;
-            top: 4px;
-            right: 4px;
+            /* place the dot so it doesn't conflict with the badge */
+            top: 8px;
+            right: 8px;
             width: 10px;
             height: 10px;
             border-radius: 50%;
             background: #ff3b30; /* red */
-            box-shadow: 0 0 0 rgba(255,59,48,0.5);
-            transform-origin: center;
+            z-index: 3; /* above default icon but below numeric badge */
+            box-shadow: none;
         }
 
         /* dot pulse animation */
@@ -450,22 +452,28 @@ use app\models\EvangelistModel;
             100% { transform: translateY(0); }
         }
 
-        /* only run animations when notify class present */
-        .hamburger-icon.notify .notif-dot {
-            animation: notif-pulse 1.6s ease-out infinite;
-        }
 
-        .hamburger-icon.notify {
-            animation: icon-bounce 1.6s ease-in-out infinite;
-        }
 
-        /* reduce animation intensity on small screens */
+        /* If you want the dot slightly smaller on tiny screens */
         @media (max-width: 480px) {
-            .hamburger-icon.notify {
-                animation-duration: 2.2s;
-            }
-            .hamburger-icon .badge-count-icon { font-size: 10px; padding: 1px 5px; }
-            .hamburger-icon .notif-dot { width: 9px; height: 9px; top: 3px; right: 3px; }
+            .hamburger-icon .badge-count-icon { font-size: 10px; padding: 1px 5px; z-index: 4; }
+            .hamburger-icon .notif-dot { width: 9px; height: 9px; top: 7px; right: 7px; z-index: 3; }
+        }
+
+        /* badge inside dropdown items (approve sessions) */
+        .dropdown-item { position: relative; }
+        .dropdown-item .menu-badge {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            background: #ff3b30;
+            color: #fff;
+            font-size: 12px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-weight: 700;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            line-height: 1;
         }
 
 
@@ -494,27 +502,28 @@ use app\models\EvangelistModel;
 $dashboardData = Application::$app->session->get('evngDashboardData2');
 $designation = $dashboardData[0]->designation;
 $upcomingCount = Application::$app->session->get('upcomingWordSessionCount') ?? 0;
+// new approval count (Approve Sessions)
+$approvalCount = Application::$app->session->get('approvalWordSessionCount') ?? 0;
+
+// integrated count for hamburger (sum of both)
+$integratedCount = intval($upcomingCount) + intval($approvalCount);
 
 ?>
 
 <?php if ($designation == 'Evangelist'): ?>
     <div class="hamburger-menu">
         <?php
-        // ensure $upcomingCount is available in this scope (you already set it earlier)
-        $uCount = $upcomingCount ?? 0;
-        $notifyClass = $uCount > 1 ? ' notify' : '';
+        $uCount = intval($integratedCount ?? 0);
         ?>
-        <button class="hamburger-icon<?= $notifyClass ?>" onclick="toggleMenu()" aria-label="Menu" data-upcoming="<?= intval($uCount) ?>">
+        <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu" data-upcoming="<?= $uCount ?>">
             <i class="fas fa-bars" aria-hidden="true"></i>
 
-            <!-- optional numeric badge on icon (remove if you don't want a number) -->
             <?php if ($uCount > 0): ?>
-                <span class="badge-count-icon"><?= htmlspecialchars($uCount) ?></span>
-            <?php endif; ?>
-
-            <!-- small animated dot (show only when count > 1) -->
-            <?php if ($uCount > 1): ?>
-                <span class="notif-dot" aria-hidden="true"></span>
+                <?php
+                $display = $uCount > 99 ? '99+' : (string)$uCount;
+                $attrMore = $uCount > 99 ? ' data-count-more="true"' : '';
+                ?>
+                <span class="badge-count-icon"<?= $attrMore ?>><?= htmlspecialchars($display) ?></span>
             <?php endif; ?>
         </button>
 
@@ -532,8 +541,13 @@ $upcomingCount = Application::$app->session->get('upcomingWordSessionCount') ?? 
                 <i class="fas fa-book-open"></i> Assigned Word Sessions
             </button>
 
-            <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';">
+
+            <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';" style="position:relative;">
                 <i class="fas fa-check-circle"></i> Approve Sessions
+
+                <?php if (intval($approvalCount) > 0): ?>
+                    <span class="menu-badge"><?= htmlspecialchars($approvalCount) ?></span>
+                <?php endif; ?>
             </button>
 
             <button class="dropdown-item" onclick="window.location.href='mylangPref';">

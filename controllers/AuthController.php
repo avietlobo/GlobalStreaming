@@ -3005,6 +3005,10 @@ $sessionNames = [
                 // 2. Store count in session so the dashboard can read it
                 Application::$app->session->set('upcomingWordSessionCount', $upcomingCount);
 
+                $upcomingCount2 = WordSessionModel::getUpcomingCountForEvangelist2($evangelistName);
+                Application::$app->session->set('approvalWordSessionCount', $upcomingCount2);
+                //echo $upcomingCount2;
+
 //                error_log("evngDashboardData: " . print_r($data1, true));
 //                error_log("evngDashboardData: " . print_r($data, true));
 

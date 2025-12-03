@@ -3594,6 +3594,23 @@ ORDER BY
         return $stmt->fetchAll(\PDO::FETCH_CLASS, WordSessionModel::class);
     }
 
+    public static function getUpcomingCountForEvangelist2($evangelist)
+    {
+        $stmt = self::prepare("
+        SELECT COUNT(*) AS cnt
+        FROM word_sharing_approval
+        WHERE assigned_to = :assigned_to
+          AND status = 'Pending'
+    ");
+
+        $stmt->bindParam(':assigned_to', $evangelist);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return (int)($row['cnt'] ?? 0);
+    }
+
     public static function getUpcomingCountForEvangelist($evangelist)
     {
         $stmt = self::prepare("
