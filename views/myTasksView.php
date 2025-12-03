@@ -425,6 +425,8 @@ function getCountryCode($countryName) {
         <option value="Neutral" <?= ($_GET['status'] ?? '') === 'Neutral' ? 'selected' : '' ?>>Neutral</option>
         <option value="No Response" <?= ($_GET['status'] ?? '') === 'No Response' ? 'selected' : '' ?>>No Response</option>
         <option value="Assigned" <?= ($_GET['status'] ?? '') === 'Assigned' ? 'selected' : '' ?>>Assigned</option>
+        <option value="Awaiting Response" <?= ($_GET['status'] ?? '') === 'Awaiting Response' ? 'selected' : '' ?>>Awaiting Response</option>
+
     </select>
 
     <select name="country" style="padding: 6px; border-radius: 6px;">
@@ -500,6 +502,8 @@ $filteredTasks = array_filter($tasks, function ($task) use ($nameFilter, $status
                     ⚖️ <span style="color: #444; font-weight: 500;">Neutral</span>
                 <?php elseif ($status === 'no response'): ?>
                     🤐 <span style="color: orange; font-weight: bold; ">No Response</span>
+                <?php elseif ($status === 'awaiting response' || $status === 'awaiting'): ?>
+                    ⏳ <span style="color: #007BFF; font-weight: 700;">Awaiting Response</span>
                 <?php else: ?>
                     🏳️ <?= htmlspecialchars($task['status']) ?>
                 <?php endif; ?>

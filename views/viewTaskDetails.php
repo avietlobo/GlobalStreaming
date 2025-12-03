@@ -673,6 +673,7 @@
                 <option value="Neutral">Neutral</option>
                 <option value="No response">No response</option>
                 <option value="Ready for Sathvartha">Ready for Sathvartha</option>
+                <option value="Awaiting Response">Awaiting Response</option>
             </select>
 
             <label for="editRemark">Remark <span class="required">*</span></label>
@@ -731,6 +732,11 @@
         <div class="detail-row">
             <strong>📲 Call Date:</strong> <?= htmlspecialchars(!empty($task->callDate) ? $task->callDate : 'Pending') ?>
         </div>
+        <div class="detail-row">
+            <strong>🗒️ Remarks:</strong>
+            <?= htmlspecialchars(!empty($task->remarks) ? $task->remarks : '') ?>
+        </div>
+
     </div>
 </div>
 

@@ -690,8 +690,19 @@ $integratedCount = intval($upcomingCount) + intval($approvalCount);
 <div class="icon-button-group search-icons">
     <?php if ($designation == 'Evng Coordinator'): ?>
         <div class="hamburger-menu">
-            <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu">
-                <i class="fas fa-bars"></i>
+            <?php
+            $uCount = intval($integratedCount ?? 0);
+            ?>
+            <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu" data-upcoming="<?= $uCount ?>">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+
+                <?php if ($uCount > 0): ?>
+                    <?php
+                    $display = $uCount > 99 ? '99+' : (string)$uCount;
+                    $attrMore = $uCount > 99 ? ' data-count-more="true"' : '';
+                    ?>
+                    <span class="badge-count-icon"<?= $attrMore ?>><?= htmlspecialchars($display) ?></span>
+                <?php endif; ?>
             </button>
 
             <div class="dropdown-menu" id="menuDropdown">
@@ -731,13 +742,27 @@ $integratedCount = intval($upcomingCount) + intval($approvalCount);
                     <i class="fas fa-book-open"></i> Assigned Word Sessions
                 </button>
 
-                <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';">
-                    <i class="fas fa-check-circle"></i> Approve Word Sessions
+                <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';" style="position:relative;">
+                    <i class="fas fa-check-circle"></i> Approve Sessions
+
+                    <?php if (intval($approvalCount) > 0): ?>
+                        <span class="menu-badge"><?= htmlspecialchars($approvalCount) ?></span>
+                    <?php endif; ?>
                 </button>
+
 
                 <button class="dropdown-item" onclick="window.location.href='mylangPref';">
                     <i class="fas fa-language"></i> Word Session Language Preference
                 </button>
+
+                <button class="dropdown-item" onclick="window.location.href='upcomingWordSessions';" style="position:relative;">
+                    <i class="fas fa-calendar-alt"></i> All Upcoming Word Sessions
+
+                    <?php if ($upcomingCount > 0): ?>
+                        <span class="badge-count"><?= $upcomingCount ?></span>
+                    <?php endif; ?>
+                </button>
+
             </div>
         </div>
     <?php endif; ?>
@@ -756,8 +781,19 @@ $integratedCount = intval($upcomingCount) + intval($approvalCount);
 <div class="icon-button-group search-icons">
     <?php if ($designation == 'Management' ): ?>
         <div class="hamburger-menu">
-            <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu">
-                <i class="fas fa-bars"></i>
+            <?php
+            $uCount = intval($integratedCount ?? 0);
+            ?>
+            <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu" data-upcoming="<?= $uCount ?>">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+
+                <?php if ($uCount > 0): ?>
+                    <?php
+                    $display = $uCount > 99 ? '99+' : (string)$uCount;
+                    $attrMore = $uCount > 99 ? ' data-count-more="true"' : '';
+                    ?>
+                    <span class="badge-count-icon"<?= $attrMore ?>><?= htmlspecialchars($display) ?></span>
+                <?php endif; ?>
             </button>
 
             <div class="dropdown-menu" id="menuDropdown">
@@ -788,9 +824,47 @@ $integratedCount = intval($upcomingCount) + intval($approvalCount);
                 <button class="dropdown-item" onclick="window.location.href='view7DApproved';">
                     <i class="fas fa-list-alt"></i> 7D Approved Candidates
                 </button>
+
                 <button class="dropdown-item" onclick="window.location.href='evangelistRatings';">
                     <i class="fas fa-list-alt"></i> Give Rating
                 </button>
+
+                <button class="dropdown-item" onclick="window.location.href='getWordSessionsApproved';">
+                    <i class="fas fa-book-open"></i> Assigned Word Sessions
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';" style="position:relative;">
+                    <i class="fas fa-check-circle"></i> Approve Sessions
+
+                    <?php if (intval($approvalCount) > 0): ?>
+                        <span class="menu-badge"><?= htmlspecialchars($approvalCount) ?></span>
+                    <?php endif; ?>
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='mylangPref';">
+                    <i class="fas fa-language"></i> Word Session Language Preference
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='mycountryPref';">
+                    <i class="fas fa-globe-americas"></i> Word Session Country Preference
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='upcomingWordSessions';" style="position:relative;">
+                    <i class="fas fa-calendar-alt"></i> All Upcoming Word Sessions
+
+                    <?php if ($upcomingCount > 0): ?>
+                        <span class="badge-count"><?= $upcomingCount ?></span>
+                    <?php endif; ?>
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='viewMyTasks';">
+                    <i class="fas fa-tasks"></i> My Task
+                </button>
+
+                <button class="dropdown-item" onclick="window.location.href='myPref';">
+                    <i class="fas fa-sliders-h"></i> Evangelization Preference
+                </button>
+
             </div>
         </div>
     <?php endif; ?>
@@ -824,8 +898,19 @@ $integratedCount = intval($upcomingCount) + intval($approvalCount);
 
 <?php if ($designation == 'Group Leader'): ?>
     <div class="hamburger-menu">
-        <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu">
-            <i class="fas fa-bars"></i>
+        <?php
+        $uCount = intval($integratedCount ?? 0);
+        ?>
+        <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu" data-upcoming="<?= $uCount ?>">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+
+            <?php if ($uCount > 0): ?>
+                <?php
+                $display = $uCount > 99 ? '99+' : (string)$uCount;
+                $attrMore = $uCount > 99 ? ' data-count-more="true"' : '';
+                ?>
+                <span class="badge-count-icon"<?= $attrMore ?>><?= htmlspecialchars($display) ?></span>
+            <?php endif; ?>
         </button>
 
         <div class="dropdown-menu" id="menuDropdown">
@@ -841,8 +926,12 @@ $integratedCount = intval($upcomingCount) + intval($approvalCount);
                 <i class="fas fa-book-open"></i> Assigned Word Sessions
             </button>
 
-            <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';">
+            <button class="dropdown-item" onclick="window.location.href='viewAssignedWordSessions';" style="position:relative;">
                 <i class="fas fa-check-circle"></i> Approve Sessions
+
+                <?php if (intval($approvalCount) > 0): ?>
+                    <span class="menu-badge"><?= htmlspecialchars($approvalCount) ?></span>
+                <?php endif; ?>
             </button>
 
             <button class="dropdown-item" onclick="window.location.href='mylangPref';">
@@ -851,6 +940,14 @@ $integratedCount = intval($upcomingCount) + intval($approvalCount);
 
             <button class="dropdown-item" onclick="window.location.href='mycountryPref';">
                 <i class="fas fa-globe-americas"></i> Word Session Country Preference
+            </button>
+
+            <button class="dropdown-item" onclick="window.location.href='upcomingWordSessions';" style="position:relative;">
+                <i class="fas fa-calendar-alt"></i> All Upcoming Word Sessions
+
+                <?php if ($upcomingCount > 0): ?>
+                    <span class="badge-count"><?= $upcomingCount ?></span>
+                <?php endif; ?>
             </button>
 
 
