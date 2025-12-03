@@ -402,6 +402,73 @@ use app\models\EvangelistModel;
             font-weight: bold;
         }
 
+        /* notification dot + icon animation */
+        .hamburger-icon {
+            position: relative;
+            overflow: visible;
+        }
+
+        /* numeric badge (optional) on the icon */
+        .hamburger-icon .badge-count-icon {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: red;
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 999px;
+            font-weight: 700;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        /* small pulse dot (preferred visual) */
+        .hamburger-icon .notif-dot {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff3b30; /* red */
+            box-shadow: 0 0 0 rgba(255,59,48,0.5);
+            transform-origin: center;
+        }
+
+        /* dot pulse animation */
+        @keyframes notif-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,59,48,0.6); }
+            70% { transform: scale(1.25); box-shadow: 0 0 0 8px rgba(255,59,48,0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,59,48,0); }
+        }
+
+        /* subtle bounce for the icon when notifications present */
+        @keyframes icon-bounce {
+            0% { transform: translateY(0); }
+            30% { transform: translateY(-3px); }
+            60% { transform: translateY(0); }
+            100% { transform: translateY(0); }
+        }
+
+        /* only run animations when notify class present */
+        .hamburger-icon.notify .notif-dot {
+            animation: notif-pulse 1.6s ease-out infinite;
+        }
+
+        .hamburger-icon.notify {
+            animation: icon-bounce 1.6s ease-in-out infinite;
+        }
+
+        /* reduce animation intensity on small screens */
+        @media (max-width: 480px) {
+            .hamburger-icon.notify {
+                animation-duration: 2.2s;
+            }
+            .hamburger-icon .badge-count-icon { font-size: 10px; padding: 1px 5px; }
+            .hamburger-icon .notif-dot { width: 9px; height: 9px; top: 3px; right: 3px; }
+        }
+
+
 
 
     </style>
@@ -432,9 +499,25 @@ $upcomingCount = Application::$app->session->get('upcomingWordSessionCount') ?? 
 
 <?php if ($designation == 'Evangelist'): ?>
     <div class="hamburger-menu">
-        <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Menu">
-            <i class="fas fa-bars"></i>
+        <?php
+        // ensure $upcomingCount is available in this scope (you already set it earlier)
+        $uCount = $upcomingCount ?? 0;
+        $notifyClass = $uCount > 1 ? ' notify' : '';
+        ?>
+        <button class="hamburger-icon<?= $notifyClass ?>" onclick="toggleMenu()" aria-label="Menu" data-upcoming="<?= intval($uCount) ?>">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+
+            <!-- optional numeric badge on icon (remove if you don't want a number) -->
+            <?php if ($uCount > 0): ?>
+                <span class="badge-count-icon"><?= htmlspecialchars($uCount) ?></span>
+            <?php endif; ?>
+
+            <!-- small animated dot (show only when count > 1) -->
+            <?php if ($uCount > 1): ?>
+                <span class="notif-dot" aria-hidden="true"></span>
+            <?php endif; ?>
         </button>
+
 
         <div class="dropdown-menu" id="menuDropdown">
             <button class="dropdown-item" onclick="window.location.href='viewMyTasks';">
@@ -1031,5 +1114,37 @@ $upcomingCount = Application::$app->session->get('upcomingWordSessionCount') ?? 
         }
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // read PHP-rendered global upcoming count if any
+        // check all hamburger-icon buttons and adapt
+        document.querySelectorAll('.hamburger-icon').forEach(btn => {
+            const countAttr = btn.getAttribute('data-upcoming');
+            const count = countAttr ? parseInt(countAttr, 10) : 0;
+
+            // If a numeric badge is present but you want to only animate when > 1:
+            if (count > 1) {
+                btn.classList.add('notify');
+            } else {
+                btn.classList.remove('notify');
+                // if you want to hide badge when count is 0:
+                // const badge = btn.querySelector('.badge-count-icon'); if (badge && count <= 0) badge.style.display = 'none';
+            }
+
+            // Optional: stop animations while menu open (makes ux nicer)
+            btn.addEventListener('click', function () {
+                // toggled by your existing toggleMenu; keep animations subtle
+                if (btn.classList.contains('notify')) {
+                    // if you want to remove the notification when user clicks (acknowledged)
+                    // btn.classList.remove('notify');
+                    // optionally also remove dot and badge:
+                    // const dot = btn.querySelector('.notif-dot'); if (dot) dot.remove();
+                    // const badge = btn.querySelector('.badge-count-icon'); if (badge) badge.remove();
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
