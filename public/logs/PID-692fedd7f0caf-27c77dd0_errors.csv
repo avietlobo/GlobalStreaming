@@ -1,0 +1,2 @@
+mobile,name,record_date,email,source,country,city,referredBy,referredByContactNo,group_name,fellowship,language,error
+https://www.facebook.com/albertamorinflores,,,test@abc.com,data_scrape,Poland,Poland,John,66747849,UK Malyalees,Canaan,English,Mobile exists in DB

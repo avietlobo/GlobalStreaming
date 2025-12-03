@@ -693,10 +693,22 @@
     <div class="card">
         <div class="detail-row">
             <strong>📱 Mobile:</strong>
-            <a href="tel:<?= htmlspecialchars($task->mobile) ?>" style="color: var(--link-color); text-decoration: none;">
-                <?= htmlspecialchars($task->mobile) ?>
+            <?php $raw = $task->mobile ?? ''; $escaped = htmlspecialchars($raw, ENT_QUOTES); ?>
+
+            <a href="#"
+               class="contact-link"
+               data-contact="<?= $escaped ?>"
+               style="color: var(--link-color); text-decoration: none;"
+               onclick="handleContactClick(event, this)"
+               onmousedown="startPressTimer(event, this)"
+               onmouseup="clearPressTimer()"
+               onmouseleave="clearPressTimer()"
+               ontouchstart="startPressTimer(event, this)"
+               ontouchend="clearPressTimer()">
+                <?= htmlspecialchars($raw) ?>
             </a>
         </div>
+
 
         <div class="detail-row">
             <strong>👤 Name:</strong> <?= htmlspecialchars($task->name) ?>
@@ -1958,6 +1970,98 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
     });
 
 </script>
+
+<script>
+    let pressTimer = null;
+    let longPress = false;
+
+    // ----- Long Press Setup -----
+    function startPressTimer(e, el) {
+        longPress = false;
+
+        pressTimer = setTimeout(() => {
+            longPress = true;
+            const value = el.getAttribute("data-contact") || "";
+
+            navigator.clipboard.writeText(value).then(() => {
+                alert("Copied: " + value);
+            });
+
+        }, 600); // long press duration
+    }
+
+    function clearPressTimer() {
+        clearTimeout(pressTimer);
+    }
+
+    // ----- Contact Logic (Tap) -----
+
+    function normalizeNumber(raw) {
+        if (!raw) return '';
+        raw = raw.trim();
+        if (raw.startsWith('+')) {
+            return '+' + raw.slice(1).replace(/\D/g, '');
+        }
+        return raw.replace(/\D/g, '');
+    }
+
+    function attemptOpenApp(appUrl, fallbackUrl) {
+        window.location = appUrl;
+        setTimeout(() => { window.location = fallbackUrl; }, 700);
+    }
+
+    function isFacebookUrl(v) {
+        if (!v) return false;
+        v = v.toLowerCase();
+        return v.includes("facebook.com") || v.includes("fb.me") || v.startsWith("fb://");
+    }
+
+    function looksLikeUrl(v) {
+        if (!v) return false;
+        return /^(https?:\/\/)/i.test(v) || (v.includes('.') && !v.includes(" "));
+    }
+
+    function handleContactClick(ev, el) {
+        ev.preventDefault();
+
+        // If this was a long press, do NOT trigger normal action
+        if (longPress) return;
+
+        const raw = el.getAttribute("data-contact") || "";
+        const trimmed = raw.trim();
+
+        // Facebook URL
+        if (isFacebookUrl(trimmed) || trimmed.toLowerCase().includes("facebook")) {
+            let fbUrl = trimmed;
+            if (!fbUrl.startsWith("http")) fbUrl = "https://" + fbUrl;
+            const fbApp = "fb://facewebmodal/f?href=" + encodeURIComponent(fbUrl);
+            attemptOpenApp(fbApp, fbUrl);
+            return;
+        }
+
+        // Any other URL
+        if (looksLikeUrl(trimmed)) {
+            const finalUrl = trimmed.startsWith("http") ? trimmed : "https://" + trimmed;
+            window.open(finalUrl, "_blank");
+            return;
+        }
+
+        // Phone Number → WhatsApp
+        const normalized = normalizeNumber(trimmed);
+        let wa = normalized.startsWith("+") ? normalized.slice(1) : normalized;
+
+        if (wa.length >= 5) {
+            const waApp = "whatsapp://send?phone=" + wa;
+            const waWeb = "https://wa.me/" + wa;
+            attemptOpenApp(waApp, waWeb);
+            return;
+        }
+
+        // fallback → Dialer
+        window.location = "tel:" + trimmed;
+    }
+</script>
+
 
 
 
