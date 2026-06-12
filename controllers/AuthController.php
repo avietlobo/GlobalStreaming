@@ -2842,6 +2842,32 @@ $sessionNames = [
     }
 
 
+
+        public function taskPage(Request $request, Response $response)
+    {
+        $assignedTo = Application::$app->session->get('nameFinal'); // Logged-in user
+        $tasks = TelecallerSMModel::getAllTasks();
+        //$tasks = TelecallerSMModel::getMyTasks($assignedTo);
+        $this->setLayout('main1');
+        return $this->render('allTasksView', [
+            'tasks' => $tasks
+        ]);
+    }
+
+    public function exportTelecallerReport(Request $request, Response $response)
+    {
+        $type = $_GET['type'] ?? 'excel';
+
+        $data = TelecallerSMModel::getTelecallerReport();
+
+        if ($type === 'excel') {
+            TelecallerSMModel::exportExcel($data);
+        } else {
+            TelecallerSMModel::exportPDF($data);
+        }
+    }
+
+
     public function viewMyTasks(Request $request, Response $response)
     {
         $assignedTo = Application::$app->session->get('nameFinal'); // Logged-in user

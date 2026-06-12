@@ -678,6 +678,10 @@ $integratedCount = intval($upcomingCount) + intval($approvalCount);
                         <span class="badge-count"><?= $upcomingCount ?></span>
                     <?php endif; ?>
                 </button>
+
+                <button class="dropdown-item" onclick="window.location.href='taskPage';">
+                    <i class="fas fa-clipboard-list"></i> Task Manager
+                </button>
             </div>
         </div>
     <?php endif; ?>
@@ -770,6 +774,10 @@ $integratedCount = intval($upcomingCount) + intval($approvalCount);
                     <i class="fas fa-sliders-h"></i> Evangelization Preference
                 </button>
 
+                <button class="dropdown-item" onclick="window.location.href='taskPage';">
+                    <i class="fas fa-clipboard-list"></i> Task Manager
+                </button>
+
             </div>
         </div>
     <?php endif; ?>
@@ -854,7 +862,9 @@ $integratedCount = intval($upcomingCount) + intval($approvalCount);
                     <span class="badge-count"><?= $upcomingCount ?></span>
                 <?php endif; ?>
             </button>
-
+            <button class="dropdown-item" onclick="window.location.href='taskPage';">
+                <i class="fas fa-clipboard-list"></i> Task Manager
+            </button>
 
 
         </div>

@@ -1,0 +1,2 @@
+mobile,name,record_date,email,source,country,city,referredBy,referredByContactNo,group_name,fellowship,language,error
+971566784611,Edwin Dsilva,,,,,,,,,,English,DB insert error: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away

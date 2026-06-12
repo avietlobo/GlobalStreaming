@@ -2368,6 +2368,122 @@ GROUP BY language;";
     }
 
 
+    public static function getAllTasks()
+    {
+        $telecallerTable = (new \app\models\TelecallerSMModel())->tableName();
+        $query = "SELECT * FROM $telecallerTable ORDER BY language ASC";
+        $statement = self::prepare($query);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function getTelecallerReport()
+    {
+        $table = (new \app\models\TelecallerSMModel())->tableName();
+
+        $sql = "SELECT 
+                assignedTo,
+                COUNT(*) AS total_assigned,
+                SUM(CASE WHEN status='Assigned' AND callDate IS NULL THEN 1 ELSE 0 END) AS not_worked,
+                SUM(CASE WHEN status='Positive' THEN 1 ELSE 0 END) AS positive,
+                SUM(CASE WHEN status='Negative' THEN 1 ELSE 0 END) AS negative,
+                SUM(CASE WHEN status='Neutral' THEN 1 ELSE 0 END) AS neutral,
+                SUM(CASE WHEN status='No Response' THEN 1 ELSE 0 END) AS no_response,
+                SUM(CASE WHEN status='Awaiting Response' THEN 1 ELSE 0 END) AS awaiting_response
+            FROM $table
+            GROUP BY assignedTo
+            ORDER BY assignedTo";
+
+        $stmt = self::prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function exportExcel($data)
+    {
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $headers = [
+            'Assigned To',
+            'Total Assigned',
+            'Not Worked',
+            'Positive',
+            'Negative',
+            'Neutral',
+            'No Response',
+            'Awaiting Response'
+        ];
+
+        $col = 1;
+        foreach ($headers as $h) {
+            $sheet->setCellValueByColumnAndRow($col++, 1, $h);
+        }
+
+        $row = 2;
+
+        foreach ($data as $d) {
+
+            $sheet->setCellValue('A'.$row, $d['assignedTo']);
+            $sheet->setCellValue('B'.$row, $d['total_assigned']);
+            $sheet->setCellValue('C'.$row, $d['not_worked']);
+            $sheet->setCellValue('D'.$row, $d['positive']);
+            $sheet->setCellValue('E'.$row, $d['negative']);
+            $sheet->setCellValue('F'.$row, $d['neutral']);
+            $sheet->setCellValue('G'.$row, $d['no_response']);
+            $sheet->setCellValue('H'.$row, $d['awaiting_response']);
+
+            $row++;
+        }
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="telecaller_report.xlsx"');
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $writer->save("php://output");
+        exit;
+    }
+
+    public static function exportPDF($data)
+    {
+        $pdf = new \TCPDF();
+        $pdf->AddPage();
+
+        $html = '<h2>Telecaller Performance Report</h2>';
+
+        $html .= '<table border="1" cellpadding="6">
+                <tr>
+                    <th>Assigned To</th>
+                    <th>Total</th>
+                    <th>Not Worked</th>
+                    <th>Positive</th>
+                    <th>Negative</th>
+                    <th>Neutral</th>
+                    <th>No Response</th>
+                    <th>Awaiting Response</th>
+                </tr>';
+
+        foreach ($data as $d) {
+
+            $html .= '<tr>
+                    <td>'.$d['assignedTo'].'</td>
+                    <td>'.$d['total_assigned'].'</td>
+                    <td>'.$d['not_worked'].'</td>
+                    <td>'.$d['positive'].'</td>
+                    <td>'.$d['negative'].'</td>
+                    <td>'.$d['neutral'].'</td>
+                    <td>'.$d['no_response'].'</td>
+                    <td>'.$d['awaiting_response'].'</td>
+                  </tr>';
+        }
+
+        $html .= '</table>';
+
+        $pdf->writeHTML($html);
+
+        $pdf->Output('telecaller_report.pdf', 'D');
+    }
 
     public static function getMyTasks($assignedToName)
     {
@@ -2479,6 +2595,13 @@ GROUP BY language;";
             $params[] = "%" . $filters['mobile'] . "%";
         }
 
+        // ✅ Record Date filter (single date)
+        if (!empty($filters['record_date'])) {
+            // If record_date is DATETIME, this safely matches the full day
+            $where[] = "DATE(d.record_date) = ?";
+            $params[] = $filters['record_date'];
+        }
+
 
 
         $whereSql = implode(' AND ', $where);
@@ -2581,6 +2704,12 @@ GROUP BY language;";
         if (!empty($filters['mobile'])) {
             $where[] = "d.mobile LIKE ?";
             $params[] = "%" . $filters['mobile'] . "%";
+        }
+        // ✅ Record Date filter (single date)
+        if (!empty($filters['record_date'])) {
+            // If record_date is DATETIME, this safely matches the full day
+            $where[] = "DATE(d.record_date) = ?";
+            $params[] = $filters['record_date'];
         }
 
 

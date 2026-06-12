@@ -40,11 +40,13 @@ $app-> router->get('/viewAllCanAttendenceMarking', [AuthController::class, 'view
 $app-> router->get('/viewAllTelecallersList', [AuthController::class, 'viewAllTelecallersList']);
 $app-> router->get('/viewAllSMList', [AuthController::class, 'viewAllSMList']);
 $app-> router->get('/viewMyTasks', [AuthController::class, 'viewMyTasks']);
+$app-> router->get('/taskPage', [AuthController::class, 'taskPage']);
 $app-> router->get('/addNewSathEvent', [AuthController::class, 'addNewSathEvent']);
 $app-> router->post('/addNewSathEvent', [AuthController::class, 'addNewSathEvent']);
 $app-> router->get('/organizeEvent', [AuthController::class, 'organizeEvent']);
 $app-> router->post('/organizeEvent', [AuthController::class, 'organizeEvent']);
 $app-> router->get('/allEvents', [AuthController::class, 'allEvents']);
+$app->router->get('/exportTelecallerReport', [AuthController::class, 'exportTelecallerReport']);
 
 
 

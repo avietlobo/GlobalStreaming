@@ -384,6 +384,11 @@
                 <label>📌 Status:
                     <input type="text" name="filter[status]" value="<?= htmlspecialchars($_GET['filter']['status'] ?? '') ?>">
                 </label>
+        <label>📅 Record Date:
+            <input type="date"
+                   name="filter[record_date]"
+                   value="<?= htmlspecialchars($_GET['filter']['record_date'] ?? '') ?>">
+        </label>
                 <button type="submit" style="background-color: #007BFF; color: white;">🔍 Apply Filters</button>
         <!-- ✅ Clear All Filters button -->
         <a href="/viewAllTelecallersList"

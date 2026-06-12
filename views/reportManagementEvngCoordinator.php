@@ -229,6 +229,7 @@ use app\models\EvangelistModel;
     </div>
 
     <div class="button-container">
+        <button id="totalReportButton" class="primary">Total Report</button>
         <button id="languageGroupingButton" class="primary">Language Grouping</button>
         <button id="countryGroupingButton" class="primary">Country Grouping</button>
         <button id="statusWiseGroupingButton" class="primary">Total Status Wise Grouping</button>
@@ -239,6 +240,11 @@ use app\models\EvangelistModel;
 </body>
 
 <script type="text/javascript">
+
+    document.getElementById('totalReportButton').addEventListener('click', function() {
+        // Redirect to the "/candidate" page
+        window.location.href = '/totalReportCountManagement';
+    });
 
     document.getElementById('languageGroupingButton').addEventListener('click', function() {
         // Redirect to the "/candidate" page
