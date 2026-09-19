@@ -1,0 +1,2 @@
+mobile,name,record_date,email,source,country,city,referredBy,referredByContactNo,group_name,fellowship,language,error
+999,,7/2/2026,,test99,,,,,,,English,Mobile exists in candidate table

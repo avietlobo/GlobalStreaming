@@ -998,6 +998,25 @@ WHERE el.language = :language and active='1'  AND el.rating > 3");
         return $stmt->fetchColumn() > 0;
     }
 
+    public static function updateStatusAndRemark($mobile, $callDate, $status, $remarks)
+    {
+        $stmt = self::prepare("
+        UPDATE telecaller_sm
+        SET
+            callDate = :callDate,
+            status = :status,
+            remarks = :remarks
+        WHERE mobile = :mobile
+    ");
+
+        $stmt->bindValue(":callDate", $callDate);
+        $stmt->bindValue(":status", $status);
+        $stmt->bindValue(":remarks", $remarks);
+        $stmt->bindValue(":mobile", $mobile);
+
+        return $stmt->execute();
+    }
+
     public static function updateStatusTask($mobile, $name, $country, $city, $language, $callDate, $status, $remarks)
     {
         $tableName = 'telecaller_sm';
@@ -2313,6 +2332,7 @@ GROUP BY language;";
 
     public static function bulkAssignDataBankRecords($selectedMobiles,$contacts,$assignedTo)
     {
+        $currentDate = date('Y-m-d'); // Example: 2026-07-03
 
         $tableName = (new \app\models\DataBankModel())->tableName();
         foreach ($selectedMobiles as $mobile) {
@@ -2335,10 +2355,12 @@ GROUP BY language;";
             )
         ");
 
+            //':record_date' => $c['record_date'],
+
             $stmt->execute([
                 ':mobile' => $mobile,
                 ':name' => $c['name'],
-                ':record_date' => $c['record_date'],
+                ':record_date' => $currentDate, // Always today's date
                 ':type' => $c['type'],
                 ':email' => $c['email'],
                 ':source' => $c['source'],
@@ -2488,8 +2510,28 @@ GROUP BY language;";
     public static function getMyTasks($assignedToName)
     {
         $telecallerTable = (new \app\models\TelecallerSMModel())->tableName();
-        $query = "SELECT * FROM $telecallerTable WHERE assignedTo = :assignedTo ORDER BY callDate DESC
-        ";
+//        $query = "SELECT * FROM $telecallerTable WHERE assignedTo = :assignedTo ORDER BY callDate DESC
+//        ";
+        $query = "SELECT *
+          FROM $telecallerTable
+          WHERE assignedTo = :assignedTo
+          ORDER BY
+              CASE status
+                  WHEN 'Assigned' THEN 1
+                  WHEN 'Positive' THEN 2
+                  WHEN 'Neutral' THEN 3
+                  WHEN 'Awaiting Response' THEN 4
+                  WHEN 'No Response' THEN 5
+                  WHEN 'Negative' THEN 6
+                  ELSE 7
+              END ASC,
+
+              CASE
+                  WHEN status = 'Assigned' THEN record_date
+                  ELSE callDate
+              END DESC";
+
+
         $statement = self::prepare($query);
         $statement->bindValue(':assignedTo', $assignedToName);
         $statement->execute();

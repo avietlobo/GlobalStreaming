@@ -1155,12 +1155,53 @@ class AuthController extends Controller
         $city     = $_POST['city']     ?? '';
         $language = $_POST['language'] ?? '';
 
+        // Mobile, Status and Remark are always mandatory
         if (!$mobile || !$callDate || !$status || !$remark) {
-            echo json_encode(['success' => false, 'message' => 'All fields are required.']);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Mobile, Call Date, Status and Remark are required.'
+            ]);
             return;
         }
 
-        $result = TelecallerSMModel::updateStatusTask(  $mobile, $name, $country, $city, $language, $callDate, $status, $remark);
+        // Additional validations only for Positive status
+        if ($status === 'Positive') {
+
+            if (
+                empty($name) ||
+                empty($country) ||
+                empty($city) ||
+                empty($language)
+            ) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'For Positive status, Candidate Name, Country, City and Language are required.'                ]);
+                return;
+            }
+        }
+
+        if ($status === 'Positive') {
+
+            $result = TelecallerSMModel::updateStatusTask(
+                $mobile,
+                $name,
+                $country,
+                $city,
+                $language,
+                $callDate,
+                $status,
+                $remark
+            );
+
+        }
+
+        else {
+
+            $result = TelecallerSMModel::updateStatusAndRemark($mobile, $callDate, $status, $remark);
+
+        }
+
+
         if ($result) {
             echo json_encode(['success' => true]);
         } else {

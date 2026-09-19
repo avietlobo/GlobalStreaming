@@ -427,8 +427,8 @@
             <input type="text" name="mobile" id="editMobile" readonly>
 
             <label for="editName">Candidate Name <span class="required">*</span></label>
-            <input type="text" name="name" id="editName" required>
-            <p class="note" style="margin-top:-5px;margin-bottom:10px;">
+            <input type="text" name="name" id="editName">
+            <p id="candidateNameNote" class="note" style="margin-top:-5px;margin-bottom:10px;">
                 If the candidate name is not known yet, please enter <strong>Unknown</strong> or a meaningful temporary name.
             </p>
 
@@ -436,7 +436,7 @@
 <!--            <input type="text" name="country" id="editCountry" readonly>-->
 
             <label for="editCountry">Country <span class="required">*</span></label>
-            <select name="country" id="editCountry" required>
+            <select name="country" id="editCountry">
                 <option value="Afghanistan">Afghanistan</option>
                 <option value="Albania">Albania</option>
                 <option value="Algeria">Algeria</option>
@@ -643,7 +643,7 @@
 <!--            <input type="text" name="language" id="editLanguage" readonly>-->
 
             <label for="editLanguage">Language <span class="required">*</span></label>
-            <select name="language" id="editLanguage" required>
+            <select name="language" id="editLanguage">
                 <option value="English">English</option>
                 <option value="Malayalam">Malayalam</option>
                 <option value="Kannada">Kannada</option>
@@ -1850,21 +1850,68 @@ if (!empty($evangelistData) && isset($evangelistData[0]->email)) {
         document.getElementById(tabId).style.display = 'block';
     }
 </script>
+<script>
+    function toggleMandatoryFields() {
+
+        const isPositive = document.getElementById("editStatus").value === "Positive";
+        const candidateNameNote = document.getElementById("candidateNameNote");
+        candidateNameNote.style.display = isPositive ? "block" : "none";
+
+        const fields = [
+            "editName",
+            "editCountry",
+            "editCity",
+            "editLanguage"
+        ];
+
+        fields.forEach(id => {
+            const field = document.getElementById(id);
+
+            if (isPositive) {
+                field.setAttribute("required", "required");
+            } else {
+                field.removeAttribute("required");
+            }
+        });
+
+        // Show/Hide required stars
+        document.querySelectorAll("#editForm label .required").forEach(star => {
+
+            const label = star.parentElement;
+            const field = document.getElementById(label.getAttribute("for"));
+
+            if (
+                field &&
+                ["editName","editCountry","editCity","editLanguage","editCallDate"].includes(field.id)
+            ) {
+                star.style.display = isPositive ? "inline" : "none";
+            }
+        });
+    }
+
+
+</script>
+
+<script>
+    document.getElementById("editStatus").addEventListener("change", toggleMandatoryFields);
+
+</script>
 
 <script>
     function openEditForm() {
-        document.getElementById('editModal').style.display = 'flex';
-
-
-
-        // Populate form from existing data
         document.getElementById('editMobile').value = "<?= htmlspecialchars($task->mobile) ?>";
         document.getElementById('editName').value = "<?= htmlspecialchars($task->name) ?>";
         document.getElementById('editCountry').value = "<?= htmlspecialchars($task->country) ?>";
         document.getElementById('editCity').value = "<?= htmlspecialchars($task->city) ?>";
         document.getElementById('editLanguage').value = "<?= htmlspecialchars($task->language) ?>";
-        document.getElementById('editCallDate').value = ""; // Or blank if separate
-    }
+
+        document.getElementById('editCallDate').value = "<?= htmlspecialchars($task->callDate ?? '') ?>";
+        document.getElementById('editStatus').value = "<?= htmlspecialchars($task->status ?? '') ?>";
+        document.getElementById('editRemark').value = "<?= htmlspecialchars($task->remarks ?? '') ?>";
+
+        toggleMandatoryFields();
+
+        document.getElementById('editModal').style.display = 'flex';    }
 
     function closeModal() {
         document.getElementById('editModal').style.display = 'none';

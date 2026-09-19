@@ -420,12 +420,12 @@ function getCountryCode($countryName) {
 
     <select name="status" style="padding: 6px; border-radius: 6px;">
         <option value="">All Status</option>
-        <option value="Positive" <?= ($_GET['status'] ?? '') === 'Positive' ? 'selected' : '' ?>>Positive</option>
-        <option value="Negative" <?= ($_GET['status'] ?? '') === 'Negative' ? 'selected' : '' ?>>Negative</option>
-        <option value="Neutral" <?= ($_GET['status'] ?? '') === 'Neutral' ? 'selected' : '' ?>>Neutral</option>
-        <option value="No Response" <?= ($_GET['status'] ?? '') === 'No Response' ? 'selected' : '' ?>>No Response</option>
         <option value="Assigned" <?= ($_GET['status'] ?? '') === 'Assigned' ? 'selected' : '' ?>>Assigned</option>
+        <option value="Positive" <?= ($_GET['status'] ?? '') === 'Positive' ? 'selected' : '' ?>>Positive</option>
+        <option value="Neutral" <?= ($_GET['status'] ?? '') === 'Neutral' ? 'selected' : '' ?>>Neutral</option>
         <option value="Awaiting Response" <?= ($_GET['status'] ?? '') === 'Awaiting Response' ? 'selected' : '' ?>>Awaiting Response</option>
+        <option value="No Response" <?= ($_GET['status'] ?? '') === 'No Response' ? 'selected' : '' ?>>No Response</option>
+        <option value="Negative" <?= ($_GET['status'] ?? '') === 'Negative' ? 'selected' : '' ?>>Negative</option>
 
     </select>
 
@@ -449,17 +449,49 @@ function getCountryCode($countryName) {
     </select>
 
 <!--    <button type="submit" style="padding: 6px 12px; background: var(--accent-color); color: white; border: none; border-radius: 6px;">Filter</button>-->
+
+    <!-- Source -->
+    <select name="source" style="padding: 6px; border-radius: 6px;">
+        <option value="">All Sources</option>
+
+        <?php
+        $sources = array_unique(
+            array_filter(
+                array_map(fn($t) => trim($t['source'] ?? ''), $tasks)
+            )
+        );
+        sort($sources);
+
+        foreach ($sources as $source):
+            ?>
+            <option
+                    value="<?= htmlspecialchars($source) ?>"
+                <?= ($_GET['source'] ?? '') === $source ? 'selected' : '' ?>
+            >
+                <?= htmlspecialchars($source) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+
+
 </form>
 
 <?php
 $nameFilter = strtolower($_GET['name'] ?? '');
 $statusFilter = strtolower($_GET['status'] ?? '');
 $countryFilter = $_GET['country'] ?? '';
+$sourceFilter = $_GET['source'] ?? '';
 
-$filteredTasks = array_filter($tasks, function ($task) use ($nameFilter, $statusFilter, $countryFilter) {
+$filteredTasks = array_filter($tasks, function ($task) use (
+    $nameFilter,
+    $statusFilter,
+    $countryFilter,
+    $sourceFilter
+) {
     $taskStatus = strtolower(trim($task['status'] ?? ''));
     $taskCountry = $task['country'] ?? '';
     $taskName = strtolower($task['name'] ?? '');
+    $taskSource = trim($task['source'] ?? '');
 
     // Normalize unassigned
     if ($taskStatus === '' || $taskStatus === null) {
@@ -469,9 +501,9 @@ $filteredTasks = array_filter($tasks, function ($task) use ($nameFilter, $status
     return
         ($nameFilter === '' || strpos($taskName, $nameFilter) !== false) &&
         ($statusFilter === '' || $taskStatus === strtolower($statusFilter)) &&
-        ($countryFilter === '' || $taskCountry === $countryFilter);
-});
-?>
+        ($countryFilter === '' || $taskCountry === $countryFilter) &&
+        ($sourceFilter === '' || $taskSource === $sourceFilter);
+});?>
 
 <?php foreach ($filteredTasks as $task): ?>
     <a href="/viewTaskDetails?mobile=<?= urlencode($task['mobile']) ?>" class="task-card">
